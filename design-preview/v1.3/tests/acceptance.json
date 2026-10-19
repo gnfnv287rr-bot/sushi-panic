@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-19T15:12:50.384Z",
+  "environment": "local headless Chrome; mobile viewport/touch emulation, not physical phone",
+  "captures": [
+    {
+      "label": "desktop",
+      "viewport": {
+        "w": 1440,
+        "h": 1000
+      },
+      "noHorizontalOverflow": true,
+      "fontLoaded": true,
+      "sceneTop": 341
+    },
+    {
+      "label": "mobile",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "noHorizontalOverflow": true,
+      "fontLoaded": true,
+      "sceneTop": 437
+    }
+  ],
+  "outboundRequests": [],
+  "errors": [],
+  "rafSample": {
+    "frames": 99,
+    "averageFps": 60,
+    "p95FrameMs": 16.7
+  }
+}

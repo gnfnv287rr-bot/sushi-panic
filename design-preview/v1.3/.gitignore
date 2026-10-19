@@ -1,0 +1,5 @@
+tests/traces/
+tests/design-preview/
+tests/results.json
+tests/run-log.txt
+screenshots/click-debug.png
