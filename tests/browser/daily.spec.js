@@ -22,3 +22,13 @@ test('changing client Date.now does not change authoritative board date or count
 test('optional email dialog pauses gameplay and reports unsupported local sending honestly',async({page})=>{
  await begin(page,'存档食客');await page.getByRole('button',{name:'存档',exact:true}).click();await expect(page.locator('#account-dialog')).toBeVisible();expect((await page.evaluate(()=>window.__sushi.snapshot())).phase).toBe('paused');await page.locator('#account-email').fill('owner@example.com');await page.locator('#bind-email').click();await expect(page.locator('#account-status')).toContainText('本地联调环境不发送邮件');await page.locator('#close-account').click();await expect(page.locator('#account-dialog')).not.toBeVisible();expect((await page.evaluate(()=>window.__sushi.snapshot())).phase).toBe('paused');
 });
+
+test('P0 reload resumes the same unfinished online run without resetting identity or trusting stored score',async({page})=>{
+ await begin(page,'恢复上次对局');await page.keyboard.press('1');const before=await page.evaluate(()=>window.__sushi.snapshot()),id=(await(await page.request.get('/api/identity')).json()).profile.id;
+ await page.reload();await expect(page.locator('#restore-run')).toBeVisible();await page.locator('#restore-run').click();expect((await page.evaluate(()=>window.__sushi.snapshot())).phase).toBe('paused');const restored=await page.evaluate(()=>window.__sushi.snapshot());expect(restored.seed).toBe(before.seed);expect(restored.score).toBeGreaterThanOrEqual(before.score);expect((await(await page.request.get('/api/identity')).json()).profile.id).toBe(id);await page.getByRole('button',{name:'继续开吃',exact:true}).click();await expect(page.locator('#network-status')).toContainText('联网计分局');
+});
+test('P0 pending failed score does not hide the public ranking, and HTTP500 remains safely retryable',async({page})=>{
+ await begin(page,'失败待同步');const profile=(await(await page.request.get('/api/identity')).json()).profile;
+ await page.evaluate(id=>localStorage.setItem('sushi.pending.v1',JSON.stringify([{owner:id,runId:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',body:{ticks:10,actions:[]}}])),profile.id);
+ await page.route('**/api/runs/aaaaaaaa-*/finish',r=>r.fulfill({status:500,json:{error:'temporary server failure'}}));await page.reload();await page.getByRole('button',{name:'今日排行榜',exact:true}).click();await expect(page.locator('#board-status')).not.toHaveText('正在读取今日榜…');await expect(page.locator('#board-champion')).not.toContainText('连不上');await expect(page.locator('#network-status')).toContainText('等待同步');expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('sushi.pending.v1')).length)).toBe(1);
+});

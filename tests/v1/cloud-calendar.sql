@@ -7,13 +7,14 @@ begin
  insert into auth.users(id) values(a),(b);
  perform sushi_profile(a,'日期测试甲'); perform sushi_profile(b,'日期测试乙');
  perform sushi_start(a,r,42);perform sushi_claim(a,r,'test-transaction');
- perform sushi_complete(a,r,'test-transaction',350,60,1);
+ perform sushi_complete(a,r,'test-transaction',350,60,1,'{"cucumber":1}'::jsonb);
  board:=sushi_board(a); if board->>'day'<>'2026-10-22' or (board->'me'->>'score')::int<>350 then raise exception '23:59 ranking failed';end if;
  perform sushi_start(b,r2,43);
  perform set_config('sushi.test_clock','2026-10-22T16:00:00Z',true);
  perform sushi_claim(b,r2,'cross-day');result:=sushi_complete(b,r2,'cross-day',400,60,1);
  if result->>'day'<>'2026-10-23' then raise exception 'Cross-midnight attribution failed';end if;
  board:=sushi_board(a);if board->>'day'<>'2026-10-23' or board->'me'<>'null'::jsonb then raise exception 'Midnight reset failed';end if;
+ if (board->'profile'->>'totalSushi')::int<>1 or jsonb_array_length(board->'profile'->'collection')<>1 then raise exception 'Permanent collection lost';end if;
  if (board->'profile'->>'bestScore')::int<>350 then raise exception 'Lifetime best lost';end if;
  perform sushi_finalize();select count(*) into count1 from sushi_daily_champions where day='2026-10-22' and player_id=a;
  if count1<>1 then raise exception 'Champion idempotency failed';end if;

@@ -86,6 +86,11 @@
 @media(prefers-reduced-motion:reduce){.record-celebration{animation:none}}
 .daily-board-panel .tiny-note{font-size:11px;line-height:1.7;color:#79816f;margin:10px 0}
 .account-archive{font-size:12px;line-height:1.8;margin-top:20px;border-top:1px dashed var(--line);padding-top:10px}.account-archive h3{font-size:15px}.account-archive ol{padding:0;list-style:none;max-height:120px;overflow-y:auto}.account-archive li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:5px}
+
+/* V1.2 P0: visible sync status, matching the original shop palette. */
+.network-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 16px;border-top:1px dashed #d5dacb;background:#edf1e5;font-size:12px;color:#355a50}
+.network-bar #network-status{flex:1;min-width:160px;font-weight:700}.network-bar .text-button{font-size:12px;padding:7px;min-height:36px;margin:0}
+#network-status[data-state="pending"],#network-status[data-state="practice"]{color:#a14f36}#email-code-section{margin:16px 0}
 </style>
   <title>寿司别吃撑！ · SUSHI PANIC</title>
 </head>
@@ -100,6 +105,7 @@
       <div class="game-layout">
         <section class="game-panel" aria-label="游戏区域">
           <div class="scoreboard"><div><span class="stat-label">本局得分</span><strong id="score">00000</strong></div><div class="time-stat"><span class="stat-label">生存时间</span><strong id="time">00:00</strong></div><div class="level-stat"><span class="stat-label">回转速度</span><strong id="level">1 <small>/ 6</small></strong></div><button id="pause" class="pause-button" aria-label="暂停游戏" disabled>Ⅱ</button></div>
+          <div class="network-bar"><span id="network-status" role="status">正在连接云端档案…</span><button id="retry-network" class="text-button">重新连接</button><button id="copy-diagnostics" class="text-button">复制诊断</button></div>
           <div class="vitals"><div class="health-row"><span>生命 <b id="hp">100</b><small id="hp-max"> / 100</small></span><div class="health-track" role="progressbar" aria-label="生命值" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="health-bar"><i id="health-fill"></i></div><span id="health-status">精神满满</span></div><div class="fullness-heading"><span>饱腹值 <b id="fullness">55</b><small> / 120</small></span><strong id="zone-text">恰到好处</strong></div><div class="fullness-track" id="fullness-bar" role="progressbar" aria-label="饱腹值" aria-valuemin="0" aria-valuemax="120" aria-valuenow="55"><span class="healthy-band"></span><span id="fullness-fill" class="fullness-fill"></span><i id="fullness-pointer"></i><span class="danger-line hunger-line"></span><span class="danger-line full-line"></span></div><div class="gauge-labels"><span>饿过头 &lt;15</span><span>舒适区 25–85</span><span>吃太撑 &gt;100</span></div></div>
           <div class="stage" id="stage">
             <canvas id="game" role="img" aria-label="回转寿司传送带。点击盘子吃寿司，或按 1 到 8 吃对应编号的盘子。"></canvas>
@@ -117,11 +123,11 @@
         </aside>
       </div>
     </main>
-    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>V1.0 RC · 每日积分榜 · 无广告</span><span class="footer-motto">请带着你的求生欲入座。</span></footer>
+    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>V1.2 P0 · 联网与存档修复 · 无广告</span><span class="footer-motto">请带着你的求生欲入座。</span></footer>
   </div>
   <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">好好吃，慢慢活。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹会持续下降。维持 25–85，有舒适进食奖励。低于 15 或高于 100 持续 2 秒后会掉血。</span></li><li><b>红色「忌」，吃了会过敏。</b><span>每局角色不同，过敏源也不同。误食扣 24 生命，所有盘子都提前标记。</span></li><li><b>连击比乱吃更值钱。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">每 25 秒提升一级，180 秒后数值封顶。切换页面自动暂停，回来后手动继续。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
   <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">每日开席 · 全球挑战</p><div class="section-heading"><h2 id="board-title">今日排行榜</h2><span id="board-day"></span></div><p class="board-clock">北京时间 00:00 换榜 · 距刷新 <strong class="reset-countdown">--:--:--</strong></p><p id="board-champion" class="board-champion">正在寻找今日大胃王…</p><p id="board-status" class="board-status" role="status">每人每日最高积分 · 全球 TOP 100</p><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><p id="board-updated" class="tiny-note"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div><p class="tiny-note">匿名身份保存在此浏览器。未绑定邮箱时，清除 Cookie、无痕关闭或换设备后，历史成绩可能无法找回。</p></div></dialog>
-  <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">保存 / 恢复成绩</h2><p class="identity-note">绑定邮箱完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><button id="close-account" class="text-button">暂时不用，继续开吃</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
+  <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">保存 / 恢复成绩</h2><p class="identity-note">请在已有成绩的原浏览器绑定邮箱。绑定完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><section id="email-code-section" hidden><label class="player-id-label" for="account-code">邮件验证码</label><input id="account-code" class="player-id-input" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="6–8位验证码"><button id="verify-email" class="primary-button">验证并恢复云端档案</button></section><button id="close-account" class="text-button">暂时不用，继续开吃</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
   <script type="module">
 // Public browser configuration. Administrator credentials are never included.
@@ -129,7 +135,7 @@ const PUBLIC_CONFIG=Object.freeze({
   "supabaseUrl": "https://hyqgkenarjgxdbqiwpxl.supabase.co",
   "publishableKey": "sb_publishable_DfZrP9IEZ00WH08M32_sUA_KGIeXvXN",
   "edgeFunction": "sushi-api",
-  "emailEnabled": false
+  "emailEnabled": true
 });
 
 let clientPromise;
@@ -143,12 +149,37 @@ async function sessionToken({create=false}={}){
  if(!data.session&&create){({data,error}=await client.auth.signInAnonymously());if(error)throw Object.assign(new Error('游客身份创建失败：'+error.message),{status:error.status});}
  return data.session?.access_token||null;
 }
+async function currentIdentity(){const c=await authClient();const {data,error}=await c.auth.getSession();if(error)throw error;return data.session?.user||null;}
 async function emailWithClient(client,email,recover,redirectTo){
  const value=String(email).trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))throw new Error('请输入有效邮箱地址');
  const {error}=recover?await client.auth.signInWithOtp({email:value,options:{emailRedirectTo:redirectTo,shouldCreateUser:false}}):await client.auth.updateUser({email:value},{emailRedirectTo:redirectTo});
  if(error)throw new Error('邮件未能发送：'+error.message);return true;
 }
-async function emailAction(email,recover=false){if(!PUBLIC_CONFIG.emailEnabled)throw new Error('邮箱存档暂未开放；当前浏览器仍会自动保存游客身份，请勿清除网站数据。');return emailWithClient(await authClient(),email,recover,new URL('./',document.baseURI).href);}
+async function emailAction(email,recover=false,{enabled=PUBLIC_CONFIG.emailEnabled}={}){if(!enabled)throw new Error('邮箱存档暂未开放；当前浏览器仍会自动保存游客身份，请勿清除网站数据。');return emailWithClient(await authClient(),email,recover,new URL('./',document.baseURI).href);}
+async function verifyEmailWithClient(client,email,token,recover=false){
+ const value=String(email).trim(),code=String(token).trim();
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)||!/^\d{6,8}$/.test(code))throw new Error('请输入邮箱和邮件中的6–8位验证码');
+ const before=recover?null:(await client.auth.getSession()).data.session?.user?.id;
+ if(!recover&&!before)throw new Error('当前游客身份已失效，请先重新连接');
+ const {data,error}=await client.auth.verifyOtp({email:value,token:code,type:recover?'email':'email_change'});
+ if(error)throw new Error('验证未完成：'+error.message);
+ if(!data.user||(!recover&&data.user.id!==before))throw new Error('身份验证结果不一致，请重新连接；未合并或覆盖档案');
+ return data.user;
+}
+async function verifyEmailAction(email,token,recover=false){if(!PUBLIC_CONFIG.emailEnabled)throw new Error('邮箱存档暂未开放');return verifyEmailWithClient(await authClient(),email,token,recover);}
+async function watchIdentity(listener){const c=await authClient();return c.auth.onAuthStateChange((event,session)=>{setTimeout(()=>listener(event,session?.user?.id||null),0);}).data.subscription;}
+
+// Per-run keys avoid one tab overwriting another tab's pending scores.
+class RunJournal{
+ constructor(storage){try{this.storage=storage||globalThis.localStorage;}catch{this.storage=null;}this.memory=new Map();}
+ key(id){return 'sushi.run.v12.'+id;}
+ write(entry){this.memory.set(entry.runId,entry);try{this.storage.setItem(this.key(entry.runId),JSON.stringify(entry));return true;}catch{return false;}}
+ remove(id){this.memory.delete(id);try{this.storage.removeItem(this.key(id));}catch{}}
+ list(kind){const entries=new Map();try{for(let i=0;i<this.storage.length;i++){const key=this.storage.key(i);if(!key?.startsWith('sushi.run.v12.'))continue;try{const e=JSON.parse(this.storage.getItem(key));if(e&&typeof e.runId==='string'&&Array.isArray(e.body?.actions))entries.set(e.runId,e);}catch{}}}catch{}
+ for(const [id,e] of this.memory)entries.set(id,e);return [...entries.values()].filter(e=>!kind||e.kind===kind);}
+}
+function retryableStatus(status){return !status||status===401||status===408||status===425||status===429||status>=500;}
+function deadline(promise,ms=8000){let timer;return Promise.race([promise,new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('身份服务连接超时')),ms);})]).finally(()=>clearTimeout(timer));}
 
 /** Pure, deterministic game rules. Time is seconds; fullness is 0–120. */
 const VERSION = '0.2.0';
@@ -292,6 +323,19 @@ class Game {
   snapshot() { return { version: VERSION, seed: this.seed, phase: this.phase, character: this.character.id, time: this.time, hp: this.hp, fullness: this.fullness, score: this.score, eaten: this.eaten,sushiEaten:this.sushiEaten, allergies: this.allergies, perfects: this.perfects, bestCombo: this.bestCombo, deathReason: this.deathReason }; }
 }
 
+// Reconstruct from seed and legal inputs, never from a stored score/HP supplied by the browser.
+function rebuildActiveRun(entry){
+ const ticks=entry?.body?.ticks,actions=entry?.body?.actions;
+ if(!entry?.run||!Number.isSafeInteger(ticks)||ticks<0||ticks>6*3600*60||!Array.isArray(actions)||actions.length>25000)throw new Error('上次对局记录不完整');
+ let previous=-1;for(const a of actions){if(!Array.isArray(a)||a.length!==2||!Number.isSafeInteger(a[0])||a[0]<previous||a[0]>ticks||!Number.isSafeInteger(a[1])||a[1]<1)throw new Error('上次对局记录无效');previous=a[0];}
+ const g=new Game({seed:entry.run.seed});g.start();let i=0;
+ for(let tick=0;tick<=ticks;tick++){
+  while(i<actions.length&&actions[i][0]===tick){if(!g.eat(actions[i][1]))throw new Error('上次对局无法按原规则恢复');i++;}
+  if(tick===ticks)break;if(g.phase!=='playing')throw new Error('已结束的对局不能继续');g.step(STEP);
+ }
+ return g;
+}
+
 const INK = '#293f40';
 function round(c,x,y,w,h,r,fill,stroke) { c.beginPath(); c.roundRect(x,y,w,h,r); if(fill){c.fillStyle=fill;c.fill();} if(stroke){c.strokeStyle=stroke;c.stroke();} }
 function oval(c,x,y,rx,ry,fill,stroke) { c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2); if(fill){c.fillStyle=fill;c.fill();}if(stroke){c.strokeStyle=stroke;c.stroke();} }
@@ -430,45 +474,46 @@ function playerIdValue(value){const id=String(value??'').normalize('NFKC').trim(
 class SocialClient{
  constructor(){
   this.local=['localhost','127.0.0.1'].includes(location.hostname);this.api=location.protocol==='file:'?null:this.local?location.origin:PUBLIC_CONFIG.supabaseUrl?PUBLIC_CONFIG.supabaseUrl+'/functions/v1/'+PUBLIC_CONFIG.edgeFunction:null;
-  this.emailAvailable=PUBLIC_CONFIG.emailEnabled===true;this.playerId='';this.profile=null;this.pending=[];this.mode='offline';this.lastBoard=null;this.inflight=new Map();
-  try{this.playerId=playerIdValue(localStorage.getItem('sushi.nickname.v1'))||'';const p=JSON.parse(localStorage.getItem('sushi.pending.v1')||'[]');if(Array.isArray(p))this.pending=p.filter(p=>p&&typeof p.runId==='string'&&Array.isArray(p.body?.actions)).slice(-10);}catch{}
+  this.emailAvailable=PUBLIC_CONFIG.emailEnabled===true;this.playerId='';this.profile=null;this.profileRevision=0;this.mode='offline';this.lastBoard=null;this.inflight=new Map();this.journal=new RunJournal();this.syncing=null;this.lastError='';this.onState=()=>{};
+  try{this.playerId=playerIdValue(localStorage.getItem('sushi.nickname.v1'))||'';const old=JSON.parse(localStorage.getItem('sushi.pending.v1')||'[]');if(Array.isArray(old))for(const e of old){if(e&&typeof e.runId==='string'&&Array.isArray(e.body?.actions)&&!this.journal.list().some(x=>x.runId===e.runId))this.journal.write({...e,kind:'pending'});}}catch{}
  }
+ get pending(){return this.journal.list('pending');}
  persist(){try{localStorage.setItem('sushi.nickname.v1',this.playerId);localStorage.setItem('sushi.pending.v1',JSON.stringify(this.pending));return true;}catch{return false;}}
+ changed(){this.onState();}
  async request(path,body){
   if(!this.api)throw Object.assign(new Error('离线文件仅供练习，请打开在线游戏参与今日榜'),{code:'offline'});
-  const token=this.local?null:await sessionToken();const authHeaders=token?{Authorization:'Bearer '+token}:{};if(!this.local)authHeaders.apikey=PUBLIC_CONFIG.publishableKey;
-  const response=await fetch(this.api+path,{method:body!==undefined?'POST':'GET',headers:{...authHeaders,...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body!==undefined?JSON.stringify(body):undefined,credentials:this.local?'same-origin':'omit',signal:AbortSignal.timeout(8000)});
-  let data;try{data=await response.json();}catch{throw new Error('联网服务暂不可用');}
-  if(!response.ok||data.quarantined)throw Object.assign(new Error(data.error||'联网服务暂不可用'),{status:response.status,code:data.code});
-  return data;
+  const publicBoard=path==='/api/leaderboard'&&body===undefined;
+  let token=null;if(!this.local){try{token=await deadline(sessionToken(),publicBoard?2000:8000);}catch(error){if(!publicBoard)throw error;}}
+  const authHeaders=token?{Authorization:'Bearer '+token}:{};if(!this.local)authHeaders.apikey=PUBLIC_CONFIG.publishableKey;
+  const response=await fetch(this.api+path,{method:body!==undefined?'POST':'GET',headers:{...authHeaders,...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body!==undefined?JSON.stringify(body):undefined,credentials:this.local?'same-origin':'omit',signal:AbortSignal.timeout(path.endsWith('/finish')?20000:12000)});
+  let data;try{data=await response.json();}catch{throw Object.assign(new Error('联网服务返回异常，请稍后重试'),{status:response.status>=500?response.status:503});}
+  if(!response.ok||data.quarantined)throw Object.assign(new Error(data.error||'联网服务暂不可用'),{status:response.status,code:data.code});return data;
  }
- async initialize(){const data=await this.request('/api/identity');this.profile=data.profile;this.mode=data.mode;if(this.profile){this.playerId=this.profile.nickname;this.persist();}return data;}
- async rename(value){
-  const nickname=playerIdValue(value);if(!nickname)throw Object.assign(new Error('昵称需为2–12个中文、英文字母或数字'),{status:400});
-  if(!this.local)await sessionToken({create:true});const data=await this.request('/api/identity',{nickname});this.profile=data.profile;this.playerId=data.profile.nickname;this.mode=data.mode;this.persist();return data;
+ async initialize(){const revision=this.profileRevision;const data=await this.request('/api/identity');if(revision!==this.profileRevision||!this.local&&data.profile&&(await currentIdentity())?.id!==data.profile.id)return data;this.profile=data.profile;this.mode=data.mode;if(this.profile){this.playerId=this.profile.nickname;this.persist();}this.lastError='';this.changed();return data;}
+ async rename(value){const nickname=playerIdValue(value);if(!nickname)throw Object.assign(new Error('昵称需为2–12个中文、英文字母或数字'),{status:400});
+  if(!this.local)await deadline(sessionToken({create:true}));const data=await this.request('/api/identity',{nickname});if(!this.local&&(await currentIdentity())?.id!==data.profile.id)throw new Error('身份刚刚切换，请重新连接');this.profileRevision++;this.profile=data.profile;this.playerId=data.profile.nickname;this.mode=data.mode;this.persist();this.changed();return data;
  }
- async start(id){
-  const nickname=playerIdValue(id);if(!nickname)throw Object.assign(new Error('昵称需为2–12个中文、英文字母或数字'),{status:400});
-  try{if(!this.profile||this.profile.nickname!==nickname)await this.rename(nickname);return await this.request('/api/runs',{});}
-  catch(error){if([400,401,409,429].includes(error.status))throw error;this.playerId=nickname;this.persist();return{online:false};}
+ async start(id){const nickname=playerIdValue(id);if(!nickname)throw Object.assign(new Error('昵称需为2–12个中文、英文字母或数字'),{status:400});
+  try{if(!this.profile||this.profile.nickname!==nickname)await this.rename(nickname);const run=await this.request('/api/runs',{});this.mode=run.mode;this.lastError='';this.changed();return run;}
+  catch(error){this.lastError=error.message;this.changed();if([400,401,409,429].includes(error.status))throw error;this.playerId=nickname;this.persist();return{online:false,error:error.message};}
  }
- async reset(){if(!this.local){const c=await authClient();await c.auth.signOut({scope:'local'});}else await this.request('/api/identity/reset',{});this.profile=null;this.playerId='';this.persist();}
- async board(){const data=await this.request('/api/leaderboard');this.lastBoard=data;this.profile=data.profile||this.profile;return data;}
- submit(run,ticks,actions){
-  if(this.inflight.has(run.runId))return this.inflight.get(run.runId);
-  const promise=this.send(run,ticks,actions).finally(()=>this.inflight.delete(run.runId));this.inflight.set(run.runId,promise);return promise;
+ async reset(){if(!this.local){const c=await authClient();await c.auth.signOut({scope:'local'});}else await this.request('/api/identity/reset',{});this.profileRevision++;this.profile=null;this.playerId='';this.persist();this.changed();}
+ async board(){const data=await this.request('/api/leaderboard');this.lastBoard=data;if(data.profile)this.profile=data.profile;this.changed();return data;}
+ submit(run,ticks,actions){if(this.inflight.has(run.runId))return this.inflight.get(run.runId);const entry={runId:run.runId,owner:this.profile?.id,kind:'pending',body:{ticks,actions}};const saved=this.journal.write(entry);this.persist();this.changed();return this.sendEntry(entry,saved);}
+ sendEntry(entry,saved=true){if(this.inflight.has(entry.runId))return this.inflight.get(entry.runId);const promise=this.deliver(entry,saved).finally(()=>this.inflight.delete(entry.runId));this.inflight.set(entry.runId,promise);return promise;}
+ async deliver(entry,saved){try{const data=await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.journal.remove(entry.runId);this.persist();this.lastBoard=data.board;this.lastError='';this.changed();return data;}
+  catch(error){if(!retryableStatus(error.status))this.journal.write({...entry,kind:'rejected',error:error.message});this.persist();this.lastError=error.message;error.saved=saved&&this.pending.some(e=>e.runId===entry.runId);this.changed();throw error;}
  }
- async send(run,ticks,actions){
-  const entry={runId:run.runId,owner:this.profile?.id,body:{ticks,actions}};
-  this.pending=this.pending.filter(p=>p.runId!==entry.runId).concat(entry).slice(-10);const saved=this.persist();
-  try{const result=await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();this.lastBoard=result.board;return result;}
-  catch(error){if(error.status&&![429,503,504].includes(error.status)){this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();}error.saved=saved&&this.pending.some(p=>p.runId===entry.runId);throw error;}
+ async email(email,recover=false){if(this.local)throw new Error('本地联调环境不发送邮件，请使用公网版');if(!recover&&!this.profile)throw new Error('请先输入昵称建立游客身份，再绑定邮箱');
+  const user=await currentIdentity();const hasArchive=this.profile&&(this.profile.playCount>0||this.profile.collection?.length||this.journal.list().some(e=>e.owner===this.profile.id&&e.kind!=='rejected'));
+  if(recover&&hasArchive&&user?.is_anonymous)throw new Error('当前游客已有成绩或未结账对局。请先给当前游客绑定邮箱，再切换账号；也可以在新的浏览器窗口恢复旧账号。不会覆盖或合并现有收藏。');
+  return emailAction(email,recover);}
+ async verifyEmail(email,token,recover){if(this.local)throw new Error('本地环境不能验证真实邮箱');const user=await verifyEmailAction(email,token,recover);this.profileRevision++;const data=await this.initialize();if(!data.profile)throw new Error('邮箱已验证，但档案暂未读到，请稍后重新连接；现有数据不会被覆盖');return{user,profile:data.profile};}
+ retry(){if(this.syncing)return this.syncing;this.syncing=this.retryOwned().finally(()=>{this.syncing=null;});return this.syncing;}
+ async retryOwned(){const outcomes=[];for(const entry of this.pending){if(entry.owner&&entry.owner!==this.profile?.id)continue;
+  try{outcomes.push(await this.sendEntry(entry));}catch(error){outcomes.push({error:error.message,runId:entry.runId,retryable:retryableStatus(error.status)});if(retryableStatus(error.status))break;}}
+  return outcomes;
  }
- async email(email,recover=false){if(this.local)throw new Error('本地联调环境不发送邮件，请使用公网版');return emailAction(email,recover);}
- async retry(){const outcomes=[];for(const entry of [...this.pending]){
-  try{const result=await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();outcomes.push(result);}
-  catch(error){if(error.status&&![429,503,504].includes(error.status)){this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();outcomes.push({error:error.message,runId:entry.runId});}else throw error;}
- }return outcomes;}
 }
 
 const $=id=>document.getElementById(id), renderer=new Renderer($('game'));
@@ -497,8 +542,9 @@ function characterUI(){
 }
 function showOverlay(html){$('overlay').classList.remove('hidden');$('overlay-content').classList.remove('record-celebration');$('overlay-content').innerHTML=html;const button=$('overlay-content').querySelector('button');if(button)button.focus({preventScroll:true});}
 function home(){
-  game=null;onlineRun=null;ended=false;$('pause').disabled=true;characterUI();updateUI();
+  saveProgress();game=null;onlineRun=null;ended=false;$('pause').disabled=true;characterUI();updateUI();
   showOverlay(`<p class="eyebrow">每日开席 · 谁是今日大胃王</p><h2>寿司<br><em>别吃撑！</em></h2><div class="english-title">SUSHI PANIC</div><p>${social.profile?'欢迎回来，'+escapeHtml(playerId)+'。今天再冲一回榜！':'取个昵称，和全球食客一起冲今日榜。'}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">你的昵称</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2–12个中文、英文或数字" value="${escapeHtml(playerId)}" required><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">入座，开吃！ <span aria-hidden="true">→</span></button></form><p class="identity-note">${social.api?'自动记住此浏览器的匿名身份 · 允许重名':'在线身份服务待接通 · 当前可练习'}<br>清除 Cookie、无痕关闭或换设备后，历史成绩可能无法恢复。</p>${identityWarning?'<button id="reset-identity" class="text-button">使用新的匿名身份</button>':''}`);
+  const saved=social.journal.list('active').filter(e=>e.owner===social.profile?.id).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0))[0];if(saved){const button=document.createElement('button');button.id='restore-run';button.className='secondary-button';button.textContent='继续上次未结账的对局';button.onclick=()=>restoreProgress(saved);$('overlay-content').append(button);}
   $('entry-form').onsubmit=e=>{e.preventDefault();beginRun($('player-id-input').value);};
   if($('reset-identity'))$('reset-identity').onclick=async()=>{try{await social.reset();playerId='';identityWarning='';home();}catch{toast('暂时无法重置，请稍后重试',true);}};
 }
@@ -509,16 +555,17 @@ async function beginRun(id){
   finally{entryBusy=false;}
 }
 function newGame(options={}){
+  saveProgress();
   if(!playerId&&new URLSearchParams(location.search).get('test')==='1')playerId='测试食客';
   game=new Game({seed:options.seed??newSeed(),characterId:options.characterId});onlineRun=options.onlineRun||null;activeTicks=0;actionLog=[];ended=false;accumulator=0;renderer.effects=[];clearTimeout(toastTimer);$('toast').classList.remove('visible');characterUI();updateUI();
   const c=game.character;
   showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">本局体质：${physique(c)}</p><div class="card-traits"><span>生命 ${c.hp}</span><span>基础消化 ${c.drain}/秒</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">本局忌口：<strong>${ALLERGEN_NAMES[c.allergy]}</strong> · 误食扣 24 生命</div><button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">${onlineRun?(onlineRun.mode==='local'?'本地联调局 · 与公网榜单独立':'联网计分局 · 结束后参与今日全球榜'):'练习局 · 未连接今日榜，本局不上榜'}</p>`);
-  drawPortrait($('card-portrait'),c);$('start-game').onclick=startGame;
+  drawPortrait($('card-portrait'),c);$('start-game').onclick=startGame;paintNetwork();
 }
-function startGame(){if(!game?.start())return;$('overlay').classList.add('hidden');$('pause').disabled=false;accumulator=0;lastFrame=performance.now();updateUI();renderer.draw(game,lastFrame/1000);tone();}
+function startGame(){if(!game?.start())return;$('overlay').classList.add('hidden');$('pause').disabled=false;accumulator=0;lastFrame=performance.now();updateUI();renderer.draw(game,lastFrame/1000);saveProgress();paintNetwork();tone();}
 function pauseGame(reason='寿司会等你。'){
   if(!game?.pause())return;
-  accumulator=0;
+  accumulator=0;saveProgress();
   showOverlay(`<p class="eyebrow">中场休息</p><h2>歇一口气。</h2><p>${reason}<br>饱腹、生命与计时都已暂停。</p><button class="primary-button" id="resume-game">继续开吃</button><button class="secondary-button" id="back-home">返回门口</button>`);
   $('resume-game').onclick=resumeGame;$('back-home').onclick=home;updateUI();
 }
@@ -527,13 +574,13 @@ function finish(){
   if(ended||!game)return;ended=true;$('pause').disabled=true;lastReceipt=null;
   if(game.score>high){high=game.score;try{localStorage.setItem('sushi-panic.best.v1',String(high));}catch{}}
   $('best-score').textContent=scoreText(high);drawPortrait($('portrait'),game.character,'sad');
-  showOverlay(`<p class="eyebrow">${escapeHtml(playerId)} · 本桌已结账</p><h2 style="font-size:25px">${game.deathReason}</h2><div class="result-score" id="confirmed-score">${scoreText(game.score)}</div><div class="receipt-stats"><span><b>${timeText(game.time)}</b>生存时间</span><span><b>${game.sushiEaten}</b>寿司盘数</span><span><b>${game.bestCombo}</b>最高连击</span></div><div class="result-totals"><span><b id="result-today">—</b>今日最高</span><span><b id="result-best">—</b>历史最高</span><span><b id="result-rank">—</b>今日全球排名</span></div><p id="result-badges" class="result-badges" role="status"></p><p id="rank-result" class="rank-result" role="status">${onlineRun?'提交中 · 正在核验本局积分…':'练习局 · 本局不上传今日榜'}</p><p id="result-times" class="receipt-times"></p><div class="result-actions"><button class="primary-button" id="retry">再来一局！</button><button class="secondary-button" id="result-board">查看排行榜</button><button class="secondary-button" id="result-share">分享成绩</button></div><button class="text-button" id="result-home">回到门口 / 修改昵称</button>`);
-  $('retry').onclick=()=>beginRun(playerId);$('result-home').onclick=home;$('result-board').onclick=showLeaderboard;$('result-share').onclick=shareScore;
-  if(onlineRun){const finished=game;social.submit(onlineRun,activeTicks,actionLog).then(data=>{if(game!==finished||!$('rank-result'))return;applyReceipt(data.result);paintBoard(data.board);}).catch(error=>{if(game===finished&&$('rank-result')){$('rank-result').textContent=error.code==='quarantined'?'成绩待核查 · 暂不计入排行榜':error.saved?'提交失败 · 等待重试，打开榜单可重试上传':`未上榜：${error.message}`;}});}
+  showOverlay(`<p class="eyebrow">${escapeHtml(playerId)} · 本桌已结账</p><h2 style="font-size:25px">${game.deathReason}</h2><div class="result-score" id="confirmed-score">${scoreText(game.score)}</div><div class="receipt-stats"><span><b>${timeText(game.time)}</b>生存时间</span><span><b>${game.sushiEaten}</b>寿司盘数</span><span><b>${game.bestCombo}</b>最高连击</span></div><div class="result-totals"><span><b id="result-today">—</b>今日最高</span><span><b id="result-best">—</b>历史最高</span><span><b id="result-rank">—</b>今日全球排名</span></div><p id="result-badges" class="result-badges" role="status"></p><p id="rank-result" class="rank-result" role="status">${onlineRun?'提交中 · 正在核验本局积分…':'练习局 · 本局不上传今日榜'}</p><p id="result-times" class="receipt-times"></p><div class="result-actions"><button class="primary-button" id="retry">再来一局！</button><button class="secondary-button" id="result-board">查看排行榜</button><button class="secondary-button" id="result-share">分享成绩</button><button class="secondary-button" id="result-submit" disabled>重试提交</button></div><button class="text-button" id="result-home">回到门口 / 修改昵称</button>`);
+  $('retry').onclick=()=>beginRun(playerId);$('result-home').onclick=home;$('result-board').onclick=showLeaderboard;$('result-share').onclick=shareScore;$('result-submit').onclick=async()=>{const b=$('result-submit');b.disabled=true;try{const results=await social.retry();for(const r of results){if(r.result&&r.result.runId===onlineRun?.runId)applyReceipt(r.result);else if(r.error)$('rank-result').textContent='提交未完成：'+r.error;}await refreshLeaderboard();}finally{if($('result-submit')&&social.pending.some(e=>e.runId===onlineRun?.runId))$('result-submit').disabled=false;}};
+  if(onlineRun){const finished=game;social.submit(onlineRun,activeTicks,actionLog).then(data=>{if(game!==finished||!$('rank-result'))return;applyReceipt(data.result);paintBoard(data.board);}).catch(error=>{if(game===finished&&$('rank-result')){$('rank-result').textContent=error.code==='quarantined'?'成绩待核查 · 暂不计入排行榜':error.saved?'提交失败 · 等待重试，打开榜单可重试上传':`未上榜：${error.message}`;if($('result-submit'))$('result-submit').disabled=!error.saved;}});}
 }
 function bjTime(value){return new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date(value));}
 function applyReceipt(result){
-  lastReceipt=result;if(!$('rank-result'))return;
+  lastReceipt=result;paintNetwork();if(!$('rank-result'))return;if($('result-submit')){$('result-submit').disabled=true;$('result-submit').textContent='成绩已同步';}
   $('confirmed-score').textContent=scoreText(result.score);$('result-today').textContent=scoreText(result.todayBest);$('result-best').textContent=scoreText(result.allTimeBest);$('result-rank').textContent=result.rank?'第 '+result.rank+' 名':'暂无';
   $('rank-result').textContent='提交成功 · 已通过服务端核验'+(social.mode==='local'?'（本地联调榜）':'');
   const badges=[];if(result.personalRecord)badges.push('新的个人纪录！');if(result.dailyRecord)badges.push('今日最佳成绩刷新！');if(result.enteredTop100)badges.push('成功进入今日排行榜！');if(result.champion)badges.push('今日榜首！');$('result-badges').textContent=badges.join(' ');
@@ -555,7 +602,7 @@ function paintBoard(board){
   const own=board.me?.playerId;
   const list=$('board-list'),scroll=list.scrollTop;
   list.innerHTML=board.entries.map(row=>`<li class="board-row ${row.rank===1?'champion-row':''} podium-${row.rank<=3?row.rank:0} ${row.playerId===own?'is-me':''}"><span class="board-position">${row.rank===1?'王':row.rank}</span><div class="board-player"><strong>${escapeHtml(row.nickname)}${row.playerId===own?' · 我':''}</strong><small>食客 ${row.playerId.slice(-4)}${row.rank===1?' · 今日大胃王':''}</small></div><b>${scoreText(row.score)}<small>积分</small></b></li>`).join('');list.scrollTop=scroll;
-  const me=board.me?`我 · 第 ${board.me.rank} 名 · ${board.me.score} 分`:'我 · 今日尚无已验证成绩';$('board-me').textContent=me;$('mini-board-me').textContent=me;
+  const me=board.me?`我 · 第 ${board.me.rank} 名 · ${board.me.score} 分`:board.identityUnavailable||!board.profile&&social.profile?.id?'身份暂未确认 · 本人名次待重新连接':'我 · 今日尚无已验证成绩';$('board-me').textContent=me;$('mini-board-me').textContent=me;
   $('board-updated').textContent='排名查询：北京时间 '+bjTime(board.serverTime)+' · 可主动刷新，浏览时每60秒同步';
   $('mini-board-list').innerHTML=board.entries.slice(0,5).map(row=>`<li class="${row.playerId===own?'is-me':''}"><span>${row.rank===1?'王':row.rank}</span><strong>${escapeHtml(row.nickname)}</strong><b>${row.score}</b></li>`).join('');
   $('mini-board-status').textContent=board.entries.length?(local?'本地联调榜 · 非全球成绩':'今日前五名 · 完整榜单 TOP 100'):'今日还没人上榜，你来开席吧。';tickCountdown();
@@ -563,14 +610,14 @@ function paintBoard(board){
 async function refreshLeaderboard({quiet=false}={}){
  if(boardBusy)return;boardBusy=true;$('board-refresh').disabled=true;
  if(!quiet)$('board-status').textContent='正在读取今日榜…';
- try{
-  const outcomes=await social.retry();for(const outcome of outcomes)if(outcome.result&&$('rank-result')&&onlineRun?.runId===outcome.result.runId)applyReceipt(outcome.result);
-  const board=await social.board();paintBoard(board);
- }catch(error){
+ try{paintBoard(await social.board());}
+ catch(error){
   $('board-champion').textContent='今日榜暂时连不上';$('board-status').textContent='请稍后刷新。游戏可以继续练习，未同步的成绩不会显示为已上榜。';$('mini-board-status').textContent='榜单暂不可用，点下方按钮重试';
   if(!social.lastBoard){$('board-list').replaceChildren();$('mini-board-list').replaceChildren();$('board-me').textContent='尚未取得有效排名';}
   else $('board-updated').textContent='当前显示上次读取的数据，请联网后刷新。';
  }finally{boardBusy=false;$('board-refresh').disabled=false;}
+ // A failed score retry must never hide or block the public ranking.
+ social.retry().then(async outcomes=>{let updated=false;for(const o of outcomes){if(o.result){updated=true;if($('rank-result')&&onlineRun?.runId===o.result.runId)applyReceipt(o.result);}else if(o.error&&$('rank-result')&&onlineRun?.runId===o.runId)$('rank-result').textContent='等待重试：'+o.error;}if(updated)paintBoard(await social.board());}).catch(()=>{});
 }
 function tickCountdown(){
  const left=clockAnchor?Math.max(0,Math.ceil((clockAnchor.reset-clockAnchor.time-(performance.now()-clockAnchor.at))/1000)):null;
@@ -586,7 +633,7 @@ function eatTarget(target){
   if(onlineRun)actionLog.push([activeTicks,target.id]);
   renderer.bite(target,e);tone(e.type);toast(e.text,e.type==='allergy');
   // Effects are handled once at input time; the engine keeps only a bounded event history.
-  updateUI();if(game.phase==='gameover')finish();
+  updateUI();saveProgress();if(game.phase==='gameover')finish();
 }
 function updateUI(){
   const g=game,c=g?.character,full=g?.fullness??55,hp=g?.hp??100;
@@ -628,11 +675,13 @@ document.querySelector('.brand').onclick=e=>{e.preventDefault();home();};
 $('sound').onclick=()=>{sound=!sound;soundUI();try{localStorage.setItem('sushi-panic.sound',sound?'on':'off');}catch{}tone();};
 $('help').onclick=()=>{if(game?.phase==='playing')pauseGame('菜单还在，看完玩法再继续。');$('help-dialog').showModal();};
 $('leaderboard').onclick=showLeaderboard;$('sidebar-leaderboard').onclick=showLeaderboard;$('board-refresh').onclick=()=>refreshLeaderboard();$('close-board').onclick=()=>$('leaderboard-dialog').close();
-$('account').onclick=()=>{if(game?.phase==='playing')pauseGame('保存或恢复后，再继续开吃。');$('account-dialog').showModal();if(!social.local&&!social.emailAvailable){$('bind-email').disabled=true;$('recover-email').disabled=true;$('account-status').textContent='邮箱存档暂未开放。当前浏览器会记住游客身份；清除网站数据或更换设备后，可能无法恢复。';}paintArchive();social.initialize().then(paintArchive).catch(()=>{});};
-function paintArchive(){const p=social.profile;$('account-archive').innerHTML=p?`<h3>我的历史成绩</h3><p>历史最高 <b>${p.bestScore}</b> · 累计 ${p.playCount} 局<br>累计有效积分 ${p.totalScore} · 每日冠军 ${p.championships} 次</p><ol>${(p.dailyHistory||[]).map(row=>`<li><span>${escapeHtml(row.day)}</span><b>${row.score} 分</b></li>`).join('')}</ol><p class="identity-note">显示最近31个有成绩的日期，全部历史保存在服务器。</p>`:'完成联网计分局后，这里会显示你的历史成绩。';}
+$('account').onclick=()=>{if(game?.phase==='playing')pauseGame('保存或恢复后，再继续开吃。');$('account-dialog').showModal();$('account-status').textContent='';if(!social.local&&!social.emailAvailable){$('bind-email').disabled=true;$('recover-email').disabled=true;$('account-status').textContent='邮箱存档暂未开放。当前浏览器会记住游客身份；清除网站数据或更换设备后，可能无法恢复。';}paintArchive();social.initialize().then(paintArchive).catch(()=>{});if(!social.local&&social.emailAvailable)currentIdentity().then(u=>{if(u?.email_confirmed_at&&!u.is_anonymous)$('account-status').textContent='邮箱已验证 · 可以在其他设备通过邮件恢复此档案';}).catch(()=>{});};
+function paintArchive(){const p=social.profile;$('account-archive').innerHTML=p?`<h3>我的历史成绩</h3><p>历史最高 <b>${p.bestScore}</b> · 累计 ${p.playCount} 局<br>累计寿司 ${p.totalSushi??0} 盘 · 已收藏 ${(p.collection||[]).length} 种<br>累计有效积分 ${p.totalScore} · 每日冠军 ${p.championships} 次</p><ol>${(p.dailyHistory||[]).map(row=>`<li><span>${escapeHtml(row.day)}</span><b>${row.score} 分</b></li>`).join('')}</ol><p class="identity-note">食客ID ${escapeHtml(p.id.slice(-8))} · 显示最近31个有成绩的日期，全部历史保存在服务器。</p>`:'完成联网计分局后，这里会显示你的历史成绩。';}
 $('close-account').onclick=()=>$('account-dialog').close();
-async function emailSubmit(recover){const buttons=[$('bind-email'),$('recover-email')];buttons.forEach(b=>b.disabled=true);$('account-status').textContent='正在请求发送邮件…';try{await social.email($('account-email').value,recover);$('account-status').textContent='邮件请求已受理，请到邮箱确认；尚未验证前不代表绑定或恢复成功。';}catch(error){$('account-status').textContent=error.message;}finally{buttons.forEach(b=>b.disabled=false);}}
+let emailOperation=null;
+async function emailSubmit(recover){const buttons=[$('bind-email'),$('recover-email')];buttons.forEach(b=>b.disabled=true);$('account-status').textContent='正在请求发送邮件…';try{const email=$('account-email').value.trim();await social.email(email,recover);emailOperation={email,recover};$('email-code-section').hidden=false;$('account-status').textContent='邮件请求已受理，请输入邮件中的验证码，或打开邮件链接。未验证前尚未绑定或恢复。';}catch(error){$('account-status').textContent=error.message;}finally{buttons.forEach(b=>b.disabled=!social.local&&!social.emailAvailable);}}
 $('bind-email').onclick=()=>emailSubmit(false);$('recover-email').onclick=()=>emailSubmit(true);
+$('verify-email').onclick=async()=>{if(!emailOperation)return;const button=$('verify-email');button.disabled=true;saveProgress();const previous=social.profile?.id;try{await social.verifyEmail(emailOperation.email,$('account-code').value,emailOperation.recover);playerId=social.profile.nickname;$('account-status').textContent='邮箱验证成功 · 云端档案已恢复';$('email-code-section').hidden=true;paintArchive();if(previous!==social.profile.id){game=null;onlineRun=null;home();}await refreshLeaderboard();}catch(error){$('account-status').textContent=error.message;}finally{button.disabled=false;}};
 $('close-help').onclick=()=>$('help-dialog').close();
 $('help-dialog').addEventListener('click',e=>{if(e.target===$('help-dialog')){const r=$('help-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('help-dialog').close();}});
 document.addEventListener('keydown',e=>{
@@ -652,7 +701,18 @@ social.initialize().then(()=>{playerId=social.playerId;if(!game&&document.active
 refreshLeaderboard({quiet:true});
 setInterval(tickCountdown,1000);
 setInterval(()=>{if(!document.hidden&&($('leaderboard-dialog').open||$('daily-board-panel').getBoundingClientRect().width>0))refreshLeaderboard({quiet:true});},60000);
-window.addEventListener('online',()=>refreshLeaderboard({quiet:true}));
+window.addEventListener('online',()=>social.initialize().catch(()=>{}).finally(()=>refreshLeaderboard({quiet:true}))); 
+
+function paintNetwork(){const el=$('network-status');if(!el)return;const count=social.pending.filter(e=>!e.owner||e.owner===social.profile?.id).length;
+ el.dataset.state=count?'pending':game&&!onlineRun?'practice':social.profile?'online':'connecting';
+ el.textContent=count?`有 ${count} 局成绩等待同步 · 可点重新连接重试`:game&&!onlineRun?'当前是练习局 · 本局不会上榜，请重新连接后另开一局':social.profile?(onlineRun?'联网计分局 · 本局结束后自动上榜':'云端档案已连接 · 输入昵称即可开玩'):social.lastError?'身份暂未连接 · 榜单仍可查看':'正在连接游客档案 · 榜单与本机纪录分开保存';
+}
+function saveProgress(){if(!onlineRun||!game||!['playing','paused'].includes(game.phase))return;const saved=social.journal.write({kind:'active',owner:social.profile?.id,runId:onlineRun.runId,run:onlineRun,body:{ticks:activeTicks,actions:[...actionLog]},updatedAt:Date.now()});if(!saved&&$('network-status'))$('network-status').textContent='浏览器未能保存对局，请保持页面开启，结束后确认成绩已提交';}
+function restoreProgress(entry){try{game=rebuildActiveRun(entry);onlineRun=entry.run;activeTicks=entry.body.ticks;actionLog=[...entry.body.actions];ended=false;accumulator=0;renderer.effects=[];characterUI();updateUI();if(game.phase==='gameover')finish();else pauseGame('已恢复上次对局；未操作期间没有消耗饱腹。');paintNetwork();}catch(error){toast(error.message,true);}}
+social.onState=paintNetwork;paintNetwork();setInterval(saveProgress,5000);window.addEventListener('pagehide',saveProgress);
+$('retry-network').onclick=async()=>{const b=$('retry-network');b.disabled=true;try{await social.initialize();if(!game){playerId=social.playerId;home();}await refreshLeaderboard();paintNetwork();}catch(error){social.lastError=error.message;paintNetwork();toast(error.message,true);await refreshLeaderboard();}finally{b.disabled=false;}};
+$('copy-diagnostics').onclick=async()=>{const text=JSON.stringify({version:'1.2.0-p0',url:location.origin+location.pathname,apiHost:social.api?new URL(social.api).host:null,identity:social.profile?.id?.slice(-8)||null,mode:social.mode,run:onlineRun?'online':game?'practice':'home',pending:social.pending.length,day:social.lastBoard?.day,error:social.lastError||null},null,2);try{await navigator.clipboard.writeText(text);toast('诊断已复制，不包含密码或登录凭据');}catch{toast('浏览器不允许复制，请记录联网状态提示',true);}};
+if(social.api&&!social.local)watchIdentity((event,id)=>{if(!['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event)||id===social.profile?.id&&event!=='USER_UPDATED')return;saveProgress();if(game&&id!==social.profile?.id){game=null;onlineRun=null;}social.initialize().then(()=>{playerId=social.playerId;if(!game)home();paintArchive();refreshLeaderboard({quiet:true});}).catch(error=>{social.lastError=error.message;paintNetwork();});}).catch(()=>{});
 
 </script>
 </body>

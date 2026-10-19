@@ -7,7 +7,7 @@ const out = resolve(root, 'dist');
 await rm(out, { recursive: true, force: true }); await mkdir(out, { recursive: true });
 for (const file of ['index.html', 'style.css', 'src', 'favicon.svg']) await cp(resolve(root, file), resolve(out, file), { recursive: true });
 // A tiny project-specific concatenation, not a general JS bundler. Module boundaries stay in src/.
-const modules=await Promise.all(['config.js','identity.js','core.js','renderer.js','social.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
+const modules=await Promise.all(['config.js','identity.js','storage.js','core.js','run-state.js','renderer.js','social.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
 const script=modules.map(s=>s.replace(/^import .*;\r?\n/gm,'').replace(/^export /gm,'')).join('\n');
 const css=await readFile(resolve(root,'style.css'),'utf8'),icon=await readFile(resolve(root,'favicon.svg'),'utf8');
 const html=(await readFile(resolve(root,'index.html'),'utf8'))

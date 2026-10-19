@@ -18,7 +18,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
    if(origin&&origin!==url.origin&&!allowedOrigins.includes(origin))throw new HttpError(403,'请从游戏页面发起请求','origin');
    if(!allowedOrigins.length&&request.headers.get('sec-fetch-site')==='cross-site')throw new HttpError(403,'请求来源无效','origin');
    if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
-   if(path==='/api/health')return json({app:'SUSHI PANIC',version:'1.0.0-rc.1',mode,clock:await rpc('sushi_clock')});
+   if(path==='/api/health')return json({app:'SUSHI PANIC',version:'1.2.0-p0.1',mode,clock:await rpc('sushi_clock')});
    if(path==='/api/finalize'){
     if(!cronSecret||request.headers.get('authorization')!==`Bearer ${cronSecret}`)throw new HttpError(401,'此操作需要服务端授权');
     return json({finalized:await rpc('sushi_finalize')});
@@ -30,7 +30,9 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
     for(const name of ['sushi_access','sushi_refresh','sushi_dev'])headers.append('Set-Cookie',name+'=; Max-Age=0; HttpOnly; SameSite=Lax; Path=/api'+(mode==='production'?'; Secure':''));
     return json({reset:true});
    }
-   const existing=await auth.resolve(request);user=existing.id;for(const c of existing.cookies)headers.append('Set-Cookie',c);
+   // Public ranking must remain readable even if this device's stored identity expired.
+   let existing,identityUnavailable=false;try{existing=await auth.resolve(request);}catch(error){if(path==='/api/leaderboard'&&request.method==='GET'){existing={id:null,cookies:[]};identityUnavailable=true;}else throw error;}
+   user=existing.id;for(const c of existing.cookies)headers.append('Set-Cookie',c);
    let body;
    if(request.method!=='GET'){
     if(request.method!=='POST')throw new HttpError(405,'不支持此操作');
@@ -48,7 +50,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
     return json({profile:await rpc('sushi_profile',{p_player:user,p_nickname:nickname}),clock:await rpc('sushi_clock'),mode});
    }
    if(path==='/api/identity'&&request.method==='GET')return json({profile:user?await rpc('sushi_profile',{p_player:user}):null,clock:await rpc('sushi_clock'),mode});
-   if(path==='/api/leaderboard'&&request.method==='GET')return json({...await rpc('sushi_board',{p_player:user}),mode});
+   if(path==='/api/leaderboard'&&request.method==='GET')return json({...await rpc('sushi_board',{p_player:user}),mode,identityUnavailable});
    if(!user)throw new HttpError(401,'匿名身份已失效，请重新填写昵称；旧身份成绩可能无法恢复','identity_lost');
    if(!await rpc('sushi_limit',{p_key:`user:${scope}:${user}`,p_limit:scope==='start'?12:scope==='finish'?20:120,p_seconds:60})){await audit('rate_limited');throw new HttpError(429,'操作有点频繁，请稍后再试','rate_limit');}
    if(path==='/api/runs'&&request.method==='POST'){
@@ -73,7 +75,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
      await rpc('sushi_quarantine',{p_player:user,p_id:id,p_reason:error.message==='wall_time'?'wall_time':'invalid_replay'});
      return json({quarantined:true,error:'本局操作或计时未通过校验，暂不计入榜单',code:'quarantined'},202);
     }
-    const receipt=await rpc('sushi_complete',{p_player:user,p_id:id,p_digest:payloadDigest,p_score:result.score,p_ticks:result.ticks,p_sushi:result.sushi});
+    const receipt=await rpc('sushi_complete',{p_player:user,p_id:id,p_digest:payloadDigest,p_score:result.score,p_ticks:result.ticks,p_sushi:result.sushi,p_food_counts:result.foodCounts});
     if(receipt.quarantined)return json({quarantined:true,error:'成绩确认已超时，本局暂不计入榜单',code:'quarantined'},202);
     return json({result:receipt,board:await rpc('sushi_board',{p_player:user})});
    }

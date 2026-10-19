@@ -7,6 +7,7 @@ const project='ujejpprlmpjmmbodhqdj';
 const supabaseUrl=process.env.SUSHI_TEST_URL,publishableKey=process.env.SUSHI_TEST_PUBLISHABLE_KEY;
 assert.equal(supabaseUrl,`https://${project}.supabase.co`,'This script is restricted to the separate staging project');
 assert.ok(publishableKey?.startsWith('sb_publishable_'));
+const prefix=process.env.SUSHI_REPORT_PREFIX||'v1';
 const origin='https://gnfnv287rr-bot.github.io',root=origin+'/sushi-panic/';
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const report={environment:'separate Supabase Free staging',project,assets:'local release dist under production origin using Playwright routing; real Supabase Auth/Edge/PostgreSQL, no API stubs',startedAt:new Date().toISOString(),checks:[]};
@@ -43,15 +44,15 @@ try{
   check(`player ${i+1} real run verified by Edge replay`,{score,rank:receipt.result.rank,retried:i===0});
   const duplicate=await api(page,finishRequest.path,finishRequest.body);assert.equal(duplicate.status,200);assert.equal(duplicate.data.result.duplicate,true);
   assert.equal((await api(page,'/api/identity')).data.profile.playCount,1);check(`player ${i+1} retry does not count twice`);
-  await page.screenshot({path:`artifacts/v1-cloud-player-${i+1}.png`,fullPage:true});
+  await page.screenshot({path:`artifacts/${prefix}-cloud-player-${i+1}.png`,fullPage:true});
  }
  assert.notEqual(clients[0].id,clients[1].id);
  for(const {page,id} of clients){const b=await api(page,'/api/leaderboard');assert.equal(b.status,200);assert.ok(b.data.entries.length>=2);assert.equal(b.data.me.playerId,id);assert.ok(b.data.entries[0].score>=b.data.entries[1].score);for(const c of clients)assert.ok(b.data.entries.some(e=>e.playerId===c.id&&e.score===c.score));}
  check('two independent players see both scores, ordered ranks, own rows');
- const a=clients[0];assert.equal((await api(a.page,'/api/identity',{nickname:'改名保留成绩'})).status,200);await a.page.reload();await a.page.waitForFunction(()=>document.querySelector('#player-id-input')?.value==='改名保留成绩');assert.equal(await a.page.locator('#player-id-input').inputValue(),'改名保留成绩');const profile=(await api(a.page,'/api/identity')).data.profile;assert.equal(profile.id,a.id);assert.equal(profile.playCount,1);assert.equal(profile.bestScore,a.score);check('identity persists across reload; rename preserves score');
+ const a=clients[0];assert.equal((await api(a.page,'/api/identity',{nickname:'改名保留成绩'})).status,200);await a.page.reload();await a.page.waitForFunction(()=>document.querySelector('#player-id-input')?.value==='改名保留成绩');assert.equal(await a.page.locator('#player-id-input').inputValue(),'改名保留成绩');const profile=(await api(a.page,'/api/identity')).data.profile;assert.equal(profile.id,a.id);assert.equal(profile.playCount,1);assert.equal(profile.bestScore,a.score);check('identity persists across reload; rename preserves score');assert.ok(profile.totalSushi>0);assert.equal(profile.collection.reduce((n,c)=>n+c.tasteCount,0),profile.totalSushi);assert.ok(profile.themeProgress[0].unlocked>0);check('server-confirmed sushi archive persists across reload and rename',{totalSushi:profile.totalSushi,unlocked:profile.collection.length});
  const own=await api(a.page,'sushi_players?select=id',undefined,true);assert.equal(own.status,200);assert.deepEqual(own.data.map(x=>x.id),[a.id]);
  const forbidden=await api(a.page,'rpc/sushi_complete',{p_player:a.id,p_id:crypto.randomUUID(),p_digest:'forged',p_score:999999999,p_ticks:1,p_sushi:1},true);assert.ok([401,403,404].includes(forbidden.status));
  const insert=await api(a.page,'sushi_players',{id:clients[1].id,nickname:'非法修改',best_score:99999999},true);assert.ok([401,403].includes(insert.status));check('live PostgreSQL RLS own-only reads and denied writes/RPC');
  assert.deepEqual(errors,[]);check('desktop and mobile emulation no JavaScript errors');report.status='passed';
 }catch(e){report.status='failed';report.error=String(e.stack||e);console.error(report.error);process.exitCode=1;}
-finally{report.finishedAt=new Date().toISOString();await mkdir('artifacts',{recursive:true});await writeFile('artifacts/v1-cloud-acceptance.json',JSON.stringify(report,null,2));await browser.close();}
+finally{report.finishedAt=new Date().toISOString();await mkdir('artifacts',{recursive:true});await writeFile(`artifacts/${prefix}-cloud-acceptance.json`,JSON.stringify(report,null,2));await browser.close();}

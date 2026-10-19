@@ -89,3 +89,14 @@ test('PostgreSQL RLS denies score writes and service RPC to anonymous/authentica
 test('multiple concurrent finish requests count once; independent windows may run separate sessions',async t=>{
  const f=await fixture(t);await register(f);const a=(await f.request('/api/runs',{body:{}})).data,b=(await f.request('/api/runs',{body:{}})).data;assert.notEqual(a.runId,b.runId);const done=completed(a.seed);await f.advance();const results=await Promise.all([f.request(`/api/runs/${a.runId}/finish`,{body:done}),f.request(`/api/runs/${a.runId}/finish`,{body:done})]);assert.ok(results.every(x=>x.status===200));assert.equal((await f.request('/api/identity')).data.profile.playCount,1);
 });
+
+test('P0 cloud archive counts verified sushi once, permanent discovery survives date reset and rename',async t=>{
+ const f=await fixture(t),a=await register(f);const first=await run(f,'a',2);assert.equal(first.status,200);const profile=(await f.request('/api/identity')).data.profile;
+ assert.equal(profile.totalSushi,first.data.result.sushi);assert.equal(profile.collection[0].sushiId,'cucumber');assert.equal(profile.collection[0].tasteCount,first.data.result.sushi);assert.equal(profile.themeProgress[0].unlocked,1);assert.ok(profile.createdAt);
+ await f.request(`/api/runs/${first.started.runId}/finish`,{body:first.done});assert.equal((await f.request('/api/identity')).data.profile.totalSushi,profile.totalSushi);
+ await f.time('2026-10-20T16:00:01Z');const next=(await f.request('/api/leaderboard')).data;assert.equal(next.entries.length,0);assert.deepEqual(next.profile.collection,profile.collection);assert.equal(next.profile.totalSushi,profile.totalSushi);
+ await f.request('/api/identity',{body:{nickname:'新昵称保留收藏'}});assert.deepEqual((await f.request('/api/identity')).data.profile.collection,profile.collection);
+ await f.store.db.query("select set_config('request.jwt.claim.sub',$1,false)",[a.id]);await f.store.db.exec('set role authenticated');await assert.rejects(f.store.db.exec('update sushi_player_collection set taste_count=999999'),/permission denied/);await f.store.db.exec('reset role');
+});
+
+test('archive compatibility rollback retains every score and collection record',async t=>{const f=await fixture(t);await register(f);await run(f,'a',1);const before=(await f.store.db.query('select taste_count,first_discovered_at from sushi_player_collection')).rows;const {readFile}=await import('node:fs/promises');await f.store.db.exec(await readFile(new URL('../../supabase/rollback/20261019113354_player_cloud_archive.sql',import.meta.url),'utf8'));assert.deepEqual((await f.store.db.query('select taste_count,first_discovered_at from sushi_player_collection')).rows,before);assert.equal((await f.request('/api/identity')).data.profile.playCount,1);});
