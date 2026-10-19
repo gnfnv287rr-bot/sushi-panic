@@ -1,3 +1,9 @@
+# 当前开发：V1.2 P0 联网与存档修复
+
+P0修复已在[线上游戏](https://gnfnv287rr-bot.github.io/sushi-panic/?release=120-p0)发布；**真实邮箱跨浏览器恢复仍待Owner在网页完成验证码验收，P0门禁未通过，P1尚未启动**。不要把SMTP已保存或SDK契约测试视为恢复成功。
+
+继续开发先读 [V1.2状态](docs/v12/STATUS.md)、[阶段门禁](docs/v12/P0_GATE.json)、[测试报告](docs/v12/TEST_REPORT.md) 和 [版本说明](docs/v12/CHANGELOG.md)。开发分支 `codex/v1-2-p0`，验收后快进到 `codex/daily-leaderboard-v1` 自动发布。旧版源码/数据保留。以下V1文档为历史基线，当前状态以前述V1.2文档为准。
+
 # SUSHI PANIC《寿司别吃撑！》
 
 V1.0 RC · Canvas + DOM 原游戏，GitHub Pages + Supabase Free / Edge Functions。
