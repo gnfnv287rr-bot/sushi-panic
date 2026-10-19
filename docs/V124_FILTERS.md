@@ -22,4 +22,14 @@ Owner要求以参考P2的横向筛选栏取代图鉴里的大下拉框，统一�
 - 构建与不可变资源验证通过：客户端1.2.4，规则1.2.1，资源df0a56a3ad12。
 - 实际查看1440/390/320截图，去除旧select样式残留造成的整行蓝底，统一标签对齐及小屏换行。
 
-正式Pages发布与真实公开页面检查待追加。本版不变更后端、数据库、计分、出盘概率或身份逻辑。浏览器尺寸模拟不等于真机、Safari或中国网络测试。
+## 正式上线检查
+
+源码36e401b，GitHub Actions [39270163457](https://github.com/gnfnv287rr-bot/sushi-panic/actions/runs/39270163457) success，测试/安全/构建/Pages发布均通过。公开链接：https://gnfnv287rr-bot.github.io/sushi-panic/?release=124-filters 。
+
+北京时间2026-10-19 22:35～22:36，实际公开HTTP200；客户端1.2.4/规则1.2.1/资源df0a56a3ad12与本地构建一致，HTML四组新字段已发布，旧菜单select已移除。
+
+两个独立Chrome会话（1440×1100桌面、390×844手机尺寸）用真实公开资源与Supabase游客身份开局、进食、暂停，读取一致榜单；打开图鉴后，本期菜单28款＋珍藏8款组合、等级一致、重置222款、搜索抹茶布丁1款、无结果提示、再次重置均通过。确认存档入口与公开邮箱配置一致，无JS异常。没有向生产提交测试最终分数，没有再次发送邮件验证码。
+
+截图和证据在本机artifacts/v124：unit-tests.txt、browser-tests.txt、filter-tests.txt（首轮）、security.txt、pages-action.txt、public-assets.json、public-smoke.json、public-filters-desktop.png及public-filters-mobile-emulation.png。产物不入Git，测试源码与报告已提交。
+
+本版不变更后端、数据库、计分、出盘概率或身份逻辑。浏览器尺寸模拟不等于真机、Safari或中国网络测试；跨设备邮箱实际收信未重复验收。
