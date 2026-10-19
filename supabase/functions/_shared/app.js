@@ -56,7 +56,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
     const run=await rpc('sushi_start',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0]});
     return json({...run,characterId:new Game({seed:run.seed}).character.id,mode},201);
    }
-   const match=path.match(/^\/api\/runs\/([a-f0-9-]{36})\/finish$/);
+   const match=path.match(/^\/api\/runs\/([a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12})\/finish$/);
    if(match&&request.method==='POST'){
     const id=match[1];const session=await rpc('sushi_session',{p_player:user,p_id:id});
     if(!session){await audit('session_ownership_rejected',id);throw new HttpError(404,'未找到属于你的这局记录');}

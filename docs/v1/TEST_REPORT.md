@@ -30,3 +30,5 @@ Supabase Free项目创建、生产迁移/RLS advisors、云端匿名Auth、Edge�
 GitHub Pages公网预览只证明静态游戏与新UI可访问，未接通时明确练习，不满足正式全球每日榜验收。需要接通Supabase后完成部署测试A及云端身份/积分/排行再验收。
 
 最后一次定向回归9/9通过（7尺寸、断网、存档邮箱弹窗）。完整24项JSON单独保留，最新browser-results.json仅为定向9项。Supabase CLI migration list --local 因没有Docker/Postgres端口54322而连接失败；没有把该检查写成通过，业务SQL/RLS由PGlite PostgreSQL实际执行验证。
+
+公网预览在Pages构建built后，桌面及390px触屏模拟两个新匿名浏览器均HTTP200，能开局、进食得分和暂停，无JS错误、普通URL无测试接口。均明确练习局，不伪造榜单。见 artifacts/v1-public-preview.json；这不是Supabase联网同步验证。生产发布保护脚本在公开配置为空时按预期拒绝正式发布。

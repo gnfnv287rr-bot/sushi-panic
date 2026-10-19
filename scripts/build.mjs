@@ -18,6 +18,9 @@ await writeFile(resolve(root,'play.html'),html);await writeFile(resolve(out,'pla
 // Vendor the official Auth SDK: no runtime CDN dependency, loaded only for online identity.
 await mkdir(resolve(root,'vendor'),{recursive:true});
 await esbuild({stdin:{contents:"export {createClient} from '@supabase/supabase-js';",resolveDir:root},bundle:true,minify:true,format:'esm',platform:'browser',target:['es2020'],outfile:resolve(root,'vendor/supabase.js')});
+const notices=[];
+for(const packageName of ['@supabase/supabase-js','@supabase/auth-js','@supabase/functions-js','@supabase/postgrest-js','@supabase/realtime-js','@supabase/storage-js','@supabase/phoenix','iceberg-js']){for(const license of ['LICENSE','LICENSE.md']){try{notices.push(packageName+'\n'+await readFile(resolve(root,'node_modules',packageName,license),'utf8'));break;}catch(error){if(error.code!=='ENOENT')throw error;}}}
+await writeFile(resolve(root,'vendor/NOTICES.txt'),notices.join('\n\n'));
 await cp(resolve(root,'vendor'),resolve(out,'vendor'),{recursive:true});
 const shared=resolve(root,'supabase/functions/_shared');await mkdir(shared,{recursive:true});
 await cp(resolve(root,'src/core.js'),resolve(shared,'core.js'));

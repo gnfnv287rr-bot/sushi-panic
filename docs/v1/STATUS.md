@@ -18,3 +18,5 @@
 连接情况：Supabase 插件显示已安装，但本会话未提供可用的 Supabase MCP 工具；CLI whoami 报 access token not provided。MCP 服务 HTTP 401 可达。浏览器自动打开控制台两次超时，未执行任何账号或云资源变更。
 
 下一步只需恢复 Supabase 可用账号连接（插件 OAuth 或本机 CLI login），即可继续：创建 Free 项目 → 配置 Auth → 应用迁移/运行 advisors → 设置 Secrets → 部署函数 → 写公开配置 → 两个真实云端玩家同步验收 → 切换正式 Pages 并启用更新部署流程。
+
+公网预览已上线：https://gnfnv287rr-bot.github.io/sushi-panic/v1/ ，两个新浏览器桌面/手机模拟游戏通过，联网榜单未接通。完整源码已推送GitHub分支 codex/daily-leaderboard-v1。
