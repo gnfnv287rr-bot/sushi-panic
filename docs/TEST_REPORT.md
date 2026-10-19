@@ -152,3 +152,8 @@ Supabase生产与独立测试后端、GitHub Pages正式入口已接通。最新
 ## V1.2 当前报告
 
 最新P0真实邮箱与P1休闲/主题/收藏结果见 [docs/v12/TEST_REPORT.md](v12/TEST_REPORT.md)。75项本地与33项Chrome回归通过，独立Supabase双玩家6项通过；正式Pages部署和生产数据保护以V1.2报告的最终部署记录为准，不使用旧阶段数字替代。
+
+
+## V1.2.1 216款菜单
+
+最新菜单专项、本地81项、Chrome35项、10万模拟、真实Supabase双玩家与生产保护/公开发布证据见[本次报告](menus/TEST_REPORT.md)。历史阶段结果不替代本次验收。

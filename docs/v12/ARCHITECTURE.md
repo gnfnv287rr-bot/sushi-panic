@@ -30,3 +30,8 @@ GitHub Pages静态Canvas/DOM客户端，Supabase匿名Auth/自愿邮箱OTP，Edg
 重放证明“操作符合规则”，不能证明真人操作。自动脚本、预知种子、并行会话等仍有自动化作弊空间；不宣称彻底防作弊。长局重复重放的Edge CPU成本、全量图鉴API体积随内容增长需要后续优化。
 
 可选参榜：追加20261019125500_optional_ranking.sql。新客户端开局带ranked=false时服务端持久化为收藏局；最终只更新核验个人档案与收藏，不写日榜，回执rank=null。勾选true才进今日榜；客户端不能在结账时改变已开局的参榜方式。旧局默认true保持兼容，旧日榜不删。依次逆序执行rollback文件，配合前后端版本回退。
+
+
+## V1.2.1 菜单版本
+
+`menu-catalog-v2.js`定义216款，`menus-v2.js`合并旧秋日与茶、定义新主题及三档。`casual-v121.js`使用分档随机袋和有界保底；`casual-engine.js`按session.rules_version分派旧1.2.0/新1.2.1复算。旧模块冻结，存档恢复、checkpoint和finish统一按版本处理。新增SQL20261019131500只增补数据及兼容函数，数据库RLS与服务端核验边界不变。

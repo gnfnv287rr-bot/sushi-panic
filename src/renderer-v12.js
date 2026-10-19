@@ -1,14 +1,15 @@
-import {CATALOG as FOODS} from './menus-v1.js';
+import {CATALOG as FOODS,rarityOf,RARITIES} from './menus-v2.js';
 const isAllergic=(character,key)=>FOODS[key]?.allergen===character.allergy;
 const INK = '#293f40';
 function round(c,x,y,w,h,r,fill,stroke) { c.beginPath(); c.roundRect(x,y,w,h,r); if(fill){c.fillStyle=fill;c.fill();} if(stroke){c.strokeStyle=stroke;c.stroke();} }
 function oval(c,x,y,rx,ry,fill,stroke) { c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2); if(fill){c.fillStyle=fill;c.fill();}if(stroke){c.strokeStyle=stroke;c.stroke();} }
 function line(c, points, color, width=2) { c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle=color;c.lineWidth=width;c.lineCap='round';c.lineJoin='round';c.stroke(); }
-function text(c,str,x,y,size=12,color=INK,weight=500) {c.fillStyle=color;c.textAlign='center';c.textBaseline='middle';c.font=`${weight} ${size}px "PingFang SC","Microsoft YaHei",sans-serif`;c.fillText(str,x,y);}
+function text(c,str,x,y,size=12,color=INK,weight=500,maxWidth) {c.fillStyle=color;c.textAlign='center';c.textBaseline='middle';c.font=`${weight} ${size}px "PingFang SC","Microsoft YaHei",sans-serif`;if(maxWidth)c.fillText(str,x,y,maxWidth);else c.fillText(str,x,y);}
 
 /** Original procedural sushi illustration, shared by the board and menu. */
 export function drawSushi(c,key,x,y,scale=1) {
   const spec=FOODS[key];key=spec?.visualKey||key;
+  if(!['tea','salmon','tuna','shrimp','tamago','cucumber','ikura','onigiri'].includes(key)){drawCatalogDish(c,spec,x,y,scale);return;}
   c.save();c.translate(x,y);c.scale(scale,scale);c.lineWidth=1.4;
   if(key==='tea') {
     oval(c,0,17,19,6,'#35453b20');round(c,-17,-19,34,35,[3,3,12,12],'#7f9c76','#526e55');
@@ -42,6 +43,7 @@ export function drawSushi(c,key,x,y,scale=1) {
       for(let i=-45;i<50;i+=16)line(c,[[i,-30],[i+16,-8],[i+29,0]],key==='salmon'?'#ffd2ab':'#ed8f98',key==='salmon'?3.4:1.4);c.restore();
     }
   }
+  garnish(c,spec);
   if(spec?.accent){oval(c,24,-26,5,5,spec.accent,'#fff9e9');if(spec.rarity==='hidden')text(c,'福',24,-26,6,'#fff9e9',700);}
   c.restore();
 }
@@ -119,18 +121,59 @@ export class Renderer {
     c.lineWidth=1.4; // Belt strokes must not leak into dish/badge outlines.
     const ordered=game.foods.map((f,i)=>({...f,number:i<8?i+1:null,...g.point(f.p)})).sort((a,b)=>a.y-b.y);
     for(const f of ordered){
+      const grade=rarityOf(FOODS[f.key]),gradeColor=RARITIES[grade]?.color||'#d9bd83';
       const r=mobile?25:35,fs=mobile?.62:.84,allergy=isAllergic(game.character,f.key),hover=this.hover===f.id;
       c.save();c.translate(f.x,f.y);if(hover)c.translate(0,-3);
-      oval(c,1,10,r+3,r*.62,'#183c312c');oval(c,0,4,r+3,r*.65,'#c5bda1');oval(c,0,0,r+3,r*.65,allergy?'#f8d8c6':'#fff7dc',allergy?'#ce6852':'#d9cba6');oval(c,0,-1,r-3,r*.49,null,allergy?'#e5a58d':'#d9bd83');
+      oval(c,1,10,r+3,r*.62,'#183c312c');oval(c,0,4,r+3,r*.65,'#c5bda1');oval(c,0,0,r+3,r*.65,allergy?'#f8d8c6':'#fff7dc',allergy?'#ce6852':gradeColor);oval(c,0,-1,r-3,r*.49,null,allergy?'#e5a58d':'#d9bd83');
       if(hover){oval(c,0,-1,r+7,r*.77,null,'#fff8e5');}
       drawSushi(c,f.key,0,-10,fs);
       const labelWidth=mobile?58:74;
-      round(c,-labelWidth/2,21,labelWidth,16,4,allergy?'#cb604e':'#fff9e9');text(c,`${FOODS[f.key].name} ${FOODS[f.key].fullness>0?'+':''}${Math.round(FOODS[f.key].fullness*(FOODS[f.key].fullness>0?game.character.portion*(game.rulesVersion==='1.2.0'?.65:1):1))}`,0,29,mobile?8:9,allergy?'#fff8e7':'#485d50',600);
+      round(c,-labelWidth/2,21,labelWidth,16,4,allergy?'#cb604e':'#fff9e9');text(c,`${FOODS[f.key].name} ${FOODS[f.key].fullness>0?'+':''}${Math.round(FOODS[f.key].fullness*(FOODS[f.key].fullness>0?game.character.portion*(game.rulesVersion?.startsWith('1.2.')?.65:1):1))}`,0,29,mobile?8:9,allergy?'#fff8e7':'#485d50',600,labelWidth-4);
       if(allergy){oval(c,r-4,-24,10,10,'#c95242','#fff6df');text(c,'忌',r-4,-24,10,'#fff9e9',700);}
+      if(!allergy&&grade!=='common'){oval(c,r-4,-24,9,9,gradeColor,'#fff9e9');text(c,grade==='treasure'?'珍':'选',r-4,-24,9,'#fff9e9',700);}
       if(f.number){oval(c,-r+1,-22,8,8,'#f6efd9');text(c,String(f.number),-r+1,-22,9,'#667765',700);}
       c.restore();this.targets.push({id:f.id,key:f.key,x:f.x,y:f.y,radius:r+3,number:f.number,allergic:allergy});
     }
     this.effects=this.effects.filter(f=>f.age<.8);
     for(const e of this.effects){e.age+=dt;c.save();c.globalAlpha=Math.max(0,1-e.age/.8);text(c,e.text,e.x,e.y-20-e.age*55,18,e.bad?'#ca5141':'#335e47',800);if(!this.motion){for(let i=0;i<6;i++){const a=i*Math.PI/3;oval(c,e.x+Math.cos(a)*e.age*65,e.y+Math.sin(a)*e.age*65,2.5,2.5,e.bad?'#e48369':'#f3cb69');}}c.restore();}
   }
+}
+
+function garnish(c,spec){if(!spec)return;const t=spec.topping;c.lineWidth=2;
+ if(spec.name.includes('海胆')){for(let i=0;i<4;i++)oval(c,-12+i*8,-24+(i%2)*3,6,4,'#e6a34c','#c38a40');}
+ if(spec.name.includes('鱼籽')){for(let i=0;i<8;i++)oval(c,-17+(i*9)%35,-16+(i%3)*4,3,2.5,'#ee8743','#c46c35');}
+ if(t==='cheese')round(c,-22,-21,44,12,3,'#f4d067');
+ if(t==='caramel'){line(c,[[-26,-17],[-16,-22],[-4,-13],[7,-22],[20,-12],[28,-17]],'#a76c35',3);for(let i=0;i<6;i++)oval(c,-20+i*8,-18+(i%2)*4,1,1,'#efcf89');}
+ if(t==='green'){for(let i=0;i<5;i++)oval(c,-17+i*8,-14-(i%2)*5,3,2,'#71905e');}
+ if(t==='citrus'){oval(c,14,-24,11,7,'#e4d778','#f8efb0');line(c,[[14,-29],[14,-19]],'#fff6c9',1);}
+ if(t==='avocado'){for(let i=0;i<3;i++)round(c,-20+i*14,-24,10,19,4,'#a7b874');}
+ if(t==='mayo')line(c,[[-27,-16],[-16,-21],[-4,-12],[8,-20],[20,-11],[28,-16]],'#fbefd5',3);
+ if(t==='seared'){for(let i=0;i<5;i++)line(c,[[-24+i*12,-24],[-18+i*12,-8]],'#86583f88',2);}
+ if(t==='sesame')for(let i=0;i<9;i++)oval(c,-21+(i*13)%43,-22+(i*7)%17,1,1.5,'#f3e4ae');
+ if(t==='spicy')for(let i=0;i<7;i++)oval(c,-21+i*7,-16+(i%3)*4,2,1.2,'#c45c44');
+}
+function drawCatalogDish(c,s,x,y,scale){c.save();c.translate(x,y);c.scale(scale,scale);c.lineWidth=1.4;const k=s.visualKey,color=k==='pudding'?(s.name.includes('黑芝麻')?'#b1b0a2':s.name.includes('抹茶')?'#93ae7a':'#edcc8f'):(s.color||'#cf9d69');
+ const rice=()=>{oval(c,0,15,30,11,'#d4d2bb');round(c,-29,-3,58,24,12,'#fff8e7');oval(c,0,-4,29,10,'#fffbee');for(let i=0;i<9;i++)oval(c,-22+(i*13)%44,3+(i*5)%10,1.5,.8,'#ddd5bc');};
+ if(['pudding','mochi','cake','croquette'].includes(k)){
+  oval(c,0,20,31,6,'#d6cfb7');
+  if(k==='pudding'){round(c,-23,-17,46,35,[7,7,14,14],color,'#b1aa8c');oval(c,0,-17,23,8,color,'#b1aa8c');oval(c,0,-17,18,5,s.name.includes('抹茶')?'#688752':s.name.includes('黑芝麻')?'#71726a':'#b97a4c');oval(c,0,21,32,6,'#fff8e7','#dad0b5');line(c,[[30,-11],[34,12]],'#b1aa8c',2);oval(c,30,-14,4,6,'#ded9c5');}
+  if(k==='mochi'){for(const [xx,yy] of [[-17,6],[17,6],[0,-10]]){oval(c,xx,yy+5,16,11,'#d7c4b6');oval(c,xx,yy,16,13,color);for(let i=0;i<4;i++)oval(c,xx-8+i*5,yy-5+(i%2)*3,.8,.8,'#fff6e4');}}
+  if(k==='cake'){round(c,-27,-22,54,40,3,color);for(let yy=-9;yy<15;yy+=11)round(c,-27,yy,54,4,0,'#f7ead5');oval(c,0,-25,12,5,'#e9d5b5');}
+  if(k==='croquette'){for(const xx of [-15,15]){oval(c,xx,3,17,15,color,'#b48748');for(let i=0;i<8;i++)oval(c,xx-11+(i*7)%23,-6+(i*5)%19,1.4,1,'#f3d38d');}}
+ }else if(k==='gunkan'||k==='roll'){const spots=k==='roll'?[[-14,2],[13,4],[0,-13]]:[[0,-3]];for(const [xx,yy] of spots){const r=k==='roll'?14:26;round(c,xx-r,yy-3,r*2,25,6,'#314a3c');oval(c,xx,yy,r,10,'#f6efd8');oval(c,xx,yy,r-4,7,color);for(let i=0;i<6;i++)oval(c,xx-r+7+(i*7)%(r*2-10),yy-3+(i%3)*3,2,1.6,s.categoryId==='roll'?'#94ad70':'#f4d59b');}}
+ else {rice();
+  if(k==='scallop'){for(const xx of [-12,12]){oval(c,xx,-12,17,15,color,'#c6b495');for(let i=0;i<4;i++)line(c,[[xx-9+i*6,-22],[xx-7+i*5,-4]],'#f7e8ca',1);}}
+  else if(k==='squid'){round(c,-30,-24,60,27,7,color);for(let i=0;i<5;i++){oval(c,-22+i*11,-9,4,4,'#f3e8d5');oval(c,-22+i*11,-9,2,2,'#ae8d9c');}}
+  else if(k==='mushroom'){round(c,-6,-13,12,17,3,'#e8d4af');oval(c,0,-20,30,14,'#a4825e','#7c674e');line(c,[[-14,-26],[0,-15],[15,-26]],'#ddc397',2);}
+  else if(k==='eggplant'){round(c,-30,-23,60,27,9,'#726080');round(c,-24,-20,48,20,7,'#b8b08d');line(c,[[-20,-14],[20,-14]],'#d2bd8c',2);}
+  else if(k==='inari'){round(c,-32,-20,64,34,9,'#d6a058','#b48a53');line(c,[[-27,-15],[0,-4],[26,-15]],'#efd0a0',3);}
+  else if(k==='tempura'){round(c,-31,-23,62,29,10,color);for(let i=0;i<18;i++)oval(c,-28+(i*17)%56,-22+(i*11)%27,2,1.7,'#f1d091');}
+  else {round(c,-33,-25,66,29,9,color);if(k==='silverfish'){round(c,-29,-25,58,8,4,'#66858d');for(let i=0;i<6;i++)line(c,[[-22+i*8,-20],[-18+i*8,-5]],'#e3e6d5',1.3);}
+   if(k==='whitefish')for(let i=0;i<5;i++)line(c,[[-26+i*12,-22],[-18+i*12,-2]],'#f9f0da',2);
+   if(k==='eel')for(let i=0;i<6;i++)line(c,[[-24+i*10,-23],[-21+i*10,1]],'#6e5138',2.5);
+   if(k==='foie')for(let i=0;i<9;i++)oval(c,-24+(i*17)%49,-20+(i*7)%20,2.4,1.7,'#80603e');
+   if(k==='meat')for(let i=0;i<5;i++)line(c,[[-27+i*13,-19],[-17+i*13,-3]],'#e4b392',2);
+  }
+ }
+ garnish(c,s);c.restore();
 }

@@ -104,6 +104,9 @@
 #checkout{font-size:12px;white-space:nowrap;min-height:44px;padding:6px 9px;border:1px solid #b6c6ab;border-radius:6px}
 @media(max-width:600px){.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.collection-card{padding:10px}.collection-card h3{font-size:14px}.top-actions{flex-wrap:wrap;justify-content:flex-end}.scoreboard{flex-wrap:wrap;gap:10px}#checkout{margin-left:auto}}
 .rank-choice{display:flex;align-items:center;gap:8px;text-align:left;font-size:12px;color:#52755e;margin:12px 0;min-height:44px}.rank-choice input{width:20px;height:20px;accent-color:#527e6a}
+.menu-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0;font-size:12px;color:#657a67}.menu-pager button{min-height:44px;border:1px solid #cbd3be;border-radius:6px}.collection-filters{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;font-size:12px}.collection-filters label{min-width:0}.rarity-note{font-size:11px;color:#7e896d;line-height:1.7}.collection-card[data-rarity="select"]{border-color:#a6bdc9}.collection-card[data-rarity="treasure"]{border-color:#c9ad70;background:#fffaf0}#menu-page-info,#collection-page-info{text-align:center;font-variant-numeric:tabular-nums}.menu-item small{font-size:9px}#collection-dialog .section-heading{position:sticky;top:-1px;background:#fffdf5;z-index:2;padding:10px 0}
+
+.menu-pager button{flex:0 0 auto;min-width:60px;padding:10px 7px;white-space:nowrap}.menu-pager span{flex:1;min-width:0}.menu-pager{flex-wrap:wrap}.menu-panel .menu-pager span{flex-basis:100%;order:2}.menu-panel .menu-pager{gap:6px}.menu-panel .menu-pager button{flex:1}
 </style>
   <title>寿司别吃撑！ · SUSHI PANIC</title>
 </head>
@@ -131,17 +134,17 @@
         </section>
         <aside class="sidebar" aria-label="本局角色与菜单">
           <section class="character-panel"><p class="eyebrow">今日食客 <span id="character-tag">随机入座</span></p><div class="character-heading"><canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas><div><h2 id="character-name">谁来吃寿司？</h2><p id="character-title">每局都有不一样的胃口</p></div></div><p id="character-ability" class="ability">入座后抽取一张角色卡，看看今天要忌口什么。</p><div id="allergy-notice" class="allergy-notice"><span>过敏食物</span><strong id="allergy-name">开局揭晓</strong><small id="allergy-detail">看清再吃，别太心急</small></div></section>
-          <section class="menu-panel"><div class="section-heading"><h2>本日菜单</h2><span>饱腹变化</span></div><label class="player-id-label" for="theme-select">选择放题菜单</label><select id="theme-select" class="player-id-input"></select><p id="theme-description" class="tiny-note"></p><p id="theme-save-note" class="tiny-note"></p><div id="menu" class="menu-grid"></div><p class="menu-note">红色「忌」= 本局过敏源<br>乌龙茶减饱腹，太饿时别喝哦。</p></section>
+          <section class="menu-panel"><div class="section-heading"><h2>本日菜单</h2><span>饱腹变化</span></div><label class="player-id-label" for="theme-select">选择放题菜单</label><select id="theme-select" class="player-id-input"></select><p id="theme-description" class="tiny-note"></p><p id="theme-save-note" class="tiny-note"></p><div id="menu" class="menu-grid"></div><div class="menu-pager"><button id="menu-prev" class="quiet-button">上一页</button><span id="menu-page-info"></span><button id="menu-next" class="quiet-button">下一页</button></div><p class="menu-note">红色「忌」= 本局过敏源<br>乌龙茶减饱腹，太饿时别喝哦。</p></section>
           <section id="daily-board-panel" class="daily-board-panel" aria-label="今日排行榜"><div class="section-heading"><h2>今日排行榜</h2><span>全球积分榜</span></div><div class="daily-date"><span id="mini-board-day">北京时间</span><span>距换榜 <b class="reset-countdown">--:--:--</b></span></div><p id="mini-board-status" class="tiny-note" role="status">正在读取今日榜…</p><ol id="mini-board-list" class="mini-board-list"></ol><p id="mini-board-me" class="mini-board-me">完成联网计分局后查看我的排名</p><button id="sidebar-leaderboard" class="secondary-button">查看全球 TOP 100</button></section><div class="diner-note"><span class="seal">腹八分目</span><p>别贪心，也别空着肚子。<br><strong>慢慢品尝，收集小幸福。</strong></p></div>
         </aside>
       </div>
     </main>
-    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>V1.2 · 寿司放题与云端图鉴 · 无广告</span><span class="footer-motto">随时入座，随时再来。</span></footer>
+    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>V1.2.1 · 百味放题与珍稀图鉴 · 无广告</span><span class="footer-motto">随时入座，随时再来。</span></footer>
   </div>
   <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">慢慢吃，刚刚好。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹温和下降，保持 25–85 有舒适奖励。太饱时先喝茶或歇一会儿，精神降低也不会导致死亡。</span></li><li><b>红色「忌」，吃了会过敏。</b><span>每局角色不同，过敏源也不同。误食精神 −4，盘子会提前标记；角色和各自的小能力仍保留。</span></li><li><b>连击比乱吃更值钱。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">20秒不操作自动休息；休息不消耗，也不加分。点击结账保存本局积分和收藏。切换页面自动暂停。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
   <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">每日开席 · 全球挑战</p><div class="section-heading"><h2 id="board-title">今日排行榜</h2><span id="board-day"></span></div><p class="board-clock">北京时间 00:00 换榜 · 距刷新 <strong class="reset-countdown">--:--:--</strong></p><p id="board-champion" class="board-champion">正在寻找今日大胃王…</p><p id="board-status" class="board-status" role="status">每人每日最高积分 · 全球 TOP 100</p><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><p id="board-updated" class="tiny-note"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div><p class="tiny-note">匿名身份保存在此浏览器。未绑定邮箱时，清除 Cookie、无痕关闭或换设备后，历史成绩可能无法找回。</p></div></dialog>
   <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">保存 / 恢复成绩</h2><p class="identity-note">请在已有成绩的原浏览器绑定邮箱。绑定完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><section id="email-code-section" hidden><label class="player-id-label" for="account-code">邮件验证码</label><input id="account-code" class="player-id-input" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="6–8位验证码"><button id="verify-email" class="primary-button">验证并恢复云端档案</button></section><button id="close-account" class="text-button">暂时不用，继续开吃</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
-  <dialog id="collection-dialog" aria-labelledby="collection-title"><div class="dialog-inner collection-inner"><p class="eyebrow">一盘一盘，收藏小幸福</p><div class="section-heading"><h2 id="collection-title">我的寿司图鉴</h2><button id="close-collection" class="quiet-button">收好图鉴</button></div><p id="collection-summary"></p><p id="theme-progress" class="tiny-note"></p><label for="collection-theme">翻看菜单</label><select id="collection-theme" class="player-id-input"></select><p id="collection-status" role="status" class="tiny-note">云端确认后永久保留；每日换榜不会清空收藏。</p><div id="collection-grid" class="collection-grid"></div></div></dialog>
+  <dialog id="collection-dialog" aria-labelledby="collection-title"><div class="dialog-inner collection-inner"><p class="eyebrow">一盘一盘，收藏小幸福</p><div class="section-heading"><h2 id="collection-title">我的寿司图鉴</h2><button id="close-collection" class="quiet-button">收好图鉴</button></div><p id="collection-summary"></p><p id="theme-progress" class="tiny-note"></p><label for="collection-theme">翻看菜单</label><select id="collection-theme" class="player-id-input"></select><div class="collection-filters"><label>珍稀度<select id="collection-rarity" class="player-id-input"><option value="all">全部等级</option><option value="common">日常</option><option value="select">精选</option><option value="treasure">珍藏</option></select></label><label>找一道菜<input id="collection-search" class="player-id-input" type="search" placeholder="菜名或图鉴编号"></label></div><p id="collection-status" role="status" class="tiny-note">云端确认后永久保留；每日换榜不会清空收藏。</p><p class="rarity-note">食物随机抽档：日常72% · 精选23% · 珍藏5%。8次食物出盘内保证精选或珍藏，40次内保证珍藏；实际含保底与安全盘调整。乌龙茶另备。</p><div id="collection-grid" class="collection-grid"></div><div class="menu-pager"><button id="collection-prev" class="quiet-button">上一页</button><span id="collection-page-info"></span><button id="collection-next" class="quiet-button">下一页</button></div></div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
   <script type="module">
 // src/core.js
@@ -398,14 +401,3926 @@ function themeById(id) {
   if (!t) throw new Error("\u672A\u77E5\u4E3B\u9898\u83DC\u5355");
   return t;
 }
-function menuState(theme, serverTime) {
-  const now = Date.parse(serverTime);
-  if (!Number.isFinite(now)) return theme.permanent ? "permanent" : "time_unconfirmed";
-  return theme.permanent ? "permanent" : now < Date.parse(theme.opensAt) ? "upcoming" : now >= Date.parse(theme.closesAt) ? "archive" : "current";
+
+// src/menu-catalog-v2.js
+var MENU_ROWS = [
+  {
+    "id": "salmon",
+    "number": 1,
+    "name": "\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_02",
+    "number": 16,
+    "name": "\u4E09\u6587\u9C7C\u8179",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u4E09\u6587\u9C7C\u8179\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_03",
+    "number": 17,
+    "name": "\u7099\u70E7\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u4E09\u6587\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_04",
+    "number": 18,
+    "name": "\u829D\u58EB\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "cheese",
+    "description": "\u829D\u58EB\u4E09\u6587\u9C7C\uFF1A\u6D53\u9999\u829D\u58EB\u8F7B\u8F7B\u76D6\u4F4F\u8868\u9762\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_05",
+    "number": 19,
+    "name": "\u660E\u592A\u5B50\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u660E\u592A\u5B50\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_06",
+    "number": 20,
+    "name": "\u6D0B\u8471\u86CB\u9EC4\u9171\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u6D0B\u8471\u86CB\u9EC4\u9171\u4E09\u6587\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_07",
+    "number": 21,
+    "name": "\u725B\u6CB9\u679C\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "avocado",
+    "description": "\u725B\u6CB9\u679C\u4E09\u6587\u9C7C\uFF1A\u7EF5\u8F6F\u725B\u6CB9\u679C\u8BA9\u53E3\u611F\u66F4\u67D4\u548C\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_08",
+    "number": 22,
+    "name": "\u67DA\u76D0\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u76D0\u4E09\u6587\u9C7C\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_09",
+    "number": 23,
+    "name": "\u9ED1\u6912\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9ED1\u6912\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_10",
+    "number": 24,
+    "name": "\u9999\u8471\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u9999\u8471\u4E09\u6587\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_11",
+    "number": 25,
+    "name": "\u7D2B\u82CF\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u7D2B\u82CF\u4E09\u6587\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_12",
+    "number": 26,
+    "name": "\u9999\u849C\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9999\u849C\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_13",
+    "number": 27,
+    "name": "\u5473\u564C\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5473\u564C\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_14",
+    "number": 28,
+    "name": "\u9171\u6E0D\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9171\u6E0D\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_15",
+    "number": 29,
+    "name": "\u841D\u535C\u6CE5\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u841D\u535C\u6CE5\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_16",
+    "number": 30,
+    "name": "\u7F57\u52D2\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u7F57\u52D2\u4E09\u6587\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_17",
+    "number": 31,
+    "name": "\u70DF\u718F\u4E09\u6587\u9C7C",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "common",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u70DF\u718F\u4E09\u6587\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "salmon_18",
+    "number": 32,
+    "name": "\u4E09\u6587\u9C7C\u53CC\u5C42\u63E1",
+    "themeId": "classic",
+    "category": "\u4E09\u6587\u9C7C\u7CFB",
+    "categoryId": "salmon",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#f78a70",
+    "fullness": 19,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u4E09\u6587\u9C7C\u53CC\u5C42\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna",
+    "number": 2,
+    "name": "\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 15,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u91D1\u67AA\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_02",
+    "number": 33,
+    "name": "\u91D1\u67AA\u9C7C\u8D64\u8EAB",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u91D1\u67AA\u9C7C\u8D64\u8EAB\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_03",
+    "number": 34,
+    "name": "\u91D1\u67AA\u9C7C\u4E2D\u8179",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "treasure",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u91D1\u67AA\u9C7C\u4E2D\u8179\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_04",
+    "number": 35,
+    "name": "\u91D1\u67AA\u9C7C\u5927\u8179",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "treasure",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u91D1\u67AA\u9C7C\u5927\u8179\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_05",
+    "number": 36,
+    "name": "\u9171\u6E0D\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "select",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9171\u6E0D\u91D1\u67AA\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_06",
+    "number": 37,
+    "name": "\u5C71\u8475\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5C71\u8475\u91D1\u67AA\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_07",
+    "number": 38,
+    "name": "\u9999\u8471\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u9999\u8471\u91D1\u67AA\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_08",
+    "number": 39,
+    "name": "\u829D\u9EBB\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "sesame",
+    "description": "\u829D\u9EBB\u91D1\u67AA\u9C7C\uFF1A\u7EC6\u5C0F\u829D\u9EBB\u5E26\u6765\u6E29\u67D4\u575A\u679C\u9999\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_09",
+    "number": 40,
+    "name": "\u7099\u70E7\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "select",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u91D1\u67AA\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_10",
+    "number": 41,
+    "name": "\u67DA\u9999\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "select",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u9999\u91D1\u67AA\u9C7C\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_11",
+    "number": 42,
+    "name": "\u849C\u9999\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u849C\u9999\u91D1\u67AA\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_12",
+    "number": 43,
+    "name": "\u7D2B\u82CF\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "select",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u7D2B\u82CF\u91D1\u67AA\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_13",
+    "number": 44,
+    "name": "\u767D\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u767D\u91D1\u67AA\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_14",
+    "number": 45,
+    "name": "\u7099\u70E7\u767D\u91D1\u67AA\u9C7C",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "select",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u767D\u91D1\u67AA\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_15",
+    "number": 46,
+    "name": "\u91D1\u67AA\u9C7C\u5854\u5854\u63E1",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "common",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u91D1\u67AA\u9C7C\u5854\u5854\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tuna_16",
+    "number": 47,
+    "name": "\u91D1\u67AA\u9C7C\u53CC\u5C42\u63E1",
+    "themeId": "classic",
+    "category": "\u91D1\u67AA\u9C7C\u7CFB",
+    "categoryId": "tuna",
+    "rarity": "select",
+    "visualKey": "tuna",
+    "color": "#cc526b",
+    "fullness": 17,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u91D1\u67AA\u9C7C\u53CC\u5C42\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_01",
+    "number": 48,
+    "name": "\u771F\u9CB7\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "common",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u771F\u9CB7\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_02",
+    "number": 49,
+    "name": "\u67DA\u76D0\u771F\u9CB7",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "select",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u76D0\u771F\u9CB7\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_03",
+    "number": 50,
+    "name": "\u7099\u70E7\u771F\u9CB7",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "select",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u771F\u9CB7\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_04",
+    "number": 51,
+    "name": "\u6606\u5E03\u6E0D\u771F\u9CB7",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "common",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6606\u5E03\u6E0D\u771F\u9CB7\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_05",
+    "number": 52,
+    "name": "\u6BD4\u76EE\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "select",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6BD4\u76EE\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_06",
+    "number": 53,
+    "name": "\u6BD4\u76EE\u9C7C\u9CCD\u8FB9",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "common",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6BD4\u76EE\u9C7C\u9CCD\u8FB9\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_07",
+    "number": 54,
+    "name": "\u7099\u70E7\u6BD4\u76EE\u9C7C\u9CCD\u8FB9",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "select",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u6BD4\u76EE\u9C7C\u9CCD\u8FB9\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_08",
+    "number": 55,
+    "name": "\u67E0\u6AAC\u76D0\u6BD4\u76EE\u9C7C",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "common",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67E0\u6AAC\u76D0\u6BD4\u76EE\u9C7C\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_09",
+    "number": 56,
+    "name": "\u9C88\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "common",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C88\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_10",
+    "number": 57,
+    "name": "\u91D1\u76EE\u9CB7\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "common",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u91D1\u76EE\u9CB7\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_11",
+    "number": 58,
+    "name": "\u7EA2\u7518\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "common",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7EA2\u7518\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "white_12",
+    "number": 59,
+    "name": "\u7099\u70E7\u7EA2\u7518\u9C7C",
+    "themeId": "classic",
+    "category": "\u767D\u8EAB\u9C7C\u7CFB",
+    "categoryId": "white",
+    "rarity": "select",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u7EA2\u7518\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_01",
+    "number": 60,
+    "name": "\u918B\u6E0D\u9CAD\u9C7C",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "common",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u918B\u6E0D\u9CAD\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_02",
+    "number": 61,
+    "name": "\u7099\u70E7\u9CAD\u9C7C",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "select",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u9CAD\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_03",
+    "number": 62,
+    "name": "\u829D\u9EBB\u8471\u82B1\u9CAD\u9C7C",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "common",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u829D\u9EBB\u8471\u82B1\u9CAD\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_04",
+    "number": 63,
+    "name": "\u9752\u82B1\u9C7C\u62BC\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "common",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9752\u82B1\u9C7C\u62BC\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_05",
+    "number": 64,
+    "name": "\u7AF9\u835A\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "select",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7AF9\u835A\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_06",
+    "number": 65,
+    "name": "\u59DC\u8471\u7AF9\u835A\u9C7C",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "common",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u59DC\u8471\u7AF9\u835A\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_07",
+    "number": 66,
+    "name": "\u6C99\u4E01\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "common",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6C99\u4E01\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_08",
+    "number": 67,
+    "name": "\u7099\u70E7\u6C99\u4E01\u9C7C",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "select",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u6C99\u4E01\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_09",
+    "number": 68,
+    "name": "\u79CB\u5200\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "common",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u79CB\u5200\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "silver_10",
+    "number": 69,
+    "name": "\u7D2B\u82CF\u9CA3\u9C7C\u63E1",
+    "themeId": "classic",
+    "category": "\u94F6\u8EAB\u9C7C\u7CFB",
+    "categoryId": "silver",
+    "rarity": "common",
+    "visualKey": "silverfish",
+    "color": "#8da5ac",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u7D2B\u82CF\u9CA3\u9C7C\u63E1\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shrimp",
+    "number": 3,
+    "name": "\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C9C\u867E\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_02",
+    "number": 70,
+    "name": "\u751C\u867E\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u751C\u867E\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_03",
+    "number": 71,
+    "name": "\u7261\u4E39\u867E\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "treasure",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7261\u4E39\u867E\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_04",
+    "number": 72,
+    "name": "\u767D\u867E\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u767D\u867E\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_05",
+    "number": 73,
+    "name": "\u7099\u70E7\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "select",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u9C9C\u867E\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_06",
+    "number": 74,
+    "name": "\u829D\u58EB\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "select",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "cheese",
+    "description": "\u829D\u58EB\u9C9C\u867E\uFF1A\u6D53\u9999\u829D\u58EB\u8F7B\u8F7B\u76D6\u4F4F\u8868\u9762\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_07",
+    "number": 75,
+    "name": "\u660E\u592A\u5B50\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "select",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u660E\u592A\u5B50\u9C9C\u867E\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_08",
+    "number": 76,
+    "name": "\u725B\u6CB9\u679C\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "select",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "avocado",
+    "description": "\u725B\u6CB9\u679C\u9C9C\u867E\uFF1A\u7EF5\u8F6F\u725B\u6CB9\u679C\u8BA9\u53E3\u611F\u66F4\u67D4\u548C\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_09",
+    "number": 77,
+    "name": "\u67E0\u6AAC\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67E0\u6AAC\u9C9C\u867E\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_10",
+    "number": 78,
+    "name": "\u849C\u9999\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u849C\u9999\u9C9C\u867E\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_11",
+    "number": 79,
+    "name": "\u7F57\u52D2\u9C9C\u867E",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u7F57\u52D2\u9C9C\u867E\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_12",
+    "number": 80,
+    "name": "\u5E1D\u738B\u87F9\u817F\u63E1",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "treasure",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5E1D\u738B\u87F9\u817F\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_13",
+    "number": 81,
+    "name": "\u96EA\u87F9\u8089\u63E1",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u96EA\u87F9\u8089\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "prawn_14",
+    "number": 82,
+    "name": "\u87F9\u5473\u68D2\u63E1",
+    "themeId": "classic",
+    "category": "\u867E\u87F9\u7CFB",
+    "categoryId": "prawn",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#f4a183",
+    "fullness": 16,
+    "points": 110,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u87F9\u5473\u68D2\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_01",
+    "number": 83,
+    "name": "\u5E06\u7ACB\u8D1D\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "treasure",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5E06\u7ACB\u8D1D\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_02",
+    "number": 84,
+    "name": "\u7099\u70E7\u5E06\u7ACB\u8D1D",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "select",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u5E06\u7ACB\u8D1D\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_03",
+    "number": 85,
+    "name": "\u5976\u6CB9\u5E06\u7ACB\u8D1D",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "select",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5976\u6CB9\u5E06\u7ACB\u8D1D\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_04",
+    "number": 86,
+    "name": "\u67DA\u76D0\u5E06\u7ACB\u8D1D",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "select",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u76D0\u5E06\u7ACB\u8D1D\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_05",
+    "number": 87,
+    "name": "\u5317\u5BC4\u8D1D\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "select",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5317\u5BC4\u8D1D\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_06",
+    "number": 88,
+    "name": "\u8D64\u8D1D\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "common",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u8D64\u8D1D\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_07",
+    "number": 89,
+    "name": "\u6D77\u87BA\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "common",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6D77\u87BA\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_08",
+    "number": 90,
+    "name": "\u7099\u70E7\u6D77\u87BA",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "select",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u6D77\u87BA\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_09",
+    "number": 91,
+    "name": "\u9C8D\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "treasure",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C8D\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_10",
+    "number": 92,
+    "name": "\u7099\u70E7\u9C8D\u9C7C",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "treasure",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u9C8D\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_11",
+    "number": 93,
+    "name": "\u9752\u53E3\u8D1D\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "common",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9752\u53E3\u8D1D\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "shell_12",
+    "number": 94,
+    "name": "\u9171\u9999\u6247\u8D1D\u63E1",
+    "themeId": "classic",
+    "category": "\u8D1D\u7C7B\u7CFB",
+    "categoryId": "shell",
+    "rarity": "select",
+    "visualKey": "scallop",
+    "color": "#e8d3aa",
+    "fullness": 15,
+    "points": 130,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9171\u9999\u6247\u8D1D\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_01",
+    "number": 95,
+    "name": "\u9C7F\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C7F\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_02",
+    "number": 96,
+    "name": "\u7D2B\u82CF\u9C7F\u9C7C",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u7D2B\u82CF\u9C7F\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_03",
+    "number": 97,
+    "name": "\u67E0\u6AAC\u9C7F\u9C7C",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67E0\u6AAC\u9C7F\u9C7C\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_04",
+    "number": 98,
+    "name": "\u67DA\u5B50\u80E1\u6912\u9C7F\u9C7C",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "select",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u5B50\u80E1\u6912\u9C7F\u9C7C\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_05",
+    "number": 99,
+    "name": "\u7099\u70E7\u9C7F\u9C7C",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "select",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u9C7F\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_06",
+    "number": 100,
+    "name": "\u58A8\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u58A8\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_07",
+    "number": 101,
+    "name": "\u7AE0\u9C7C\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7AE0\u9C7C\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_08",
+    "number": 102,
+    "name": "\u59DC\u8471\u7AE0\u9C7C",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u59DC\u8471\u7AE0\u9C7C\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_09",
+    "number": 103,
+    "name": "\u9171\u6E0D\u7AE0\u9C7C",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9171\u6E0D\u7AE0\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ceph_10",
+    "number": 104,
+    "name": "\u82A5\u672B\u7AE0\u9C7C\u63E1",
+    "themeId": "classic",
+    "category": "\u9C7F\u9C7C\u7AE0\u9C7C\u7CFB",
+    "categoryId": "ceph",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#d2bccc",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u82A5\u672B\u7AE0\u9C7C\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_01",
+    "number": 105,
+    "name": "\u84B2\u70E7\u9CD7\u9C7C",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "common",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u84B2\u70E7\u9CD7\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_02",
+    "number": 106,
+    "name": "\u7099\u70E7\u9CD7\u9C7C",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "select",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u9CD7\u9C7C\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_03",
+    "number": 107,
+    "name": "\u767D\u70E7\u9CD7\u9C7C",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "common",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u767D\u70E7\u9CD7\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_04",
+    "number": 108,
+    "name": "\u5C71\u6912\u9CD7\u9C7C",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "common",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5C71\u6912\u9CD7\u9C7C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_05",
+    "number": 109,
+    "name": "\u9CD7\u9C7C\u7389\u5B50\u63E1",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "select",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9CD7\u9C7C\u7389\u5B50\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_06",
+    "number": 110,
+    "name": "\u9171\u716E\u7A74\u5B50",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "common",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9171\u716E\u7A74\u5B50\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_07",
+    "number": 111,
+    "name": "\u7099\u70E7\u7A74\u5B50",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "select",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u7A74\u5B50\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "eel_08",
+    "number": 112,
+    "name": "\u67DA\u9999\u7A74\u5B50",
+    "themeId": "classic",
+    "category": "\u9CD7\u7A74\u5B50\u7CFB",
+    "categoryId": "eel",
+    "rarity": "select",
+    "visualKey": "eel",
+    "color": "#b2824e",
+    "fullness": 23,
+    "points": 140,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u9999\u7A74\u5B50\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "ikura",
+    "number": 6,
+    "name": "\u9C7C\u5B50\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "ikura",
+    "color": "#dc934b",
+    "fullness": 14,
+    "points": 140,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C7C\u5B50\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_02",
+    "number": 113,
+    "name": "\u6D77\u80C6\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "treasure",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6D77\u80C6\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_03",
+    "number": 114,
+    "name": "\u87F9\u818F\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "treasure",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u87F9\u818F\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_04",
+    "number": 115,
+    "name": "\u87F9\u8089\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u87F9\u8089\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_05",
+    "number": 116,
+    "name": "\u8471\u82B1\u91D1\u67AA\u9C7C\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "select",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u8471\u82B1\u91D1\u67AA\u9C7C\u519B\u8230\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_06",
+    "number": 117,
+    "name": "\u91D1\u67AA\u9C7C\u6C99\u62C9\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "mayo",
+    "description": "\u91D1\u67AA\u9C7C\u6C99\u62C9\u519B\u8230\uFF1A\u67D4\u6ED1\u9171\u6C41\u62CC\u51FA\u8F7B\u76C8\u7684\u9999\u6C14\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_07",
+    "number": 118,
+    "name": "\u751C\u867E\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u751C\u867E\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_08",
+    "number": 119,
+    "name": "\u7389\u7C73\u6C99\u62C9\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "mayo",
+    "description": "\u7389\u7C73\u6C99\u62C9\u519B\u8230\uFF1A\u67D4\u6ED1\u9171\u6C41\u62CC\u51FA\u8F7B\u76C8\u7684\u9999\u6C14\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_09",
+    "number": 120,
+    "name": "\u7EB3\u8C46\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u7EB3\u8C46\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_10",
+    "number": 121,
+    "name": "\u79CB\u8475\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u79CB\u8475\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_11",
+    "number": 122,
+    "name": "\u88D9\u5E26\u83DC\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u88D9\u5E26\u83DC\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_12",
+    "number": 123,
+    "name": "\u660E\u592A\u5B50\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "select",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u660E\u592A\u5B50\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_13",
+    "number": 124,
+    "name": "\u591A\u6625\u9C7C\u7C7D\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u591A\u6625\u9C7C\u7C7D\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_14",
+    "number": 125,
+    "name": "\u9F99\u867E\u6C99\u62C9\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "mayo",
+    "description": "\u9F99\u867E\u6C99\u62C9\u519B\u8230\uFF1A\u67D4\u6ED1\u9171\u6C41\u62CC\u51FA\u8F7B\u76C8\u7684\u9999\u6C14\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_15",
+    "number": 126,
+    "name": "\u7AE0\u9C7C\u6C99\u62C9\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "mayo",
+    "description": "\u7AE0\u9C7C\u6C99\u62C9\u519B\u8230\uFF1A\u67D4\u6ED1\u9171\u6C41\u62CC\u51FA\u8F7B\u76C8\u7684\u9999\u6C14\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_16",
+    "number": 127,
+    "name": "\u6E8F\u5FC3\u86CB\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6E8F\u5FC3\u86CB\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_17",
+    "number": 128,
+    "name": "\u5C71\u836F\u6CE5\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u5C71\u836F\u6CE5\u519B\u8230\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "gunkan_18",
+    "number": 129,
+    "name": "\u9C91\u9C7C\u6C99\u62C9\u519B\u8230",
+    "themeId": "classic",
+    "category": "\u519B\u8230\u7CFB",
+    "categoryId": "gunkan",
+    "rarity": "common",
+    "visualKey": "gunkan",
+    "color": "#dc934b",
+    "fullness": 15,
+    "points": 100,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "mayo",
+    "description": "\u9C91\u9C7C\u6C99\u62C9\u519B\u8230\uFF1A\u67D4\u6ED1\u9171\u6C41\u62CC\u51FA\u8F7B\u76C8\u7684\u9999\u6C14\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "cucumber",
+    "number": 5,
+    "name": "\u9EC4\u74DC\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "cucumber",
+    "color": "#81a16a",
+    "fullness": 12,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u9EC4\u74DC\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_02",
+    "number": 130,
+    "name": "\u94C1\u706B\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u94C1\u706B\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_03",
+    "number": 131,
+    "name": "\u8471\u82B1\u91D1\u67AA\u9C7C\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u8471\u82B1\u91D1\u67AA\u9C7C\u5377\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_04",
+    "number": 132,
+    "name": "\u7EB3\u8C46\u7EC6\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u7EB3\u8C46\u7EC6\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_05",
+    "number": 133,
+    "name": "\u7389\u5B50\u7EC6\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "select",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7389\u5B50\u7EC6\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_06",
+    "number": 134,
+    "name": "\u814C\u841D\u535C\u7EC6\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u814C\u841D\u535C\u7EC6\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_07",
+    "number": 135,
+    "name": "\u6885\u5B50\u7D2B\u82CF\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "green",
+    "description": "\u6885\u5B50\u7D2B\u82CF\u5377\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_08",
+    "number": 136,
+    "name": "\u725B\u6CB9\u679C\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "select",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "avocado",
+    "description": "\u725B\u6CB9\u679C\u5377\uFF1A\u7EF5\u8F6F\u725B\u6CB9\u679C\u8BA9\u53E3\u611F\u66F4\u67D4\u548C\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_09",
+    "number": 137,
+    "name": "\u70B8\u867E\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u70B8\u867E\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_10",
+    "number": 138,
+    "name": "\u4E09\u6587\u9C7C\u5976\u916A\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u4E09\u6587\u9C7C\u5976\u916A\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_11",
+    "number": 139,
+    "name": "\u52A0\u5DDE\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u52A0\u5DDE\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_12",
+    "number": 140,
+    "name": "\u87F9\u8089\u9EC4\u74DC\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "select",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u87F9\u8089\u9EC4\u74DC\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_13",
+    "number": 141,
+    "name": "\u91D1\u67AA\u9C7C\u725B\u6CB9\u679C\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "select",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "avocado",
+    "description": "\u91D1\u67AA\u9C7C\u725B\u6CB9\u679C\u5377\uFF1A\u7EF5\u8F6F\u725B\u6CB9\u679C\u8BA9\u53E3\u611F\u66F4\u67D4\u548C\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_14",
+    "number": 142,
+    "name": "\u9CD7\u9C7C\u9EC4\u74DC\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9CD7\u9C7C\u9EC4\u74DC\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_15",
+    "number": 143,
+    "name": "\u829D\u9EBB\u852C\u83DC\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "sesame",
+    "description": "\u829D\u9EBB\u852C\u83DC\u5377\uFF1A\u7EC6\u5C0F\u829D\u9EBB\u5E26\u6765\u6E29\u67D4\u575A\u679C\u9999\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "roll_16",
+    "number": 144,
+    "name": "\u6D77\u9C9C\u592A\u5377",
+    "themeId": "classic",
+    "category": "\u5377\u7269\u7CFB",
+    "categoryId": "roll",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#81a16a",
+    "fullness": 17,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u6D77\u9C9C\u592A\u5377\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tamago",
+    "number": 4,
+    "name": "\u7389\u5B50\u70E7",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "common",
+    "visualKey": "tamago",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7389\u5B50\u70E7\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_02",
+    "number": 145,
+    "name": "\u7099\u70E7\u7389\u5B50",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "select",
+    "visualKey": "tamago",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u7389\u5B50\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_03",
+    "number": 146,
+    "name": "\u660E\u592A\u5B50\u7389\u5B50",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "select",
+    "visualKey": "tamago",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u660E\u592A\u5B50\u7389\u5B50\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_04",
+    "number": 147,
+    "name": "\u829D\u58EB\u7389\u5B50",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "select",
+    "visualKey": "tamago",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "cheese",
+    "description": "\u829D\u58EB\u7389\u5B50\uFF1A\u6D53\u9999\u829D\u58EB\u8F7B\u8F7B\u76D6\u4F4F\u8868\u9762\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_05",
+    "number": 148,
+    "name": "\u6D77\u82D4\u7389\u5B50",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "select",
+    "visualKey": "tamago",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6D77\u82D4\u7389\u5B50\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_06",
+    "number": 149,
+    "name": "\u8471\u82B1\u7389\u5B50",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "common",
+    "visualKey": "tamago",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u8471\u82B1\u7389\u5B50\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "lucky_tamago",
+    "number": 9,
+    "name": "\u798F\u6C14\u7389\u5B50",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "treasure",
+    "visualKey": "tamago",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 160,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u798F\u6C14\u7389\u5B50\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_08",
+    "number": 150,
+    "name": "\u8C46\u76AE\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "common",
+    "visualKey": "inari",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u8C46\u76AE\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_09",
+    "number": 151,
+    "name": "\u829D\u58EB\u8C46\u76AE\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "select",
+    "visualKey": "inari",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "cheese",
+    "description": "\u829D\u58EB\u8C46\u76AE\u5BFF\u53F8\uFF1A\u6D53\u9999\u829D\u58EB\u8F7B\u8F7B\u76D6\u4F4F\u8868\u9762\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_10",
+    "number": 152,
+    "name": "\u829D\u9EBB\u8C46\u76AE\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "common",
+    "visualKey": "inari",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "sesame",
+    "description": "\u829D\u9EBB\u8C46\u76AE\u5BFF\u53F8\uFF1A\u7EC6\u5C0F\u829D\u9EBB\u5E26\u6765\u6E29\u67D4\u575A\u679C\u9999\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_11",
+    "number": 153,
+    "name": "\u4E94\u76EE\u8C46\u76AE\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "common",
+    "visualKey": "inari",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u4E94\u76EE\u8C46\u76AE\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "egg_12",
+    "number": 154,
+    "name": "\u5C71\u8475\u8C46\u76AE\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u7389\u5B50\u8C46\u76AE\u7CFB",
+    "categoryId": "egg",
+    "rarity": "select",
+    "visualKey": "inari",
+    "color": "#f2ca51",
+    "fullness": 22,
+    "points": 90,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u5C71\u8475\u8C46\u76AE\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_01",
+    "number": 155,
+    "name": "\u7099\u70E7\u725B\u4E94\u82B1\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u725B\u4E94\u82B1\u63E1\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_02",
+    "number": 156,
+    "name": "\u751C\u9171\u725B\u8089\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u751C\u9171\u725B\u8089\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_03",
+    "number": 157,
+    "name": "\u9ED1\u6912\u725B\u8089\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u9ED1\u6912\u725B\u8089\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_04",
+    "number": 158,
+    "name": "\u76D0\u8471\u725B\u8089\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "green",
+    "description": "\u76D0\u8471\u725B\u8089\u63E1\uFF1A\u7FE0\u7EFF\u9999\u6599\u70B9\u4EAE\u8FD9\u4E00\u53E3\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_05",
+    "number": 159,
+    "name": "\u5BFF\u559C\u70E7\u725B\u8089\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u5BFF\u559C\u70E7\u725B\u8089\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_06",
+    "number": 160,
+    "name": "\u67E0\u6AAC\u76D0\u732A\u4E94\u82B1\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67E0\u6AAC\u76D0\u732A\u4E94\u82B1\u63E1\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_07",
+    "number": 161,
+    "name": "\u7099\u70E7\u57F9\u6839\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u7099\u70E7\u57F9\u6839\u63E1\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_08",
+    "number": 162,
+    "name": "\u829D\u58EB\u57F9\u6839\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "cheese",
+    "description": "\u829D\u58EB\u57F9\u6839\u63E1\uFF1A\u6D53\u9999\u829D\u58EB\u8F7B\u8F7B\u76D6\u4F4F\u8868\u9762\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_09",
+    "number": 163,
+    "name": "\u7167\u70E7\u9E21\u817F\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u7167\u70E7\u9E21\u817F\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_10",
+    "number": 164,
+    "name": "\u67DA\u5B50\u80E1\u6912\u9E21\u8089\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u5B50\u80E1\u6912\u9E21\u8089\u63E1\uFF1A\u6E05\u4EAE\u7684\u67D1\u6A58\u9999\u5E26\u6765\u4E00\u70B9\u9178\u723D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_11",
+    "number": 165,
+    "name": "\u9999\u70E4\u9E2D\u80F8\u63E1",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u9999\u70E4\u9E2D\u80F8\u63E1\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "meat_12",
+    "number": 166,
+    "name": "\u6C49\u5821\u6392\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u8089\u7C7B\u63E1\u5BFF\u53F8",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#a96649",
+    "fullness": 23,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u6C49\u5821\u6392\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "onigiri",
+    "number": 7,
+    "name": "\u5927\u996D\u56E2",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "onigiri",
+    "color": "#91ab6b",
+    "fullness": 30,
+    "points": 110,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u5927\u996D\u56E2\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_02",
+    "number": 167,
+    "name": "\u6885\u5B50\u996D\u56E2",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "onigiri",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u6885\u5B50\u996D\u56E2\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_03",
+    "number": 168,
+    "name": "\u6606\u5E03\u996D\u56E2",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "onigiri",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u6606\u5E03\u996D\u56E2\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_04",
+    "number": 169,
+    "name": "\u829D\u9EBB\u996D\u56E2",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "onigiri",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "sesame",
+    "description": "\u829D\u9EBB\u996D\u56E2\uFF1A\u7EC6\u5C0F\u829D\u9EBB\u5E26\u6765\u6E29\u67D4\u575A\u679C\u9999\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_05",
+    "number": 170,
+    "name": "\u70E4\u996D\u56E2",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "select",
+    "visualKey": "onigiri",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u70E4\u996D\u56E2\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_06",
+    "number": 171,
+    "name": "\u9171\u70E4\u8304\u5B50\u63E1",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "eggplant",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "seared",
+    "description": "\u9171\u70E4\u8304\u5B50\u63E1\uFF1A\u8868\u9762\u5FAE\u5FAE\u7126\u9999\uFF0C\u8BB0\u5F97\u6162\u6162\u54C1\u5C1D\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_07",
+    "number": 172,
+    "name": "\u7530\u4E50\u8304\u5B50\u63E1",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "eggplant",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u7530\u4E50\u8304\u5B50\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_08",
+    "number": 173,
+    "name": "\u5357\u74DC\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "onigiri",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u5357\u74DC\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_09",
+    "number": 174,
+    "name": "\u9999\u83C7\u63E1\u5BFF\u53F8",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "common",
+    "visualKey": "mushroom",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u9999\u83C7\u63E1\u5BFF\u53F8\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "veggie_10",
+    "number": 175,
+    "name": "\u677E\u9732\u8611\u83C7\u63E1",
+    "themeId": "classic",
+    "category": "\u996D\u56E2\u4E0E\u852C\u98DF",
+    "categoryId": "veggie",
+    "rarity": "treasure",
+    "visualKey": "mushroom",
+    "color": "#91ab6b",
+    "fullness": 22,
+    "points": 80,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u677E\u9732\u8611\u83C7\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_01",
+    "number": 176,
+    "name": "\u9C9C\u867E\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "common",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C9C\u867E\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_02",
+    "number": 177,
+    "name": "\u9C7F\u9C7C\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "common",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C7F\u9C7C\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_03",
+    "number": 178,
+    "name": "\u87F9\u68D2\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "common",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u87F9\u68D2\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_04",
+    "number": 179,
+    "name": "\u7389\u5B50\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "common",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7389\u5B50\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_05",
+    "number": 180,
+    "name": "\u821E\u8338\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "select",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u821E\u8338\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_06",
+    "number": 181,
+    "name": "\u82A6\u7B0B\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "common",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u82A6\u7B0B\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_07",
+    "number": 182,
+    "name": "\u5357\u74DC\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "common",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u5357\u74DC\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "tempura_08",
+    "number": 183,
+    "name": "\u83B2\u85D5\u5929\u5987\u7F57\u63E1",
+    "themeId": "classic",
+    "category": "\u70B8\u7269\u7CFB",
+    "categoryId": "tempura",
+    "rarity": "common",
+    "visualKey": "tempura",
+    "color": "#d9ac58",
+    "fullness": 23,
+    "points": 100,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u83B2\u85D5\u5929\u5987\u7F57\u63E1\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_01",
+    "number": 184,
+    "name": "\u7126\u7CD6\u5E03\u4E01",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "pudding",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7126\u7CD6\u5E03\u4E01\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_02",
+    "number": 185,
+    "name": "\u725B\u5976\u5E03\u4E01",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "pudding",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u725B\u5976\u5E03\u4E01\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_03",
+    "number": 186,
+    "name": "\u7119\u8336\u5E03\u4E01",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "pudding",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7119\u8336\u5E03\u4E01\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_04",
+    "number": 187,
+    "name": "\u8292\u679C\u5E03\u4E01",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "pudding",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u8292\u679C\u5E03\u4E01\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_05",
+    "number": 188,
+    "name": "\u674F\u4EC1\u8C46\u8150",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "select",
+    "visualKey": "pudding",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u674F\u4EC1\u8C46\u8150\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_06",
+    "number": 189,
+    "name": "\u9999\u8349\u5976\u916A",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "pudding",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9999\u8349\u5976\u916A\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_07",
+    "number": 190,
+    "name": "\u9ED1\u7CD6\u8568\u997C",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "mochi",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9ED1\u7CD6\u8568\u997C\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_08",
+    "number": 191,
+    "name": "\u9EC4\u8C46\u7C89\u7CEF\u7C73\u56E2",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "mochi",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9EC4\u8C46\u7C89\u7CEF\u7C73\u56E2\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_09",
+    "number": 192,
+    "name": "\u8349\u8393\u5927\u798F",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "mochi",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u8349\u8393\u5927\u798F\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_10",
+    "number": 193,
+    "name": "\u7EA2\u8C46\u5927\u798F",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "mochi",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7EA2\u8C46\u5927\u798F\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_11",
+    "number": 194,
+    "name": "\u65E5\u5F0F\u829D\u58EB\u86CB\u7CD5",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "select",
+    "visualKey": "cake",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "cheese",
+    "description": "\u65E5\u5F0F\u829D\u58EB\u86CB\u7CD5\uFF1A\u6D53\u9999\u829D\u58EB\u8F7B\u8F7B\u76D6\u4F4F\u8868\u9762\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "sweet_12",
+    "number": 195,
+    "name": "\u5DE7\u514B\u529B\u86CB\u7CD5",
+    "themeId": "classic",
+    "category": "\u751C\u54C1\u7CFB",
+    "categoryId": "sweet",
+    "rarity": "select",
+    "visualKey": "cake",
+    "color": "#e7c98e",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5DE7\u514B\u529B\u86CB\u7CD5\uFF1A\u4FDD\u7559\u98DF\u6750\u672C\u6765\u7684\u9999\u6C14\u4E0E\u53E3\u611F\u3002",
+    "origin": "game-menu-inspired"
+  },
+  {
+    "id": "taste_caramel_salmon",
+    "number": 196,
+    "name": "\u7126\u7CD6\u4E09\u6587\u9C7C",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "salmon",
+    "color": "#ef8666",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "caramel",
+    "description": "\u7126\u7CD6\u4E09\u6587\u9C7C\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "owner-request"
+  },
+  {
+    "id": "taste_foie_gras",
+    "number": 197,
+    "name": "\u9E45\u809D",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "meat",
+    "rarity": "treasure",
+    "visualKey": "foie",
+    "color": "#b58d53",
+    "fullness": 22,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u9E45\u809D\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "owner-request"
+  },
+  {
+    "id": "taste_red_prawn",
+    "number": 198,
+    "name": "\u8D64\u867E",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "shrimp",
+    "color": "#ee735b",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u8D64\u867E\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "owner-request"
+  },
+  {
+    "id": "taste_matcha_pudding",
+    "number": 199,
+    "name": "\u62B9\u8336\u5E03\u4E01",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "pudding",
+    "color": "#89a469",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u62B9\u8336\u5E03\u4E01\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "owner-request"
+  },
+  {
+    "id": "taste_cold_rabbit",
+    "number": 200,
+    "name": "\u51B7\u5403\u5154\u5BFF\u53F8",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#9d5d42",
+    "fullness": 22,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "spicy",
+    "description": "\u51B7\u5403\u5154\u5BFF\u53F8\uFF1A\u6912\u9999\u5154\u8089\u9047\u89C1\u8F6F\u8F6F\u918B\u996D\uFF0C\u662F\u672C\u5E97\u7684\u4E00\u6B21\u4E2D\u5F0F\u5C0F\u5192\u9669\u3002",
+    "origin": "owner-request"
+  },
+  {
+    "id": "taste_kohada",
+    "number": 201,
+    "name": "\u5C0F\u808C\u9C7C\u5BFF\u53F8",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "silverfish",
+    "color": "#8e9fa8",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5C0F\u808C\u9C7C\u5BFF\u53F8\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "owner-request"
+  },
+  {
+    "id": "taste_cold_beef",
+    "number": 202,
+    "name": "\u51B7\u5403\u725B\u8089\u5BFF\u53F8",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "meat",
+    "rarity": "select",
+    "visualKey": "meat",
+    "color": "#9d5d42",
+    "fullness": 22,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "spicy",
+    "description": "\u51B7\u5403\u725B\u8089\u5BFF\u53F8\uFF1A\u9EBB\u9999\u725B\u8089\u7247\uFF0C\u914D\u4E0A\u4E00\u5C0F\u56E2\u7C73\u996D\u3002",
+    "origin": "owner-request"
+  },
+  {
+    "id": "taste_caramel_foie",
+    "number": 203,
+    "name": "\u7099\u70E7\u7126\u7CD6\u9E45\u809D",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "meat",
+    "rarity": "treasure",
+    "visualKey": "foie",
+    "color": "#b58d53",
+    "fullness": 22,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "caramel",
+    "description": "\u7099\u70E7\u7126\u7CD6\u9E45\u809D\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_yuzu_red_prawn",
+    "number": 204,
+    "name": "\u67DA\u9999\u8D64\u867E",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "common",
+    "visualKey": "shrimp",
+    "color": "#ee735b",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u9999\u8D64\u867E\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_truffle_wagyu",
+    "number": 205,
+    "name": "\u677E\u9732\u548C\u725B\u63E1",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "meat",
+    "rarity": "treasure",
+    "visualKey": "meat",
+    "color": "#9d5d42",
+    "fullness": 22,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u677E\u9732\u548C\u725B\u63E1\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_uni_scallop",
+    "number": 206,
+    "name": "\u6D77\u80C6\u5E06\u7ACB\u63E1",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "treasure",
+    "visualKey": "scallop",
+    "color": "#edd7aa",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u6D77\u80C6\u5E06\u7ACB\u63E1\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_otoro_uni",
+    "number": 207,
+    "name": "\u5927\u8179\u6D77\u80C6\u63E1",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "treasure",
+    "visualKey": "tuna",
+    "color": "#cf6276",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5927\u8179\u6D77\u80C6\u63E1\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_roe_mountain",
+    "number": 208,
+    "name": "\u9C91\u9C7C\u7C7D\u6EE1\u8F7D\u519B\u8230",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "gunkan",
+    "color": "#e6a04d",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9C91\u9C7C\u7C7D\u6EE1\u8F7D\u519B\u8230\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_eel_duet",
+    "number": 209,
+    "name": "\u7099\u70E7\u9CD7\u9C7C\u53CC\u62FC",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "eel",
+    "color": "#ab763e",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u7099\u70E7\u9CD7\u9C7C\u53CC\u62FC\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_sweet_prawn_uni",
+    "number": 210,
+    "name": "\u751C\u867E\u6D77\u80C6\u676F",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "treasure",
+    "visualKey": "gunkan",
+    "color": "#e6a04d",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u751C\u867E\u6D77\u80C6\u676F\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_pepper_amberjack",
+    "number": 211,
+    "name": "\u67DA\u5B50\u80E1\u6912\u9C24\u9C7C\u63E1",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "whitefish",
+    "color": "#e2d6c2",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "fish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u67DA\u5B50\u80E1\u6912\u9C24\u9C7C\u63E1\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_lime_scallop",
+    "number": 212,
+    "name": "\u9752\u67E0\u9C9C\u8D1D\u63E1",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "common",
+    "visualKey": "scallop",
+    "color": "#edd7aa",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "citrus",
+    "description": "\u9752\u67E0\u9C9C\u8D1D\u63E1\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_wasabi_octopus",
+    "number": 213,
+    "name": "\u5C71\u8475\u7AE0\u9C7C\u63E1",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "common",
+    "visualKey": "squid",
+    "color": "#c5a8c7",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u5C71\u8475\u7AE0\u9C7C\u63E1\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_sukiyaki_roll",
+    "number": 214,
+    "name": "\u5BFF\u559C\u70E7\u725B\u8089\u5377",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "common",
+    "visualKey": "roll",
+    "color": "#91a56b",
+    "fullness": 18,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u5BFF\u559C\u70E7\u725B\u8089\u5377\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_crab_croquette",
+    "number": 215,
+    "name": "\u87F9\u8089\u5976\u6CB9\u53EF\u4E50\u997C",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "common",
+    "visualKey": "croquette",
+    "color": "#d6a354",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "shellfish",
+    "collectible": true,
+    "topping": "",
+    "description": "\u87F9\u8089\u5976\u6CB9\u53EF\u4E50\u997C\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_mentai_prawn_roll",
+    "number": 216,
+    "name": "\u70B8\u867E\u660E\u592A\u5B50\u5377",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "roll",
+    "color": "#91a56b",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "roe",
+    "collectible": true,
+    "topping": "",
+    "description": "\u70B8\u867E\u660E\u592A\u5B50\u5377\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_shiso_plum_roll",
+    "number": 217,
+    "name": "\u7D2B\u82CF\u6885\u5B50\u6D77\u82D4\u5377",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "select",
+    "visualKey": "roll",
+    "color": "#91a56b",
+    "fullness": 18,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u7D2B\u82CF\u6885\u5B50\u6D77\u82D4\u5377\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_smoked_duck",
+    "number": 218,
+    "name": "\u70DF\u718F\u9E2D\u80F8\u5BFF\u53F8",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#9d5d42",
+    "fullness": 22,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u70DF\u718F\u9E2D\u80F8\u5BFF\u53F8\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_pepper_chicken",
+    "number": 219,
+    "name": "\u85E4\u6912\u9E21\u8089\u5BFF\u53F8",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "meat",
+    "rarity": "common",
+    "visualKey": "meat",
+    "color": "#9d5d42",
+    "fullness": 22,
+    "points": 120,
+    "allergen": null,
+    "collectible": true,
+    "topping": "spicy",
+    "description": "\u85E4\u6912\u9E21\u8089\u5BFF\u53F8\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_sesame_panna",
+    "number": 220,
+    "name": "\u9ED1\u829D\u9EBB\u5976\u51BB",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "sweet",
+    "rarity": "common",
+    "visualKey": "pudding",
+    "color": "#89a469",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "",
+    "description": "\u9ED1\u829D\u9EBB\u5976\u51BB\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_hojicha_cake",
+    "number": 221,
+    "name": "\u7119\u8336\u7126\u7CD6\u86CB\u7CD5",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "sweet",
+    "rarity": "select",
+    "visualKey": "cake",
+    "color": "#a78555",
+    "fullness": 14,
+    "points": 70,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "caramel",
+    "description": "\u7119\u8336\u7126\u7CD6\u86CB\u7CD5\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_peach_mochi",
+    "number": 222,
+    "name": "\u6843\u6843\u7CEF\u7C73\u56E2",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "sweet",
+    "rarity": "treasure",
+    "visualKey": "mochi",
+    "color": "#efc1bd",
+    "fullness": 14,
+    "points": 70,
+    "allergen": null,
+    "collectible": true,
+    "topping": "",
+    "description": "\u6843\u6843\u7CEF\u7C73\u56E2\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  },
+  {
+    "id": "taste_cat_matcha_tamago",
+    "number": 223,
+    "name": "\u62DB\u8D22\u732B\u62B9\u8336\u7389\u5B50",
+    "themeId": "first-taste",
+    "category": "\u4E00\u6D4B\u7279\u8272",
+    "categoryId": "special",
+    "rarity": "treasure",
+    "visualKey": "tamago",
+    "color": "#96ac6c",
+    "fullness": 18,
+    "points": 120,
+    "allergen": "egg",
+    "collectible": true,
+    "topping": "green",
+    "description": "\u62DB\u8D22\u732B\u62B9\u8336\u7389\u5B50\uFF1A\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002",
+    "origin": "game-original"
+  }
+];
+
+// src/menus-v2.js
+var MENU_EDITION2 = "2026-10-catalog2";
+var RARITIES = Object.freeze({ common: { name: "\u65E5\u5E38", chance: 0.72, color: "#66886d" }, select: { name: "\u7CBE\u9009", chance: 0.23, color: "#668fa9" }, treasure: { name: "\u73CD\u85CF", chance: 0.05, color: "#b89343" } });
+var rarityOf = (f) => f.rarity === "hidden" ? "treasure" : f.rarity === "rare" ? "select" : f.rarity;
+var CATALOG2 = Object.freeze({ ...CATALOG, ...Object.fromEntries(MENU_ROWS.map((f) => [f.id, Object.freeze(f)])) });
+var PERMANENT = Object.freeze(MENU_ROWS.filter((f) => f.themeId === "classic").map((f) => f.id));
+var FEATURED = Object.freeze(MENU_ROWS.filter((f) => f.themeId === "first-taste").map((f) => f.id));
+var THEMES2 = Object.freeze([
+  { id: "first-taste", name: "\u7B2C02\u671F \xB7 \u4E00\u6D4B\u767E\u5473\u653E\u9898", description: "188\u6B3E\u5E38\u9A7B\uFF0B28\u6B3E\u7279\u8272\u540C\u53F0\u56DE\u8F6C\u3002\u51B7\u5403\u5154\u3001\u7126\u7CD6\u4E09\u6587\u9C7C\u3001\u62B9\u8336\u5E03\u4E01\uFF0C\u6162\u6162\u627E\u4E0B\u4E00\u53E3\u3002", opensAt: "2026-10-18T16:00:00Z", closesAt: "2026-11-01T16:00:00Z", permanent: false, color: "#9b7656", foods: [...PERMANENT, ...FEATURED, "tea"], collectionFoods: FEATURED, featured: FEATURED },
+  { id: "classic", name: "\u5E38\u9A7B\u767E\u5473\u83DC\u5355", description: "188\u6B3E\u5E38\u9A7B\u83DC\uFF0C\u5206\u4E3A15\u4E2A\u7CFB\u5217\uFF1B\u4E4C\u9F99\u8336\u53E6\u5907\uFF0C\u4E0D\u8BA1\u6536\u85CF\u76D8\u6570\u3002", permanent: true, opensAt: null, closesAt: null, color: "#527e6a", foods: [...PERMANENT, "tea"], collectionFoods: PERMANENT },
+  ...THEMES.filter((t) => t.id === "autumn").map((t) => ({ ...t, archiveOnly: true, name: "\u5F80\u671F \xB7 \u79CB\u65E5\u5C0F\u98DF\u5802" }))
+].map((t) => Object.freeze(t)));
+function themeById2(id) {
+  const t = THEMES2.find((t2) => t2.id === id);
+  if (!t) throw new Error("\u672A\u77E5\u4E3B\u9898\u83DC\u5355");
+  return t;
+}
+function menuState(t, serverTime) {
+  if (t.archiveOnly) return "archive";
+  if (t.permanent) return "permanent";
+  const n = Date.parse(serverTime);
+  if (!Number.isFinite(n)) return "time_unconfirmed";
+  return n < Date.parse(t.opensAt) ? "upcoming" : t.closesAt && n >= Date.parse(t.closesAt) ? "archive" : "current";
 }
 
 // src/renderer-v12.js
-var isAllergic2 = (character, key) => CATALOG[key]?.allergen === character.allergy;
+var isAllergic2 = (character, key) => CATALOG2[key]?.allergen === character.allergy;
 var INK = "#293f40";
 function round(c, x, y, w, h, r, fill, stroke) {
   c.beginPath();
@@ -440,16 +4355,21 @@ function line(c, points, color, width = 2) {
   c.lineJoin = "round";
   c.stroke();
 }
-function text(c, str, x, y, size = 12, color = INK, weight = 500) {
+function text(c, str, x, y, size = 12, color = INK, weight = 500, maxWidth) {
   c.fillStyle = color;
   c.textAlign = "center";
   c.textBaseline = "middle";
   c.font = `${weight} ${size}px "PingFang SC","Microsoft YaHei",sans-serif`;
-  c.fillText(str, x, y);
+  if (maxWidth) c.fillText(str, x, y, maxWidth);
+  else c.fillText(str, x, y);
 }
 function drawSushi(c, key, x, y, scale = 1) {
-  const spec = CATALOG[key];
+  const spec = CATALOG2[key];
   key = spec?.visualKey || key;
+  if (!["tea", "salmon", "tuna", "shrimp", "tamago", "cucumber", "ikura", "onigiri"].includes(key)) {
+    drawCatalogDish(c, spec, x, y, scale);
+    return;
+  }
   c.save();
   c.translate(x, y);
   c.scale(scale, scale);
@@ -534,7 +4454,7 @@ function drawSushi(c, key, x, y, scale = 1) {
       c.fill();
     } else {
       round(c, -34, -23, 68, 29, 11, key === "salmon" ? "#d97157" : "#b74958");
-      round(c, -34, -27, 68, 28, 11, CATALOG[key].color);
+      round(c, -34, -27, 68, 28, 11, CATALOG2[key].color);
       c.save();
       c.beginPath();
       c.roundRect(-34, -27, 68, 28, 11);
@@ -543,6 +4463,7 @@ function drawSushi(c, key, x, y, scale = 1) {
       c.restore();
     }
   }
+  garnish(c, spec);
   if (spec?.accent) {
     oval(c, 24, -26, 5, 5, spec.accent, "#fff9e9");
     if (spec.rarity === "hidden") text(c, "\u798F", 24, -26, 6, "#fff9e9", 700);
@@ -778,13 +4699,14 @@ var Renderer = class {
     c.lineWidth = 1.4;
     const ordered = game2.foods.map((f, i) => ({ ...f, number: i < 8 ? i + 1 : null, ...g.point(f.p) })).sort((a, b) => a.y - b.y);
     for (const f of ordered) {
+      const grade = rarityOf(CATALOG2[f.key]), gradeColor = RARITIES[grade]?.color || "#d9bd83";
       const r = mobile ? 25 : 35, fs = mobile ? 0.62 : 0.84, allergy = isAllergic2(game2.character, f.key), hover = this.hover === f.id;
       c.save();
       c.translate(f.x, f.y);
       if (hover) c.translate(0, -3);
       oval(c, 1, 10, r + 3, r * 0.62, "#183c312c");
       oval(c, 0, 4, r + 3, r * 0.65, "#c5bda1");
-      oval(c, 0, 0, r + 3, r * 0.65, allergy ? "#f8d8c6" : "#fff7dc", allergy ? "#ce6852" : "#d9cba6");
+      oval(c, 0, 0, r + 3, r * 0.65, allergy ? "#f8d8c6" : "#fff7dc", allergy ? "#ce6852" : gradeColor);
       oval(c, 0, -1, r - 3, r * 0.49, null, allergy ? "#e5a58d" : "#d9bd83");
       if (hover) {
         oval(c, 0, -1, r + 7, r * 0.77, null, "#fff8e5");
@@ -792,10 +4714,14 @@ var Renderer = class {
       drawSushi(c, f.key, 0, -10, fs);
       const labelWidth = mobile ? 58 : 74;
       round(c, -labelWidth / 2, 21, labelWidth, 16, 4, allergy ? "#cb604e" : "#fff9e9");
-      text(c, `${CATALOG[f.key].name} ${CATALOG[f.key].fullness > 0 ? "+" : ""}${Math.round(CATALOG[f.key].fullness * (CATALOG[f.key].fullness > 0 ? game2.character.portion * (game2.rulesVersion === "1.2.0" ? 0.65 : 1) : 1))}`, 0, 29, mobile ? 8 : 9, allergy ? "#fff8e7" : "#485d50", 600);
+      text(c, `${CATALOG2[f.key].name} ${CATALOG2[f.key].fullness > 0 ? "+" : ""}${Math.round(CATALOG2[f.key].fullness * (CATALOG2[f.key].fullness > 0 ? game2.character.portion * (game2.rulesVersion?.startsWith("1.2.") ? 0.65 : 1) : 1))}`, 0, 29, mobile ? 8 : 9, allergy ? "#fff8e7" : "#485d50", 600, labelWidth - 4);
       if (allergy) {
         oval(c, r - 4, -24, 10, 10, "#c95242", "#fff6df");
         text(c, "\u5FCC", r - 4, -24, 10, "#fff9e9", 700);
+      }
+      if (!allergy && grade !== "common") {
+        oval(c, r - 4, -24, 9, 9, gradeColor, "#fff9e9");
+        text(c, grade === "treasure" ? "\u73CD" : "\u9009", r - 4, -24, 9, "#fff9e9", 700);
       }
       if (f.number) {
         oval(c, -r + 1, -22, 8, 8, "#f6efd9");
@@ -820,6 +4746,129 @@ var Renderer = class {
     }
   }
 };
+function garnish(c, spec) {
+  if (!spec) return;
+  const t = spec.topping;
+  c.lineWidth = 2;
+  if (spec.name.includes("\u6D77\u80C6")) {
+    for (let i = 0; i < 4; i++) oval(c, -12 + i * 8, -24 + i % 2 * 3, 6, 4, "#e6a34c", "#c38a40");
+  }
+  if (spec.name.includes("\u9C7C\u7C7D")) {
+    for (let i = 0; i < 8; i++) oval(c, -17 + i * 9 % 35, -16 + i % 3 * 4, 3, 2.5, "#ee8743", "#c46c35");
+  }
+  if (t === "cheese") round(c, -22, -21, 44, 12, 3, "#f4d067");
+  if (t === "caramel") {
+    line(c, [[-26, -17], [-16, -22], [-4, -13], [7, -22], [20, -12], [28, -17]], "#a76c35", 3);
+    for (let i = 0; i < 6; i++) oval(c, -20 + i * 8, -18 + i % 2 * 4, 1, 1, "#efcf89");
+  }
+  if (t === "green") {
+    for (let i = 0; i < 5; i++) oval(c, -17 + i * 8, -14 - i % 2 * 5, 3, 2, "#71905e");
+  }
+  if (t === "citrus") {
+    oval(c, 14, -24, 11, 7, "#e4d778", "#f8efb0");
+    line(c, [[14, -29], [14, -19]], "#fff6c9", 1);
+  }
+  if (t === "avocado") {
+    for (let i = 0; i < 3; i++) round(c, -20 + i * 14, -24, 10, 19, 4, "#a7b874");
+  }
+  if (t === "mayo") line(c, [[-27, -16], [-16, -21], [-4, -12], [8, -20], [20, -11], [28, -16]], "#fbefd5", 3);
+  if (t === "seared") {
+    for (let i = 0; i < 5; i++) line(c, [[-24 + i * 12, -24], [-18 + i * 12, -8]], "#86583f88", 2);
+  }
+  if (t === "sesame") for (let i = 0; i < 9; i++) oval(c, -21 + i * 13 % 43, -22 + i * 7 % 17, 1, 1.5, "#f3e4ae");
+  if (t === "spicy") for (let i = 0; i < 7; i++) oval(c, -21 + i * 7, -16 + i % 3 * 4, 2, 1.2, "#c45c44");
+}
+function drawCatalogDish(c, s, x, y, scale) {
+  c.save();
+  c.translate(x, y);
+  c.scale(scale, scale);
+  c.lineWidth = 1.4;
+  const k = s.visualKey, color = k === "pudding" ? s.name.includes("\u9ED1\u829D\u9EBB") ? "#b1b0a2" : s.name.includes("\u62B9\u8336") ? "#93ae7a" : "#edcc8f" : s.color || "#cf9d69";
+  const rice = () => {
+    oval(c, 0, 15, 30, 11, "#d4d2bb");
+    round(c, -29, -3, 58, 24, 12, "#fff8e7");
+    oval(c, 0, -4, 29, 10, "#fffbee");
+    for (let i = 0; i < 9; i++) oval(c, -22 + i * 13 % 44, 3 + i * 5 % 10, 1.5, 0.8, "#ddd5bc");
+  };
+  if (["pudding", "mochi", "cake", "croquette"].includes(k)) {
+    oval(c, 0, 20, 31, 6, "#d6cfb7");
+    if (k === "pudding") {
+      round(c, -23, -17, 46, 35, [7, 7, 14, 14], color, "#b1aa8c");
+      oval(c, 0, -17, 23, 8, color, "#b1aa8c");
+      oval(c, 0, -17, 18, 5, s.name.includes("\u62B9\u8336") ? "#688752" : s.name.includes("\u9ED1\u829D\u9EBB") ? "#71726a" : "#b97a4c");
+      oval(c, 0, 21, 32, 6, "#fff8e7", "#dad0b5");
+      line(c, [[30, -11], [34, 12]], "#b1aa8c", 2);
+      oval(c, 30, -14, 4, 6, "#ded9c5");
+    }
+    if (k === "mochi") {
+      for (const [xx, yy] of [[-17, 6], [17, 6], [0, -10]]) {
+        oval(c, xx, yy + 5, 16, 11, "#d7c4b6");
+        oval(c, xx, yy, 16, 13, color);
+        for (let i = 0; i < 4; i++) oval(c, xx - 8 + i * 5, yy - 5 + i % 2 * 3, 0.8, 0.8, "#fff6e4");
+      }
+    }
+    if (k === "cake") {
+      round(c, -27, -22, 54, 40, 3, color);
+      for (let yy = -9; yy < 15; yy += 11) round(c, -27, yy, 54, 4, 0, "#f7ead5");
+      oval(c, 0, -25, 12, 5, "#e9d5b5");
+    }
+    if (k === "croquette") {
+      for (const xx of [-15, 15]) {
+        oval(c, xx, 3, 17, 15, color, "#b48748");
+        for (let i = 0; i < 8; i++) oval(c, xx - 11 + i * 7 % 23, -6 + i * 5 % 19, 1.4, 1, "#f3d38d");
+      }
+    }
+  } else if (k === "gunkan" || k === "roll") {
+    const spots = k === "roll" ? [[-14, 2], [13, 4], [0, -13]] : [[0, -3]];
+    for (const [xx, yy] of spots) {
+      const r = k === "roll" ? 14 : 26;
+      round(c, xx - r, yy - 3, r * 2, 25, 6, "#314a3c");
+      oval(c, xx, yy, r, 10, "#f6efd8");
+      oval(c, xx, yy, r - 4, 7, color);
+      for (let i = 0; i < 6; i++) oval(c, xx - r + 7 + i * 7 % (r * 2 - 10), yy - 3 + i % 3 * 3, 2, 1.6, s.categoryId === "roll" ? "#94ad70" : "#f4d59b");
+    }
+  } else {
+    rice();
+    if (k === "scallop") {
+      for (const xx of [-12, 12]) {
+        oval(c, xx, -12, 17, 15, color, "#c6b495");
+        for (let i = 0; i < 4; i++) line(c, [[xx - 9 + i * 6, -22], [xx - 7 + i * 5, -4]], "#f7e8ca", 1);
+      }
+    } else if (k === "squid") {
+      round(c, -30, -24, 60, 27, 7, color);
+      for (let i = 0; i < 5; i++) {
+        oval(c, -22 + i * 11, -9, 4, 4, "#f3e8d5");
+        oval(c, -22 + i * 11, -9, 2, 2, "#ae8d9c");
+      }
+    } else if (k === "mushroom") {
+      round(c, -6, -13, 12, 17, 3, "#e8d4af");
+      oval(c, 0, -20, 30, 14, "#a4825e", "#7c674e");
+      line(c, [[-14, -26], [0, -15], [15, -26]], "#ddc397", 2);
+    } else if (k === "eggplant") {
+      round(c, -30, -23, 60, 27, 9, "#726080");
+      round(c, -24, -20, 48, 20, 7, "#b8b08d");
+      line(c, [[-20, -14], [20, -14]], "#d2bd8c", 2);
+    } else if (k === "inari") {
+      round(c, -32, -20, 64, 34, 9, "#d6a058", "#b48a53");
+      line(c, [[-27, -15], [0, -4], [26, -15]], "#efd0a0", 3);
+    } else if (k === "tempura") {
+      round(c, -31, -23, 62, 29, 10, color);
+      for (let i = 0; i < 18; i++) oval(c, -28 + i * 17 % 56, -22 + i * 11 % 27, 2, 1.7, "#f1d091");
+    } else {
+      round(c, -33, -25, 66, 29, 9, color);
+      if (k === "silverfish") {
+        round(c, -29, -25, 58, 8, 4, "#66858d");
+        for (let i = 0; i < 6; i++) line(c, [[-22 + i * 8, -20], [-18 + i * 8, -5]], "#e3e6d5", 1.3);
+      }
+      if (k === "whitefish") for (let i = 0; i < 5; i++) line(c, [[-26 + i * 12, -22], [-18 + i * 12, -2]], "#f9f0da", 2);
+      if (k === "eel") for (let i = 0; i < 6; i++) line(c, [[-24 + i * 10, -23], [-21 + i * 10, 1]], "#6e5138", 2.5);
+      if (k === "foie") for (let i = 0; i < 9; i++) oval(c, -24 + i * 17 % 49, -20 + i * 7 % 20, 2.4, 1.7, "#80603e");
+      if (k === "meat") for (let i = 0; i < 5; i++) line(c, [[-27 + i * 13, -19], [-17 + i * 13, -3]], "#e4b392", 2);
+    }
+  }
+  garnish(c, s);
+  c.restore();
+}
 
 // src/config.js
 var PUBLIC_CONFIG = Object.freeze({
@@ -1116,7 +5165,7 @@ var SocialClient = class {
     }
   }
   async checkpoint(run, body) {
-    if (run.rulesVersion !== "1.2.0") return;
+    if (!["1.2.0", "1.2.1"].includes(run.rulesVersion)) return;
     const owner = this.profile?.id;
     const data = await this.request(`/api/runs/${run.runId}/checkpoint`, body);
     if (this.profile?.id === owner) this.profile = data.profile;
@@ -1310,21 +5359,197 @@ var CasualGame = class extends Game {
   }
 };
 
+// src/casual-v121.js
+var CASUAL_VERSION2 = "1.2.1";
+var MenuDeck2 = class {
+  constructor(rng, theme, knownFoods = []) {
+    this.rng = rng;
+    this.theme = theme;
+    this.known = new Set(knownFoods);
+    this.sinceSafe = 0;
+    this.sinceTea = 0;
+    this.sinceSelect = 0;
+    this.sinceTreasure = 0;
+    this.bags = /* @__PURE__ */ new Map();
+    this.lastDraw = null;
+  }
+  drawTier() {
+    if (this.sinceTreasure >= 39) return "treasure";
+    if (this.sinceSelect >= 7) return "select";
+    const p = this.rng();
+    return p < 0.72 ? "common" : p < 0.95 ? "select" : "treasure";
+  }
+  next() {
+    if (this.sinceTea >= 7) {
+      this.sinceTea = 0;
+      this.lastDraw = { kind: "tea" };
+      return "tea";
+    }
+    const tier = this.drawTier(), safe = this.sinceSafe >= 2;
+    const positive = this.theme.foods.filter((k) => CATALOG2[k].fullness > 0), feature = this.theme.featured || [], scope = feature.length && this.rng() < 0.35 ? "featured" : "permanent";
+    let candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (scope === "featured" ? feature.includes(k) : !feature.includes(k)) && (!safe || !CATALOG2[k].allergen));
+    if (!candidates.length) candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (!safe || !CATALOG2[k].allergen));
+    if (!candidates.length) candidates = positive.filter((k) => !safe || !CATALOG2[k].allergen);
+    const bagKey = tier + ":" + scope + ":" + safe;
+    let bag = this.bags.get(bagKey);
+    if (!bag?.length) {
+      bag = [...candidates];
+      for (let i = bag.length - 1; i > 0; i--) {
+        const j = Math.floor(this.rng() * (i + 1));
+        [bag[i], bag[j]] = [bag[j], bag[i]];
+      }
+      bag.sort((a, b) => Number(!this.known.has(a)) - Number(!this.known.has(b)));
+      this.bags.set(bagKey, bag);
+    }
+    const key = bag.pop(), actual = rarityOf(CATALOG2[key]);
+    this.sinceTea++;
+    this.sinceSafe = CATALOG2[key].allergen ? this.sinceSafe + 1 : 0;
+    this.sinceTreasure = actual === "treasure" ? 0 : this.sinceTreasure + 1;
+    this.sinceSelect = actual !== "common" ? 0 : this.sinceSelect + 1;
+    this.lastDraw = { kind: "food", tier: actual, requestedTier: tier, safe, scope };
+    return key;
+  }
+};
+var CasualGame2 = class extends Game {
+  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION2 } = {}) {
+    super({ seed, characterId });
+    if (menuEdition !== MENU_EDITION2) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
+    this.rulesVersion = CASUAL_VERSION2;
+    this.menuEdition = menuEdition;
+    this.theme = themeById2(themeId);
+    this.deck = new MenuDeck2(seededRandom(this.seed), this.theme, knownFoods);
+    this.knownFoods = new Set(knownFoods);
+    this.discoveries = /* @__PURE__ */ new Set();
+    this.lastActivity = 0;
+    this.autoRest = false;
+    this.checkoutRequested = false;
+  }
+  start() {
+    if (this.phase !== "card") return false;
+    this.phase = "playing";
+    const safe = this.theme.foods.find((k) => CATALOG2[k].fullness > 0 && !CATALOG2[k].allergen);
+    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
+    this.nextSpawn = 2;
+    return true;
+  }
+  tick(dt) {
+    this.time += dt;
+    if (this.time - this.lastActivity >= 20) {
+      this.autoRest = true;
+      this.phase = "paused";
+      return;
+    }
+    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
+    const unsafe = this.fullness < 15 || this.fullness > 100;
+    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
+    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
+    this.beltTravel += 0.035 * dt;
+    for (const f of this.foods) {
+      f.p = (f.p + 0.035 * dt) % 1;
+      f.distance += 0.035 * dt;
+    }
+    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
+    this.nextSpawn -= dt;
+    if (this.nextSpawn <= 0) {
+      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
+        this.addFood(this.deck.next());
+        this.nextSpawn = 2;
+      } else this.nextSpawn = 0;
+    }
+    this.refreshScore();
+  }
+  resume() {
+    if (!super.resume()) return false;
+    this.lastActivity = this.time;
+    this.autoRest = false;
+    return true;
+  }
+  eat(id) {
+    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
+    const index = this.foods.findIndex((f) => f.id === id);
+    if (index < 0) return null;
+    const item = this.foods[index], food = CATALOG2[item.key];
+    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
+    this.foods.splice(index, 1);
+    this.lastBite = this.time;
+    this.lastActivity = this.time;
+    this.eaten++;
+    if (food.collectible) this.sushiEaten++;
+    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
+    this.fullness = clamp(this.fullness + change, 0, 120);
+    const allergy = food.allergen === this.character.allergy;
+    let text2, type, newDiscovery = false;
+    if (allergy) {
+      const shielded = this.shield > 0;
+      if (shielded) this.shield--;
+      else this.hp = Math.max(1, this.hp - 4);
+      this.allergies++;
+      this.combo = 0;
+      type = "allergy";
+      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
+    } else if (food.collectible) {
+      const comfy = this.fullness >= 25 && this.fullness <= 85;
+      this.combo = comfy ? this.combo + 1 : 0;
+      this.bestCombo = Math.max(this.bestCombo, this.combo);
+      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
+      if (comfy) {
+        this.perfects++;
+        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
+      }
+      type = comfy ? "perfect" : "eat";
+      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
+      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
+      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
+      this.lastFood = item.key;
+    } else {
+      type = "tea";
+      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
+    }
+    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
+      this.discoveries.add(item.key);
+      this.bonusScore += 25;
+      newDiscovery = true;
+      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
+    }
+    this.refreshScore();
+    const event = { type, text: text2, item, change, newDiscovery };
+    this.events.push(event);
+    if (this.events.length > 32) this.events.shift();
+    return event;
+  }
+  checkout() {
+    if (!["playing", "paused"].includes(this.phase)) return false;
+    this.checkoutRequested = true;
+    this.phase = "gameover";
+    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
+    return true;
+  }
+  snapshot() {
+    return { ...super.snapshot(), version: CASUAL_VERSION2, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest };
+  }
+};
+
+// src/casual-engine.js
+var isCasualVersion = (v) => ["1.2.0", "1.2.1"].includes(v);
+function createCasual(options = {}) {
+  return new (options.rulesVersion === "1.2.0" ? CasualGame : CasualGame2)(options);
+}
+
 // src/run-state.js
 function rebuildActiveRun(entry) {
   const ticks = entry?.body?.ticks, actions = entry?.body?.actions;
   if (!entry?.run || !Number.isSafeInteger(ticks) || ticks < 0 || ticks > 6 * 3600 * 60 || !Array.isArray(actions) || actions.length > 25e3) throw new Error("\u4E0A\u6B21\u5BF9\u5C40\u8BB0\u5F55\u4E0D\u5B8C\u6574");
   let previous = -1;
   for (const a of actions) {
-    if (!Array.isArray(a) || a.length !== 2 || !Number.isSafeInteger(a[0]) || a[0] < previous || a[0] > ticks || !Number.isSafeInteger(a[1]) || a[1] < (entry.run.rulesVersion === "1.2.0" ? 0 : 1)) throw new Error("\u4E0A\u6B21\u5BF9\u5C40\u8BB0\u5F55\u65E0\u6548");
+    if (!Array.isArray(a) || a.length !== 2 || !Number.isSafeInteger(a[0]) || a[0] < previous || a[0] > ticks || !Number.isSafeInteger(a[1]) || a[1] < (isCasualVersion(entry.run.rulesVersion) ? 0 : 1)) throw new Error("\u4E0A\u6B21\u5BF9\u5C40\u8BB0\u5F55\u65E0\u6548");
     previous = a[0];
   }
-  const g = entry.run.rulesVersion === "1.2.0" ? new CasualGame({ seed: entry.run.seed, themeId: entry.run.themeId, menuEdition: entry.run.menuEdition, knownFoods: entry.run.knownFoods }) : new Game({ seed: entry.run.seed });
+  const g = isCasualVersion(entry.run.rulesVersion) ? createCasual({ rulesVersion: entry.run.rulesVersion, seed: entry.run.seed, themeId: entry.run.themeId, menuEdition: entry.run.menuEdition, knownFoods: entry.run.knownFoods }) : new Game({ seed: entry.run.seed });
   g.start();
   let i = 0;
   for (let tick = 0; tick <= ticks; tick++) {
     while (i < actions.length && actions[i][0] === tick) {
-      if (actions[i][1] === 0 && g.rulesVersion === "1.2.0") {
+      if (actions[i][1] === 0 && isCasualVersion(g.rulesVersion)) {
         if (g.phase === "paused") g.resume();
         else g.lastActivity = g.time;
       } else if (!g.eat(actions[i][1])) throw new Error("\u4E0A\u6B21\u5BF9\u5C40\u65E0\u6CD5\u6309\u539F\u89C4\u5219\u6062\u590D");
@@ -1338,10 +5563,12 @@ function rebuildActiveRun(entry) {
 }
 
 // src/main.js
-var Game2 = CasualGame;
-var isCasual = (g) => g?.rulesVersion === "1.2.0";
+var Game2 = CasualGame2;
+var isCasual = (g) => isCasualVersion(g?.rulesVersion);
 var syncedEaten = /* @__PURE__ */ new Map();
 var rankedChoice = false;
+var menuPage = 0;
+var collectionPage = 0;
 var selectedTheme = "classic";
 var themeChosen = false;
 var menuServerTime = null;
@@ -1350,7 +5577,7 @@ var checkpointBusy = false;
 try {
   selectedTheme = localStorage.getItem("sushi.theme.v12") || "classic";
   themeChosen = !!localStorage.getItem("sushi.theme.v12");
-  themeById(selectedTheme);
+  themeById2(selectedTheme);
 } catch {
   selectedTheme = "classic";
 }
@@ -1415,11 +5642,19 @@ function soundUI() {
   $("sound").setAttribute("aria-pressed", String(sound));
 }
 function menu() {
-  $("menu").innerHTML = Object.entries(CATALOG).filter(([key]) => (game?.theme || themeById(selectedTheme)).foods.includes(key)).map(([key, f]) => `<div class="menu-item ${game && f.allergen === game.character.allergy ? "allergic" : ""}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${f.name}<b>${f.fullness > 0 ? "+" : ""}${Math.round(f.fullness * (f.fullness > 0 ? (game?.character.portion || 1) * (game && !isCasual(game) ? 1 : 0.65) : 1))}</b></span></div>`).join("");
-  for (const el of $("menu").children) {
-    const c = el.querySelector("canvas").getContext("2d");
-    drawSushi(c, el.dataset.food, 50, 48, 1.2);
-  }
+  const pool = game && !isCasual(game) ? ["salmon", "tuna", "shrimp", "tamago", "cucumber", "ikura", "onigiri", "tea"] : (game?.theme || themeById2(selectedTheme)).foods;
+  const keys = pool.includes("taste_caramel_salmon") ? [...FEATURED, "tea", ...pool.filter((k) => !FEATURED.includes(k) && k !== "tea")] : pool;
+  const pages = Math.ceil(keys.length / 12);
+  menuPage = Math.min(menuPage, pages - 1);
+  const shown = keys.slice(menuPage * 12, menuPage * 12 + 12);
+  $("menu").innerHTML = shown.map((key) => {
+    const f = CATALOG2[key], grade = RARITIES[rarityOf(f)];
+    return `<div class="menu-item ${game && f.allergen === game.character.allergy ? "allergic" : ""}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}<b>${f.fullness > 0 ? "+" : ""}${Math.round(f.fullness * (f.fullness > 0 ? (game?.character.portion || 1) * (game && !isCasual(game) ? 1 : 0.65) : 1))} <small style="color:${grade?.color || "#66886d"}">${f.collectible ? grade?.name || "\u65E5\u5E38" : "\u8336\u996E"}</small></b></span></div>`;
+  }).join("");
+  for (const el of $("menu").children) drawSushi(el.querySelector("canvas").getContext("2d"), el.dataset.food, 50, 48, 1.2);
+  $("menu-page-info").textContent = `${keys.length}\u6B3E\u9910\u54C1 \xB7 ${menuPage + 1}/${pages}\u9875`;
+  $("menu-prev").disabled = menuPage === 0;
+  $("menu-next").disabled = menuPage >= pages - 1;
 }
 function characterUI() {
   if ($("theme-select")) $("theme-select").disabled = !!game && ["playing", "paused", "card"].includes(game.phase);
@@ -1484,10 +5719,10 @@ async function beginRun(id) {
   }
   try {
     const legacyTest = new URLSearchParams(location.search).get("test") === "1" && new URLSearchParams(location.search).get("casual") !== "1";
-    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.2.0", themeId: selectedTheme, ranked: rankedChoice });
+    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.2.1", themeId: selectedTheme, ranked: rankedChoice });
     playerId = social.playerId;
     identityWarning = "";
-    newGame(run.runId ? { seed: run.seed, characterId: run.characterId, onlineRun: run, legacy: run.rulesVersion !== "1.2.0" } : {});
+    newGame(run.runId ? { seed: run.seed, characterId: run.characterId, onlineRun: run, legacy: !isCasualVersion(run.rulesVersion) } : {});
   } catch (error) {
     if (error.code === "identity_lost") {
       identityWarning = error.message;
@@ -1507,7 +5742,7 @@ function newGame(options = {}) {
   saveProgress();
   if (!playerId && new URLSearchParams(location.search).get("test") === "1") playerId = "\u6D4B\u8BD5\u98DF\u5BA2";
   const run = options.onlineRun;
-  game = options.legacy ? new Game({ seed: options.seed ?? newSeed(), characterId: options.characterId }) : new CasualGame({ seed: options.seed ?? newSeed(), characterId: options.characterId, themeId: run?.themeId || selectedTheme, knownFoods: run?.knownFoods || social.profile?.collection?.map((c2) => c2.sushiId) || [], menuEdition: run?.menuEdition });
+  game = options.legacy ? new Game({ seed: options.seed ?? newSeed(), characterId: options.characterId }) : createCasual({ rulesVersion: run?.rulesVersion || "1.2.1", seed: options.seed ?? newSeed(), characterId: options.characterId, themeId: run?.themeId || selectedTheme, knownFoods: run?.knownFoods || social.profile?.collection?.map((c2) => c2.sushiId) || [], menuEdition: run?.menuEdition });
   onlineRun = options.onlineRun || null;
   activeTicks = 0;
   actionLog = [];
@@ -2041,7 +6276,7 @@ $("retry-network").onclick = async () => {
   }
 };
 $("copy-diagnostics").onclick = async () => {
-  const text2 = JSON.stringify({ version: "1.2.0", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
+  const text2 = JSON.stringify({ version: "1.2.1", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
   try {
     await navigator.clipboard.writeText(text2);
     toast("\u8BCA\u65AD\u5DF2\u590D\u5236\uFF0C\u4E0D\u5305\u542B\u5BC6\u7801\u6216\u767B\u5F55\u51ED\u636E");
@@ -2106,19 +6341,22 @@ window.addEventListener("online", () => syncCollection());
 function paintCollection() {
   const profile = social.profile, counts = new Map((profile?.collection || []).map((c) => [c.sushiId, c]));
   const local = isCasual(game) ? game.discoveries : /* @__PURE__ */ new Set();
-  const filter = $("collection-theme").value || "all";
-  const list = Object.values(CATALOG).filter((f) => f.collectible && (filter === "all" || filter === "hidden" && f.rarity === "hidden" || f.themeId === filter));
-  $("collection-summary").textContent = profile ? `${counts.size} / ${Object.values(CATALOG).filter((f) => f.collectible).length} \u79CD\u5DF2\u6536\u85CF \xB7 \u7D2F\u8BA1 ${profile.totalSushi || 0} \u76D8` : "\u8F93\u5165\u6635\u79F0\u5165\u5EA7\uFF0C\u7ED3\u8D26\u540E\u7559\u4E0B\u4F60\u7684\u6536\u85CF";
-  $("collection-grid").innerHTML = list.map((f) => {
-    const owned = counts.get(f.id), pending = local.has(f.id) && !owned, known = !!owned || pending;
-    return `<article class="collection-card ${known ? "unlocked" : "locked"}"><small>NO.${String(f.number).padStart(3, "0")} \xB7 ${f.rarity === "hidden" ? "\u9690\u85CF" : f.rarity === "rare" ? "\u7A00\u6709" : "\u666E\u901A"}</small><canvas width="120" height="90" data-sushi="${f.id}" aria-label="${known ? escapeHtml(f.name) : "\u672A\u53D1\u73B0\u5BFF\u53F8\u526A\u5F71"}"></canvas><h3>${known ? escapeHtml(f.name) : "\uFF1F\uFF1F\uFF1F"}</h3><p>${known ? escapeHtml(f.description) : "\u6162\u6162\u54C1\u5C1D\uFF0C\u603B\u4F1A\u9047\u89C1\u3002"}</p><b>${owned ? `\u5DF2\u54C1\u5C1D ${owned.tasteCount} \u6B21` : pending ? "\u65B0\u53D1\u73B0 \xB7 \u5F85\u4E91\u7AEF\u786E\u8BA4" : "\u5C1A\u672A\u53D1\u73B0"}</b>${owned ? `<small>\u521D\u9047 ${bjTime(owned.firstDiscoveredAt)}</small>` : ""}</article>`;
+  const filter = $("collection-theme").value || "all", tier = $("collection-rarity").value || "all", query = $("collection-search").value.trim();
+  const list = Object.values(CATALOG2).filter((f) => f.collectible && (filter === "all" || filter === "hidden" && rarityOf(f) === "treasure" || f.themeId === filter) && (tier === "all" || rarityOf(f) === tier) && (!query || f.name.includes(query) || String(f.number).includes(query))).sort((a, b) => Number(counts.has(b.id) || local.has(b.id)) - Number(counts.has(a.id) || local.has(a.id)) || a.number - b.number);
+  const pages = Math.max(1, Math.ceil(list.length / 24));
+  collectionPage = Math.min(collectionPage, pages - 1);
+  const shown = list.slice(collectionPage * 24, collectionPage * 24 + 24);
+  $("collection-summary").textContent = profile ? `${counts.size} / ${Object.values(CATALOG2).filter((f) => f.collectible).length} \u79CD\u5DF2\u6536\u85CF \xB7 \u7D2F\u8BA1 ${profile.totalSushi || 0} \u76D8` : "\u8F93\u5165\u6635\u79F0\u5165\u5EA7\uFF0C\u7ED3\u8D26\u540E\u7559\u4E0B\u4F60\u7684\u6536\u85CF";
+  $("collection-grid").innerHTML = shown.map((f) => {
+    const owned = counts.get(f.id), pending = local.has(f.id) && !owned, known = !!owned || pending, grade = RARITIES[rarityOf(f)];
+    return `<article class="collection-card ${known ? "unlocked" : "locked"}" data-rarity="${rarityOf(f)}"><small>NO.${String(f.number).padStart(3, "0")} \xB7 <span style="color:${grade.color}">${grade.name}</span></small><canvas width="120" height="90" data-sushi="${f.id}" aria-label="${known ? escapeHtml(f.name) : "\u672A\u53D1\u73B0\u5BFF\u53F8\u526A\u5F71"}"></canvas><h3>${known ? escapeHtml(f.name) : "\uFF1F\uFF1F\uFF1F"}</h3><p>${known ? escapeHtml(f.description) : "\u6162\u6162\u54C1\u5C1D\uFF0C\u603B\u4F1A\u9047\u89C1\u3002"}</p><b>${owned ? `\u5DF2\u54C1\u5C1D ${owned.tasteCount} \u6B21` : pending ? "\u65B0\u53D1\u73B0 \xB7 \u5F85\u4E91\u7AEF\u786E\u8BA4" : "\u5C1A\u672A\u53D1\u73B0"}</b>${owned ? `<small>\u521D\u9047 ${bjTime(owned.firstDiscoveredAt)}</small>` : ""}</article>`;
   }).join("");
-  for (const c of $("collection-grid").querySelectorAll("canvas")) {
-    const ctx = c.getContext("2d");
-    drawSushi(ctx, c.dataset.sushi, 60, 48, 0.9);
-  }
-  $("theme-progress").textContent = THEMES.map((t) => {
-    const ids = t.foods.filter((k) => CATALOG[k].collectible);
+  for (const c of $("collection-grid").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.sushi, 60, 48, 0.9);
+  $("collection-page-info").textContent = `${list.length}\u6B3E \xB7 \u7B2C${collectionPage + 1}/${pages}\u9875`;
+  $("collection-prev").disabled = collectionPage === 0;
+  $("collection-next").disabled = collectionPage >= pages - 1;
+  $("theme-progress").textContent = THEMES2.map((t) => {
+    const ids = (t.collectionFoods || t.foods).filter((k) => CATALOG2[k].collectible);
     return `${t.name} ${ids.filter((k) => counts.has(k)).length}/${ids.length}`;
   }).join(" \xB7 ");
 }
@@ -2135,23 +6373,45 @@ $("collection").onclick = () => {
   });
 };
 $("close-collection").onclick = () => $("collection-dialog").close();
-$("collection-theme").innerHTML = '<option value="all">\u5168\u90E8\u5BFF\u53F8</option><option value="hidden">\u9690\u85CF\u5BFF\u53F8</option>' + THEMES.map((t) => `<option value="${t.id}">${t.name}</option>`).join("");
-$("collection-theme").onchange = paintCollection;
+$("collection-theme").innerHTML = '<option value="all">\u5168\u90E8\u5BFF\u53F8</option><option value="hidden">\u73CD\u85CF\u5BFF\u53F8</option>' + THEMES2.map((t) => `<option value="${t.id}">${t.name}</option>`).join("");
+for (const id of ["collection-theme", "collection-rarity", "collection-search"]) $(id).addEventListener(id === "collection-search" ? "input" : "change", () => {
+  collectionPage = 0;
+  paintCollection();
+});
+$("collection-prev").onclick = () => {
+  collectionPage--;
+  paintCollection();
+  $("collection-grid").scrollIntoView({ block: "start" });
+};
+$("collection-next").onclick = () => {
+  collectionPage++;
+  paintCollection();
+  $("collection-grid").scrollIntoView({ block: "start" });
+};
+$("menu-prev").onclick = () => {
+  menuPage--;
+  menu();
+};
+$("menu-next").onclick = () => {
+  menuPage++;
+  menu();
+};
 function paintMenus() {
   const select = $("theme-select");
-  select.innerHTML = THEMES.map((t2) => {
+  select.innerHTML = THEMES2.map((t2) => {
     const state = menuState(t2, menuServerTime);
     return `<option value="${t2.id}">${t2.name}${state === "current" ? " \xB7 \u672C\u5468" : state === "archive" ? " \xB7 \u5F80\u671F" : state === "permanent" ? " \xB7 \u5E38\u9A7B" : " \xB7 \u65F6\u95F4\u5F85\u540C\u6B65"}</option>`;
   }).join("");
   select.value = selectedTheme;
   select.disabled = !!game && ["playing", "paused", "card"].includes(game.phase);
-  const t = game?.theme || themeById(selectedTheme);
+  const t = game?.theme || themeById2(selectedTheme);
   $("theme-description").textContent = t.description;
   $("theme-save-note").textContent = "\u9650\u5B9A\u83DC\u5355\u7ED3\u675F\u540E\u4FDD\u7559\u5728\u5F80\u671F\u83DC\u5355\uFF0C\u4E0D\u4F1A\u6C38\u4E45\u7EDD\u7248\u3002";
   menu();
 }
 $("theme-select").onchange = () => {
   selectedTheme = $("theme-select").value;
+  menuPage = 0;
   themeChosen = true;
   try {
     localStorage.setItem("sushi.theme.v12", selectedTheme);

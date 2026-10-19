@@ -60,3 +60,8 @@ Owner在独立Chrome完成第二封真实OTP恢复，原生浏览器页面显示
 - 没有购买服务、删除生产数据或更换技术栈。详细A–M矩阵见ACCEPTANCE.md。尚未验证真实手机/中国不同网络/长期负载；不声称所有网络可达或彻底防机器人。
 
 最终补丁2468beb已发布，Actions39255070908成功；正式资源0def204d13b8已核对HTML、脚本和build.json一致，包含自愿参榜开关。北京时间20:51正式公开URL双身份/桌面与手机尺寸再次检查通过，见artifacts/v12-p1-final-release.json和v1-public-online-smoke.json。生产可选排名迁移和Edge完成，原14档案/6收藏保护再次为true。当前可分享链接：https://gnfnv287rr-bot.github.io/sushi-panic/?release=120-collect 。
+
+
+## V1.2.1 菜单扩充
+
+Owner已确认188常驻＋28特色。216款配置/三档随机保底/图鉴分页搜索已实现；旧常驻计入188，旧秋日6款保留，乌龙茶另计。81项本地、35项Chrome、最后2项布局、真实Supabase浏览器7项与特色API3项通过。生产迁移/Edge完成，原18玩家/10收藏/日榜/冠军不变。Pages发布验收进行中。完整后续状态以menus/TEST_REPORT.md末尾为准。
