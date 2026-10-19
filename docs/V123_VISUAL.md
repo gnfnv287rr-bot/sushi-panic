@@ -21,4 +21,10 @@ Owner 提供两张参考：P1 是蓝色、饱满、圆润的中文标题；P2 �
 - `npm run build`与`node scripts/verify-build.mjs`通过：客户端1.2.3，规则1.2.1，资源328ee3ed784b。
 - 实际查看桌面/320/390页面、游戏内场景和手机图鉴截图，改掉320px候场计分栏拥挤；字体子集6,544 bytes。
 
-GitHub Pages正式发布及公开页面验证待追加。浏览器尺寸模拟不等于真实手机或中国网络验证。
+## 正式发布与线上检查
+
+- 源码提交 `80a8755`，已同步两个工作/发布分支。GitHub Actions [39268209793](https://github.com/gnfnv287rr-bot/sushi-panic/actions/runs/39268209793) success，含CI测试/安全/构建/Pages发布。
+- 正式链接：https://gnfnv287rr-bot.github.io/sushi-panic/?release=123-fresh 。2026-10-19 22:22～22:23（北京时间）公开HTTP200、build.json客户端1.2.3/规则1.2.1、HTML资源前缀328ee3ed784b、新字体字节与源码一致。
+- 两个独立Chrome会话（桌面1440×1100、手机尺寸390×844）：真实公开资源、Supabase游客身份及联网开局，实际吃寿司、新品/进度、暂停、相同公开榜单、奖牌、图鉴和隐藏过滤、存档入口均通过；无JS异常。新欢迎语及圆体真实加载通过。没有向生产提交测试最终分数，也没有再次发送邮箱验证码。
+- 证据：`artifacts/v123/unit-tests.txt`、`browser-tests.txt`、`security.txt`、`pages-action.txt`、`public-assets.json`、`public-smoke.json`及截图（本机测试产物，不入Git）。
+- 本次未重做跨设备邮箱收信验收、生产成绩提交或数据库压测；这些逻辑没有修改。未验证真实iPhone/Android/Safari/Edge及中国不同网络，尺寸模拟不代替真机或真人审美验收。
