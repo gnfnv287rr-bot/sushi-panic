@@ -104,7 +104,7 @@ async function refreshLeaderboard({quiet=false}={}){
   else $('board-updated').textContent='当前显示上次读取的数据，请联网后刷新。';
  }finally{boardBusy=false;$('board-refresh').disabled=false;}
  // A failed score retry must never hide or block the public ranking.
- social.retry().then(async outcomes=>{let updated=false;for(const o of outcomes){if(o.result){updated=true;if($('rank-result')&&onlineRun?.runId===o.result.runId)applyReceipt(o.result);}else if(o.error&&$('rank-result')&&onlineRun?.runId===o.runId)$('rank-result').textContent='等待重试：'+o.error;}if(updated)paintBoard(await social.board());}).catch(()=>{});
+ social.retry().then(async outcomes=>{let updated=false;for(const o of outcomes){if(o.result){updated=true;if($('rank-result')&&onlineRun?.runId===o.result.runId)applyReceipt(o.result);}else if(o.error&&$('rank-result')&&onlineRun?.runId===o.runId)$('rank-result').textContent=(o.retryable?'等待重试：':'成绩未上榜：')+o.error;}if(updated)paintBoard(await social.board());}).catch(()=>{});
 }
 function tickCountdown(){
  const left=clockAnchor?Math.max(0,Math.ceil((clockAnchor.reset-clockAnchor.time-(performance.now()-clockAnchor.at))/1000)):null;
@@ -168,7 +168,7 @@ $('close-account').onclick=()=>$('account-dialog').close();
 let emailOperation=null;
 async function emailSubmit(recover){const buttons=[$('bind-email'),$('recover-email')];buttons.forEach(b=>b.disabled=true);$('account-status').textContent='正在请求发送邮件…';try{const email=$('account-email').value.trim();await social.email(email,recover);emailOperation={email,recover};$('email-code-section').hidden=false;$('account-status').textContent='邮件请求已受理，请输入邮件中的验证码，或打开邮件链接。未验证前尚未绑定或恢复。';}catch(error){$('account-status').textContent=error.message;}finally{buttons.forEach(b=>b.disabled=!social.local&&!social.emailAvailable);}}
 $('bind-email').onclick=()=>emailSubmit(false);$('recover-email').onclick=()=>emailSubmit(true);
-$('verify-email').onclick=async()=>{if(!emailOperation)return;const button=$('verify-email');button.disabled=true;saveProgress();const previous=social.profile?.id;try{await social.verifyEmail(emailOperation.email,$('account-code').value,emailOperation.recover);playerId=social.profile.nickname;$('account-status').textContent='邮箱验证成功 · 云端档案已恢复';$('email-code-section').hidden=true;paintArchive();if(previous!==social.profile.id){game=null;onlineRun=null;home();}await refreshLeaderboard();}catch(error){$('account-status').textContent=error.message;}finally{button.disabled=false;}};
+$('verify-email').onclick=async()=>{if(!emailOperation)return;const button=$('verify-email');button.disabled=true;saveProgress();const previous=social.profile?.id;try{await social.verifyEmail(emailOperation.email,$('account-code').value,emailOperation.recover);playerId=social.profile.nickname;$('account-code').value='';emailOperation=null;$('account-status').textContent='邮箱验证成功 · 云端档案已恢复';$('email-code-section').hidden=true;paintArchive();if(previous!==social.profile.id){game=null;onlineRun=null;home();}await refreshLeaderboard();}catch(error){$('account-status').textContent=error.message;}finally{button.disabled=false;}};
 $('close-help').onclick=()=>$('help-dialog').close();
 $('help-dialog').addEventListener('click',e=>{if(e.target===$('help-dialog')){const r=$('help-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('help-dialog').close();}});
 document.addEventListener('keydown',e=>{
