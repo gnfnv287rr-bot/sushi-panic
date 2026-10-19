@@ -3,5 +3,5 @@ const build=JSON.parse(await readFile('dist/build.json','utf8')),html=await read
 assert.ok(html.includes('./'+base+'/src/main.js'));assert.ok(html.includes('./'+base+'/style.css'));
 for(const file of ['main.js','core.js','renderer.js','config.js','identity.js','storage.js','run-state.js','social.js','casual-engine.js','casual-v121.js','menu-catalog-v2.js','menus-v2.js','collection-feedback.js','shop-experience.js'])await access(`dist/${base}/src/${file}`);
 const config=await readFile(`dist/${base}/src/config.js`,'utf8');assert.ok(config.includes('./'+base+'/'));assert.ok(!/sb_secret_[A-Za-z0-9_-]{24,}/.test(config));await access(`dist/${base}/vendor/supabase.js`);
-await access(`dist/${base}/assets/fonts/sushi-menu.woff2`);await access(`dist/${base}/assets/fonts/OFL-MaShanZheng.txt`);
+await access(`dist/${base}/assets/fonts/sushi-menu.woff2`);await access(`dist/${base}/assets/fonts/OFL-ChillRound.txt`);
 console.log('Immutable browser release verified: '+build.releaseId);

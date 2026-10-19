@@ -89,34 +89,34 @@ export class Renderer {
   draw(game,clock,dt=0){
     this.resize(); const c=this.ctx,w=this.w,h=this.h;if(!w||!h)return;c.setTransform(this.dpr,0,0,this.dpr,0,0);c.clearRect(0,0,w,h);
     const mobile=w<500,g=trackGeometry(w,h),cx=w/2,cy=(g.top+g.bottom)/2;
-    // Warm maple counter with grain and inset rails.
-    c.fillStyle='#ecd6b2';c.fillRect(0,0,w,h);
-    for(let y=9;y<h;y+=27){line(c,[[0,y],[w,y]],'#c9a97620',1);for(let x=20;x<w;x+=160)line(c,[[x+(y%53),y+8],[x+83+(y%53),y+8]],'#fff9e928',1);}
-    round(c,0,0,w,65,0,'#f4e7cd');line(c,[[0,65],[w,65]],'#b8ac8d',1);
-    // Shop noren, deliberately a quiet frame around the moving food.
-    for(let i=0;i<5;i++){const ww=mobile?40:51,xx=cx-ww*2.5+i*ww;round(c,xx,0,ww-2,51,[0,0,5,5],i===2?'#38645b':'#4d776a');text(c,['寿','司','腹','八','分'][i],xx+ww/2,26,15,'#f7efd8',600);}
-    const lantern=(x)=>{line(c,[[x,0],[x,13]],'#73705b',1);round(c,x-12,13,24,32,9,'#dc7760');for(let i=-6;i<10;i+=6)line(c,[[x+i,17],[x+i,40]],'#edaa7c',1);round(c,x-7,10,14,4,1,'#5b6554');round(c,x-7,44,14,4,1,'#5b6554');};lantern(mobile?29:49);lantern(w-(mobile?29:49));
+    // Bright honey counter and fresh mint belt; track geometry stays unchanged.
+    c.fillStyle='#fff0cd';c.fillRect(0,0,w,h);
+    for(let y=9;y<h;y+=27){line(c,[[0,y],[w,y]],'#e8b96812',1);for(let x=20;x<w;x+=160)line(c,[[x+(y%53),y+8],[x+83+(y%53),y+8]],'#ffffff55',1);}
+    round(c,0,0,w,65,0,'#fffaf0');line(c,[[0,65],[w,65]],'#e7d9b6',1);
+    // Sky-blue shop noren frames the moving food.
+    for(let i=0;i<5;i++){const ww=mobile?40:51,xx=cx-ww*2.5+i*ww;round(c,xx,0,ww-2,51,[0,0,5,5],i===2?'#2079b9':'#3996ce');text(c,['寿','司','腹','八','分'][i],xx+ww/2,26,15,'#ffffff',600);}
+    const lantern=(x)=>{line(c,[[x,0],[x,13]],'#56839a',1);round(c,x-12,13,24,32,9,'#ff8e68');for(let i=-6;i<10;i+=6)line(c,[[x+i,17],[x+i,40]],'#ffba8c',1);round(c,x-7,10,14,4,1,'#346f8b');round(c,x-7,44,14,4,1,'#346f8b');};lantern(mobile?29:49);lantern(w-(mobile?29:49));
     const path=()=>{c.beginPath();c.roundRect(g.left,g.top,g.right-g.left,g.bottom-g.top,g.radius);};
-    c.save();c.translate(0,8);path();c.lineWidth=mobile?77:91;c.strokeStyle='#b99f7d';c.stroke();c.restore();
-    path();c.lineWidth=mobile?82:96;c.strokeStyle='#b9bdae';c.stroke();path();c.lineWidth=mobile?73:87;c.strokeStyle='#e0dfc9';c.stroke();path();c.lineWidth=mobile?64:78;c.strokeStyle='#5d7168';c.stroke();
+    c.save();c.translate(0,8);path();c.lineWidth=mobile?77:91;c.strokeStyle='#e2c99c';c.stroke();c.restore();
+    path();c.lineWidth=mobile?82:96;c.strokeStyle='#b4d9ca';c.stroke();path();c.lineWidth=mobile?73:87;c.strokeStyle='#effbf2';c.stroke();path();c.lineWidth=mobile?64:78;c.strokeStyle='#74b29b';c.stroke();
     const slats=Math.ceil(g.total/13),offset=(game.beltTravel??0)%1;
-    for(let i=0;i<slats;i++){const p=g.point(i/slats+offset);c.save();c.translate(p.x,p.y);c.rotate(p.angle);line(c,[[0,-(mobile?31:38)],[0,mobile?31:38]],'#94a18b88',1.6);c.restore();}
+    for(let i=0;i<slats;i++){const p=g.point(i/slats+offset);c.save();c.translate(p.x,p.y);c.rotate(p.angle);line(c,[[0,-(mobile?31:38)],[0,mobile?31:38]],'#c4ecd388',1.6);c.restore();}
     // Chef island.
     const s=mobile?Math.min(.7,Math.max(.42,(g.bottom-g.top-85)/185)):1; c.save();c.translate(cx,cy+8);c.scale(s,s);
-    oval(c,0,62,77,15,'#9678531c');round(c,-73,38,146,46,20,'#edd3aa');line(c,[[-61,61],[60,61]],'#c5a37455',1);
+    oval(c,0,62,77,15,'#d8ac681c');round(c,-73,38,146,46,20,'#ffe3a7');line(c,[[-61,61],[60,61]],'#e1b66455',1);
     // Lucky cat chef, all original vector drawing.
-    c.lineWidth=2;round(c,-42,12,84,58,22,'#f5edda','#c9bfa4');round(c,-27,34,54,36,5,'#d37860');text(c,'寿',0,52,21,'#fff8de',700);
+    c.lineWidth=2;round(c,-42,12,84,58,22,'#f5edda','#c9bfa4');round(c,-27,34,54,36,5,'#ff8c64');text(c,'寿',0,52,21,'#fff8de',700);
     c.beginPath();c.moveTo(-45,-34);c.lineTo(-42,-61);c.lineTo(-18,-44);c.lineTo(20,-44);c.lineTo(43,-61);c.lineTo(45,-28);c.closePath();c.fillStyle='#fff9e9';c.fill();c.strokeStyle='#bdbaa1';c.stroke();
     oval(c,0,-15,49,39,'#fff9e9','#bdbba3');c.beginPath();c.moveTo(-38,-48);c.lineTo(-36,-37);c.lineTo(-24,-42);c.fillStyle='#e8a88f';c.fill();c.beginPath();c.moveTo(38,-48);c.lineTo(36,-37);c.lineTo(24,-42);c.fill();
     if(game.phase==='gameover'||game.fullness<15){line(c,[[-25,-13],[-15,-8]],INK,2);line(c,[[25,-13],[15,-8]],INK,2);}
     else{line(c,[[-25,-10],[-20,-14],[-15,-10]],INK,2);line(c,[[15,-10],[20,-14],[25,-10]],INK,2);}
     oval(c,-31,0,8,4,'#efb49e');oval(c,31,0,8,4,'#efb49e');oval(c,0,-2,3.5,2.4,'#b37c65');line(c,[[0,0],[0,5],[-5,8]],INK,1.4);line(c,[[0,5],[5,8]],INK,1.4);
     for(const sign of [-1,1]){line(c,[[sign*36,-1],[sign*48,-5]],'#a9a590',1);line(c,[[sign*36,5],[sign*49,6]],'#a9a590',1);}
-    round(c,-36,-63,72,18,4,'#fdfbf1','#c6c6b1');oval(c,-21,-66,19,17,'#fdfbf1','#c6c6b1');oval(c,0,-75,21,20,'#fdfbf1','#c6c6b1');oval(c,22,-66,18,17,'#fdfbf1','#c6c6b1');round(c,-34,-65,68,15,2,'#fdfbf1');round(c,-36,-54,72,10,2,'#d77b65');
+    round(c,-36,-63,72,18,4,'#fdfbf1','#c6c6b1');oval(c,-21,-66,19,17,'#fdfbf1','#c6c6b1');oval(c,0,-75,21,20,'#fdfbf1','#c6c6b1');oval(c,22,-66,18,17,'#fdfbf1','#c6c6b1');round(c,-34,-65,68,15,2,'#fdfbf1');round(c,-36,-54,72,10,2,'#ff8c64');
     oval(c,-46,29,14,10,'#fff9e9','#c5c3a9');oval(c,46,29,14,10,'#fff9e9','#c5c3a9');line(c,[[48,29],[70,-15]],'#856346',3);line(c,[[54,30],[78,-13]],'#856346',3);
     c.restore();
-    if(!mobile){text(c,'おいしい。でも、ほどほどに。',cx,cy+114,10,'#9b896b');}
-    text(c,game.theme?.name||'点击盘子 · 刚好就好',cx,h-17,9,'#8f7f63');
+    if(!mobile){text(c,'おいしい。でも、ほどほどに。',cx,cy+114,10,'#7d8e7c');}
+    text(c,game.theme?.name||'点击盘子 · 刚好就好',cx,h-17,9,'#587c74');
     this.targets=[];
     c.lineWidth=1.4; // Belt strokes must not leak into dish/badge outlines.
     const ordered=game.foods.map((f,i)=>({...f,number:i<8?i+1:null,...g.point(f.p)})).sort((a,b)=>a.y-b.y);
