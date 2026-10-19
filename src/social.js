@@ -25,17 +25,18 @@ export class SocialClient{
  async rename(value){const nickname=playerIdValue(value);if(!nickname)throw Object.assign(new Error('昵称需为2–12个中文、英文字母或数字'),{status:400});
   if(!this.local)await deadline(sessionToken({create:true}));const data=await this.request('/api/identity',{nickname});if(!this.local&&(await currentIdentity())?.id!==data.profile.id)throw new Error('身份刚刚切换，请重新连接');this.profileRevision++;this.profile=data.profile;this.playerId=data.profile.nickname;this.mode=data.mode;this.persist();this.changed();return data;
  }
- async start(id){const nickname=playerIdValue(id);if(!nickname)throw Object.assign(new Error('昵称需为2–12个中文、英文字母或数字'),{status:400});
-  try{if(!this.profile||this.profile.nickname!==nickname)await this.rename(nickname);const run=await this.request('/api/runs',{});this.mode=run.mode;this.lastError='';this.changed();return run;}
+ async start(id,options={}){const nickname=playerIdValue(id);if(!nickname)throw Object.assign(new Error('昵称需为2–12个中文、英文字母或数字'),{status:400});
+  try{if(!this.profile||this.profile.nickname!==nickname)await this.rename(nickname);const run=await this.request('/api/runs',options);this.mode=run.mode;this.lastError='';this.changed();return run;}
   catch(error){this.lastError=error.message;this.changed();if([400,401,409,429].includes(error.status))throw error;this.playerId=nickname;this.persist();return{online:false,error:error.message};}
  }
  async reset(){if(!this.local){const c=await authClient();await c.auth.signOut({scope:'local'});}else await this.request('/api/identity/reset',{});this.profileRevision++;this.profile=null;this.playerId='';this.persist();this.changed();}
  async board(){const data=await this.request('/api/leaderboard');this.lastBoard=data;if(data.profile)this.profile=data.profile;this.changed();return data;}
- submit(run,ticks,actions){if(this.inflight.has(run.runId))return this.inflight.get(run.runId);const entry={runId:run.runId,owner:this.profile?.id,kind:'pending',body:{ticks,actions}};const saved=this.journal.write(entry);this.persist();this.changed();return this.sendEntry(entry,saved);}
+ submit(run,ticks,actions,extra={}){if(this.inflight.has(run.runId))return this.inflight.get(run.runId);const entry={runId:run.runId,owner:this.profile?.id,kind:'pending',body:{ticks,actions,...extra}};const saved=this.journal.write(entry);this.persist();this.changed();return this.sendEntry(entry,saved);}
  sendEntry(entry,saved=true){if(this.inflight.has(entry.runId))return this.inflight.get(entry.runId);const promise=this.deliver(entry,saved).finally(()=>this.inflight.delete(entry.runId));this.inflight.set(entry.runId,promise);return promise;}
- async deliver(entry,saved){try{const data=await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.journal.remove(entry.runId);this.persist();this.lastBoard=data.board;this.lastError='';this.changed();return data;}
+ async deliver(entry,saved){try{const data=await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.journal.remove(entry.runId);this.persist();this.lastBoard=data.board;if(data.board?.profile?.id===this.profile?.id)this.profile=data.board.profile;this.lastError='';this.changed();return data;}
   catch(error){if(!retryableStatus(error.status))this.journal.write({...entry,kind:'rejected',error:error.message});this.persist();this.lastError=error.message;error.saved=saved&&this.pending.some(e=>e.runId===entry.runId);this.changed();throw error;}
  }
+ async checkpoint(run,body){if(run.rulesVersion!=='1.2.0')return;const owner=this.profile?.id;const data=await this.request(`/api/runs/${run.runId}/checkpoint`,body);if(this.profile?.id===owner)this.profile=data.profile;return data;}
  async email(email,recover=false){if(this.local)throw new Error('本地联调环境不发送邮件，请使用公网版');if(!recover&&!this.profile)throw new Error('请先输入昵称建立游客身份，再绑定邮箱');
   const user=await currentIdentity();const hasArchive=this.profile&&(this.profile.playCount>0||this.profile.collection?.length||this.journal.list().some(e=>e.owner===this.profile.id&&e.kind!=='rejected'));
   if(recover&&hasArchive&&user?.is_anonymous)throw new Error('当前游客已有成绩或未结账对局。请先给当前游客绑定邮箱，再切换账号；也可以在新的浏览器窗口恢复旧账号。不会覆盖或合并现有收藏。');

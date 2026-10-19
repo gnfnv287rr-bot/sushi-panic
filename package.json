@@ -1,6 +1,6 @@
 {
   "name": "sushi-panic",
-  "version": "1.2.0-p0.1",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
   "description": "寿司别吃撑！ — zero-runtime-dependency survival arcade",

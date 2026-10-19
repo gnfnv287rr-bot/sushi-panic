@@ -6,6 +6,6 @@
   "C_real_email_cross_device": "passed_Safari_to_Chrome_owner_OTP_and_observed_matching_archive",
   "D_server_midnight_archive": "passed",
   "E_network_failure_truthfulness": "passed",
-  "P1_started": false,
+  "P1_started": true,
   "evidence": "artifacts/v12-p0-email-delivery.json"
 }

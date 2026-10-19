@@ -9,8 +9,9 @@ const out = resolve(root, 'dist');
 await rm(out, { recursive: true, force: true }); await mkdir(out, { recursive: true });
 for (const file of ['index.html', 'style.css', 'src', 'favicon.svg']) await cp(resolve(root, file), resolve(out, file), { recursive: true });
 // A tiny project-specific concatenation, not a general JS bundler. Module boundaries stay in src/.
-const modules=await Promise.all(['config.js','identity.js','storage.js','core.js','run-state.js','renderer.js','social.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
-const script=modules.map(s=>s.replace(/^import .*;\r?\n/gm,'').replace(/^export /gm,'')).join('\n');
+const modules=await Promise.all(['config.js','identity.js','storage.js','core.js','menus-v1.js','casual-v12.js','run-state.js','renderer.js','renderer-v12.js','social.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
+const bundled=await esbuild({entryPoints:[resolve(root,'src/main.js')],bundle:true,write:false,format:'esm',platform:'browser',target:['es2020']});
+const script=bundled.outputFiles[0].text;
 const css=await readFile(resolve(root,'style.css'),'utf8'),icon=await readFile(resolve(root,'favicon.svg'),'utf8');
 const html=(await readFile(resolve(root,'index.html'),'utf8'))
   .replace('<link rel="stylesheet" href="./style.css" />',()=>`<style>${css}</style>`)
@@ -32,13 +33,14 @@ await writeFile(resolve(releaseRoot,'src/config.js'),'export const PUBLIC_CONFIG
 const entry=await readFile(resolve(out,'index.html'),'utf8');
 await writeFile(resolve(out,'index.html'),entry.replace('./style.css','./assets/'+releaseId+'/style.css').replace('./src/main.js','./assets/'+releaseId+'/src/main.js'));
 const pkg=JSON.parse(await readFile(resolve(root,'package.json'),'utf8'));
-await writeFile(resolve(out,'build.json'),JSON.stringify({version:pkg.version,releaseId,rulesVersion:'0.2.0'}));
+await writeFile(resolve(out,'build.json'),JSON.stringify({version:pkg.version,releaseId,rulesVersion:'1.2.0'}));
 const shared=resolve(root,'supabase/functions/_shared');await mkdir(shared,{recursive:true});
 await cp(resolve(root,'src/core.js'),resolve(shared,'core.js'));
 const legacy=await readFile(resolve(root,'server/api.js'),'utf8');
 const replay="import {Game,STEP} from './core.js';\nclass ApiError extends Error{constructor(status,message){super(message);this.status=status;}}\nconst MAX_TICKS=6*3600*60,MAX_ACTIONS=25000;\n"+legacy.slice(legacy.indexOf('export function replayRun'),legacy.indexOf('async function leaderboard'));
 await writeFile(resolve(shared,'replay.js'),replay);
-for(const file of ['app.js','common.js','cloud.js']){let code=await readFile(resolve(root,'server/v1',file),'utf8');code=code.replace("'../../src/core.js'","'./core.js'").replace("'../api.js'","'./replay.js'").replace("'@supabase/supabase-js'","'npm:@supabase/supabase-js@2.118.0'");await writeFile(resolve(shared,file),code);}
+for(const file of ['casual-v12.js','menus-v1.js'])await cp(resolve(root,'src',file),resolve(shared,file));
+for(const file of ['app.js','common.js','cloud.js']){let code=await readFile(resolve(root,'server/v1',file),'utf8');code=code.replace("'../../src/core.js'","'./core.js'").replace("'../api.js'","'./replay.js'").replace("'../../src/casual-v12.js'","'./casual-v12.js'").replace("'../../src/menus-v1.js'","'./menus-v1.js'").replace("'@supabase/supabase-js'","'npm:@supabase/supabase-js@2.118.0'");await writeFile(resolve(shared,file),code);}
 // Keep the previously shared preview link useful after the production switch.
 await mkdir(resolve(out,'v1'),{recursive:true});
 await writeFile(resolve(out,'v1/index.html'),'<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../"><title>寿司别吃撑！</title><a href="../">进入寿司别吃撑！</a></html>');

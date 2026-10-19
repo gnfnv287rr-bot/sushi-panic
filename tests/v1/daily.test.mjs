@@ -92,7 +92,7 @@ test('multiple concurrent finish requests count once; independent windows may ru
 
 test('P0 cloud archive counts verified sushi once, permanent discovery survives date reset and rename',async t=>{
  const f=await fixture(t),a=await register(f);const first=await run(f,'a',2);assert.equal(first.status,200);const profile=(await f.request('/api/identity')).data.profile;
- assert.equal(profile.totalSushi,first.data.result.sushi);assert.equal(profile.collection[0].sushiId,'cucumber');assert.equal(profile.collection[0].tasteCount,first.data.result.sushi);assert.equal(profile.themeProgress[0].unlocked,1);assert.ok(profile.createdAt);
+ assert.equal(profile.totalSushi,first.data.result.sushi);assert.equal(profile.collection[0].sushiId,'cucumber');assert.equal(profile.collection[0].tasteCount,first.data.result.sushi);assert.equal(profile.themeProgress.find(t=>t.id==='classic').unlocked,1);assert.ok(profile.createdAt);
  await f.request(`/api/runs/${first.started.runId}/finish`,{body:first.done});assert.equal((await f.request('/api/identity')).data.profile.totalSushi,profile.totalSushi);
  await f.time('2026-10-20T16:00:01Z');const next=(await f.request('/api/leaderboard')).data;assert.equal(next.entries.length,0);assert.deepEqual(next.profile.collection,profile.collection);assert.equal(next.profile.totalSushi,profile.totalSushi);
  await f.request('/api/identity',{body:{nickname:'新昵称保留收藏'}});assert.deepEqual((await f.request('/api/identity')).data.profile.collection,profile.collection);
