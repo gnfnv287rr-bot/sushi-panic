@@ -59,7 +59,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
    if(path==='/api/runs'&&request.method==='POST'){
     if(!await rpc('sushi_profile',{p_player:user}))throw new HttpError(409,'请先填写昵称');
     if(body?.rulesVersion&&body.rulesVersion!=='1.2.0')throw new HttpError(400,'此规则版本暂不支持');
-    if(body?.rulesVersion==='1.2.0'){let theme;try{theme=themeById(body.themeId||'classic');}catch{throw new HttpError(400,'未找到此主题菜单');}const run=await rpc('sushi_start_casual',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:MENU_EDITION});return json({...run,characterId:new CasualGame({seed:run.seed,themeId:run.themeId}).character.id,mode},201);}
+    if(body?.rulesVersion==='1.2.0'){let theme;try{theme=themeById(body.themeId||'classic');}catch{throw new HttpError(400,'未找到此主题菜单');}const run=await rpc(body.ranked===false?'sushi_start_private':'sushi_start_casual',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:MENU_EDITION});return json({...run,ranked:body.ranked!==false,characterId:new CasualGame({seed:run.seed,themeId:run.themeId}).character.id,mode},201);}
     const run=await rpc('sushi_start',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0]});
     return json({...run,characterId:new Game({seed:run.seed}).character.id,mode},201);
    }

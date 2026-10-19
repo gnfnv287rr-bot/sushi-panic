@@ -7,6 +7,7 @@ import {CasualGame} from './casual-v12.js';
 import {CATALOG as FOODS,THEMES,themeById,menuState} from './menus-v1.js';
 const Game=CasualGame,isCasual=g=>g?.rulesVersion==='1.2.0';
 const syncedEaten=new Map();
+let rankedChoice=false;
 let selectedTheme='classic',themeChosen=false,menuServerTime=null,checkpointTimer=null,checkpointBusy=false;
 try{selectedTheme=localStorage.getItem('sushi.theme.v12')||'classic';themeChosen=!!localStorage.getItem('sushi.theme.v12');themeById(selectedTheme);}catch{selectedTheme='classic';}
 const $=id=>document.getElementById(id), renderer=new Renderer($('game'));
@@ -30,21 +31,21 @@ function menu(){
 function characterUI(){
   if($('theme-select'))$('theme-select').disabled=!!game&&['playing','paused','card'].includes(game.phase);
   const c=game?.character;drawPortrait($('portrait'),c);
-  $('character-tag').textContent=c?'已入座':'等待入座';$('character-name').textContent=playerId||'输入你的ID';$('character-title').textContent=c?`${physique(c)} · ${onlineRun?(onlineRun.mode==='local'?'本地联调榜':'联网计分'):'练习局'}`:'慢慢吃，也慢慢收藏';
+  $('character-tag').textContent=c?'已入座':'等待入座';$('character-name').textContent=playerId||'输入你的ID';$('character-title').textContent=c?`${physique(c)} · ${onlineRun?(onlineRun.mode==='local'?'本地联调榜':onlineRun.ranked===false?'云端收藏':'联网计分'):'练习局'}`:'慢慢吃，也慢慢收藏';
   $('character-ability').textContent=c?c.ability:'入座后抽取一张角色卡，看看今天要忌口什么。';
   $('allergy-name').textContent=c?ALLERGEN_NAMES[c.allergy]:'开局揭晓';$('allergy-detail').textContent=c?(isCasual(game)?'忌口会有一点不舒服，换一盘就好':'标「忌」的盘子会造成过敏伤害'):'看清再吃，别太心急';menu();
 }
 function showOverlay(html){$('overlay').classList.remove('hidden');$('overlay-content').classList.remove('record-celebration');$('overlay-content').innerHTML=html;const button=$('overlay-content').querySelector('button');if(button)button.focus({preventScroll:true});}
 function home(){
   saveProgress();game=null;onlineRun=null;ended=false;$('pause').disabled=true;characterUI();updateUI();
-  showOverlay(`<p class="eyebrow">随时入座 · 慢慢收藏</p><h2>寿司<br><em>别吃撑！</em></h2><div class="english-title">SUSHI PANIC</div><p>${social.profile?'欢迎回来，'+escapeHtml(playerId)+'。今天想尝哪一盘？':'取个昵称，来吃几盘喜欢的寿司。'}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">你的昵称</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2–12个中文、英文或数字" value="${escapeHtml(playerId)}" required><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">入座，开吃！ <span aria-hidden="true">→</span></button></form><p class="identity-note">${social.api?'自动记住此浏览器的匿名身份 · 允许重名':'在线身份服务待接通 · 当前可练习'}<br>绑定邮箱后可跨设备取回收藏；未绑定时，请保留浏览器数据。</p>${identityWarning?'<button id="reset-identity" class="text-button">使用新的匿名身份</button>':''}`);
+  showOverlay(`<p class="eyebrow">随时入座 · 慢慢收藏</p><h2>寿司<br><em>别吃撑！</em></h2><div class="english-title">SUSHI PANIC</div><p>${social.profile?'欢迎回来，'+escapeHtml(playerId)+'。今天想尝哪一盘？':'取个昵称，来吃几盘喜欢的寿司。'}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">你的昵称</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2–12个中文、英文或数字" value="${escapeHtml(playerId)}" required><label class="rank-choice"><input type="checkbox" id="ranked-choice" ${rankedChoice?'checked':''}> 参加今日积分榜（可选）</label><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">入座，开吃！ <span aria-hidden="true">→</span></button></form><p class="identity-note">${social.api?'自动记住此浏览器的匿名身份 · 允许重名':'在线身份服务待接通 · 当前可练习'}<br>绑定邮箱后可跨设备取回收藏；未绑定时，请保留浏览器数据。</p>${identityWarning?'<button id="reset-identity" class="text-button">使用新的匿名身份</button>':''}`);
   const saved=social.journal.list('active').filter(e=>e.owner===social.profile?.id).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0))[0];if(saved){const button=document.createElement('button');button.id='restore-run';button.className='secondary-button';button.textContent='继续上次未结账的对局';button.onclick=()=>restoreProgress(saved);$('overlay-content').append(button);}
   $('entry-form').onsubmit=e=>{e.preventDefault();beginRun($('player-id-input').value);};
   if($('reset-identity'))$('reset-identity').onclick=async()=>{try{await social.reset();playerId='';identityWarning='';home();}catch{toast('暂时无法重置，请稍后重试',true);}};
 }
 async function beginRun(id){
-  if(entryBusy)return;entryBusy=true;const button=$('new-game')||$('retry');if(button){button.disabled=true;button.textContent='正在入座…';}
-  try{const legacyTest=new URLSearchParams(location.search).get('test')==='1'&&new URLSearchParams(location.search).get('casual')!=='1';const run=await social.start(id,legacyTest?{}:{rulesVersion:'1.2.0',themeId:selectedTheme});playerId=social.playerId;identityWarning='';newGame(run.runId?{seed:run.seed,characterId:run.characterId,onlineRun:run,legacy:run.rulesVersion!=='1.2.0'}:{});}
+  if(entryBusy)return;if($('ranked-choice'))rankedChoice=$('ranked-choice').checked;entryBusy=true;const button=$('new-game')||$('retry');if(button){button.disabled=true;button.textContent='正在入座…';}
+  try{const legacyTest=new URLSearchParams(location.search).get('test')==='1'&&new URLSearchParams(location.search).get('casual')!=='1';const run=await social.start(id,legacyTest?{}:{rulesVersion:'1.2.0',themeId:selectedTheme,ranked:rankedChoice});playerId=social.playerId;identityWarning='';newGame(run.runId?{seed:run.seed,characterId:run.characterId,onlineRun:run,legacy:run.rulesVersion!=='1.2.0'}:{});}
   catch(error){if(error.code==='identity_lost'){identityWarning=error.message;home();}if($('entry-error'))$('entry-error').textContent=error.message;else toast(error.message,true);if(button){button.disabled=false;button.textContent=button.id==='retry'?'再来一局！':'入座，开吃！ →';}}
   finally{entryBusy=false;}
 }
@@ -53,7 +54,7 @@ function newGame(options={}){
   if(!playerId&&new URLSearchParams(location.search).get('test')==='1')playerId='测试食客';
   const run=options.onlineRun;game=options.legacy?new LegacyGame({seed:options.seed??newSeed(),characterId:options.characterId}):new CasualGame({seed:options.seed??newSeed(),characterId:options.characterId,themeId:run?.themeId||selectedTheme,knownFoods:run?.knownFoods||social.profile?.collection?.map(c=>c.sushiId)||[],menuEdition:run?.menuEdition});onlineRun=options.onlineRun||null;activeTicks=0;actionLog=[];ended=false;accumulator=0;renderer.effects=[];clearTimeout(toastTimer);$('toast').classList.remove('visible');characterUI();updateUI();
   const c=game.character;
-  showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">本局体质：${physique(c)}</p><div class="card-traits"><span>${isCasual(game)?'精神':'生命'} ${c.hp}</span><span>温和消化 ${(c.drain*(isCasual(game)?.18:1)).toFixed(2)}/秒</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">本局忌口：<strong>${ALLERGEN_NAMES[c.allergy]}</strong> · ${isCasual(game)?'误食精神 −4，不会死亡':'误食扣 24 生命'}</div><button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">${onlineRun?(onlineRun.mode==='local'?'本地联调局 · 与公网榜单独立':'联网计分局 · 结束后参与今日全球榜'):'练习局 · 未连接今日榜，本局不上榜'}</p>`);
+  showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">本局体质：${physique(c)}</p><div class="card-traits"><span>${isCasual(game)?'精神':'生命'} ${c.hp}</span><span>温和消化 ${(c.drain*(isCasual(game)?.18:1)).toFixed(2)}/秒</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">本局忌口：<strong>${ALLERGEN_NAMES[c.allergy]}</strong> · ${isCasual(game)?'误食精神 −4，不会死亡':'误食扣 24 生命'}</div><button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">${onlineRun?(onlineRun.mode==='local'?'本地联调局 · 与公网榜单独立':(onlineRun.ranked===false?'云端收藏局 · 结账保存，不参与今日榜':'联网计分局 · 结束后参与今日全球榜')):'练习局 · 未连接今日榜，本局不上榜'}</p>`);
   drawPortrait($('card-portrait'),c);$('start-game').onclick=startGame;paintNetwork();
 }
 function startGame(){if(!game?.start())return;$('overlay').classList.add('hidden');$('pause').disabled=false;accumulator=0;lastFrame=performance.now();updateUI();renderer.draw(game,lastFrame/1000);saveProgress();paintNetwork();tone();}
@@ -76,14 +77,14 @@ function finish(){
 function bjTime(value){return new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date(value));}
 function applyReceipt(result){
   lastReceipt=result;paintNetwork();if(!$('rank-result'))return;if($('result-submit')){$('result-submit').disabled=true;$('result-submit').textContent='成绩已同步';}
-  $('confirmed-score').textContent=scoreText(result.score);$('result-today').textContent=scoreText(result.todayBest);$('result-best').textContent=scoreText(result.allTimeBest);$('result-rank').textContent=result.rank?'第 '+result.rank+' 名':'暂无';
-  $('rank-result').textContent='提交成功 · 已通过服务端核验'+(social.mode==='local'?'（本地联调榜）':'');
+  $('confirmed-score').textContent=scoreText(result.score);$('result-today').textContent=result.todayBest==null?'暂无':scoreText(result.todayBest);$('result-best').textContent=scoreText(result.allTimeBest);$('result-rank').textContent=result.rank?'第 '+result.rank+' 名':'暂无';
+  $('rank-result').textContent='提交成功 · 已通过服务端核验'+(result.ranked===false?' · 本局仅收藏，不参加排名':'')+(social.mode==='local'?'（本地联调榜）':'');
   const badges=[];if(result.personalRecord)badges.push('新的个人纪录！');if(result.dailyRecord)badges.push('今日最佳成绩刷新！');if(result.enteredTop100)badges.push('成功进入今日排行榜！');if(result.champion)badges.push('今日榜首！');$('result-badges').textContent=badges.join(' ');
   if(badges.length)$('overlay-content').classList.add('record-celebration');
   $('result-times').textContent=`成绩归属 ${result.day}（北京时间） · 开始 ${bjTime(result.startedAt)} · 结束 ${bjTime(result.endedAt)} · 排名查询 ${bjTime(result.rankQueriedAt)}`;
 }
 async function shareScore(){
- const r=lastReceipt;const text=r?`🍣 SUSHI PANIC《寿司别吃撑！》\n我在 ${r.day} 拿下了 ${r.score} 分！\n当天全球排名第 ${r.rank} 名！（北京时间 ${bjTime(r.rankQueriedAt)} 查询）\n敢不敢来挑战？\n游戏链接：${location.origin+location.pathname}`:`🍣 SUSHI PANIC《寿司别吃撑！》\n我刚完成一局寿司挑战，敢不敢来试试？\n本局尚无已确认的全球排名。\n游戏链接：${location.protocol==='file:'?'请使用在线版分享':location.origin+location.pathname}`;
+ const r=lastReceipt;const text=r?`🍣 SUSHI PANIC《寿司别吃撑！》\n我在 ${r.day} 拿下了 ${r.score} 分！\n${r.rank?`当天全球排名第 ${r.rank} 名！（北京时间 ${bjTime(r.rankQueriedAt)} 查询）`:'本局仅收藏，未参与今日排名。'}\n敢不敢来挑战？\n游戏链接：${location.origin+location.pathname}`:`🍣 SUSHI PANIC《寿司别吃撑！》\n我刚完成一局寿司挑战，敢不敢来试试？\n本局尚无已确认的全球排名。\n游戏链接：${location.protocol==='file:'?'请使用在线版分享':location.origin+location.pathname}`;
  try{await navigator.clipboard.writeText(text);toast('分享文案已复制，发给朋友来挑战！');}
  catch{const area=document.createElement('textarea');area.className='share-copy';area.readOnly=true;area.value=text;area.setAttribute('aria-label','分享文案，请选中复制');$('overlay-content').append(area);area.focus();area.select();}
 }
@@ -201,7 +202,7 @@ window.addEventListener('online',()=>social.initialize().catch(()=>{}).finally((
 
 function paintNetwork(){const el=$('network-status');if(!el)return;const count=social.pending.filter(e=>!e.owner||e.owner===social.profile?.id).length;
  el.dataset.state=count?'pending':game&&!onlineRun?'practice':social.profile?'online':'connecting';
- el.textContent=count?`有 ${count} 局成绩等待同步 · 可点重新连接重试`:game&&!onlineRun?'当前是练习局 · 本局不会上榜，请重新连接后另开一局':social.profile?(onlineRun?'联网计分局 · 本局结束后自动上榜':'云端档案已连接 · 输入昵称即可开玩'):social.lastError?'身份暂未连接 · 榜单仍可查看':'正在连接游客档案 · 榜单与本机纪录分开保存';
+ el.textContent=count?`有 ${count} 局成绩等待同步 · 可点重新连接重试`:game&&!onlineRun?'当前是练习局 · 本局不会上榜，请重新连接后另开一局':social.profile?(onlineRun?(onlineRun.ranked===false?'云端收藏局 · 结账后保存收藏与个人纪录':'联网计分局 · 本局结束后自动上榜'):'云端档案已连接 · 输入昵称即可开玩'):social.lastError?'身份暂未连接 · 榜单仍可查看':'正在连接游客档案 · 榜单与本机纪录分开保存';
 }
 function saveProgress(){if(!onlineRun||!game||!['playing','paused'].includes(game.phase))return;const saved=social.journal.write({kind:'active',owner:social.profile?.id,runId:onlineRun.runId,run:onlineRun,body:{ticks:activeTicks,actions:[...actionLog]},updatedAt:Date.now()});if(!saved&&$('network-status'))$('network-status').textContent='浏览器未能保存对局，请保持页面开启，结束后确认成绩已提交';}
 function restoreProgress(entry){try{game=rebuildActiveRun(entry);onlineRun=entry.run;activeTicks=entry.body.ticks;actionLog=[...entry.body.actions];ended=false;accumulator=0;renderer.effects=[];characterUI();updateUI();if(game.phase==='gameover')finish();else pauseGame('已恢复上次对局；未操作期间没有消耗饱腹。');paintNetwork();}catch(error){toast(error.message,true);}}

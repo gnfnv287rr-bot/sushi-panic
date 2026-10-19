@@ -103,6 +103,7 @@
 #theme-description{line-height:1.7;margin-bottom:5px}#theme-save-note{font-size:11px;line-height:1.6}
 #checkout{font-size:12px;white-space:nowrap;min-height:44px;padding:6px 9px;border:1px solid #b6c6ab;border-radius:6px}
 @media(max-width:600px){.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.collection-card{padding:10px}.collection-card h3{font-size:14px}.top-actions{flex-wrap:wrap;justify-content:flex-end}.scoreboard{flex-wrap:wrap;gap:10px}#checkout{margin-left:auto}}
+.rank-choice{display:flex;align-items:center;gap:8px;text-align:left;font-size:12px;color:#52755e;margin:12px 0;min-height:44px}.rank-choice input{width:20px;height:20px;accent-color:#527e6a}
 </style>
   <title>寿司别吃撑！ · SUSHI PANIC</title>
 </head>
@@ -1340,6 +1341,7 @@ function rebuildActiveRun(entry) {
 var Game2 = CasualGame;
 var isCasual = (g) => g?.rulesVersion === "1.2.0";
 var syncedEaten = /* @__PURE__ */ new Map();
+var rankedChoice = false;
 var selectedTheme = "classic";
 var themeChosen = false;
 var menuServerTime = null;
@@ -1425,7 +1427,7 @@ function characterUI() {
   drawPortrait($("portrait"), c);
   $("character-tag").textContent = c ? "\u5DF2\u5165\u5EA7" : "\u7B49\u5F85\u5165\u5EA7";
   $("character-name").textContent = playerId || "\u8F93\u5165\u4F60\u7684ID";
-  $("character-title").textContent = c ? `${physique(c)} \xB7 ${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u699C" : "\u8054\u7F51\u8BA1\u5206" : "\u7EC3\u4E60\u5C40"}` : "\u6162\u6162\u5403\uFF0C\u4E5F\u6162\u6162\u6536\u85CF";
+  $("character-title").textContent = c ? `${physique(c)} \xB7 ${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u699C" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF" : "\u8054\u7F51\u8BA1\u5206" : "\u7EC3\u4E60\u5C40"}` : "\u6162\u6162\u5403\uFF0C\u4E5F\u6162\u6162\u6536\u85CF";
   $("character-ability").textContent = c ? c.ability : "\u5165\u5EA7\u540E\u62BD\u53D6\u4E00\u5F20\u89D2\u8272\u5361\uFF0C\u770B\u770B\u4ECA\u5929\u8981\u5FCC\u53E3\u4EC0\u4E48\u3002";
   $("allergy-name").textContent = c ? ALLERGEN_NAMES[c.allergy] : "\u5F00\u5C40\u63ED\u6653";
   $("allergy-detail").textContent = c ? isCasual(game) ? "\u5FCC\u53E3\u4F1A\u6709\u4E00\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5C31\u597D" : "\u6807\u300C\u5FCC\u300D\u7684\u76D8\u5B50\u4F1A\u9020\u6210\u8FC7\u654F\u4F24\u5BB3" : "\u770B\u6E05\u518D\u5403\uFF0C\u522B\u592A\u5FC3\u6025";
@@ -1446,7 +1448,7 @@ function home() {
   $("pause").disabled = true;
   characterUI();
   updateUI();
-  showOverlay(`<p class="eyebrow">\u968F\u65F6\u5165\u5EA7 \xB7 \u6162\u6162\u6536\u85CF</p><h2>\u5BFF\u53F8<br><em>\u522B\u5403\u6491\uFF01</em></h2><div class="english-title">SUSHI PANIC</div><p>${social.profile ? "\u6B22\u8FCE\u56DE\u6765\uFF0C" + escapeHtml(playerId) + "\u3002\u4ECA\u5929\u60F3\u5C1D\u54EA\u4E00\u76D8\uFF1F" : "\u53D6\u4E2A\u6635\u79F0\uFF0C\u6765\u5403\u51E0\u76D8\u559C\u6B22\u7684\u5BFF\u53F8\u3002"}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">\u4F60\u7684\u6635\u79F0</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u6216\u6570\u5B57" value="${escapeHtml(playerId)}" required><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">\u5165\u5EA7\uFF0C\u5F00\u5403\uFF01 <span aria-hidden="true">\u2192</span></button></form><p class="identity-note">${social.api ? "\u81EA\u52A8\u8BB0\u4F4F\u6B64\u6D4F\u89C8\u5668\u7684\u533F\u540D\u8EAB\u4EFD \xB7 \u5141\u8BB8\u91CD\u540D" : "\u5728\u7EBF\u8EAB\u4EFD\u670D\u52A1\u5F85\u63A5\u901A \xB7 \u5F53\u524D\u53EF\u7EC3\u4E60"}<br>\u7ED1\u5B9A\u90AE\u7BB1\u540E\u53EF\u8DE8\u8BBE\u5907\u53D6\u56DE\u6536\u85CF\uFF1B\u672A\u7ED1\u5B9A\u65F6\uFF0C\u8BF7\u4FDD\u7559\u6D4F\u89C8\u5668\u6570\u636E\u3002</p>${identityWarning ? '<button id="reset-identity" class="text-button">\u4F7F\u7528\u65B0\u7684\u533F\u540D\u8EAB\u4EFD</button>' : ""}`);
+  showOverlay(`<p class="eyebrow">\u968F\u65F6\u5165\u5EA7 \xB7 \u6162\u6162\u6536\u85CF</p><h2>\u5BFF\u53F8<br><em>\u522B\u5403\u6491\uFF01</em></h2><div class="english-title">SUSHI PANIC</div><p>${social.profile ? "\u6B22\u8FCE\u56DE\u6765\uFF0C" + escapeHtml(playerId) + "\u3002\u4ECA\u5929\u60F3\u5C1D\u54EA\u4E00\u76D8\uFF1F" : "\u53D6\u4E2A\u6635\u79F0\uFF0C\u6765\u5403\u51E0\u76D8\u559C\u6B22\u7684\u5BFF\u53F8\u3002"}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">\u4F60\u7684\u6635\u79F0</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u6216\u6570\u5B57" value="${escapeHtml(playerId)}" required><label class="rank-choice"><input type="checkbox" id="ranked-choice" ${rankedChoice ? "checked" : ""}> \u53C2\u52A0\u4ECA\u65E5\u79EF\u5206\u699C\uFF08\u53EF\u9009\uFF09</label><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">\u5165\u5EA7\uFF0C\u5F00\u5403\uFF01 <span aria-hidden="true">\u2192</span></button></form><p class="identity-note">${social.api ? "\u81EA\u52A8\u8BB0\u4F4F\u6B64\u6D4F\u89C8\u5668\u7684\u533F\u540D\u8EAB\u4EFD \xB7 \u5141\u8BB8\u91CD\u540D" : "\u5728\u7EBF\u8EAB\u4EFD\u670D\u52A1\u5F85\u63A5\u901A \xB7 \u5F53\u524D\u53EF\u7EC3\u4E60"}<br>\u7ED1\u5B9A\u90AE\u7BB1\u540E\u53EF\u8DE8\u8BBE\u5907\u53D6\u56DE\u6536\u85CF\uFF1B\u672A\u7ED1\u5B9A\u65F6\uFF0C\u8BF7\u4FDD\u7559\u6D4F\u89C8\u5668\u6570\u636E\u3002</p>${identityWarning ? '<button id="reset-identity" class="text-button">\u4F7F\u7528\u65B0\u7684\u533F\u540D\u8EAB\u4EFD</button>' : ""}`);
   const saved = social.journal.list("active").filter((e) => e.owner === social.profile?.id).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
   if (saved) {
     const button = document.createElement("button");
@@ -1473,6 +1475,7 @@ function home() {
 }
 async function beginRun(id) {
   if (entryBusy) return;
+  if ($("ranked-choice")) rankedChoice = $("ranked-choice").checked;
   entryBusy = true;
   const button = $("new-game") || $("retry");
   if (button) {
@@ -1481,7 +1484,7 @@ async function beginRun(id) {
   }
   try {
     const legacyTest = new URLSearchParams(location.search).get("test") === "1" && new URLSearchParams(location.search).get("casual") !== "1";
-    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.2.0", themeId: selectedTheme });
+    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.2.0", themeId: selectedTheme, ranked: rankedChoice });
     playerId = social.playerId;
     identityWarning = "";
     newGame(run.runId ? { seed: run.seed, characterId: run.characterId, onlineRun: run, legacy: run.rulesVersion !== "1.2.0" } : {});
@@ -1516,7 +1519,7 @@ function newGame(options = {}) {
   characterUI();
   updateUI();
   const c = game.character;
-  showOverlay(`<p class="eyebrow">\u4F60\u7684\u672C\u5C40\u89D2\u8272\u5361</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">\u672C\u5C40\u4F53\u8D28\uFF1A${physique(c)}</p><div class="card-traits"><span>${isCasual(game) ? "\u7CBE\u795E" : "\u751F\u547D"} ${c.hp}</span><span>\u6E29\u548C\u6D88\u5316 ${(c.drain * (isCasual(game) ? 0.18 : 1)).toFixed(2)}/\u79D2</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">\u672C\u5C40\u5FCC\u53E3\uFF1A<strong>${ALLERGEN_NAMES[c.allergy]}</strong> \xB7 ${isCasual(game) ? "\u8BEF\u98DF\u7CBE\u795E \u22124\uFF0C\u4E0D\u4F1A\u6B7B\u4EA1" : "\u8BEF\u98DF\u6263 24 \u751F\u547D"}</div><button class="primary-button" id="start-game">\u8BB0\u4F4F\u4E86\uFF0C\u5F00\u59CB\uFF01</button><p class="tiny-note">${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u5C40 \xB7 \u4E0E\u516C\u7F51\u699C\u5355\u72EC\u7ACB" : "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u7ED3\u675F\u540E\u53C2\u4E0E\u4ECA\u65E5\u5168\u7403\u699C" : "\u7EC3\u4E60\u5C40 \xB7 \u672A\u8FDE\u63A5\u4ECA\u65E5\u699C\uFF0C\u672C\u5C40\u4E0D\u4E0A\u699C"}</p>`);
+  showOverlay(`<p class="eyebrow">\u4F60\u7684\u672C\u5C40\u89D2\u8272\u5361</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">\u672C\u5C40\u4F53\u8D28\uFF1A${physique(c)}</p><div class="card-traits"><span>${isCasual(game) ? "\u7CBE\u795E" : "\u751F\u547D"} ${c.hp}</span><span>\u6E29\u548C\u6D88\u5316 ${(c.drain * (isCasual(game) ? 0.18 : 1)).toFixed(2)}/\u79D2</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">\u672C\u5C40\u5FCC\u53E3\uFF1A<strong>${ALLERGEN_NAMES[c.allergy]}</strong> \xB7 ${isCasual(game) ? "\u8BEF\u98DF\u7CBE\u795E \u22124\uFF0C\u4E0D\u4F1A\u6B7B\u4EA1" : "\u8BEF\u98DF\u6263 24 \u751F\u547D"}</div><button class="primary-button" id="start-game">\u8BB0\u4F4F\u4E86\uFF0C\u5F00\u59CB\uFF01</button><p class="tiny-note">${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u5C40 \xB7 \u4E0E\u516C\u7F51\u699C\u5355\u72EC\u7ACB" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF\u5C40 \xB7 \u7ED3\u8D26\u4FDD\u5B58\uFF0C\u4E0D\u53C2\u4E0E\u4ECA\u65E5\u699C" : "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u7ED3\u675F\u540E\u53C2\u4E0E\u4ECA\u65E5\u5168\u7403\u699C" : "\u7EC3\u4E60\u5C40 \xB7 \u672A\u8FDE\u63A5\u4ECA\u65E5\u699C\uFF0C\u672C\u5C40\u4E0D\u4E0A\u699C"}</p>`);
   drawPortrait($("card-portrait"), c);
   $("start-game").onclick = startGame;
   paintNetwork();
@@ -1619,10 +1622,10 @@ function applyReceipt(result) {
     $("result-submit").textContent = "\u6210\u7EE9\u5DF2\u540C\u6B65";
   }
   $("confirmed-score").textContent = scoreText(result.score);
-  $("result-today").textContent = scoreText(result.todayBest);
+  $("result-today").textContent = result.todayBest == null ? "\u6682\u65E0" : scoreText(result.todayBest);
   $("result-best").textContent = scoreText(result.allTimeBest);
   $("result-rank").textContent = result.rank ? "\u7B2C " + result.rank + " \u540D" : "\u6682\u65E0";
-  $("rank-result").textContent = "\u63D0\u4EA4\u6210\u529F \xB7 \u5DF2\u901A\u8FC7\u670D\u52A1\u7AEF\u6838\u9A8C" + (social.mode === "local" ? "\uFF08\u672C\u5730\u8054\u8C03\u699C\uFF09" : "");
+  $("rank-result").textContent = "\u63D0\u4EA4\u6210\u529F \xB7 \u5DF2\u901A\u8FC7\u670D\u52A1\u7AEF\u6838\u9A8C" + (result.ranked === false ? " \xB7 \u672C\u5C40\u4EC5\u6536\u85CF\uFF0C\u4E0D\u53C2\u52A0\u6392\u540D" : "") + (social.mode === "local" ? "\uFF08\u672C\u5730\u8054\u8C03\u699C\uFF09" : "");
   const badges = [];
   if (result.personalRecord) badges.push("\u65B0\u7684\u4E2A\u4EBA\u7EAA\u5F55\uFF01");
   if (result.dailyRecord) badges.push("\u4ECA\u65E5\u6700\u4F73\u6210\u7EE9\u5237\u65B0\uFF01");
@@ -1636,7 +1639,7 @@ async function shareScore() {
   const r = lastReceipt;
   const text2 = r ? `\u{1F363} SUSHI PANIC\u300A\u5BFF\u53F8\u522B\u5403\u6491\uFF01\u300B
 \u6211\u5728 ${r.day} \u62FF\u4E0B\u4E86 ${r.score} \u5206\uFF01
-\u5F53\u5929\u5168\u7403\u6392\u540D\u7B2C ${r.rank} \u540D\uFF01\uFF08\u5317\u4EAC\u65F6\u95F4 ${bjTime(r.rankQueriedAt)} \u67E5\u8BE2\uFF09
+${r.rank ? `\u5F53\u5929\u5168\u7403\u6392\u540D\u7B2C ${r.rank} \u540D\uFF01\uFF08\u5317\u4EAC\u65F6\u95F4 ${bjTime(r.rankQueriedAt)} \u67E5\u8BE2\uFF09` : "\u672C\u5C40\u4EC5\u6536\u85CF\uFF0C\u672A\u53C2\u4E0E\u4ECA\u65E5\u6392\u540D\u3002"}
 \u6562\u4E0D\u6562\u6765\u6311\u6218\uFF1F
 \u6E38\u620F\u94FE\u63A5\uFF1A${location.origin + location.pathname}` : `\u{1F363} SUSHI PANIC\u300A\u5BFF\u53F8\u522B\u5403\u6491\uFF01\u300B
 \u6211\u521A\u5B8C\u6210\u4E00\u5C40\u5BFF\u53F8\u6311\u6218\uFF0C\u6562\u4E0D\u6562\u6765\u8BD5\u8BD5\uFF1F
@@ -1988,7 +1991,7 @@ function paintNetwork() {
   if (!el) return;
   const count = social.pending.filter((e) => !e.owner || e.owner === social.profile?.id).length;
   el.dataset.state = count ? "pending" : game && !onlineRun ? "practice" : social.profile ? "online" : "connecting";
-  el.textContent = count ? `\u6709 ${count} \u5C40\u6210\u7EE9\u7B49\u5F85\u540C\u6B65 \xB7 \u53EF\u70B9\u91CD\u65B0\u8FDE\u63A5\u91CD\u8BD5` : game && !onlineRun ? "\u5F53\u524D\u662F\u7EC3\u4E60\u5C40 \xB7 \u672C\u5C40\u4E0D\u4F1A\u4E0A\u699C\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5\u540E\u53E6\u5F00\u4E00\u5C40" : social.profile ? onlineRun ? "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u672C\u5C40\u7ED3\u675F\u540E\u81EA\u52A8\u4E0A\u699C" : "\u4E91\u7AEF\u6863\u6848\u5DF2\u8FDE\u63A5 \xB7 \u8F93\u5165\u6635\u79F0\u5373\u53EF\u5F00\u73A9" : social.lastError ? "\u8EAB\u4EFD\u6682\u672A\u8FDE\u63A5 \xB7 \u699C\u5355\u4ECD\u53EF\u67E5\u770B" : "\u6B63\u5728\u8FDE\u63A5\u6E38\u5BA2\u6863\u6848 \xB7 \u699C\u5355\u4E0E\u672C\u673A\u7EAA\u5F55\u5206\u5F00\u4FDD\u5B58";
+  el.textContent = count ? `\u6709 ${count} \u5C40\u6210\u7EE9\u7B49\u5F85\u540C\u6B65 \xB7 \u53EF\u70B9\u91CD\u65B0\u8FDE\u63A5\u91CD\u8BD5` : game && !onlineRun ? "\u5F53\u524D\u662F\u7EC3\u4E60\u5C40 \xB7 \u672C\u5C40\u4E0D\u4F1A\u4E0A\u699C\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5\u540E\u53E6\u5F00\u4E00\u5C40" : social.profile ? onlineRun ? onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF\u5C40 \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u6536\u85CF\u4E0E\u4E2A\u4EBA\u7EAA\u5F55" : "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u672C\u5C40\u7ED3\u675F\u540E\u81EA\u52A8\u4E0A\u699C" : "\u4E91\u7AEF\u6863\u6848\u5DF2\u8FDE\u63A5 \xB7 \u8F93\u5165\u6635\u79F0\u5373\u53EF\u5F00\u73A9" : social.lastError ? "\u8EAB\u4EFD\u6682\u672A\u8FDE\u63A5 \xB7 \u699C\u5355\u4ECD\u53EF\u67E5\u770B" : "\u6B63\u5728\u8FDE\u63A5\u6E38\u5BA2\u6863\u6848 \xB7 \u699C\u5355\u4E0E\u672C\u673A\u7EAA\u5F55\u5206\u5F00\u4FDD\u5B58";
 }
 function saveProgress() {
   if (!onlineRun || !game || !["playing", "paused"].includes(game.phase)) return;

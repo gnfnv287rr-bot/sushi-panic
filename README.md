@@ -2,7 +2,7 @@
 
 [公开游戏 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/) · [源码仓库](https://github.com/gnfnv287rr-bot/sushi-panic)
 
-Canvas + DOM网页游戏，GitHub Pages + Supabase Free。输入昵称即可建立游客身份；自愿绑定邮箱验证码后可换浏览器恢复。温和饱腹、20秒空闲自动休息、主动结账、长期寿司图鉴、经典/秋日菜单、每日北京时间00:00换榜。旧角色与视觉保留，旧0.2.0对局仍按旧规则结算。
+Canvas + DOM网页游戏，GitHub Pages + Supabase Free。输入昵称即可建立游客身份；自愿绑定邮箱验证码后可换浏览器恢复。温和饱腹、20秒空闲自动休息、主动结账、自愿参榜、长期寿司图鉴、经典/秋日菜单、每日北京时间00:00换榜。旧角色与视觉保留，旧0.2.0对局仍按旧规则结算。
 
 ## 开发
 
