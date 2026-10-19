@@ -55,6 +55,27 @@
 @media(max-width:760px) and (min-height:540px){body.play-mode .stage{height:clamp(310px,calc(100dvh - 315px),540px)}body.play-mode .health-row{margin-bottom:12px}}
 @media(prefers-reduced-motion:reduce){.fullness-fill{transition:none}}
 @media(max-width:380px){.scoreboard{gap:8px;padding-left:14px;padding-right:14px}.scoreboard>div:first-child{min-width:0}.scoreboard strong{font-size:22px;letter-spacing:1px}.scoreboard .time-stat strong{font-size:18px;letter-spacing:0}.scoreboard .level-stat strong{font-size:17px;letter-spacing:0}}
+
+/* v0.2.0: player identity and the shared score table. */
+.player-id-label{display:block;text-align:left;font-size:11px;font-weight:700;margin:0 0 7px}
+.player-id-input{font:inherit;font-size:15px;letter-spacing:.5px;width:100%;min-height:44px;border:1.5px solid #9eae91;border-radius:7px;background:#f8f7e9;padding:10px 12px;color:var(--ink);outline-offset:3px}
+.player-id-input:focus-visible{outline:2px solid var(--teal)}
+.overlay-card .entry-error{font-size:10px;line-height:1.5;color:#b64231;text-align:left;min-height:15px;margin:5px 0 10px}
+.overlay-card:has(#player-id-input){padding:21px 25px}.overlay-card:has(#player-id-input) h2{font-size:31px}.overlay-card:has(#player-id-input) .english-title{margin:8px 0 11px}.overlay-card:has(#player-id-input)>p:not(.eyebrow):not(.tiny-note){font-size:10px;margin:6px 0 13px}
+.text-button{border:0;background:none;color:var(--muted);font-size:10px;min-height:36px;padding:6px 10px;margin-top:6px}
+.rank-result{font-weight:650;color:var(--teal)!important}
+#leaderboard-dialog{max-width:510px}#leaderboard-dialog .dialog-inner{padding:27px}#leaderboard-dialog h2{margin-bottom:14px}
+.board-champion{font-size:16px;font-weight:800;padding:15px;background:#f5e7ba;color:#83601f;border:1px solid #d9b86b;border-radius:9px;overflow-wrap:anywhere}
+.board-status{font-size:10px;line-height:1.7;color:var(--muted);margin:12px 0}
+.board-list{list-style:none;padding:0;margin:14px 0;max-height:42dvh;overflow-y:auto;overscroll-behavior:contain}
+.board-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:13px 7px;border-bottom:1px dashed var(--line)}
+.board-position{font-family:ui-monospace,monospace;font-size:15px;font-weight:700;color:var(--muted);text-align:center}
+.board-player{min-width:0}.board-player strong{display:block;font-size:13px;overflow-wrap:anywhere}.board-player small{display:block;font-size:9px;color:var(--muted);margin-top:5px}
+.board-row>b{font-size:19px;font-family:ui-monospace,monospace;letter-spacing:1px;color:var(--teal);text-align:right}.board-row>b small{display:block;font-size:8px;font-family:inherit;color:var(--muted);margin-top:4px;letter-spacing:0}
+.champion-row{background:#fbf0d1;border-radius:8px;border:1px solid #e3c880}.champion-row .board-position{background:#bc8735;color:#fff9e7;border-radius:6px;line-height:30px;font-size:17px}.champion-row .board-player strong{color:#8e6220}
+.board-me{font-size:10px;padding:11px;background:var(--mint);border-radius:6px;line-height:1.8;overflow-wrap:anywhere}
+.board-actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px;align-items:center}.board-actions .secondary-button{margin:0;min-height:48px}
+@media(max-width:380px){.top-actions{gap:9px}.brand{font-size:14px;gap:7px}.brand small{letter-spacing:1.8px}.quiet-button{font-size:9px}#leaderboard-dialog .dialog-inner{padding:22px 18px}.board-row{gap:7px}.board-row>b{font-size:17px}}
 </style>
   <title>寿司别吃撑！ · SUSHI PANIC</title>
 </head>
@@ -62,7 +83,7 @@
   <div class="app">
     <header class="topbar">
       <a class="brand" href="./" aria-label="寿司别吃撑 首页"><span class="brand-stamp" aria-hidden="true">寿</span><span>寿司别吃撑！<small>SUSHI PANIC</small></span></a>
-      <div class="top-actions"><span class="open-sign"><i></i> 本日营业中</span><button id="sound" class="quiet-button" aria-pressed="false">声音：关</button><button id="help" class="quiet-button">怎么玩</button></div>
+      <div class="top-actions"><span class="open-sign"><i></i> 本日营业中</span><button id="leaderboard" class="quiet-button">大胃王榜</button><button id="sound" class="quiet-button" aria-pressed="false">声音：关</button><button id="help" class="quiet-button">怎么玩</button></div>
     </header>
     <main>
       <section class="intro" aria-label="游戏介绍"><div><p class="eyebrow">回转不停 · 快乐有度</p><h1>今天也要，<span>刚刚好。</span></h1><p class="subtitle">一口是幸福，多一口可能是事故。</p></div><div class="best-record"><span>本机最高纪录</span><strong id="best-score">00000</strong><small>BEST SCORE</small></div></section>
@@ -86,13 +107,14 @@
         </aside>
       </div>
     </main>
-    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>v0.1.2 · 本地单机 · 无广告</span><span class="footer-motto">请带着你的求生欲入座。</span></footer>
+    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>v0.2.0 · 共享积分榜 · 无广告</span><span class="footer-motto">请带着你的求生欲入座。</span></footer>
   </div>
   <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">好好吃，慢慢活。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹会持续下降。维持 25–85，有舒适进食奖励。低于 15 或高于 100 持续 2 秒后会掉血。</span></li><li><b>红色「忌」，吃了会过敏。</b><span>每局角色不同，过敏源也不同。误食扣 24 生命，所有盘子都提前标记。</span></li><li><b>连击比乱吃更值钱。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">每 25 秒提升一级，180 秒后数值封顶。切换页面自动暂停，回来后手动继续。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
+  <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">朋友之间，比比谁更会吃</p><h2 id="board-title">大胃王排行榜</h2><p id="board-champion" class="board-champion">正在寻找大胃王…</p><p id="board-status" class="board-status" role="status">按单局最高积分排名</p><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div></div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
   <script type="module">
 /** Pure, deterministic game rules. Time is seconds; fullness is 0–120. */
-const VERSION = '0.1.2';
+const VERSION = '0.2.0';
 const STEP = 1 / 60;
 const RULES = Object.freeze({ startFullness: 55, hunger: 15, overfull: 100, grace: 2, hungerDamage: 8, overfullDamage: 10, allergyDamage: 24, biteCooldown: 0.24 });
 const FOODS = Object.freeze({
@@ -146,7 +168,7 @@ class Game {
     this.character = CHARACTERS.find(c => c.id === characterId) || CHARACTERS[Math.floor(characterRng() * CHARACTERS.length)];
     this.deck = new FoodDeck(seededRandom(this.seed));
     this.phase = 'card'; this.time = 0; this.fullness = RULES.startFullness; this.hp = this.character.hp;
-    this.score = 0; this.combo = 0; this.bestCombo = 0; this.eaten = 0; this.allergies = 0; this.perfects = 0;
+    this.score = 0; this.combo = 0; this.bestCombo = 0; this.eaten = 0; this.sushiEaten = 0; this.allergies = 0; this.perfects = 0;
     this.hazardTime = 0; this.hazardZone = 'safe'; this.deathReason = ''; this.shield = this.character.id === 'yuzu' ? 1 : 0;
     this.lastBite = -10; this.lastFood = null; this.nextSpawn = 0; this.nextId = 1; this.foods = []; this.events = []; this.beltTravel = 0;
     this.survivalScore = 0; this.foodScore = 0; this.bonusScore = 0; this.seenFoods = new Set();
@@ -201,7 +223,7 @@ class Game {
     const index = this.foods.findIndex(f => f.id === id);
     if (index < 0) return null;
     const item = this.foods.splice(index, 1)[0], food = FOODS[item.key];
-    this.lastBite = this.time; this.eaten++;
+    this.lastBite = this.time; this.eaten++; if(food.fullness>0)this.sushiEaten++;
     const change = food.fullness > 0 ? food.fullness * this.character.portion : food.fullness;
     this.fullness = clamp(this.fullness + change, 0, 120);
     let event;
@@ -230,7 +252,7 @@ class Game {
     this.refreshScore(); this.events.push(event); if (this.events.length > 32) this.events.shift(); return event;
   }
   end(reason) { if (this.phase !== 'playing') return; this.phase = 'gameover'; this.deathReason = reason; this.hp = 0; }
-  snapshot() { return { version: VERSION, seed: this.seed, phase: this.phase, character: this.character.id, time: this.time, hp: this.hp, fullness: this.fullness, score: this.score, eaten: this.eaten, allergies: this.allergies, perfects: this.perfects, bestCombo: this.bestCombo, deathReason: this.deathReason }; }
+  snapshot() { return { version: VERSION, seed: this.seed, phase: this.phase, character: this.character.id, time: this.time, hp: this.hp, fullness: this.fullness, score: this.score, eaten: this.eaten,sushiEaten:this.sushiEaten, allergies: this.allergies, perfects: this.perfects, bestCombo: this.bestCombo, deathReason: this.deathReason }; }
 }
 
 const INK = '#293f40';
@@ -366,8 +388,45 @@ class Renderer {
   }
 }
 
+const escapeHtml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function playerIdValue(value){const id=String(value??'').normalize('NFKC').trim();return /^[\p{L}\p{N}_-]{2,16}$/u.test(id)?id:null;}
+const CLOUD_API='https://sushi-panic.rubyssss98.chatgpt.site';
+class SocialClient{
+  constructor(){
+    this.api=location.protocol==='file:'?null:['localhost','127.0.0.1'].includes(location.hostname)?location.origin:CLOUD_API;
+    this.playerId='';this.key='';this.pending=[];
+    try{this.playerId=playerIdValue(localStorage.getItem('sushi.player-id'))||'';this.key=localStorage.getItem('sushi.player-key')||'';const pending=JSON.parse(localStorage.getItem('sushi.pending')||'[]');if(Array.isArray(pending))this.pending=pending.slice(-3);}catch{}
+    if(!/^[a-f0-9]{64}$/.test(this.key))this.key=Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
+    this.persist();
+  }
+  persist(){try{localStorage.setItem('sushi.player-id',this.playerId);localStorage.setItem('sushi.player-key',this.key);localStorage.setItem('sushi.pending',JSON.stringify(this.pending));return true;}catch{return false;}}
+  async request(path,body){
+    if(!this.api){const e=new Error('离线文件不连接共享榜单，请打开在线版');e.offline=true;throw e;}
+    const response=await fetch(this.api+path,{method:body?'POST':'GET',headers:{'X-Player-Key':this.key,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,credentials:'omit',signal:AbortSignal.timeout(6000)});
+    let data;try{data=await response.json();}catch{throw new Error('排行榜暂时无法连接');}
+    if(!response.ok){const e=new Error(data.error||'排行榜暂时无法连接');e.status=response.status;throw e;}
+    return data;
+  }
+  async start(id){
+    const playerId=playerIdValue(id);if(!playerId){const e=new Error('ID需为2–16个中英文字母、数字、下划线或短横线');e.status=400;throw e;}
+    let run;
+    try{run=await this.request('/api/runs',{playerId});}catch(error){if([400,409,429].includes(error.status))throw error;run={online:false};}
+    this.playerId=playerId;this.persist();return run;
+  }
+  board(){return this.request('/api/leaderboard');}
+  async submit(run,ticks,actions){
+    const entry={runId:run.runId,body:{ticks,actions}};
+    this.pending=this.pending.filter(p=>p.runId!==entry.runId).concat(entry).slice(-3);const saved=this.persist();
+    try{const result=await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();return result;}
+    catch(error){if(error.status&&![429,503].includes(error.status)){this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();}error.saved=saved;throw error;}
+  }
+  async retry(){for(const entry of [...this.pending]){try{await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();}catch(error){if(error.status&&![429,503].includes(error.status)){this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();}else throw error;}}}
+}
+
 const $=id=>document.getElementById(id), renderer=new Renderer($('game'));
 let game=null,preview=new Game({seed:414}),lastFrame=performance.now(),accumulator=0,toastTimer,ended=false,audio;
+const social=new SocialClient();let playerId=social.playerId,onlineRun=null,activeTicks=0,actionLog=[],entryBusy=false;
+const physique=c=>c.id==='momo'?'杂食型':c.id==='taro'?'快消化型':c.id==='yuzu'?'慢消化型':'清爽型';
 preview.start();preview.character={...preview.character,allergy:'none'};
 let high=0,sound=false;
 try{const n=Number(localStorage.getItem('sushi-panic.best.v1'));if(Number.isSafeInteger(n)&&n>=0)high=n;sound=localStorage.getItem('sushi-panic.sound')==='on';}catch{}
@@ -384,20 +443,27 @@ function menu(){
 }
 function characterUI(){
   const c=game?.character;drawPortrait($('portrait'),c);
-  $('character-tag').textContent=c?'已入座':'随机入座';$('character-name').textContent=c?c.name:'谁来吃寿司？';$('character-title').textContent=c?c.title:'每局都有不一样的胃口';
+  $('character-tag').textContent=c?'已入座':'等待入座';$('character-name').textContent=playerId||'输入你的ID';$('character-title').textContent=c?`${physique(c)} · ${onlineRun?'联网计分':'练习局'}`:'和朋友一起挑战大胃王';
   $('character-ability').textContent=c?c.ability:'入座后抽取一张角色卡，看看今天要忌口什么。';
   $('allergy-name').textContent=c?ALLERGEN_NAMES[c.allergy]:'开局揭晓';$('allergy-detail').textContent=c?'标「忌」的盘子会造成过敏伤害':'看清再吃，别太心急';menu();
 }
 function showOverlay(html){$('overlay').classList.remove('hidden');$('overlay-content').innerHTML=html;const button=$('overlay-content').querySelector('button');if(button)button.focus({preventScroll:true});}
 function home(){
-  game=null;ended=false;$('pause').disabled=true;characterUI();updateUI();
-  showOverlay(`<p class="eyebrow">欢迎光临 · 请带胃口入座</p><h2>寿司<br><em>别吃撑！</em></h2><div class="english-title">SUSHI PANIC</div><p>抢寿司，续一口。<br>别饿坏、别吃撑，更别碰过敏源。</p><button class="primary-button" id="new-game">入座，开吃！ <span aria-hidden="true">→</span></button><p class="tiny-note">随机角色 · 即点即吃 · 随时再来一局</p>`);
-  $('new-game').onclick=()=>newGame();
+  game=null;onlineRun=null;ended=false;$('pause').disabled=true;characterUI();updateUI();
+  showOverlay(`<p class="eyebrow">欢迎光临 · 谁是下一位大胃王</p><h2>寿司<br><em>别吃撑！</em></h2><div class="english-title">SUSHI PANIC</div><p>输入你的ID，用积分和朋友一决高下。</p><form id="entry-form"><label class="player-id-label" for="player-id-input">你的玩家ID</label><input id="player-id-input" class="player-id-input" maxlength="16" autocomplete="nickname" placeholder="2–16字，例如：寿司小王" value="${escapeHtml(playerId)}" required><p id="entry-error" class="entry-error" role="status"></p><button class="primary-button" id="new-game" type="submit">入座，开吃！ <span aria-hidden="true">→</span></button></form><p class="tiny-note">此浏览器记住你的ID · 每人保留单局最高积分</p>`);
+  $('entry-form').onsubmit=e=>{e.preventDefault();beginRun($('player-id-input').value);};
+}
+async function beginRun(id){
+  if(entryBusy)return;entryBusy=true;const button=$('new-game')||$('retry');if(button){button.disabled=true;button.textContent='正在入座…';}
+  try{const run=await social.start(id);playerId=social.playerId;newGame(run.runId?{seed:run.seed,characterId:run.characterId,onlineRun:run}:{});}
+  catch(error){if($('entry-error'))$('entry-error').textContent=error.message;else toast(error.message,true);if(button){button.disabled=false;button.textContent=button.id==='retry'?'再来一局！':'入座，开吃！ →';}}
+  finally{entryBusy=false;}
 }
 function newGame(options={}){
-  game=new Game({seed:options.seed??newSeed(),characterId:options.characterId});ended=false;accumulator=0;renderer.effects=[];clearTimeout(toastTimer);$('toast').classList.remove('visible');characterUI();updateUI();
+  if(!playerId&&new URLSearchParams(location.search).get('test')==='1')playerId='测试食客';
+  game=new Game({seed:options.seed??newSeed(),characterId:options.characterId});onlineRun=options.onlineRun||null;activeTicks=0;actionLog=[];ended=false;accumulator=0;renderer.effects=[];clearTimeout(toastTimer);$('toast').classList.remove('visible');characterUI();updateUI();
   const c=game.character;
-  showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${c.name}</h2><p style="margin:3px 0 10px">${c.title}</p><div class="card-traits"><span>生命 ${c.hp}</span><span>基础消化 ${c.drain}/秒</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">本局忌口：<strong>${ALLERGEN_NAMES[c.allergy]}</strong> · 误食扣 24 生命</div><button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">饱腹保持在 25–85，活得久还拿高分。</p>`);
+  showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">本局体质：${physique(c)}</p><div class="card-traits"><span>生命 ${c.hp}</span><span>基础消化 ${c.drain}/秒</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">本局忌口：<strong>${ALLERGEN_NAMES[c.allergy]}</strong> · 误食扣 24 生命</div><button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">${onlineRun?'联网计分局 · 结束后按积分上榜':'练习局 · 当前未连接共享排行榜'}</p>`);
   drawPortrait($('card-portrait'),c);$('start-game').onclick=startGame;
 }
 function startGame(){if(!game?.start())return;$('overlay').classList.add('hidden');$('pause').disabled=false;accumulator=0;lastFrame=performance.now();updateUI();renderer.draw(game,lastFrame/1000);tone();}
@@ -412,13 +478,27 @@ function finish(){
   if(ended||!game)return;ended=true;$('pause').disabled=true;
   const record=game.score>high;if(record){high=game.score;try{localStorage.setItem('sushi-panic.best.v1',String(high));}catch{}}
   $('best-score').textContent=scoreText(high);drawPortrait($('portrait'),game.character,'sad');
-  showOverlay(`<p class="eyebrow">${record?'本机新纪录！':'本桌已结账 · 下次再来'}</p><h2 style="font-size:29px">${game.deathReason}</h2><div class="result-score">${scoreText(game.score)}</div><div class="receipt-stats"><span><b>${timeText(game.time)}</b>生存时间</span><span><b>${game.eaten}</b>享用盘数</span><span><b>${game.bestCombo}</b>最高连击</span></div><p style="font-size:10px">舒适进食 ${game.perfects} 次 · 误食过敏 ${game.allergies} 次<br>${game.allergies?'下次看清红色「忌」，再下手。':'留意饱腹，乌龙茶也要看时机。'}</p><button class="primary-button" id="retry">再来一局！</button><button class="secondary-button" id="result-home">回到门口</button><p class="tiny-note">角色 ${game.character.name} · 种子 ${game.seed}</p>`);
-  $('retry').onclick=()=>newGame();$('result-home').onclick=home;
+  showOverlay(`<p class="eyebrow">${escapeHtml(playerId)} · ${record?'本机新纪录！':'本桌已结账'}</p><h2 style="font-size:29px">${game.deathReason}</h2><div class="result-score">${scoreText(game.score)}</div><div class="receipt-stats"><span><b>${timeText(game.time)}</b>生存时间</span><span><b>${game.sushiEaten}</b>寿司盘数</span><span><b>${game.bestCombo}</b>最高连击</span></div><p id="rank-result" class="rank-result" role="status">${onlineRun?'正在核对本局积分…':'练习局 · 不上传共享榜单'}</p><button class="primary-button" id="retry">再来一局！</button><button class="secondary-button" id="result-board">查看大胃王榜</button><button class="text-button" id="result-home">回到门口</button><p class="tiny-note">${physique(game.character)} · 种子 ${game.seed}</p>`);
+  $('retry').onclick=()=>beginRun(playerId);$('result-home').onclick=home;$('result-board').onclick=showLeaderboard;
+  if(onlineRun){const finished=game;social.submit(onlineRun,activeTicks,actionLog).then(data=>{if(game!==finished||!$('rank-result'))return;const me=data.board.me;$('rank-result').textContent=me?.rank===1?'你登顶了！现任大胃王就是你！':me?`已上榜 · 你的最高积分排名第 ${me.rank} 名`:'本局已记录';}).catch(error=>{if(game===finished&&$('rank-result'))$('rank-result').textContent=error.status?`未上榜：${error.message}`:error.saved?'网络未连接，成绩已保留，点榜单可重试':'暂未上传，请在本页重试';});}
 }
 function toast(message,bad=false){$('toast').textContent=message;$('toast').classList.toggle('bad',bad);$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),1500);}
+async function refreshLeaderboard(){
+  $('board-refresh').disabled=true;$('board-status').textContent='正在读取共享积分榜…';
+  try{
+    await social.retry();const board=await social.board();
+    $('board-champion').textContent=board.entries.length?`现任大胃王 · ${board.entries[0].playerId}`:'第一位大胃王，等你上榜';
+    $('board-status').textContent=board.entries.length?'按每人单局最高积分排名，第一名就是大胃王。':'还没有已验证成绩，完成你的第一局吧。';
+    $('board-list').innerHTML=board.entries.map(row=>`<li class="board-row ${row.rank===1?'champion-row':''}"><span class="board-position">${row.rank===1?'王':row.rank}</span><div class="board-player"><strong>${escapeHtml(row.playerId)}</strong><small>${row.sushi} 盘寿司 · ${timeText(row.seconds)}${row.rank===1?' · 大胃王':''}</small></div><b>${scoreText(row.score)}<small>积分</small></b></li>`).join('');
+    $('board-me').textContent=board.me?`${board.me.playerId} · 最高 ${scoreText(board.me.score)} 分 · 第 ${board.me.rank} 名`:'完成联网计分局后，你的成绩会出现在这里。';
+  }catch(error){$('board-champion').textContent='共享排行榜暂不可用';$('board-status').textContent=social.api?'暂时连不上共享榜单，请稍后重试。':'离线文件不连接共享榜单，请打开在线版。';$('board-list').replaceChildren();$('board-me').textContent='没有成功读取名次；游戏仍可进行练习。';}
+  finally{$('board-refresh').disabled=false;}
+}
+function showLeaderboard(){if(game?.phase==='playing')pauseGame('看完大胃王榜，再继续开吃。');if(!$('leaderboard-dialog').open)$('leaderboard-dialog').showModal();refreshLeaderboard();}
 function eatTarget(target){
   if(!target||!game)return;
   const e=game.eat(target.id);if(!e)return;
+  if(onlineRun)actionLog.push([activeTicks,target.id]);
   renderer.bite(target,e);tone(e.type);toast(e.text,e.type==='allergy');
   // Effects are handled once at input time; the engine keeps only a bounded event history.
   updateUI();if(game.phase==='gameover')finish();
@@ -450,7 +530,7 @@ function frame(now){
   if(game?.phase==='playing'){
     // Large foreground stalls pause instead of silently discarding survival time.
     if(realDt>0.5)pauseGame('刚才画面停顿，已替你暂停。');
-    else{accumulator+=realDt;while(accumulator>=STEP&&game.phase==='playing'){game.step(STEP);accumulator-=STEP;}updateUI();if(game.phase==='gameover')finish();}
+    else{accumulator+=realDt;while(accumulator>=STEP&&game.phase==='playing'){game.step(STEP);activeTicks++;accumulator-=STEP;}updateUI();if(game.phase==='gameover')finish();}
   }
   if(!game){preview.time+=Math.min(realDt,.1);const speed=difficultyAt(0).speed;preview.beltTravel+=Math.min(realDt,.1)*speed;for(const f of preview.foods)f.p=(f.p+Math.min(realDt,.1)*speed)%1;}
   renderer.draw(game??preview,now/1000,Math.min(realDt,.05));requestAnimationFrame(frame);
@@ -462,10 +542,11 @@ $('pause').onclick=()=>game?.phase==='paused'?resumeGame():pauseGame();
 document.querySelector('.brand').onclick=e=>{e.preventDefault();home();};
 $('sound').onclick=()=>{sound=!sound;soundUI();try{localStorage.setItem('sushi-panic.sound',sound?'on':'off');}catch{}tone();};
 $('help').onclick=()=>{if(game?.phase==='playing')pauseGame('菜单还在，看完玩法再继续。');$('help-dialog').showModal();};
+$('leaderboard').onclick=showLeaderboard;$('board-refresh').onclick=refreshLeaderboard;$('close-board').onclick=()=>$('leaderboard-dialog').close();
 $('close-help').onclick=()=>$('help-dialog').close();
 $('help-dialog').addEventListener('click',e=>{if(e.target===$('help-dialog')){const r=$('help-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('help-dialog').close();}});
 document.addEventListener('keydown',e=>{
-  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('help-dialog').open||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName))return;
+  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('help-dialog').open||$('leaderboard-dialog').open||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName))return;
   if(e.code==='KeyP'||e.code==='Escape'){if(game?.phase==='playing'){e.preventDefault();pauseGame();}else if(game?.phase==='paused'){e.preventDefault();resumeGame();}}
   if(/^[1-8]$/.test(e.key)&&game?.phase==='playing'){e.preventDefault();eatTarget(renderer.targets.find(f=>f.number===Number(e.key)));}
 });
@@ -474,7 +555,7 @@ window.addEventListener('blur',()=>{if(game?.phase==='playing')pauseGame('离开
 new ResizeObserver(()=>renderer.resize()).observe($('stage'));
 if(new URLSearchParams(location.search).get('test')==='1'){
   // Explicit test-only seam; normal builds expose no mutation hook.
-  window.__sushi={get game(){return game;},renderer,newGame,start:startGame,advance(seconds){for(let i=0;i<Math.ceil(seconds/STEP)&&game?.phase==='playing';i++)game.step(STEP);updateUI();if(game?.phase==='gameover')finish();},snapshot:()=>game?.snapshot(),version:VERSION};
+  window.__sushi={get game(){return game;},renderer,newGame,start:startGame,advance(seconds){for(let i=0;i<Math.ceil(seconds/STEP)&&game?.phase==='playing';i++){game.step(STEP);activeTicks++;}updateUI();if(game?.phase==='gameover')finish();},snapshot:()=>game?.snapshot(),version:VERSION};
 }
 $('best-score').textContent=scoreText(high);soundUI();home();requestAnimationFrame(frame);
 
