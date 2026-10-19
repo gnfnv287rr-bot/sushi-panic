@@ -62,3 +62,7 @@
 - 已按新安装Supabase skill读取[changelog](https://supabase.com/changelog)，跟进[2026-10-12 TLS兼容变更](https://supabase.com/changelog/cbc-tls-ciphers-deprecated)；当前Node24/现代浏览器路线不依赖旧CBC配置，老设备仍未验证。
 
 原先核实过Vercel免费部署/cron约束，但用户最终明确不用Vercel，未创建其资源。最终选择Pages静态发布、Supabase官方Auth与Edge，减少新托管账户数量。
+
+## V1.2 实现依据
+
+P1为Owner明确指定的休闲/收藏定位，温和消化、自动休息、隐藏保底与主动结账数值属于本项目待玩家持续验证的设计决定，不能描述为已证明更高留存的市场调研结论。技术沿用已核实的Supabase官方Auth/SMTP/OTP/RLS与现有GitHub Pages部署。具体数据与未验证项见docs/v12/TEST_REPORT.md。
