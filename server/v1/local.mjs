@@ -1,6 +1,6 @@
-// Local/test PostgreSQL engine. Never imported by the production Vercel handler.
+// Local/test PostgreSQL engine. Never imported by the production Edge handler.
 import {PGlite} from '@electric-sql/pglite';
-import {readFile,mkdir} from 'node:fs/promises';
+import {readFile,readdir,mkdir} from 'node:fs/promises';
 import {createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 export async function localStore(path){
  const db=new PGlite(path||undefined);await db.waitReady;
@@ -9,8 +9,11 @@ export async function localStore(path){
  create or replace function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
  grant usage on schema auth to authenticated;grant execute on function auth.uid() to authenticated;
  create table if not exists public._sushi_migrations(name text primary key);`);
- const name='20261019093147_daily_leaderboard.sql';
- if(!(await db.query('select 1 from _sushi_migrations where name=$1 or name=$2',[name,'202610190001_daily_leaderboard.sql'])).rows.length){await db.transaction(async tx=>{await tx.exec(await readFile(new URL('../../supabase/migrations/'+name,import.meta.url),'utf8'));await tx.query('insert into _sushi_migrations values($1)',[name]);});}
+ const migrations=new URL('../../supabase/migrations/',import.meta.url);
+ for(const name of (await readdir(migrations)).filter(n=>/^\d+_.*\.sql$/.test(n)).sort()){
+  const legacy=name==='20261019093147_daily_leaderboard.sql'?'202610190001_daily_leaderboard.sql':name;
+  if(!(await db.query('select 1 from _sushi_migrations where name=$1 or name=$2',[name,legacy])).rows.length){await db.transaction(async tx=>{await tx.exec(await readFile(new URL(name,migrations),'utf8'));await tx.query('insert into _sushi_migrations values($1)',[name]);});}
+ }
  const rpc=async(name,args={})=>{
   if(!/^sushi_[a-z_]+$/.test(name))throw new Error('Invalid local RPC');
   const keys=Object.keys(args);if(keys.some(k=>!/^p_[a-z_]+$/.test(k)))throw new Error('Invalid local args');

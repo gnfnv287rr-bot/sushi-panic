@@ -124,8 +124,13 @@
   <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">保存 / 恢复成绩</h2><p class="identity-note">绑定邮箱完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><button id="close-account" class="text-button">暂时不用，继续开吃</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
   <script type="module">
-// Public project configuration only. Never put service/secret keys here.
-const PUBLIC_CONFIG=Object.freeze({supabaseUrl:'',publishableKey:'',edgeFunction:'sushi-api'});
+// Public browser configuration. Administrator credentials are never included.
+const PUBLIC_CONFIG=Object.freeze({
+  "supabaseUrl": "https://hyqgkenarjgxdbqiwpxl.supabase.co",
+  "publishableKey": "sb_publishable_DfZrP9IEZ00WH08M32_sUA_KGIeXvXN",
+  "edgeFunction": "sushi-api",
+  "emailEnabled": false
+});
 
 let clientPromise;
 async function authClient(){
@@ -143,7 +148,7 @@ async function emailWithClient(client,email,recover,redirectTo){
  const {error}=recover?await client.auth.signInWithOtp({email:value,options:{emailRedirectTo:redirectTo,shouldCreateUser:false}}):await client.auth.updateUser({email:value},{emailRedirectTo:redirectTo});
  if(error)throw new Error('邮件未能发送：'+error.message);return true;
 }
-async function emailAction(email,recover=false){return emailWithClient(await authClient(),email,recover,new URL('./',document.baseURI).href);}
+async function emailAction(email,recover=false){if(!PUBLIC_CONFIG.emailEnabled)throw new Error('邮箱存档暂未开放；当前浏览器仍会自动保存游客身份，请勿清除网站数据。');return emailWithClient(await authClient(),email,recover,new URL('./',document.baseURI).href);}
 
 /** Pure, deterministic game rules. Time is seconds; fullness is 0–120. */
 const VERSION = '0.2.0';
@@ -425,7 +430,7 @@ function playerIdValue(value){const id=String(value??'').normalize('NFKC').trim(
 class SocialClient{
  constructor(){
   this.local=['localhost','127.0.0.1'].includes(location.hostname);this.api=location.protocol==='file:'?null:this.local?location.origin:PUBLIC_CONFIG.supabaseUrl?PUBLIC_CONFIG.supabaseUrl+'/functions/v1/'+PUBLIC_CONFIG.edgeFunction:null;
-  this.playerId='';this.profile=null;this.pending=[];this.mode='offline';this.lastBoard=null;this.inflight=new Map();
+  this.emailAvailable=PUBLIC_CONFIG.emailEnabled===true;this.playerId='';this.profile=null;this.pending=[];this.mode='offline';this.lastBoard=null;this.inflight=new Map();
   try{this.playerId=playerIdValue(localStorage.getItem('sushi.nickname.v1'))||'';const p=JSON.parse(localStorage.getItem('sushi.pending.v1')||'[]');if(Array.isArray(p))this.pending=p.filter(p=>p&&typeof p.runId==='string'&&Array.isArray(p.body?.actions)).slice(-10);}catch{}
  }
  persist(){try{localStorage.setItem('sushi.nickname.v1',this.playerId);localStorage.setItem('sushi.pending.v1',JSON.stringify(this.pending));return true;}catch{return false;}}
@@ -623,7 +628,7 @@ document.querySelector('.brand').onclick=e=>{e.preventDefault();home();};
 $('sound').onclick=()=>{sound=!sound;soundUI();try{localStorage.setItem('sushi-panic.sound',sound?'on':'off');}catch{}tone();};
 $('help').onclick=()=>{if(game?.phase==='playing')pauseGame('菜单还在，看完玩法再继续。');$('help-dialog').showModal();};
 $('leaderboard').onclick=showLeaderboard;$('sidebar-leaderboard').onclick=showLeaderboard;$('board-refresh').onclick=()=>refreshLeaderboard();$('close-board').onclick=()=>$('leaderboard-dialog').close();
-$('account').onclick=()=>{if(game?.phase==='playing')pauseGame('保存或恢复后，再继续开吃。');$('account-dialog').showModal();paintArchive();social.initialize().then(paintArchive).catch(()=>{});};
+$('account').onclick=()=>{if(game?.phase==='playing')pauseGame('保存或恢复后，再继续开吃。');$('account-dialog').showModal();if(!social.local&&!social.emailAvailable){$('bind-email').disabled=true;$('recover-email').disabled=true;$('account-status').textContent='邮箱存档暂未开放。当前浏览器会记住游客身份；清除网站数据或更换设备后，可能无法恢复。';}paintArchive();social.initialize().then(paintArchive).catch(()=>{});};
 function paintArchive(){const p=social.profile;$('account-archive').innerHTML=p?`<h3>我的历史成绩</h3><p>历史最高 <b>${p.bestScore}</b> · 累计 ${p.playCount} 局<br>累计有效积分 ${p.totalScore} · 每日冠军 ${p.championships} 次</p><ol>${(p.dailyHistory||[]).map(row=>`<li><span>${escapeHtml(row.day)}</span><b>${row.score} 分</b></li>`).join('')}</ol><p class="identity-note">显示最近31个有成绩的日期，全部历史保存在服务器。</p>`:'完成联网计分局后，这里会显示你的历史成绩。';}
 $('close-account').onclick=()=>$('account-dialog').close();
 async function emailSubmit(recover){const buttons=[$('bind-email'),$('recover-email')];buttons.forEach(b=>b.disabled=true);$('account-status').textContent='正在请求发送邮件…';try{await social.email($('account-email').value,recover);$('account-status').textContent='邮件请求已受理，请到邮箱确认；尚未验证前不代表绑定或恢复成功。';}catch(error){$('account-status').textContent=error.message;}finally{buttons.forEach(b=>b.disabled=false);}}

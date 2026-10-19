@@ -28,4 +28,7 @@ const legacy=await readFile(resolve(root,'server/api.js'),'utf8');
 const replay="import {Game,STEP} from './core.js';\nclass ApiError extends Error{constructor(status,message){super(message);this.status=status;}}\nconst MAX_TICKS=6*3600*60,MAX_ACTIONS=25000;\n"+legacy.slice(legacy.indexOf('export function replayRun'),legacy.indexOf('async function leaderboard'));
 await writeFile(resolve(shared,'replay.js'),replay);
 for(const file of ['app.js','common.js','cloud.js']){let code=await readFile(resolve(root,'server/v1',file),'utf8');code=code.replace("'../../src/core.js'","'./core.js'").replace("'../api.js'","'./replay.js'").replace("'@supabase/supabase-js'","'npm:@supabase/supabase-js@2.118.0'");await writeFile(resolve(shared,file),code);}
+// Keep the previously shared preview link useful after the production switch.
+await mkdir(resolve(out,'v1'),{recursive:true});
+await writeFile(resolve(out,'v1/index.html'),'<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../"><title>寿司别吃撑！</title><a href="../">进入寿司别吃撑！</a></html>');
 console.log('Ready: dist/ for GitHub Pages, Supabase Edge shared modules, play.html offline practice.');

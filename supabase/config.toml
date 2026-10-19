@@ -2,3 +2,25 @@ project_id = "sushi-panic"
 [functions.sushi-api]
 verify_jwt = false
 # Gateway allows public board reads; the function verifies every identity via Auth.getUser.
+
+[auth]
+additional_redirect_urls = ["https://gnfnv287rr-bot.github.io/sushi-panic/", "https://gnfnv287rr-bot.github.io/sushi-panic/v1/"]
+site_url = "https://gnfnv287rr-bot.github.io/sushi-panic/"
+enable_anonymous_sign_ins = true
+enable_manual_linking = true
+
+[auth.email]
+enable_confirmations = true
+max_frequency = "1m0s"
+otp_length = 8
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[db.pooler]
+default_pool_size = 15
+max_client_conn = 200
+
+[storage.vector]
+enabled = false

@@ -5,7 +5,7 @@ export function playerIdValue(value){const id=String(value??'').normalize('NFKC'
 export class SocialClient{
  constructor(){
   this.local=['localhost','127.0.0.1'].includes(location.hostname);this.api=location.protocol==='file:'?null:this.local?location.origin:PUBLIC_CONFIG.supabaseUrl?PUBLIC_CONFIG.supabaseUrl+'/functions/v1/'+PUBLIC_CONFIG.edgeFunction:null;
-  this.playerId='';this.profile=null;this.pending=[];this.mode='offline';this.lastBoard=null;this.inflight=new Map();
+  this.emailAvailable=PUBLIC_CONFIG.emailEnabled===true;this.playerId='';this.profile=null;this.pending=[];this.mode='offline';this.lastBoard=null;this.inflight=new Map();
   try{this.playerId=playerIdValue(localStorage.getItem('sushi.nickname.v1'))||'';const p=JSON.parse(localStorage.getItem('sushi.pending.v1')||'[]');if(Array.isArray(p))this.pending=p.filter(p=>p&&typeof p.runId==='string'&&Array.isArray(p.body?.actions)).slice(-10);}catch{}
  }
  persist(){try{localStorage.setItem('sushi.nickname.v1',this.playerId);localStorage.setItem('sushi.pending.v1',JSON.stringify(this.pending));return true;}catch{return false;}}

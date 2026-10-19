@@ -11,12 +11,22 @@
 | 5 UI整合 | 用户指定右下角卡片、完整榜单、倒计时、结算、个人历史、分享时间；保留店铺视觉 | 本机 Chrome/触屏模拟已通过，真机待测 |
 | 6 安全异常 | 限流、所有权、隔离、审计摘要、离线练习、重试、密钥隔离、依赖审计 | 未做分布式攻击演练；专业机器人防御不在本版承诺 |
 | 7 自动测试 | 56 项规则/API/PG/认证与邮箱契约、24 项完整浏览器测试；另有定向显示/邮箱检查，见报告 | Supabase 云端、邮件收件、真实设备/网络未验证 |
-| 8 正式部署 | 现有 Pages 保留；V1 公网预览用于练习和 UI 验收 | 缺可用 Supabase 账号连接，不能宣称正式全球每日榜上线 |
+| 8 正式部署 | 现有 Pages 保留；V1 公网预览用于练习和 UI 验收 | Supabase 免费项目已在浏览器确认 Healthy；本机 CLI 授权待 Owner 确认，云端迁移尚未执行 |
 
 授权：用户已明确允许为本游戏创建免费项目；不得升级、购买域名、删除旧生产数据。Vercel 授权因最终方案调整不再使用。
 
-连接情况：Supabase 插件显示已安装，但本会话未提供可用的 Supabase MCP 工具；CLI whoami 报 access token not provided。MCP 服务 HTTP 401 可达。浏览器自动打开控制台两次超时，未执行任何账号或云资源变更。
+连接情况（本轮实查）：Owner 已完成邮箱注册并登录 Supabase。Safari 后台确认组织 `uuuu` 为 FREE，项目 `hyqgkenarjgxdbqiwpxl` 状态 Healthy，区域新加坡 `ap-southeast-1`，当前没有迁移。不重复创建项目。当前会话仍未提供 Supabase MCP 工具；已进入官方 CLI 授权页，正在等待 Owner 确认将账号连接到本机部署工具。凭据不写入项目或 Git。
 
-下一步只需恢复 Supabase 可用账号连接（插件 OAuth 或本机 CLI login），即可继续：创建 Free 项目 → 配置 Auth → 应用迁移/运行 advisors → 设置 Secrets → 部署函数 → 写公开配置 → 两个真实云端玩家同步验收 → 切换正式 Pages 并启用更新部署流程。
+下一步：确认本机 CLI 授权 → 核对新项目现有表 → 配置 Auth → 应用迁移/运行 advisors → 设置 Secrets → 部署函数 → 写公开配置 → 两个真实云端玩家同步验收 → 切换正式 Pages 并启用更新部署流程。邮件 SMTP 与实际设备/中国网络仍须独立验证。
 
 公网预览已上线：https://gnfnv287rr-bot.github.io/sushi-panic/v1/ ，两个新浏览器桌面/手机模拟游戏通过，联网榜单未接通。完整源码已推送GitHub分支 codex/daily-leaderboard-v1。
+
+## 云端接通进展
+
+- 生产：`hyqgkenarjgxdbqiwpxl`；测试：`ujejpprlmpjmmbodhqdj`，同一 FREE 组织，新加坡。CLI 已获明确授权连接。无付费操作。
+- 两项 SQL 迁移已经应用到两个项目；游客 Auth、精确 Pages 回调、Edge Secrets 和 `sushi-api` 均已部署。生产健康检查通过，测试成绩未写入生产，生产日榜在切换前为0行。
+- `npm test` 57/57；完整 Chrome 浏览器回归25/25；独立真实 Supabase 双玩家10项检查通过。初次测试脚本的两处异步等待不足已修正，服务端确认记录未丢失。
+- 测试数据库事务中23:59/00:00/跨日归属、历史最高、冠军幂等/快照、空日期检查通过，全部测试数据与时钟替换回滚；未修改生产时间。
+- 生产 advisors 两个 search_path 提示已追加迁移修复；剩余3项游客自身记录 SELECT 提示是有意的功能权限，云端实测只能读本人，不能直接写表或调用服务 RPC。
+- 公共 SMTP 未配置，生产邮箱绑定/恢复按钮明确禁用，不声称邮箱可恢复。
+- 正在切换 Pages 到 GitHub Actions；公开链接验收待最后记录。中国网络和真机尚未验证。

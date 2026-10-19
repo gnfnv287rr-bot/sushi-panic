@@ -15,4 +15,4 @@ export async function emailWithClient(client,email,recover,redirectTo){
  const {error}=recover?await client.auth.signInWithOtp({email:value,options:{emailRedirectTo:redirectTo,shouldCreateUser:false}}):await client.auth.updateUser({email:value},{emailRedirectTo:redirectTo});
  if(error)throw new Error('邮件未能发送：'+error.message);return true;
 }
-export async function emailAction(email,recover=false){return emailWithClient(await authClient(),email,recover,new URL('./',document.baseURI).href);}
+export async function emailAction(email,recover=false){if(!PUBLIC_CONFIG.emailEnabled)throw new Error('邮箱存档暂未开放；当前浏览器仍会自动保存游客身份，请勿清除网站数据。');return emailWithClient(await authClient(),email,recover,new URL('./',document.baseURI).href);}

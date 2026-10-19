@@ -2,7 +2,9 @@
 
 V1.0 RC · Canvas + DOM 原游戏，GitHub Pages + Supabase Free / Edge Functions。
 
-**当前状态：本地实现及测试已完成；Supabase 生产项目尚未取得可用账号连接，正式联网迁移未完成。** 旧版生产入口保留：[现有游戏](https://gnfnv287rr-bot.github.io/sushi-panic/)。V1 公网预览路径为 `/sushi-panic/v1/`，在云端接通前仅供练习和 UI 验收，不是已完成的全球每日榜。
+**当前状态：Supabase Free 生产数据库、游客认证、Edge 后端已经部署；独立云端双玩家验收通过，GitHub Pages 正在切换。** [游戏入口](https://gnfnv287rr-bot.github.io/sushi-panic/)。是否完成公开链接验收以 `docs/v1/STATUS.md` 的最终记录为准。旧源码分支与 Sites/D1 保留。
+
+邮箱恢复目前明确标为暂未开放：公共 SMTP 尚未配置，游客身份和每日榜不受影响。
 
 ## 本地运行
 
@@ -30,7 +32,7 @@ npm start
 ## 云端配置
 
 1. 使用已授权的 Supabase **Free** 项目，开启 Anonymous Sign-ins 与邮箱身份绑定；配置 GitHub Pages 回调 URL。仅在有可用 SMTP 时开放面向任意邮箱的恢复能力。
-2. 先审查并应用 `supabase/migrations/20261019093147_daily_leaderboard.sql`。不修改、删除旧 Sites D1 生产数据。
+2. 先审查并按序应用 `supabase/migrations/*.sql`。不修改、删除旧 Sites D1 生产数据。
 3. 仅在 Edge Function Secrets 设置 `.env.example` 所列私密值。实际密钥不可提交 Git。
 4. 将项目 URL 和 **publishable key** 写到 `src/config.js`，它们是公开配置，不是管理员密钥。
 5. `npm run build` 生成浏览器 SDK 和 Edge 共享模块。部署 `supabase/functions/sushi-api/`。网关允许公开读榜，函数对所有玩家操作调用 Auth.getUser 验证 JWT。
@@ -41,7 +43,7 @@ npm start
 ## 验证
 
 ```sh
-npm test                 # 32 项原规则/旧API + 24 项 V1 数据库/认证/邮箱契约
+npm test                 # 32 项原规则/旧API + 25 项 V1 数据库/认证/邮箱契约
 npm run test:e2e         # 本机 Chrome；全量用例数随新增覆盖见报告
 npm run test:security    # 核心文件哈希、RLS 声明、代码/提交历史凭证模式扫描
 npm audit

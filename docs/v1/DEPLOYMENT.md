@@ -2,21 +2,15 @@
 
 最终方案：不使用 Vercel。现有仓库 `gnfnv287rr-bot/sushi-panic`，旧 Pages 分支 `codex/public-game`；V1 完整源码在 `codex/daily-leaderboard-v1`。旧根入口与 Sites/D1 保留到新后端验收完成。
 
-## 当前阻塞
+## 当前连接进度
 
-已取得创建免费资源的用户授权，但没有可用的 Supabase 账号会话：插件已安装，当前会话未暴露已连接 MCP 工具；CLI `whoami` 报未提供 access token。需要完成 Supabase 连接/CLI登录。不是需要重新批准技术方案。
+Owner 已完成邮箱注册，浏览器已登录。已确认 FREE 组织 `uuuu` 下的新加坡项目 `hyqgkenarjgxdbqiwpxl` Healthy；复用此项目，不重复创建资源。官方 CLI 授权页已打开，等待 Owner 确认连接本机部署工具。尚未应用云端迁移或部署函数。
 
-可由 Owner 在本机终端执行：
-
-```sh
-npx --yes supabase@2.121.0 login
-```
-
-在浏览器完成其官方登录流程后告知 Codex 即可。不把 access token、数据库密码或 secret key 粘到聊天中，不提交到 Git。也可在 Supabase 插件中完成 OAuth 后重新进入本聊天。
+不把 access token、数据库密码或 secret key 粘到聊天中，不提交到 Git。CLI 使用官方凭据存储。公开 URL / publishable key 可以进入前端，管理员 secret key 仅配置到 Edge Secrets。
 
 ## 接通后的执行顺序
 
-1. 列出组织，选择用户个人 Free 组织，创建 sushi-panic 项目；若免费项目配额已用尽，报告，不升级。
+1. 用 CLI 核对已登录账号及现有 Free 项目 `hyqgkenarjgxdbqiwpxl`；检查现有表与迁移，复用 Owner 刚创建的项目。若套餐或权限不符，报告，不升级。
 2. 启用 Anonymous Sign-ins；允许匿名身份自愿绑定邮箱。认证重定向精确加入 `https://gnfnv287rr-bot.github.io/sushi-panic/` 及预览 `/sushi-panic/v1/`。保持邮箱验证，不为绕过邮件错误关闭安全验证。
 3. 审查并应用 CLI 生成的 `20261019093147_daily_leaderboard.sql`。新表全部 sushi_ 前缀，不接触旧 D1。执行迁移后查询表、权限并运行 Supabase advisors；记录实际结果。
 4. 设置 `SUSHI_SECRET_KEY`、`RATE_LIMIT_SECRET`、`CRON_SECRET`、`ALLOWED_ORIGINS=https://gnfnv287rr-bot.github.io` 到 Edge Secrets。SUPABASE_URL 由运行时注入。只把 URL/publishable key 写入 `src/config.js`。

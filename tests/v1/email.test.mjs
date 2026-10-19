@@ -1,4 +1,6 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {emailWithClient} from '../../src/identity.js';
+import test from 'node:test';import assert from 'node:assert/strict';import {emailWithClient,emailAction} from '../../src/identity.js';
 test('voluntary email binding updates current identity and keeps Pages callback URL (SDK contract)',async()=>{const calls=[];const client={auth:{updateUser:async(...args)=>{calls.push(args);return{error:null};}}};await emailWithClient(client,' owner@example.com ',false,'https://example.github.io/sushi-panic/');assert.deepEqual(calls[0],[{email:'owner@example.com'},{emailRedirectTo:'https://example.github.io/sushi-panic/'}]);});
 test('email recovery requests existing identity only; it does not silently create or merge accounts',async()=>{let value;const client={auth:{signInWithOtp:async arg=>{value=arg;return{error:null};}}};await emailWithClient(client,'owner@example.com',true,'https://example.github.io/sushi-panic/');assert.equal(value.options.shouldCreateUser,false);});
 test('invalid address and provider errors do not claim email binding success',async()=>{const client={auth:{updateUser:async()=>({error:{message:'email not authorized'}})}};await assert.rejects(emailWithClient(client,'bad',false,'https://example.test'),/有效邮箱/);await assert.rejects(emailWithClient(client,'owner@example.com',false,'https://example.test'),/邮件未能发送/);});
+
+test('public email feature stays disabled until a working SMTP service is verified',async()=>{await assert.rejects(emailAction('owner@example.com'),/邮箱存档暂未开放/);});

@@ -1,5 +1,8 @@
 name: Publish verified Sushi Panic
 on:
+  push:
+    branches: [codex/daily-leaderboard-v1]
+    paths-ignore: ["docs/**", "README.md"]
   workflow_dispatch:
 permissions:
   contents: read
