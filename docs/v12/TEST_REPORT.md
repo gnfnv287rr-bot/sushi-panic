@@ -15,3 +15,5 @@
 - 生产旧档案保护：10个原档案的历史最高、有效局数和累计分全部不减少，`artifacts/v12-p0-production-preservation.json` 为true。
 - Actions run39247738178成功；正式公开资源版本目录一致性通过，两个全新浏览器会话HTTP200、游客联网进食/暂停/读榜及邮箱入口通过，`artifacts/v1-public-online-smoke.json`。这不是邮件送达/验证成功证明。
 - 生产SMTP enabled=true、验证码模板已应用；实际跨浏览器邮箱恢复仍等待Owner在网页完成验证码，不接收聊天中的验证码。
+
+最终定向云端检查为12项通过，新增验证：包含伪造access_token/refresh_token的URL片段不会接管已有游客身份或收藏。真实生产无身份和失效身份的公共榜单返回相同日期/行，个人身份不可确认时有明确标记，见artifacts/v12-p0-production-public-consistency.json。当前数据库尚无邮件绑定请求或已验证邮箱玩家，不能宣称真实恢复已通过。
