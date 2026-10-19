@@ -1,3 +1,4 @@
+import {build as esbuild} from 'esbuild';
 import { mkdir, cp, rm, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,7 +7,7 @@ const out = resolve(root, 'dist');
 await rm(out, { recursive: true, force: true }); await mkdir(out, { recursive: true });
 for (const file of ['index.html', 'style.css', 'src', 'favicon.svg']) await cp(resolve(root, file), resolve(out, file), { recursive: true });
 // A tiny project-specific concatenation, not a general JS bundler. Module boundaries stay in src/.
-const modules=await Promise.all(['core.js','renderer.js','social.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
+const modules=await Promise.all(['config.js','identity.js','core.js','renderer.js','social.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
 const script=modules.map(s=>s.replace(/^import .*;\r?\n/gm,'').replace(/^export /gm,'')).join('\n');
 const css=await readFile(resolve(root,'style.css'),'utf8'),icon=await readFile(resolve(root,'favicon.svg'),'utf8');
 const html=(await readFile(resolve(root,'index.html'),'utf8'))
@@ -14,15 +15,14 @@ const html=(await readFile(resolve(root,'index.html'),'utf8'))
   .replace('href="./favicon.svg"',()=>`href="data:image/svg+xml,${encodeURIComponent(icon)}"`)
   .replace('<script type="module" src="./src/main.js"></script>',()=>`<script type="module">\n${script}\n</script>`);
 await writeFile(resolve(root,'play.html'),html);await writeFile(resolve(out,'play.html'),html);
-try{
-  const manifest=JSON.parse(await readFile(resolve(root,'.openai/hosting.json'),'utf8'));
-  if(manifest.d1){
-    const core=(await readFile(resolve(root,'src/core.js'),'utf8')).replace(/^export /gm,'');
-    const api=(await readFile(resolve(root,'server/api.js'),'utf8')).replace(/^import .*;\r?\n/gm,'').replace(/^export /gm,'');
-    const worker=(await readFile(resolve(root,'worker/index.js'),'utf8')).replace(/^import .*;\r?\n/gm,'').replace("'__BUILD_GAME_HTML__'",()=>JSON.stringify(html));
-    await mkdir(resolve(out,'server'),{recursive:true});await writeFile(resolve(out,'server/index.js'),core+'\n'+api+'\n'+worker);
-    await mkdir(resolve(out,'.openai'),{recursive:true});await writeFile(resolve(out,'.openai/hosting.json'),JSON.stringify(manifest,null,2)+'\n');
-    await cp(resolve(root,'drizzle'),resolve(out,'.openai/drizzle'),{recursive:true});
-  }
-}catch(error){if(error.code!=='ENOENT')throw error;}
-console.log('Ready: dist/ for static hosting; play.html for double-click offline play (no server).');
+// Vendor the official Auth SDK: no runtime CDN dependency, loaded only for online identity.
+await mkdir(resolve(root,'vendor'),{recursive:true});
+await esbuild({stdin:{contents:"export {createClient} from '@supabase/supabase-js';",resolveDir:root},bundle:true,minify:true,format:'esm',platform:'browser',target:['es2020'],outfile:resolve(root,'vendor/supabase.js')});
+await cp(resolve(root,'vendor'),resolve(out,'vendor'),{recursive:true});
+const shared=resolve(root,'supabase/functions/_shared');await mkdir(shared,{recursive:true});
+await cp(resolve(root,'src/core.js'),resolve(shared,'core.js'));
+const legacy=await readFile(resolve(root,'server/api.js'),'utf8');
+const replay="import {Game,STEP} from './core.js';\nclass ApiError extends Error{constructor(status,message){super(message);this.status=status;}}\nconst MAX_TICKS=6*3600*60,MAX_ACTIONS=25000;\n"+legacy.slice(legacy.indexOf('export function replayRun'),legacy.indexOf('async function leaderboard'));
+await writeFile(resolve(shared,'replay.js'),replay);
+for(const file of ['app.js','common.js','cloud.js']){let code=await readFile(resolve(root,'server/v1',file),'utf8');code=code.replace("'../../src/core.js'","'./core.js'").replace("'../api.js'","'./replay.js'").replace("'@supabase/supabase-js'","'npm:@supabase/supabase-js@2.118.0'");await writeFile(resolve(shared,file),code);}
+console.log('Ready: dist/ for GitHub Pages, Supabase Edge shared modules, play.html offline practice.');

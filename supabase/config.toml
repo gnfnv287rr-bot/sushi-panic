@@ -1,0 +1,4 @@
+project_id = "sushi-panic"
+[functions.sushi-api]
+verify_jwt = false
+# Gateway allows public board reads; the function verifies every identity via Auth.getUser.

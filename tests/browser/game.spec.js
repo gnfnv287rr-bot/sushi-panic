@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 let entryCounter=0;
-async function start(page){await page.goto('/?test=1');await page.locator('#player-id-input').fill(`测试${process.pid}_${++entryCounter}`);await page.getByRole('button',{name:'入座，开吃！'}).click();await expect(page.getByText('你的本局角色卡')).toBeVisible();await page.getByRole('button',{name:'记住了，开始！'}).click();await expect(page.locator('#overlay')).toHaveClass(/hidden/);await expect.poll(()=>page.evaluate(()=>window.__sushi.renderer.targets.length)).toBeGreaterThan(0);}
+async function start(page){await page.goto('/?test=1');await page.locator('#player-id-input').fill(`测试${process.pid}${++entryCounter}`);await page.getByRole('button',{name:'入座，开吃！'}).click();await expect(page.getByText('你的本局角色卡')).toBeVisible();await page.getByRole('button',{name:'记住了，开始！'}).click();await expect(page.locator('#overlay')).toHaveClass(/hidden/);await expect.poll(()=>page.evaluate(()=>window.__sushi.renderer.targets.length)).toBeGreaterThan(0);}
 test('real mouse bite, scoring, stale clicks and pause/resume',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await start(page);
   const before=await page.evaluate(()=>window.__sushi.snapshot());
@@ -75,8 +75,8 @@ test('early belly cues appear before danger, upgrade in danger and clear in comf
   await setFullness(12);await expect(page.locator('#scene-warning-title')).toHaveText('快饿坏了，吃一口！');await expect(page.locator('#scene-warning')).toHaveAttribute('data-severity','danger');
 });
 test('player enters their own ID, it replaces random names, invalid ID is explained',async({page})=>{
-  await page.goto('/?test=1');await page.locator('#player-id-input').fill('a');await page.getByRole('button',{name:'入座，开吃！'}).click();await expect(page.locator('#entry-error')).toContainText('2–16');
-  const id="W".repeat(16);await page.locator('#player-id-input').fill(id);await page.getByRole('button',{name:'入座，开吃！'}).click();await expect(page.locator('.card-name')).toHaveText(id);await expect(page.locator('#character-name')).toHaveText(id);await expect(page.getByText('本局体质：',{exact:false})).toBeVisible();await page.reload();await expect(page.locator('#player-id-input')).toHaveValue(id);
+  await page.goto('/?test=1');await page.locator('#player-id-input').fill('a');await page.getByRole('button',{name:'入座，开吃！'}).click();await expect(page.locator('#entry-error')).toContainText('2–12');
+  const id="W".repeat(12);await page.locator('#player-id-input').fill(id);await page.getByRole('button',{name:'入座，开吃！'}).click();await expect(page.locator('.card-name')).toHaveText(id);await expect(page.locator('#character-name')).toHaveText(id);await expect(page.getByText('本局体质：',{exact:false})).toBeVisible();await page.reload();await expect(page.locator('#player-id-input')).toHaveValue(id);
 });
 test('real run is verified and visible to a separate browser; opening board pauses gameplay',async({browser})=>{
   test.setTimeout(65000);
@@ -88,7 +88,7 @@ test('real run is verified and visible to a separate browser; opening board paus
     else if(state.target)await page.keyboard.press(String(state.target));
     await page.waitForTimeout(270);
   }
-  await expect(page.locator('#rank-result')).toContainText(/已上榜|登顶/,{timeout:10000});
-  const otherContext=await browser.newContext(),other=await otherContext.newPage();await other.goto('/');await other.getByRole('button',{name:'大胃王榜',exact:true}).click();await expect(other.locator('#board-list')).toContainText(id);await expect(other.locator('.champion-row')).toHaveCount(1);await expect(other.locator('.champion-row')).toContainText('大胃王');await otherContext.close();
-  await page.getByRole('button',{name:'再来一局！'}).click();await page.getByRole('button',{name:'记住了，开始！'}).click();await page.getByRole('button',{name:'大胃王榜',exact:true}).click();expect((await page.evaluate(()=>window.__sushi.snapshot())).phase).toBe('paused');await expect(page.locator('#leaderboard-dialog')).toBeVisible();await page.screenshot({path:'artifacts/shared-leaderboard.png',fullPage:true});await context.close();
+  await expect(page.locator('#rank-result')).toContainText(/提交成功/,{timeout:10000});await context.grantPermissions(['clipboard-read','clipboard-write']);await page.getByRole('button',{name:'分享成绩',exact:true}).click();expect(await page.evaluate(()=>navigator.clipboard.readText())).toContain('北京时间');
+  const otherContext=await browser.newContext(),other=await otherContext.newPage();await other.goto('/');await other.getByRole('button',{name:'今日排行榜',exact:true}).click();await expect(other.locator('#board-list')).toContainText(id);await expect(other.locator('.champion-row')).toHaveCount(1);await expect(other.locator('.champion-row')).toContainText('大胃王');await otherContext.close();
+  await page.getByRole('button',{name:'再来一局！'}).click();await page.getByRole('button',{name:'记住了，开始！'}).click();await page.getByRole('button',{name:'今日排行榜',exact:true}).click();expect((await page.evaluate(()=>window.__sushi.snapshot())).phase).toBe('paused');await expect(page.locator('#leaderboard-dialog')).toBeVisible();await page.screenshot({path:'artifacts/shared-leaderboard.png',fullPage:true});await context.close();
 });

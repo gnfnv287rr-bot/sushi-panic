@@ -1,10 +1,21 @@
 import { createServer } from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, stat, mkdir, writeFile } from 'node:fs/promises';
+import {randomBytes} from 'node:crypto';
+import {localStore,localAuth} from '../server/v1/local.mjs';
+import {createApp} from '../server/v1/app.js';
 import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {handleApi} from '../server/api.js';
 import {localDatabase} from '../server/local-db.mjs';
-const database=await localDatabase(process.env.SUSHI_DB_FILE||resolve(fileURLToPath(new URL('..',import.meta.url)),'.data/local.sqlite'));
+const legacy=process.argv.includes('--legacy'),projectRoot=fileURLToPath(new URL('..',import.meta.url));
+let database,app,store;
+if(legacy)database=await localDatabase(process.env.SUSHI_DB_FILE||resolve(projectRoot,'.data/local.sqlite'));
+else{
+ await mkdir(resolve(projectRoot,'.data'),{recursive:true});let secret;
+ try{secret=await readFile(resolve(projectRoot,'.data/dev-auth-key'),'utf8');}catch{secret=randomBytes(32).toString('hex');await writeFile(resolve(projectRoot,'.data/dev-auth-key'),secret,{mode:0o600});}
+ store=await localStore(process.env.SUSHI_DB_FILE===':memory:'?undefined:resolve(projectRoot,'.data/v1-postgres'));
+ app=createApp({store,auth:localAuth(store,secret),ipSecret:secret,mode:'local'});
+}
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)), process.argv.includes('--dist') ? 'dist' : '.');
 const portArg = process.argv.indexOf('--port');
 const port = Number(portArg >= 0 ? process.argv[portArg + 1] : process.env.PORT || 5173);
@@ -17,7 +28,7 @@ const server = createServer(async (req, res) => {
       const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>1000000){res.writeHead(413);res.end('Request too large');return;}chunks.push(chunk);}
       const body=Buffer.concat(chunks),headers=new Headers();for(const [name,value] of Object.entries(req.headers))if(value)headers.set(name,Array.isArray(value)?value.join(','):value);
       const request=new Request('http://'+req.headers.host+req.url,{method:req.method,headers,...(['GET','HEAD'].includes(req.method)?{}:{body})});
-      const response=await handleApi(request,{DB:database});res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));return;
+      const response=legacy?await handleApi(request,{DB:database}):await app(request,{ip:req.socket.remoteAddress||'local'});const responseHeaders=Object.fromEntries(response.headers);const responseCookies=response.headers.getSetCookie();if(responseCookies.length)responseHeaders['set-cookie']=responseCookies;res.writeHead(response.status,responseHeaders);res.end(Buffer.from(await response.arrayBuffer()));return;
     }
     const path = resolve(root, '.' + decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname));
     const relative = path.slice(root.length + 1);

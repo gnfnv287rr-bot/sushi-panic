@@ -1,0 +1,10 @@
+# 免费额度与运行成本
+
+2026-10-19核实，实际以账号当前控制台为准。未创建任何付费资源、未购买域名，也不自动升级套餐。
+
+- GitHub Pages 发布已有公共仓库的静态游戏；站点不依赖本机开机。使用现成 github.io 地址，不购买域名。仍需朋友原网络验证，不能承诺全球每条网络都可达。
+- [Supabase Free](https://supabase.com/pricing)：当前列示 50,000 MAU、500MB数据库、5GB egress，最多2个活跃免费项目；闲置1周可能暂停。长期历史存档会增长，需要观测而非自动删除玩家成绩。达到额度或暂停时，游戏转明确练习，榜单提示服务不可用。
+- [Edge 限制](https://supabase.com/docs/guides/functions/limits)：当前256MB内存、每请求CPU2秒，Free worker wall time150秒。Node本地长局重放基准不等于实际Edge CPU验收，真实部署后必须观察。
+- 榜单可手动刷新；页面可见且榜单/桌面侧栏可见时每60秒同步，后台不轮询。不使用高频 Realtime 订阅。一个持续开着的页面每小时约60次自动读榜，这是频率计算，不是流量承诺。
+- [匿名认证](https://supabase.com/docs/guides/auth/auth-anonymous)会产生认证用户并计入使用量；官方建议 CAPTCHA 抑制滥用，本版先用 Auth 和 API 限流。若规模增长，再评估免费验证码方案；不会自动开通付费服务。
+- [默认邮件限制](https://supabase.com/docs/guides/auth/auth-smtp)：只向项目组织团队地址发送，当前2封/小时，不适合面向所有玩家的恢复。公共邮箱恢复需要可用 SMTP；当前没有擅自创建额外邮件供应商账号或购买服务。游客玩法不受邮箱功能影响。

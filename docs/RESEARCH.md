@@ -47,3 +47,18 @@
 本项目判断：回转的空间感主要来自闭环轨道、链板、盘子底部阴影、寿司层次和中心厨师，而非必须使用 3D。采用原创程序绘图、圆角矩形弧长参数轨道，食品与链板共享运动距离。没有下载竞品美术，没有素材网络请求。DPR 限制到 2，最多 14 个盘子，避免无上限对象增长。
 
 未开展：用户访谈、平台全量竞品扫描、付费买量数据、真实移动设备帧率和电耗测试。后续研究应围绕真人观察到的实际问题补充。
+
+
+## V1联网迁移必要核实（2026-10-19）
+
+采用agent-reach网页路线尝试Jina Reader，返回401；改用官方文档直接读取。没有为技术选型虚构外网可达性结论。
+
+- [Supabase Anonymous Auth](https://supabase.com/docs/guides/auth/auth-anonymous)：匿名用户有真实认证UUID；与公共anon key不同。未绑定身份丢失的边界需要明确提示。
+- [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security)：认证不等于授权；实际行权限/函数执行权限需独立设置。
+- [新API keys](https://supabase.com/docs/guides/getting-started/api-keys)：前端publishable、服务端secret分离。
+- [Edge限制](https://supabase.com/docs/guides/functions/limits)：据CPU/内存限制验证纯引擎重放；本地Node/Deno结果不等于生产资源验收。
+- [Free套餐](https://supabase.com/pricing)：有数据库/出站/活跃用户/闲置暂停限制，不承诺永久免费无限服务。
+- [SMTP限制](https://supabase.com/docs/guides/auth/auth-smtp)：默认邮件不适合任意访客恢复，需要实际可用SMTP；不能只做按钮就声称恢复可用。
+- 已按新安装Supabase skill读取[changelog](https://supabase.com/changelog)，跟进[2026-10-12 TLS兼容变更](https://supabase.com/changelog/cbc-tls-ciphers-deprecated)；当前Node24/现代浏览器路线不依赖旧CBC配置，老设备仍未验证。
+
+原先核实过Vercel免费部署/cron约束，但用户最终明确不用Vercel，未创建其资源。最终选择Pages静态发布、Supabase官方Auth与Edge，减少新托管账户数量。

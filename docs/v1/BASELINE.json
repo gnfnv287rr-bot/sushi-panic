@@ -1,0 +1,7 @@
+{
+  "sourceCommit": "c50b904",
+  "coreSha256": "80482db4f48e3d323898842ef0513311549a768673d09d36217dcf53f4e5af9d",
+  "rendererSha256": "b38a42e868489c113a8df5e68ba448c051253d38599935c3829a973f1addf4fc",
+  "productionData": "Existing Sites D1 untouched; no automatic import of unverifiable local scores",
+  "previousPackage": "../sushi-panic-v0.2.0.zip"
+}

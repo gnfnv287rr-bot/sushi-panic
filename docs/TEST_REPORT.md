@@ -139,3 +139,8 @@ Sites 返回部署 succeeded，站点访问范围为 public。公网 URL 为 htt
 所有浏览器结果是测试机网络与 Chrome/触屏模拟，不是中国朋友原网络验收，也没有新增 iOS/Android 真机测试。已验证基础规则复算，不承诺专业反作弊、压力测试或长期服务容量。仍需朋友在原网络测试页面及榜单 API。
 
 最终发布补充检查：两个实际 Chrome 公网入口均 HTTP 200，榜单接口均 200，真实空榜显示和长 ID 样式均通过，无页面错误；Pages 页面与最终 play.html 的 SHA-256 一致。证据 artifacts/public-v020-final.json。补充探针首轮误把空态文本定位在列表中而超时，改为实际状态节点后通过，没有因此改动游戏。另一次直接 Node fetch 返回 HTML，curl 与实际 Chrome API 验证返回 JSON；保持地区/出口差异的限制说明，不宣称所有网络可用。
+
+
+## V1.0 RC 最新报告入口
+
+最终迁移方案已由Owner改为GitHub Pages + Supabase Free / Edge Functions。最新56项规则/API/数据库/认证邮箱契约、24项完整浏览器及定向显示检查，见 [V1完整报告](v1/TEST_REPORT.md)。SDK stub、PGlite本地、真实云端/真机/网络的边界在该报告中单独列出；不得用旧公网验证替代V1生产验证。

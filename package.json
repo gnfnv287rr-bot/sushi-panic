@@ -1,6 +1,6 @@
 {
   "name": "sushi-panic",
-  "version": "0.2.0",
+  "version": "1.0.0-rc.1",
   "private": true,
   "type": "module",
   "description": "寿司别吃撑！ — zero-runtime-dependency survival arcade",
@@ -8,18 +8,24 @@
     "dev": "node scripts/serve.mjs",
     "start": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
-    "test": "node --test tests/core.test.mjs tests/api.test.mjs",
-    "db:generate": "drizzle-kit generate",
+    "test": "node --test tests/core.test.mjs tests/api.test.mjs && npm run test:v1",
     "test:sim": "node scripts/simulate.mjs",
     "test:e2e": "playwright test",
-    "test:all": "npm test && npm run test:sim && npm run test:e2e"
+    "test:all": "npm test && npm run test:sim && npm run test:e2e",
+    "test:v1": "node --test --test-concurrency=1 tests/v1/*.test.mjs",
+    "dev:legacy": "node scripts/serve.mjs --legacy",
+    "test:legacy": "node --test tests/core.test.mjs tests/api.test.mjs",
+    "test:security": "node scripts/security-check.mjs"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.10",
     "@playwright/test": "1.64.1",
-    "drizzle-kit": "0.31.10",
-    "drizzle-orm": "0.45.2"
+    "esbuild": "0.28.2"
   },
   "engines": {
     "node": ">=24"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0"
   }
 }

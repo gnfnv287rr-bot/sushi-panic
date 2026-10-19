@@ -4,3 +4,10 @@ test-results/
 playwright-report/
 .DS_Store
 .data/
+.env
+.env.*
+!.env.example
+.vercel/
+artifacts/
+supabase/.temp/
+vendor/
