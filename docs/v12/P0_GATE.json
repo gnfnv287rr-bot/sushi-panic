@@ -3,7 +3,7 @@
   "passed": false,
   "A_cross_player_cloud": "passed",
   "B_browser_identity_reopen": "passed",
-  "C_real_email_cross_device": "pending_owner_email_verification",
+  "C_real_email_cross_device": "pending_delivery_and_owner_verification",
   "D_server_midnight_archive": "passed",
   "E_network_failure_truthfulness": "passed",
   "P1_started": false

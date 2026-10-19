@@ -16,4 +16,11 @@
 - Actions run39247738178成功；正式公开资源版本目录一致性通过，两个全新浏览器会话HTTP200、游客联网进食/暂停/读榜及邮箱入口通过，`artifacts/v1-public-online-smoke.json`。这不是邮件送达/验证成功证明。
 - 生产SMTP enabled=true、验证码模板已应用；实际跨浏览器邮箱恢复仍等待Owner在网页完成验证码，不接收聊天中的验证码。
 
-最终定向云端检查为12项通过，新增验证：包含伪造access_token/refresh_token的URL片段不会接管已有游客身份或收藏。真实生产无身份和失效身份的公共榜单返回相同日期/行，个人身份不可确认时有明确标记，见artifacts/v12-p0-production-public-consistency.json。当前数据库尚无邮件绑定请求或已验证邮箱玩家，不能宣称真实恢复已通过。
+最终定向云端检查为12项通过，新增验证：包含伪造access_token/refresh_token的URL片段不会接管已有游客身份或收藏。真实生产无身份和失效身份的公共榜单返回相同日期/行，个人身份不可确认时有明确标记，见artifacts/v12-p0-production-public-consistency.json。此前查询无邮件绑定请求或已验证邮箱玩家；最新邮件链路进展见下。
+
+## 20:21 北京时间邮件链路复验
+
+- 真实生产 Auth 日志：20:01–20:02 三次 PUT /user 返回500，底层SMTP错误 `550 "User has no permission"`。Owner截图显示网易POP3/SMTP和IMAP/SMTP均关闭，确认是发件服务权限问题，不能误判为收件箱延迟。
+- Owner自行开启SMTP并在Supabase安全保存授权码后，原Safari游戏身份重新请求一次绑定，页面出现验证码输入框并显示请求受理。服务端 `email_change_sent_at=2026-10-19T12:21:18.885448Z`，绑定请求数从0变1。
+- 尚未证明实际送达、验证码验证或跨浏览器恢复。此时 verified_email_players=0。门禁保持false，不启动P1。安全摘要见 `artifacts/v12-p0-email-delivery.json`，不含邮箱、验证码或SMTP凭据。
+- 精确关页重开测试通过：真实独立Supabase身份在同一浏览器上下文关闭标签页后重新打开，UUID一致，见 `artifacts/v12-p0-identity-reopen.json`；此项不同于跨设备邮箱恢复。
