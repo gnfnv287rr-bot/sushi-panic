@@ -1,4 +1,4 @@
-# SUSHI PANIC《寿司别吃撑！》 · V1.2.3
+# SUSHI PANIC《寿司别吃撑！》 · V1.2.4
 
 [公开游戏 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/) · [源码仓库](https://github.com/gnfnv287rr-bot/sushi-panic)
 
@@ -30,6 +30,12 @@ npx --yes supabase@2.121.0 functions deploy sushi-api --project-ref <PROJECT_REF
 ```
 
 只在Edge Secrets保存管理员配置，客户端仅有公开项目URL与publishable key。`.env.example`为变量说明，真实环境文件/凭证/备份不提交。SMTP授权码仅在Supabase控制台安全填写，不能写到Git或聊天。兼容回滚脚本在`supabase/rollback/`，只恢复接口，保留数据；回滚时前后端需一起回退，已开新版局需保留新版验证器。
+
+## V1.2.4 图鉴分类栏
+
+图鉴改为横向分类选项，统一菜单/珍稀/排序命名，支持组合搜索、重置和无结果提示；概率说明默认折叠，编号排序按数字升序。
+
+- [本次交互与实际测试](docs/V124_FILTERS.md) · [新版游戏](https://gnfnv287rr-bot.github.io/sushi-panic/?release=124-filters)
 
 ## V1.2.3 清新视觉更新
 
