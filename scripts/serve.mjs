@@ -20,7 +20,7 @@ const root = resolve(fileURLToPath(new URL('..', import.meta.url)), process.argv
 const portArg = process.argv.indexOf('--port');
 const port = Number(portArg >= 0 ? process.argv[portArg + 1] : process.env.PORT || 5173);
 const host = process.argv.includes('--host') ? '0.0.0.0' : '127.0.0.1';
-const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png', '.md': 'text/plain' };
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png', '.md': 'text/plain', '.woff2':'font/woff2' };
 const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://localhost');
@@ -28,7 +28,8 @@ const server = createServer(async (req, res) => {
       const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>1000000){res.writeHead(413);res.end('Request too large');return;}chunks.push(chunk);}
       const body=Buffer.concat(chunks),headers=new Headers();for(const [name,value] of Object.entries(req.headers))if(value)headers.set(name,Array.isArray(value)?value.join(','):value);
       const request=new Request('http://'+req.headers.host+req.url,{method:req.method,headers,...(['GET','HEAD'].includes(req.method)?{}:{body})});
-      const response=legacy?await handleApi(request,{DB:database}):await app(request,{ip:req.socket.remoteAddress||'local'});const responseHeaders=Object.fromEntries(response.headers);const responseCookies=response.headers.getSetCookie();if(responseCookies.length)responseHeaders['set-cookie']=responseCookies;res.writeHead(response.status,responseHeaders);res.end(Buffer.from(await response.arrayBuffer()));return;
+      const fixturePeer=process.env.SUSHI_TEST_PEERS==='1'&&process.env.SUSHI_DB_FILE===':memory:'&&/^[a-z-]{1,24}$/.test(req.headers['x-sushi-test-peer']||'')?req.headers['x-sushi-test-peer']:null;
+      const response=legacy?await handleApi(request,{DB:database}):await app(request,{ip:fixturePeer?'local-fixture:'+fixturePeer:req.socket.remoteAddress||'local'});const responseHeaders=Object.fromEntries(response.headers);const responseCookies=response.headers.getSetCookie();if(responseCookies.length)responseHeaders['set-cookie']=responseCookies;res.writeHead(response.status,responseHeaders);res.end(Buffer.from(await response.arrayBuffer()));return;
     }
     const path = resolve(root, '.' + decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname));
     const relative = path.slice(root.length + 1);

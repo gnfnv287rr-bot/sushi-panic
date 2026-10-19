@@ -1,4 +1,4 @@
-# SUSHI PANIC《寿司别吃撑！》 · V1.2.1
+# SUSHI PANIC《寿司别吃撑！》 · V1.2.2
 
 [公开游戏 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/) · [源码仓库](https://github.com/gnfnv287rr-bot/sushi-panic)
 
@@ -30,6 +30,14 @@ npx --yes supabase@2.121.0 functions deploy sushi-api --project-ref <PROJECT_REF
 ```
 
 只在Edge Secrets保存管理员配置，客户端仅有公开项目URL与publishable key。`.env.example`为变量说明，真实环境文件/凭证/备份不提交。SMTP授权码仅在Supabase控制台安全填写，不能写到Git或聊天。兼容回滚脚本在`supabase/rollback/`，只恢复接口，保留数据；回滚时前后端需一起回退，已开新版局需保留新版验证器。
+
+## V1.2.2 体验更新
+
+主导航分组、传送带下常驻收藏进度、真实存档状态与可关闭的邮箱提醒、新品发现队列、三档/秘密菜单音画反馈、手帐NEW和最近发现、大胃王寿司奖牌。
+
+- [设计与数据语义](docs/V122_DESIGN.md)、[测试与发布报告](docs/V122_TEST_REPORT.md)
+- UI模块`src/shop-experience.js`与纯模型`src/collection-feedback.js`。NEW已读是当前浏览器的玩家偏好；真实收藏继续从原云端读取，不增加数据库迁移。
+- 前端版本1.2.2，游戏/后端规则仍1.2.1。部署仅更新Pages，不能因为UI升级去修改种子、概率、配方或旧对局核验。
 
 ## 菜单扩充
 

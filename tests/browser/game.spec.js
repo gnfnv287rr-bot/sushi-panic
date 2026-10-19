@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
+test.use({extraHTTPHeaders:{'x-sushi-test-peer':'game'}});
 import { mkdir } from 'node:fs/promises';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 let entryCounter=0;
 async function start(page){await page.goto('/?test=1');await page.locator('#player-id-input').fill(`测试${process.pid}${++entryCounter}`);await page.getByRole('button',{name:'入座，开吃！'}).click();await expect(page.getByText('你的本局角色卡')).toBeVisible();await page.getByRole('button',{name:'记住了，开始！'}).click();await expect(page.locator('#overlay')).toHaveClass(/hidden/);await expect.poll(()=>page.evaluate(()=>window.__sushi.renderer.targets.length)).toBeGreaterThan(0);}
 test('real mouse bite, scoring, stale clicks and pause/resume',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await start(page);
-  const before=await page.evaluate(()=>window.__sushi.snapshot());
+  await page.locator('#game').scrollIntoViewIfNeeded();const before=await page.evaluate(()=>window.__sushi.snapshot());
   const target=await page.evaluate(()=>window.__sushi.renderer.targets.find(t=>t.key==='cucumber'));
   const b=await page.locator('#game').boundingBox();await page.mouse.click(b.x+target.x,b.y+target.y);
   await expect.poll(()=>page.evaluate(()=>window.__sushi.game.eaten)).toBe(1);await expect.poll(()=>page.evaluate(()=>window.__sushi.game.score)).toBeGreaterThan(80);
@@ -53,7 +54,7 @@ test('standalone file runs without a server or network and has working mouse inp
   await page.keyboard.press('1');await expect.poll(async()=>Number(await page.locator('#score').textContent())).toBeGreaterThan(0);await page.keyboard.press('p');await expect(page.getByRole('button',{name:'继续开吃'})).toBeVisible();await page.getByRole('button',{name:'返回门口'}).click();await expect(page.getByRole('button',{name:'入座，开吃！'})).toBeVisible();expect(errors).toEqual([]);expect(network).toEqual([]);await context.close();
 });
 test('storage denial does not stop gameplay, sound toggle degrades safely',async({browser})=>{
-  const context=await browser.newContext();await context.addInitScript(()=>{Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Denied','SecurityError');}});});const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await start(page);await page.getByRole('button',{name:'声音：关'}).click();await expect(page.getByRole('button',{name:'声音：开'})).toHaveAttribute('aria-pressed','true');if(await page.locator('#resume-game').isVisible())await page.locator('#resume-game').click();await page.keyboard.press('1');await expect.poll(()=>page.evaluate(()=>window.__sushi.game.eaten)).toBe(1);expect(errors).toEqual([]);await context.close();
+  const context=await browser.newContext();await context.addInitScript(()=>{Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Denied','SecurityError');}});});const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await start(page);await page.getByRole('button',{name:'音效：关'}).click();await expect(page.getByRole('button',{name:'音效：开'})).toHaveAttribute('aria-pressed','true');if(await page.locator('#resume-game').isVisible())await page.locator('#resume-game').click();await page.keyboard.press('1');await expect.poll(()=>page.evaluate(()=>window.__sushi.game.eaten)).toBe(1);await expect(page.locator('#save-detail')).toContainText('请保持页面开启');expect(errors).toEqual([]);await context.close();
 });
 test('survival cue warns about hunger, overfull and low HP, then clears on recovery',async({page})=>{
   await page.goto('/?test=1');await page.evaluate(()=>{window.__sushi.newGame({seed:2,characterId:'momo'});window.__sushi.start();});
@@ -89,6 +90,6 @@ test('real run is verified and visible to a separate browser; opening board paus
     await page.waitForTimeout(270);
   }
   await expect(page.locator('#rank-result')).toContainText(/提交成功/,{timeout:10000});await context.grantPermissions(['clipboard-read','clipboard-write']);await page.getByRole('button',{name:'分享成绩',exact:true}).click();expect(await page.evaluate(()=>navigator.clipboard.readText())).toContain('北京时间');
-  const otherContext=await browser.newContext(),other=await otherContext.newPage();await other.goto('/');await other.getByRole('button',{name:'今日排行榜',exact:true}).click();await expect(other.locator('#board-list')).toContainText(id);await expect(other.locator('.champion-row')).toHaveCount(1);await expect(other.locator('.champion-row')).toContainText('大胃王');await otherContext.close();
-  await page.getByRole('button',{name:'再来一局！'}).click();await page.getByRole('button',{name:'记住了，开始！'}).click();await page.getByRole('button',{name:'今日排行榜',exact:true}).click();expect((await page.evaluate(()=>window.__sushi.snapshot())).phase).toBe('paused');await expect(page.locator('#leaderboard-dialog')).toBeVisible();await page.screenshot({path:'artifacts/shared-leaderboard.png',fullPage:true});await context.close();
+  const otherContext=await browser.newContext(),other=await otherContext.newPage();await other.goto('/');await other.getByRole('button',{name:'排行榜',exact:true}).click();await expect(other.locator('#board-list')).toContainText(id);await expect(other.locator('.champion-row')).toHaveCount(1);await expect(other.locator('.champion-row')).toContainText('大胃王');await otherContext.close();
+  await page.getByRole('button',{name:'再来一局！'}).click();await page.getByRole('button',{name:'记住了，开始！'}).click();await page.getByRole('button',{name:'排行榜',exact:true}).click();expect((await page.evaluate(()=>window.__sushi.snapshot())).phase).toBe('paused');await expect(page.locator('#leaderboard-dialog')).toBeVisible();await page.screenshot({path:'artifacts/shared-leaderboard.png',fullPage:true});await context.close();
 });

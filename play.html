@@ -107,6 +107,24 @@
 .menu-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0;font-size:12px;color:#657a67}.menu-pager button{min-height:44px;border:1px solid #cbd3be;border-radius:6px}.collection-filters{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;font-size:12px}.collection-filters label{min-width:0}.rarity-note{font-size:11px;color:#7e896d;line-height:1.7}.collection-card[data-rarity="select"]{border-color:#a6bdc9}.collection-card[data-rarity="treasure"]{border-color:#c9ad70;background:#fffaf0}#menu-page-info,#collection-page-info{text-align:center;font-variant-numeric:tabular-nums}.menu-item small{font-size:9px}#collection-dialog .section-heading{position:sticky;top:-1px;background:#fffdf5;z-index:2;padding:10px 0}
 
 .menu-pager button{flex:0 0 auto;min-width:60px;padding:10px 7px;white-space:nowrap}.menu-pager span{flex:1;min-width:0}.menu-pager{flex-wrap:wrap}.menu-panel .menu-pager span{flex-basis:100%;order:2}.menu-panel .menu-pager{gap:6px}.menu-panel .menu-pager button{flex:1}
+
+/* V1.2.2: the shop's menu tabs and a small, honest collection notebook. */
+@font-face{font-family:'Sushi Menu Hand';src:url('data:font/woff2;base64,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') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.hand-title{font-family:'Sushi Menu Hand','STKaiti','KaiTi',serif!important;font-weight:400!important;letter-spacing:1px}
+.topbar{height:auto;min-height:108px;gap:24px;padding:14px 0}.brand{flex-shrink:0}.top-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}.nav-primary,.nav-secondary{display:flex;gap:6px;align-items:center}.nav-button{position:relative;min-height:44px;padding:9px 12px;border:1px solid transparent;border-radius:7px;background:none;font-size:12px;white-space:nowrap;transition:background .15s,transform .15s}.nav-button>span:first-child{margin-right:5px;font-size:15px}.nav-primary{padding:4px;background:#e9eddf;border-radius:9px}.nav-primary .nav-button{font-weight:650}.nav-button:hover{background:#fffdf7}.nav-button:active{transform:translateY(1px)}.nav-button.is-active{background:var(--white);border-color:#b6c7af;color:#326b55}.nav-secondary .nav-button{color:#617667;padding-inline:9px}.nav-button[aria-pressed=true]{color:#326b55;background:#e9eddf}#collection-new-count{font-size:7px;color:#b45b35;position:absolute;top:0;right:2px;font-style:normal}.save-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#7b9876;margin-left:5px}.save-dot[data-state=failed],.save-dot[data-state=pending]{background:#c4844c}.save-dot[data-state=syncing]{background:#8dabb0}
+.game-panel{display:flex;flex-direction:column}.scoreboard{order:1}.vitals{order:2}.stage{order:3;flex-shrink:0}.collection-progress{order:4}.save-strip{order:5}.network-bar{order:7}.archive-nudge{order:6}.table-footer{order:8}.network-bar{border-top:1px dashed var(--line);background:#f7f6ec;font-size:10px;padding:3px 18px}.network-bar #network-status{font-size:10px;font-weight:400}.network-bar .text-button{font-size:10px}
+.collection-progress{padding:14px 22px 8px;border-bottom:1px dashed var(--line);background:#fcfaf2}.progress-link{display:block;text-align:left;width:100%;border:0;background:none;padding:0;color:var(--ink)}.progress-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px}.progress-heading b{font-size:13px;color:#3d705c;font-variant-numeric:tabular-nums}.progress-meter{display:block;height:7px;background:#e3e6d6;border-radius:10px;margin:10px 0 8px;overflow:hidden}.progress-meter>span{display:block;width:0;height:100%;border-radius:10px;background:#769c72;transition:width .45s ease}.progress-meta{display:flex;gap:12px;align-items:center;font-size:10px;color:#697d68}.progress-meta b{font-size:10px;font-weight:500}.progress-cta{margin-left:auto;color:#3b7059}.collection-progress p{font-size:10px;color:#7c806e;line-height:1.5;margin:7px 0 0}.save-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 22px;font-size:10px;background:#fcfaf2;color:#6e7c6b}.save-strip>span:first-child{font-weight:650;color:#3b7059;white-space:nowrap}.save-strip[data-state=failed]>span:first-child,.save-strip[data-state=pending]>span:first-child{color:#a46835}.save-strip[data-state=syncing]>span:first-child{color:#577c89}.archive-nudge{display:flex;gap:12px;align-items:center;padding:11px 22px;background:#edf0e4;border-top:1px solid #d9decd}.archive-nudge[hidden]{display:none}.archive-nudge div{flex:1}.archive-nudge strong{display:block;font-size:11px;font-weight:500;color:#456d58}.archive-nudge div span{display:block;font-size:10px;color:#7d826e;margin-top:4px}.archive-nudge .text-button{margin:0;font-size:11px;white-space:nowrap;min-height:44px;color:#48735a}.archive-nudge .quiet-button{min-width:44px;font-size:20px}.account-save-state{padding:12px;background:#edf0e4;border-left:3px solid #749169;font-size:12px;line-height:1.8}.connection-details{font-size:11px;color:#79816f;margin:12px 0}
+.menu-panel .section-heading h2{font-size:29px;color:#3d6453}.menu-seal{border:1px solid #c48366;color:#b26d53!important;padding:3px 5px;transform:rotate(-4deg);font-size:9px!important}.menu-welcome{font-size:11px;color:#75816b;line-height:1.7;margin:0 0 15px}.menu-panel .player-id-label{font-size:10px;font-weight:400;color:#788371}.menu-panel #theme-select{font-size:12px}.menu-panel[data-theme=first-taste]{border-top:3px solid #b88c67}.menu-panel[data-theme=autumn]{border-top:3px solid #c88e53}.menu-panel[data-theme=classic]{border-top:3px solid #76946e}.menu-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}.menu-preview>div{text-align:center;font-size:11px;min-width:0;overflow-wrap:anywhere}.menu-preview canvas{display:block;max-width:100%;height:70px;object-fit:contain;margin:auto}#menu-title{font-size:34px}.menu-preview span{line-height:1.6}#collection-title{font-size:29px}.collection-sort-label{display:flex;align-items:center;gap:12px;font-size:11px;color:#70806a;margin-top:12px}.collection-sort-label select{width:auto;flex:1;max-width:230px}.collection-card{position:relative}.collection-card.is-new{border-color:#bd9b65}.new-tag{position:absolute;top:9px;left:9px;font:700 9px ui-monospace,monospace;color:#a6683f;background:#f6e8cb;padding:3px 5px;border-radius:3px}.collection-card.is-new>small:first-of-type{margin-top:16px}
+.discovery-card{position:absolute;z-index:3;top:49%;left:50%;transform:translate(-50%,-50%);width:270px;max-width:calc(100% - 170px);padding:13px 15px;border:1.5px solid #afbf9a;border-radius:11px;background:#fffdf5f5;box-shadow:0 4px 0 #a9b58c25;pointer-events:none;color:#3b614e}.discovery-card[hidden]{display:none}.discovery-card>span:first-child{font-size:11px;font-weight:700;display:block}.discovery-card>div{display:flex;align-items:center;gap:5px}.discovery-card canvas{width:62px;height:55px;flex:none;object-fit:contain}.discovery-card p{margin:7px 0;min-width:0}.discovery-card p strong{font-size:14px;display:block;line-height:1.4}.discovery-card small{display:block;font-size:9px;line-height:1.5;color:#7a806a}.discovery-stars{display:none;position:absolute;top:-11px;right:10px;color:#be9548;font-size:18px}.discovery-card[data-kind=select]{border-color:#92b4b6;background:#f7fcf6f7}.discovery-card[data-kind=treasure],.discovery-card[data-kind=secret]{border-color:#c29b50;background:#fff8e9f7}.discovery-card[data-kind=select] .discovery-stars,.discovery-card[data-kind=treasure] .discovery-stars,.discovery-card[data-kind=secret] .discovery-stars{display:block}.discovery-card[data-kind=secret]{border-style:dashed}.discover-enter{animation:discover-note .3s ease-out}@keyframes discover-note{from{opacity:0;translate:0 6px}to{opacity:1;translate:0 0}}
+.board-champion{display:flex;gap:15px;align-items:center;padding:12px;background:#fbf1d7;border-color:#d9bd7b}.board-champion>span:last-child{min-width:0}.board-champion small{display:block;font-size:10px;font-weight:400;color:#98793d}.board-champion strong{display:block;font-size:19px;color:#745827;overflow-wrap:anywhere;margin-top:5px}.sushi-medal{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;border:1.5px solid #c49c4d;border-radius:50%;background:#f5e3af;width:62px;height:62px;flex-shrink:0;box-shadow:inset 0 0 0 3px #fff7de}.sushi-medal canvas{width:45px;height:33px;object-fit:contain}.sushi-medal small{font-size:9px;color:#87601e;font-weight:700;line-height:1.1}.board-row{grid-template-columns:66px minmax(0,1fr) auto}.champion-row .board-position{background:none;line-height:normal;color:inherit}.board-position .sushi-medal{width:53px;height:53px}.board-position .sushi-medal canvas{width:36px;height:29px}.board-position .sushi-medal small{font-size:8px}.podium-2 .board-position,.podium-3 .board-position{width:32px;height:32px;line-height:30px;justify-self:center;border:1px solid #bfc5bc;border-radius:50%;background:#e8ece5}.podium-3 .board-position{border-color:#d0b49c;background:#f0e2d2;color:#9e744f}.mini-board-list li{grid-template-columns:42px minmax(0,1fr) auto;gap:6px}.mini-medal{display:flex;align-items:center;flex-direction:column;justify-content:center;width:36px;height:39px;border-radius:50%;background:#f8e8bb;border:1px solid #cda65d;font-size:14px;line-height:1}.mini-medal small{font-size:7px;color:#886527;margin-top:3px}.daily-board-panel .hand-title{font-size:27px}
+@media(max-width:1100px){.topbar{gap:12px}.top-actions{gap:6px}.nav-button{padding:8px;font-size:11px}.nav-secondary .nav-button{padding:8px}.nav-primary{padding:2px}}
+@media(max-width:760px){.topbar{display:block;height:auto;padding:12px 0}.brand{width:max-content;margin-bottom:12px;font-size:16px}.brand>span:last-child{display:flex;align-items:center;gap:10px}.brand small{margin:0}.top-actions{display:grid;grid-template-columns:1fr;gap:4px;width:100%}.nav-primary,.nav-secondary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.nav-button,.nav-secondary .nav-button{font-size:11px;padding:8px 4px;min-width:0;min-height:44px}.nav-primary{padding:3px}.nav-button>span:first-child{font-size:14px;margin-right:4px}.sidebar{grid-template-columns:1fr}.menu-panel{padding:22px}.menu-grid{grid-template-columns:1fr 1fr;gap:12px}.menu-item{grid-template-columns:44px minmax(0,1fr)}.menu-item canvas{width:40px;height:40px}.menu-item span{font-size:11px;white-space:normal;overflow-wrap:anywhere}.menu-item b{font-size:11px}.menu-panel .menu-pager span{flex-basis:auto;order:0}.character-heading{display:flex}.menu-panel .section-heading h2{font-size:29px}.collection-progress{padding:12px 14px 8px}.progress-heading{font-size:11px}.progress-heading b{font-size:12px}.progress-meta{gap:8px;font-size:9px}.progress-cta{font-size:9px}.save-strip{padding:7px 14px;gap:4px;font-size:10px}.save-strip>span:last-child{line-height:1.5}.archive-nudge{padding:8px 14px;gap:5px}.archive-nudge strong{font-size:10px}.archive-nudge div span{font-size:9px}.archive-nudge .quiet-button{min-width:30px}.discovery-card{max-width:calc(100% - 130px);padding:9px 10px;top:49%}.discovery-card>div{display:block}.discovery-card canvas{display:none}.discovery-card p strong{font-size:12px}.discovery-card p{margin:5px 0}.discovery-card>span:first-child{font-size:10px}.discovery-card small{font-size:8px}.collection-grid{gap:9px}.board-row{grid-template-columns:56px minmax(0,1fr) auto;gap:6px}#leaderboard-dialog .dialog-inner{padding:20px 14px}.board-player strong{font-size:12px}.board-row>b{font-size:17px}.collection-sort-label select{font-size:12px}#collection-dialog .dialog-inner{padding:18px}#collection-dialog .section-heading h2{font-size:26px}.menu-pager{font-size:10px}}
+@media(max-width:760px) and (min-height:540px){body.play-mode .topbar{height:auto;padding:2px 0 5px}body.play-mode .brand{display:none}body.play-mode .nav-primary{padding:0}body.play-mode .nav-button{min-height:44px}body.play-mode .stage{height:clamp(310px,calc(100dvh - 410px),540px)}body.play-mode .overlay{inset:100px 10px 8px}body.play-mode .scoreboard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto 44px;gap:7px;padding:7px 12px}body.play-mode .scoreboard .level-stat{display:none}body.play-mode .scoreboard strong{font-size:22px}body.play-mode .scoreboard .time-stat strong{font-size:19px}body.play-mode #checkout{font-size:10px;padding:5px}body.play-mode .vitals{padding:10px 12px}body.play-mode .health-row{margin-bottom:7px;min-height:23px}body.play-mode .fullness-heading{margin-bottom:7px;min-height:30px}body.play-mode .fullness-track{height:22px}body.play-mode .fullness-track i{height:34px}body.play-mode .gauge-labels{margin-top:7px}body.play-mode .network-bar{display:none}body.play-mode .save-strip>span:last-child{display:none}body.play-mode .table-footer{padding:8px 12px}body.play-mode .collection-progress{padding:10px 12px 6px}body.play-mode .progress-meter{margin:7px 0 6px}}
+@media(prefers-reduced-motion:reduce){.discover-enter{animation:none}.discovery-card,.progress-meter>span{transition:none}}
+.receipt-detail{font-size:10px;color:#7b846f;margin:10px 0}.receipt-detail summary{cursor:pointer;min-height:32px;line-height:32px}.receipt-detail .receipt-times{font-size:9px}
+/* Keep the discovery note inside the empty center of the racetrack, including short phones. */
+.discovery-card{top:calc(50% + 20px)}
+@media(max-width:760px){.discovery-card{top:calc(50% + 18px);max-width:calc(100% - 160px)}}
 </style>
   <title>寿司别吃撑！ · SUSHI PANIC</title>
 </head>
@@ -114,37 +132,41 @@
   <div class="app">
     <header class="topbar">
       <a class="brand" href="./" aria-label="寿司别吃撑 首页"><span class="brand-stamp" aria-hidden="true">寿</span><span>寿司别吃撑！<small>SUSHI PANIC</small></span></a>
-      <div class="top-actions"><span class="open-sign"><i></i> 本日营业中</span><button id="collection" class="quiet-button">寿司图鉴</button><button id="leaderboard" class="quiet-button">今日排行榜</button><button id="account" class="quiet-button" title="保存或恢复成绩">存档</button><button id="sound" class="quiet-button" aria-pressed="false">声音：关</button><button id="help" class="quiet-button">怎么玩</button></div>
+      <nav class="top-actions" aria-label="寿司店导航"><div class="nav-primary"><button id="today-menu" class="nav-button is-active" aria-current="page" aria-controls="menu-dialog"><span aria-hidden="true">🍣</span>今日菜单</button><button id="collection" class="nav-button" aria-controls="collection-dialog"><span aria-hidden="true">📖</span>寿司图鉴<i id="collection-new-count" aria-hidden="true" hidden>NEW</i></button><button id="account" class="nav-button" aria-controls="account-dialog"><span aria-hidden="true">☁️</span>云端存档<span id="nav-save-dot" class="save-dot" aria-hidden="true"></span></button></div><div class="nav-secondary"><button id="leaderboard" class="nav-button" aria-controls="leaderboard-dialog"><span aria-hidden="true">🏆</span>排行榜</button><button id="help" class="nav-button" aria-controls="help-dialog"><span aria-hidden="true">❔</span>怎么玩</button><button id="sound" class="nav-button" aria-pressed="false"><span aria-hidden="true">🔈</span>音效：关</button></div></nav>
     </header>
     <main>
       <section class="intro" aria-label="游戏介绍"><div><p class="eyebrow">回转不停 · 快乐有度</p><h1>今天也要，<span>刚刚好。</span></h1><p class="subtitle">一口小满足，一页新收藏。</p></div><div class="best-record"><span>本机最高纪录</span><strong id="best-score">00000</strong><small>BEST SCORE</small></div></section>
       <div class="game-layout">
         <section class="game-panel" aria-label="游戏区域">
           <div class="scoreboard"><div><span class="stat-label">本局得分</span><strong id="score">00000</strong></div><div class="time-stat"><span class="stat-label">用餐时间</span><strong id="time">00:00</strong></div><div class="level-stat"><span class="stat-label">回转速度</span><strong id="level">1 <small>/ 6</small></strong></div><button id="checkout" class="quiet-button" disabled>结账离席</button><button id="pause" class="pause-button" aria-label="暂停游戏" disabled>Ⅱ</button></div>
-          <div class="network-bar"><span id="network-status" role="status">正在连接云端档案…</span><button id="retry-network" class="text-button">重新连接</button><button id="copy-diagnostics" class="text-button">复制诊断</button></div>
+          <div class="network-bar"><span id="network-status" role="status">正在连接云端档案…</span><button id="retry-network" class="text-button">重新连接</button></div>
           <div class="vitals"><div class="health-row"><span>精神 <b id="hp">100</b><small id="hp-max"> / 100</small></span><div class="health-track" role="progressbar" aria-label="生命值" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="health-bar"><i id="health-fill"></i></div><span id="health-status">精神满满</span></div><div class="fullness-heading"><span>饱腹值 <b id="fullness">55</b><small> / 120</small></span><strong id="zone-text">恰到好处</strong></div><div class="fullness-track" id="fullness-bar" role="progressbar" aria-label="饱腹值" aria-valuemin="0" aria-valuemax="120" aria-valuenow="55"><span class="healthy-band"></span><span id="fullness-fill" class="fullness-fill"></span><i id="fullness-pointer"></i><span class="danger-line hunger-line"></span><span class="danger-line full-line"></span></div><div class="gauge-labels"><span>饿过头 &lt;15</span><span>舒适区 25–85</span><span>吃太撑 &gt;100</span></div></div>
           <div class="stage" id="stage">
             <canvas id="game" role="img" aria-label="回转寿司传送带。点击盘子吃寿司，或按 1 到 8 吃对应编号的盘子。"></canvas>
             <div id="toast" class="toast" role="status" aria-live="polite"></div>
+            <aside id="discovery-card" class="discovery-card" role="status" aria-live="polite" hidden><span id="discovery-title"></span><div><canvas id="discovery-art" width="110" height="90" aria-hidden="true"></canvas><p><strong id="discovery-name"></strong><small id="discovery-line"></small></p></div><small id="discovery-save"></small><span class="discovery-stars" aria-hidden="true">✧ · ✦</span></aside>
             <div class="combo" id="combo" aria-hidden="true"></div>
             <div id="scene-warning" class="scene-warning" hidden><strong id="scene-warning-title" role="status" aria-live="polite"></strong><span id="scene-warning-detail" aria-hidden="true"></span></div>
             <div id="overlay" class="overlay"><div id="overlay-content" class="overlay-card"></div></div>
           </div>
+          <section class="collection-progress" aria-label="我的寿司收藏"><button id="open-progress" class="progress-link" aria-label="打开寿司图鉴"><span class="progress-heading"><span>🍣 我的寿司收藏</span><b id="progress-count">已尝鲜 0 / 222 种</b></span><span class="progress-meter"><span id="progress-fill"></span></span><span class="progress-meta"><span id="progress-theme"></span><b id="progress-percent">0%</b><span class="progress-cta">打开寿司图鉴 →</span></span></button><p id="progress-sync" role="status"></p></section>
+          <section class="save-strip" aria-label="云端存档状态"><span id="save-state" role="status">等你入座</span><span id="save-detail">游客也能留下云端收藏。</span></section><aside id="archive-nudge" class="archive-nudge" hidden><div><strong>给你的寿司手帐安个家吧～</strong><span>绑定邮箱，换台设备也能继续收集！</span></div><button id="nudge-bind" class="text-button">绑定邮箱</button><button id="nudge-dismiss" class="quiet-button" aria-label="暂时收起邮箱提醒">×</button></aside>
           <div class="table-footer"><p id="game-hint"><span class="hint-dot"></span> 点击盘子开吃 · 看清红色过敏标记</p><span class="keyboard-hint">键盘 <kbd>1</kbd>–<kbd>8</kbd> 抢盘 · <kbd>P</kbd> 暂停</span></div>
         </section>
         <aside class="sidebar" aria-label="本局角色与菜单">
           <section class="character-panel"><p class="eyebrow">今日食客 <span id="character-tag">随机入座</span></p><div class="character-heading"><canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas><div><h2 id="character-name">谁来吃寿司？</h2><p id="character-title">每局都有不一样的胃口</p></div></div><p id="character-ability" class="ability">入座后抽取一张角色卡，看看今天要忌口什么。</p><div id="allergy-notice" class="allergy-notice"><span>过敏食物</span><strong id="allergy-name">开局揭晓</strong><small id="allergy-detail">看清再吃，别太心急</small></div></section>
-          <section class="menu-panel"><div class="section-heading"><h2>本日菜单</h2><span>饱腹变化</span></div><label class="player-id-label" for="theme-select">选择放题菜单</label><select id="theme-select" class="player-id-input"></select><p id="theme-description" class="tiny-note"></p><p id="theme-save-note" class="tiny-note"></p><div id="menu" class="menu-grid"></div><div class="menu-pager"><button id="menu-prev" class="quiet-button">上一页</button><span id="menu-page-info"></span><button id="menu-next" class="quiet-button">下一页</button></div><p class="menu-note">红色「忌」= 本局过敏源<br>乌龙茶减饱腹，太饿时别喝哦。</p></section>
-          <section id="daily-board-panel" class="daily-board-panel" aria-label="今日排行榜"><div class="section-heading"><h2>今日排行榜</h2><span>全球积分榜</span></div><div class="daily-date"><span id="mini-board-day">北京时间</span><span>距换榜 <b class="reset-countdown">--:--:--</b></span></div><p id="mini-board-status" class="tiny-note" role="status">正在读取今日榜…</p><ol id="mini-board-list" class="mini-board-list"></ol><p id="mini-board-me" class="mini-board-me">完成联网计分局后查看我的排名</p><button id="sidebar-leaderboard" class="secondary-button">查看全球 TOP 100</button></section><div class="diner-note"><span class="seal">腹八分目</span><p>别贪心，也别空着肚子。<br><strong>慢慢品尝，收集小幸福。</strong></p></div>
+          <section class="menu-panel" id="today-menu-panel"><div class="section-heading"><h2 class="hand-title">今日放题</h2><span class="menu-seal">主厨推荐</span></div><p class="menu-welcome">欢迎光临！今天想吃点什么？</p><label class="player-id-label" for="theme-select">换一份放题菜单</label><select id="theme-select" class="player-id-input"></select><p id="theme-description" class="tiny-note"></p><p id="theme-save-note" class="tiny-note"></p><div id="menu" class="menu-grid"></div><div class="menu-pager"><button id="menu-prev" class="quiet-button">上一页</button><span id="menu-page-info"></span><button id="menu-next" class="quiet-button">下一页</button></div><p class="menu-note">红色「忌」= 本局过敏源<br>喝口茶，歇一歇～<br>茶能调节饱腹，不计入寿司收藏。</p></section>
+          <section id="daily-board-panel" class="daily-board-panel" aria-label="今日大胃王"><div class="section-heading"><h2 class="hand-title">今日大胃王</h2><span>全球积分榜</span></div><div class="daily-date"><span id="mini-board-day">北京时间</span><span>距换榜 <b class="reset-countdown">--:--:--</b></span></div><p id="mini-board-status" class="tiny-note" role="status">正在读取今日榜…</p><ol id="mini-board-list" class="mini-board-list"></ol><p id="mini-board-me" class="mini-board-me">完成联网计分局后查看我的排名</p><button id="sidebar-leaderboard" class="secondary-button">查看全球 TOP 100</button></section><div class="diner-note"><span class="seal">腹八分目</span><p>别贪心，也别空着肚子。<br><strong>慢慢品尝，收集小幸福。</strong></p></div>
         </aside>
       </div>
     </main>
-    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>V1.2.1 · 百味放题与珍稀图鉴 · 无广告</span><span class="footer-motto">随时入座，随时再来。</span></footer>
+    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>V1.2.2 · 一口小惊喜，一页新收藏 · 无广告</span><span class="footer-motto">随时入座，随时再来。</span></footer>
   </div>
-  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">慢慢吃，刚刚好。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹温和下降，保持 25–85 有舒适奖励。太饱时先喝茶或歇一会儿，精神降低也不会导致死亡。</span></li><li><b>红色「忌」，吃了会过敏。</b><span>每局角色不同，过敏源也不同。误食精神 −4，盘子会提前标记；角色和各自的小能力仍保留。</span></li><li><b>连击比乱吃更值钱。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">20秒不操作自动休息；休息不消耗，也不加分。点击结账保存本局积分和收藏。切换页面自动暂停。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
-  <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">每日开席 · 全球挑战</p><div class="section-heading"><h2 id="board-title">今日排行榜</h2><span id="board-day"></span></div><p class="board-clock">北京时间 00:00 换榜 · 距刷新 <strong class="reset-countdown">--:--:--</strong></p><p id="board-champion" class="board-champion">正在寻找今日大胃王…</p><p id="board-status" class="board-status" role="status">每人每日最高积分 · 全球 TOP 100</p><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><p id="board-updated" class="tiny-note"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div><p class="tiny-note">匿名身份保存在此浏览器。未绑定邮箱时，清除 Cookie、无痕关闭或换设备后，历史成绩可能无法找回。</p></div></dialog>
-  <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">保存 / 恢复成绩</h2><p class="identity-note">请在已有成绩的原浏览器绑定邮箱。绑定完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><section id="email-code-section" hidden><label class="player-id-label" for="account-code">邮件验证码</label><input id="account-code" class="player-id-input" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="6–8位验证码"><button id="verify-email" class="primary-button">验证并恢复云端档案</button></section><button id="close-account" class="text-button">暂时不用，继续开吃</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
-  <dialog id="collection-dialog" aria-labelledby="collection-title"><div class="dialog-inner collection-inner"><p class="eyebrow">一盘一盘，收藏小幸福</p><div class="section-heading"><h2 id="collection-title">我的寿司图鉴</h2><button id="close-collection" class="quiet-button">收好图鉴</button></div><p id="collection-summary"></p><p id="theme-progress" class="tiny-note"></p><label for="collection-theme">翻看菜单</label><select id="collection-theme" class="player-id-input"></select><div class="collection-filters"><label>珍稀度<select id="collection-rarity" class="player-id-input"><option value="all">全部等级</option><option value="common">日常</option><option value="select">精选</option><option value="treasure">珍藏</option></select></label><label>找一道菜<input id="collection-search" class="player-id-input" type="search" placeholder="菜名或图鉴编号"></label></div><p id="collection-status" role="status" class="tiny-note">云端确认后永久保留；每日换榜不会清空收藏。</p><p class="rarity-note">食物随机抽档：日常72% · 精选23% · 珍藏5%。8次食物出盘内保证精选或珍藏，40次内保证珍藏；实际含保底与安全盘调整。乌龙茶另备。</p><div id="collection-grid" class="collection-grid"></div><div class="menu-pager"><button id="collection-prev" class="quiet-button">上一页</button><span id="collection-page-info"></span><button id="collection-next" class="quiet-button">下一页</button></div></div></dialog>
+  <dialog id="menu-dialog" aria-labelledby="menu-title"><div class="dialog-inner"><p class="eyebrow">欢迎光临！今天想吃点什么？</p><div class="section-heading"><h2 id="menu-title" class="hand-title">今日放题</h2><span class="menu-seal">慢慢选</span></div><label for="menu-picker" class="player-id-label">换一份放题菜单</label><select id="menu-picker" class="player-id-input"></select><p id="menu-picker-note" class="identity-note"></p><div id="menu-preview" class="menu-preview"></div><p class="identity-note">点击传送带上的盘子开吃，第一次尝鲜就能认识新寿司。往期菜单也一直留着，不用赶时间。</p><button id="close-menu" class="primary-button">就吃这期，回到座位</button></div></dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">欢迎光临，先吃一口。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹温和下降，保持 25–85 有舒适奖励。太饱时先喝茶或歇一会儿，精神降低也不会导致死亡。</span></li><li><b>红色「忌」，这桌少碰它。</b><span>每局角色不同，过敏源也不同。误食精神 −4，盘子会提前标记；角色和各自的小能力仍保留。</span></li><li><b>吃得舒服，连击也开心。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">偷偷打个盹儿～20秒没动就替你休息，不消耗也不加分。第一次吃到新品会记进手帐；「结账离席」保存这一桌，云端存档可查看同步状态。绑定邮箱完全自愿。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
+  <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">今天吃得最开心的客人</p><div class="section-heading"><h2 id="board-title" class="hand-title">今日大胃王</h2><span id="board-day"></span></div><p class="board-clock">北京时间 00:00 换榜 · 距刷新 <strong class="reset-countdown">--:--:--</strong></p><p id="board-champion" class="board-champion">正在寻找今日大胃王…</p><p id="board-status" class="board-status" role="status">每人每日最高积分 · 全球 TOP 100</p><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><p id="board-updated" class="tiny-note"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div><p class="tiny-note">匿名身份保存在此浏览器。未绑定邮箱时，清除 Cookie、无痕关闭或换设备后，历史成绩可能无法找回。</p></div></dialog>
+  <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">云端存档</h2><p id="account-save-state" class="account-save-state" role="status"></p><p class="identity-note">请在已有成绩的原浏览器绑定邮箱。绑定完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><section id="email-code-section" hidden><label class="player-id-label" for="account-code">邮件验证码</label><input id="account-code" class="player-id-input" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="6–8位验证码"><button id="verify-email" class="primary-button">验证并恢复云端档案</button></section><button id="close-account" class="text-button">暂时不用，继续开吃</button><details class="connection-details"><summary>连接遇到问题？</summary><button id="copy-diagnostics" class="text-button">复制诊断</button></details><button id="account-retry" class="secondary-button">重新连接 / 重试存档</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
+  <dialog id="collection-dialog" aria-labelledby="collection-title"><div class="dialog-inner collection-inner"><p class="eyebrow">一盘一盘，收藏小幸福</p><div class="section-heading"><h2 id="collection-title" class="hand-title">我的寿司手帐</h2><button id="close-collection" class="quiet-button">收好图鉴</button></div><p id="collection-summary"></p><p id="theme-progress" class="tiny-note"></p><label for="collection-theme">翻看菜单</label><select id="collection-theme" class="player-id-input"></select><div class="collection-filters"><label>珍稀度<select id="collection-rarity" class="player-id-input"><option value="all">全部等级</option><option value="common">日常</option><option value="select">精选</option><option value="treasure">珍藏</option></select></label><label>找一道菜<input id="collection-search" class="player-id-input" type="search" placeholder="菜名或图鉴编号"></label></div><label class="collection-sort-label">翻页顺序<select id="collection-sort" class="player-id-input"><option value="recent">最近发现优先</option><option value="number">图鉴编号顺序</option></select></label><p id="collection-status" role="status" class="tiny-note">云端确认后永久保留；每日换榜不会清空收藏。</p><p class="rarity-note">食物随机抽档：日常72% · 精选23% · 珍藏5%。8次食物出盘内保证精选或珍藏，40次内保证珍藏；实际含保底与安全盘调整。乌龙茶另备。</p><div id="collection-grid" class="collection-grid"></div><div class="menu-pager"><button id="collection-prev" class="quiet-button">上一页</button><span id="collection-page-info"></span><button id="collection-next" class="quiet-button">下一页</button></div></div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
   <script type="module">
 // src/core.js
@@ -4870,6 +4892,87 @@ function drawCatalogDish(c, s, x, y, scale) {
   c.restore();
 }
 
+// src/collection-feedback.js
+function collectionProgress(catalog2, theme, collection = [], pendingIds = []) {
+  const all = Object.values(catalog2).filter((f) => f.collectible), valid = new Set(all.map((f) => f.id));
+  const confirmed = new Set(collection.map((c) => c.sushiId).filter((id) => valid.has(id))), pending = new Set([...pendingIds].filter((id) => valid.has(id) && !confirmed.has(id))), tasted = /* @__PURE__ */ new Set([...confirmed, ...pending]);
+  const ids = (theme.collectionFoods || theme.foods).filter((id) => valid.has(id));
+  return { confirmed: confirmed.size, pending: pending.size, count: tasted.size, total: valid.size, percent: valid.size ? Math.round(tasted.size / valid.size * 100) : 0, themeCount: ids.filter((id) => tasted.has(id)).length, themeConfirmed: ids.filter((id) => confirmed.has(id)).length, themeTotal: ids.length };
+}
+function archiveStatus({ profile, bound = false, busy = false, error = "", pending = 0, practice = false, local = false, offline = false, localUnsaved = false }) {
+  if (localUnsaved) return { state: "failed", label: "\u672C\u673A\u6682\u672A\u4FDD\u5B58", detail: "\u6D4F\u89C8\u5668\u6CA1\u80FD\u7559\u4F4F\u672C\u673A\u8BB0\u5F55\u3002\u8BF7\u4FDD\u6301\u9875\u9762\u5F00\u542F\uFF0C\u7ED3\u8D26\u540E\u786E\u8BA4\u4E91\u7AEF\u4FDD\u5B58\u3002" };
+  if (local) return { state: busy ? "syncing" : error ? "failed" : pending ? "pending" : "local", label: busy ? "\u6B63\u5728\u540C\u6B65" : error ? "\u540C\u6B65\u5931\u8D25" : pending ? "\u7B49\u5F85\u540C\u6B65" : "\u672C\u5730\u8054\u8C03", detail: "\u672C\u5730\u8054\u8C03\u6536\u85CF\u4E0E\u6B63\u5F0F\u4E91\u7AEF\u624B\u5E10\u5206\u5F00\u4FDD\u5B58\u3002" + (error ? "\u8BF7\u91CD\u65B0\u8FDE\u63A5\u540E\u91CD\u8BD5\u3002" : "") };
+  if (practice) return { state: "practice", label: "\u7EC3\u4E60\u4E2D", detail: "\u8FD9\u4E00\u684C\u6682\u672A\u8054\u7F51\uFF0C\u53D1\u73B0\u53EA\u5728\u672C\u673A\u5C55\u793A\uFF1B\u91CD\u65B0\u8FDE\u63A5\u540E\u53E6\u5F00\u4E00\u684C\u53EF\u4FDD\u5B58\u3002" };
+  if (busy) return { state: "syncing", label: "\u6B63\u5728\u540C\u6B65", detail: "\u6B63\u5728\u628A\u8FD9\u6B21\u53D1\u73B0\u653E\u8FDB\u4E91\u7AEF\u624B\u5E10\u2026" };
+  if (error) return { state: "failed", label: "\u540C\u6B65\u5931\u8D25", detail: "\u8FD9\u53E3\u5C0F\u60CA\u559C\u8FD8\u5728\u672C\u673A\u7B49\u5019\u3002\u91CD\u65B0\u8FDE\u63A5\u6216\u7ED3\u8D26\u540E\uFF0C\u53EF\u5B89\u5168\u91CD\u8BD5\u3002" };
+  if (offline) return { state: "failed", label: "\u6682\u65F6\u79BB\u7EBF", detail: "\u5148\u6162\u6162\u5403\uFF0C\u5F85\u540C\u6B65\u8BB0\u5F55\u4F1A\u7559\u5728\u6B64\u6D4F\u89C8\u5668\uFF1B\u8054\u7F51\u540E\u91CD\u8BD5\u3002" };
+  if (pending) return { state: "pending", label: "\u7B49\u5F85\u540C\u6B65", detail: `${pending} \u9879\u672C\u673A\u8BB0\u5F55\u5F85\u6838\u9A8C\uFF0C\u5C1A\u672A\u786E\u8BA4\u4FDD\u5B58\u81F3\u4E91\u7AEF\u3002` };
+  if (!profile) return { state: "idle", label: "\u7B49\u4F60\u5165\u5EA7", detail: "\u8F93\u5165\u6635\u79F0\u5F00\u5403\uFF0C\u6E38\u5BA2\u4E5F\u80FD\u7559\u4E0B\u4E91\u7AEF\u6536\u85CF\u3002" };
+  return bound ? { state: "synced", label: "\u5DF2\u540C\u6B65", detail: "\u4E91\u7AEF\u624B\u5E10\u5DF2\u8BFB\u53D6 \xB7 \u5DF2\u7ED1\u5B9A\u90AE\u7BB1\uFF0C\u53EF\u4EE5\u6362\u8BBE\u5907\u7EE7\u7EED\u6536\u96C6\u3002" } : { state: "guest", label: "\u6E38\u5BA2\u5B58\u6863", detail: "\u4E91\u7AEF\u624B\u5E10\u5DF2\u8BFB\u53D6 \xB7 \u6B64\u6D4F\u89C8\u5668\u8BB0\u5F97\u4F60\uFF0C\u7ED1\u5B9A\u90AE\u7BB1\u53EF\u6362\u8BBE\u5907\u7EE7\u7EED\u3002" };
+}
+var Notebook = class {
+  constructor(storage) {
+    this.storage = storage;
+    this.owner = "";
+    this.items = {};
+    this.reminder = {};
+  }
+  use(owner) {
+    owner = owner || "practice";
+    if (this.owner === owner) return;
+    this.owner = owner;
+    this.items = {};
+    this.reminder = {};
+    try {
+      const v = JSON.parse(this.storage?.getItem("sushi.notebook.v122." + owner) || "{}");
+      this.items = v.items || {};
+      this.reminder = v.reminder || {};
+    } catch {
+    }
+  }
+  persist() {
+    try {
+      this.storage?.setItem("sushi.notebook.v122." + this.owner, JSON.stringify({ items: this.items, reminder: this.reminder }));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  discover(id, runId, at = Date.now()) {
+    if (this.items[id]) return false;
+    this.items[id] = { seen: false, at, runId };
+    this.persist();
+    return true;
+  }
+  unseen(id) {
+    return !!this.items[id] && !this.items[id].seen;
+  }
+  viewed(id) {
+    if (this.items[id]) {
+      this.items[id].seen = true;
+      this.persist();
+    }
+  }
+  pending(validRuns) {
+    const runs = new Set(validRuns);
+    return Object.keys(this.items).filter((id) => runs.has(this.items[id].runId));
+  }
+  dismiss(now = Date.now()) {
+    if (this.reminder.dismissedAt) this.reminder.secondDismissed = true;
+    this.reminder.dismissedAt = now;
+    this.persist();
+  }
+  shouldRemind(bound, count, now = Date.now()) {
+    if (bound || !this.owner || this.owner === "practice") return false;
+    if (!this.reminder.dismissedAt) return true;
+    return count >= 10 && now - this.reminder.dismissedAt >= 7 * 864e5 && !this.reminder.secondDismissed;
+  }
+};
+function discoveryPresentation(food, rarity) {
+  const secret = food.rarity === "hidden" || ["lucky_tamago", "cat_tamago"].includes(food.id);
+  return { kind: secret ? "secret" : rarity, title: secret ? "\u2728 \u79D8\u5BC6\u83DC\u5355\u53D1\u73B0\uFF01" : rarity === "treasure" ? "\u2728 \u4E00\u53E3\u73CD\u85CF\uFF0C\u9047\u89C1\u5566\uFF01" : rarity === "select" ? "\u2726 \u7CBE\u9009\u597D\u5473\uFF0C\u7B2C\u4E00\u6B21\u89C1\uFF01" : "\u2727 \u65B0\u5BFF\u53F8\u53D1\u73B0\uFF01", line: food.name.includes("\u8336") || food.categoryId === "sweet" ? "\u751C\u751C\u7684\u4E00\u53E3\uFF0C\u624B\u5E10\u4E5F\u5F00\u5FC3\u3002" : food.name.includes("\u7099") || food.name.includes("\u7126\u7CD6") ? "\u8FD9\u53E3\u9999\u5F97\u6709\u70B9\u72AF\u89C4\uFF01" : "\u53C8\u8BA4\u8BC6\u4E86\u4E00\u79CD\u65B0\u5BFF\u53F8\uFF01" };
+}
+
 // src/config.js
 var PUBLIC_CONFIG = Object.freeze({
   "supabaseUrl": "https://hyqgkenarjgxdbqiwpxl.supabase.co",
@@ -4938,6 +5041,167 @@ async function watchIdentity(listener) {
   return c.auth.onAuthStateChange((event, session) => {
     setTimeout(() => listener(event, session?.user?.id || null), 0);
   }).data.subscription;
+}
+
+// src/shop-experience.js
+var $ = (id) => document.getElementById(id);
+function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchived, getLocalSaveFailure, drawSushi: drawSushi2, playSound }) {
+  let storage;
+  try {
+    storage = localStorage;
+  } catch {
+  }
+  const book = new Notebook(storage);
+  let authOwner = null, authResolved = false, bound = false, queue = [], active = null, timer, observer, viewTimers = /* @__PURE__ */ new Map();
+  const pendingIds = () => {
+    const runs = social2.journal.list().filter((e) => e.owner === social2.profile?.id && ["active", "pending"].includes(e.kind)).map((e) => e.runId);
+    if (getRun()) runs.push(getRun().runId);
+    const game2 = getGame();
+    return [...book.pending(runs), ...game2?.discoveries || []];
+  };
+  function useOwner() {
+    const owner = social2.profile?.id || "practice";
+    if (book.owner !== owner) {
+      book.use(owner);
+      authOwner = null;
+      authResolved = false;
+      bound = false;
+      queue = [];
+      active = null;
+      clearTimeout(timer);
+      $("discovery-card").hidden = true;
+    }
+    return owner;
+  }
+  async function readAuth() {
+    const id = social2.profile?.id;
+    if (!id || social2.local) {
+      authResolved = true;
+      return;
+    }
+    if (authOwner === id) return;
+    authOwner = id;
+    authResolved = false;
+    try {
+      const u = await currentIdentity();
+      if (social2.profile?.id !== id) return;
+      bound = u?.id === id && !u.is_anonymous && !!u.email_confirmed_at;
+    } catch {
+      bound = false;
+    }
+    authResolved = true;
+    paint();
+  }
+  function paint() {
+    useOwner();
+    const game2 = getGame(), run = getRun(), profile = social2.profile, pending = pendingIds(), p = collectionProgress(CATALOG2, getTheme(), profile?.collection, pending);
+    $("progress-count").textContent = `\u5DF2\u5C1D\u9C9C ${p.count} / ${p.total} \u79CD`;
+    $("progress-percent").textContent = p.percent + "%";
+    $("progress-fill").style.width = p.percent + "%";
+    $("progress-fill").parentElement.setAttribute("role", "progressbar");
+    $("progress-fill").parentElement.setAttribute("aria-label", "\u5BFF\u53F8\u6536\u85CF\u5B8C\u6210\u5EA6");
+    $("progress-fill").parentElement.setAttribute("aria-valuenow", p.percent);
+    $("progress-fill").parentElement.setAttribute("aria-valuemin", "0");
+    $("progress-fill").parentElement.setAttribute("aria-valuemax", "100");
+    $("progress-theme").textContent = `\u672C\u671F\u653E\u9898 ${p.themeCount} / ${p.themeTotal}`;
+    $("progress-sync").textContent = p.pending ? `${social2.local ? "\u672C\u5730\u8054\u8C03\u5DF2\u786E\u8BA4" : "\u4E91\u7AEF\u5DF2\u786E\u8BA4"} ${p.confirmed} \u79CD \xB7 \u672C\u673A\u5F85\u540C\u6B65 ${p.pending} \u79CD${!run && game2 ? "\uFF08\u7EC3\u4E60\u53D1\u73B0\u4E0D\u4E0A\u4F20\uFF09" : ""}` : p.count ? `${social2.local ? "\u672C\u5730\u8054\u8C03\u5DF2\u786E\u8BA4" : "\u4E91\u7AEF\u5DF2\u786E\u8BA4"} ${p.confirmed} \u79CD \xB7 \u4E0B\u4E00\u53E3\uFF0C\u4F1A\u662F\u8C01\u5462\uFF1F` : "\u7B2C\u4E00\u53E3\u5BFF\u53F8\uFF0C\u8FD8\u5728\u7B49\u4F60\u5462\uFF01";
+    const detached = social2.journal.list("active").filter((e) => e.owner === profile?.id && e.body?.actions?.length && e.runId !== run?.runId).length;
+    const ownPending = social2.pending.filter((e) => !e.owner || e.owner === profile?.id).length, unarchived = getUnarchived();
+    const state = archiveStatus({ profile, bound, busy: social2.archiveBusy > 0 || social2.archiveReadBusy > 0, error: social2.archiveError || social2.archiveReadError, pending: ownPending + detached + p.pending + (unarchived && !p.pending ? 1 : 0), practice: !!game2 && !run, local: social2.local, offline: navigator.onLine === false, localUnsaved: getLocalSaveFailure() });
+    $("save-state").textContent = (["failed", "pending"].includes(state.state) ? "\u26A0 " : state.state === "syncing" ? "\u23F3 " : "\u2601 ") + state.label;
+    $("save-detail").textContent = state.detail;
+    $("save-state").parentElement.dataset.state = state.state;
+    $("nav-save-dot").dataset.state = state.state;
+    $("account-save-state").textContent = state.label + " \xB7 " + state.detail;
+    $("archive-nudge").hidden = !(profile && authResolved && !social2.local && book.shouldRemind(bound, p.count));
+    const known = /* @__PURE__ */ new Set([...(profile?.collection || []).map((c) => c.sushiId), ...pending]);
+    $("collection-new-count").hidden = ![...known].some((id) => book.unseen(id));
+    if (active) {
+      const saved = profile?.collection?.some((c) => c.sushiId === active.id);
+      $("discovery-save").textContent = saved ? "\u5DF2\u653E\u8FDB\u4E91\u7AEF\u624B\u5E10" : run ? "\u672C\u673A\u5DF2\u53D1\u73B0 \xB7 \u7B49\u5F85\u4E91\u7AEF\u786E\u8BA4" : "\u7EC3\u4E60\u53D1\u73B0 \xB7 \u4EC5\u5728\u672C\u673A\u5C55\u793A";
+    }
+    readAuth();
+    return p;
+  }
+  function next() {
+    if (active || !queue.length) return;
+    active = queue.shift();
+    const food = CATALOG2[active.id], info = discoveryPresentation(food, rarityOf(food)), card = $("discovery-card");
+    card.dataset.kind = info.kind;
+    card.hidden = false;
+    $("discovery-title").textContent = info.title;
+    $("discovery-name").textContent = food.name;
+    $("discovery-line").textContent = info.line;
+    const c = $("discovery-art");
+    c.getContext("2d").clearRect(0, 0, c.width, c.height);
+    drawSushi2(c.getContext("2d"), food.id, 55, 46, 0.95);
+    card.classList.remove("discover-enter");
+    void card.offsetWidth;
+    card.classList.add("discover-enter");
+    playSound(info.kind);
+    paint();
+    timer = setTimeout(() => {
+      card.hidden = true;
+      active = null;
+      next();
+    }, 2100);
+  }
+  function discover(event) {
+    useOwner();
+    const id = event.item.key;
+    if (!event.newDiscovery || social2.profile?.collection?.some((c) => c.sushiId === id) || !book.discover(id, getRun()?.runId || "practice")) return false;
+    queue.push({ id });
+    next();
+    paint();
+    return true;
+  }
+  function observeCards() {
+    observer?.disconnect();
+    for (const t of viewTimers.values()) clearTimeout(t);
+    viewTimers.clear();
+    if (!$("collection-dialog").open) return;
+    observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const el = entry.target, id = el.dataset.sushiId;
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.6) {
+          clearTimeout(viewTimers.get(id));
+          viewTimers.delete(id);
+          continue;
+        }
+        if (!book.unseen(id) || viewTimers.has(id)) continue;
+        viewTimers.set(id, setTimeout(() => {
+          viewTimers.delete(id);
+          if (!$("collection-dialog").open || document.hidden) return;
+          book.viewed(id);
+          el.querySelector(".new-tag")?.remove();
+          el.classList.remove("is-new");
+          paint();
+        }, 700));
+      }
+    }, { root: $("collection-dialog"), threshold: [0.6] });
+    for (const el of document.querySelectorAll(".collection-card.is-new")) observer.observe(el);
+  }
+  $("nudge-bind").onclick = () => $("account").click();
+  $("nudge-dismiss").onclick = () => {
+    book.dismiss();
+    paint();
+  };
+  window.addEventListener("online", paint);
+  window.addEventListener("offline", paint);
+  window.addEventListener("storage", (e) => {
+    if (e.key?.startsWith("sushi.notebook.v122.")) {
+      const owner = book.owner;
+      book.owner = "";
+      book.use(owner);
+      paint();
+    }
+  });
+  return { book, paint, discover, observeCards, pendingIds, refreshAuth() {
+    authOwner = null;
+    readAuth();
+  }, recent(id, confirmed) {
+    return Date.parse(confirmed?.firstDiscoveredAt) || book.items[id]?.at || 0;
+  } };
 }
 
 // src/storage.js
@@ -5017,6 +5281,10 @@ var SocialClient = class {
     this.journal = new RunJournal();
     this.syncing = null;
     this.lastError = "";
+    this.archiveBusy = 0;
+    this.archiveError = "";
+    this.archiveReadError = "";
+    this.archiveReadBusy = 0;
     this.onState = () => {
     };
     try {
@@ -5067,18 +5335,30 @@ var SocialClient = class {
     return data;
   }
   async initialize() {
-    const revision = this.profileRevision;
-    const data = await this.request("/api/identity");
-    if (revision !== this.profileRevision || !this.local && data.profile && (await currentIdentity())?.id !== data.profile.id) return data;
-    this.profile = data.profile;
-    this.mode = data.mode;
-    if (this.profile) {
-      this.playerId = this.profile.nickname;
-      this.persist();
-    }
-    this.lastError = "";
+    this.archiveReadBusy++;
     this.changed();
-    return data;
+    try {
+      const revision = this.profileRevision;
+      const data = await this.request("/api/identity");
+      if (revision !== this.profileRevision || !this.local && data.profile && (await currentIdentity())?.id !== data.profile.id) return data;
+      this.profile = data.profile;
+      this.mode = data.mode;
+      if (this.profile) {
+        this.playerId = this.profile.nickname;
+        this.persist();
+      }
+      this.lastError = "";
+      this.archiveReadError = "";
+      this.changed();
+      return data;
+    } catch (error) {
+      this.archiveReadError = error.message;
+      this.changed();
+      throw error;
+    } finally {
+      this.archiveReadBusy--;
+      this.changed();
+    }
   }
   async rename(value) {
     const nickname = playerIdValue(value);
@@ -5146,6 +5426,8 @@ var SocialClient = class {
     return promise;
   }
   async deliver(entry, saved) {
+    this.archiveBusy++;
+    this.changed();
     try {
       const data = await this.request(`/api/runs/${entry.runId}/finish`, entry.body);
       this.journal.remove(entry.runId);
@@ -5153,23 +5435,39 @@ var SocialClient = class {
       this.lastBoard = data.board;
       if (data.board?.profile?.id === this.profile?.id) this.profile = data.board.profile;
       this.lastError = "";
+      this.archiveError = "";
       this.changed();
       return data;
     } catch (error) {
+      this.archiveError = error.message;
       if (!retryableStatus(error.status)) this.journal.write({ ...entry, kind: "rejected", error: error.message });
       this.persist();
       this.lastError = error.message;
       error.saved = saved && this.pending.some((e) => e.runId === entry.runId);
       this.changed();
       throw error;
+    } finally {
+      this.archiveBusy--;
+      this.changed();
     }
   }
   async checkpoint(run, body) {
     if (!["1.2.0", "1.2.1"].includes(run.rulesVersion)) return;
     const owner = this.profile?.id;
-    const data = await this.request(`/api/runs/${run.runId}/checkpoint`, body);
-    if (this.profile?.id === owner) this.profile = data.profile;
-    return data;
+    this.archiveBusy++;
+    this.changed();
+    try {
+      const data = await this.request(`/api/runs/${run.runId}/checkpoint`, body);
+      if (this.profile?.id === owner) this.profile = data.profile;
+      this.archiveError = "";
+      return data;
+    } catch (error) {
+      this.archiveError = error.message;
+      throw error;
+    } finally {
+      this.archiveBusy--;
+      this.changed();
+    }
   }
   async email(email, recover = false) {
     if (this.local) throw new Error("\u672C\u5730\u8054\u8C03\u73AF\u5883\u4E0D\u53D1\u9001\u90AE\u4EF6\uFF0C\u8BF7\u4F7F\u7528\u516C\u7F51\u7248");
@@ -5566,9 +5864,11 @@ function rebuildActiveRun(entry) {
 var Game2 = CasualGame2;
 var isCasual = (g) => isCasualVersion(g?.rulesVersion);
 var syncedEaten = /* @__PURE__ */ new Map();
+var localSaveFailed = false;
 var rankedChoice = false;
 var menuPage = 0;
 var collectionPage = 0;
+var collectionPaintSignature = "";
 var selectedTheme = "classic";
 var themeChosen = false;
 var menuServerTime = null;
@@ -5581,8 +5881,8 @@ try {
 } catch {
   selectedTheme = "classic";
 }
-var $ = (id) => document.getElementById(id);
-var renderer = new Renderer($("game"));
+var $2 = (id) => document.getElementById(id);
+var renderer = new Renderer($2("game"));
 var game = null;
 var preview = new Game2({ seed: 414 });
 var lastFrame = performance.now();
@@ -5600,9 +5900,11 @@ var lastReceipt = null;
 var boardBusy = false;
 var clockAnchor = null;
 var identityWarning = "";
+var shop = shopExperience({ social, getGame: () => game, getRun: () => onlineRun, getTheme: displayTheme, getLocalSaveFailure: () => localSaveFailed, getUnarchived: () => onlineRun && ["playing", "paused"].includes(game?.phase) ? Math.max(0, game.sushiEaten - (syncedEaten.get(onlineRun.runId) || 0)) : 0, drawSushi, playSound: (kind) => tone(kind) });
 var physique = (c) => c.id === "momo" ? "\u6742\u98DF\u578B" : c.id === "taro" ? "\u5FEB\u6D88\u5316\u578B" : c.id === "yuzu" ? "\u6162\u6D88\u5316\u578B" : "\u6E05\u723D\u578B";
 preview.start();
 preview.character = { ...preview.character, allergy: "none" };
+var playingNotes = /* @__PURE__ */ new Set();
 var high = 0;
 var sound = false;
 try {
@@ -5620,6 +5922,28 @@ function newSeed() {
 }
 function tone(kind = "eat") {
   if (!sound) return;
+  if (["common", "select", "treasure", "secret"].includes(kind)) {
+    try {
+      audio ?? (audio = new (window.AudioContext || window.webkitAudioContext)());
+      audio.resume().catch(() => {
+      });
+      const notes = kind === "common" ? [620] : kind === "select" ? [620, 780] : kind === "treasure" ? [620, 780, 940] : [700, 880, 1050];
+      notes.forEach((hz, i) => {
+        const o = audio.createOscillator(), g = audio.createGain(), at = audio.currentTime + i * 0.11;
+        o.type = "sine";
+        o.frequency.setValueAtTime(hz, at);
+        g.gain.setValueAtTime(0.035, at);
+        g.gain.exponentialRampToValueAtTime(1e-3, at + 0.18);
+        o.connect(g);
+        g.connect(audio.destination);
+        rememberSound(o);
+        o.start(at);
+        o.stop(at + 0.19);
+      });
+    } catch {
+    }
+    return;
+  }
   try {
     audio ?? (audio = new (window.AudioContext || window.webkitAudioContext)());
     audio.resume().catch(() => {
@@ -5632,47 +5956,62 @@ function tone(kind = "eat") {
     gain.gain.exponentialRampToValueAtTime(1e-3, audio.currentTime + 0.15);
     o.connect(gain);
     gain.connect(audio.destination);
+    rememberSound(o);
     o.start();
     o.stop(audio.currentTime + 0.16);
   } catch {
   }
 }
+function rememberSound(o) {
+  playingNotes.add(o);
+  o.onended = () => playingNotes.delete(o);
+}
+function stopSound() {
+  for (const o of playingNotes) {
+    try {
+      o.stop();
+      o.disconnect?.();
+    } catch {
+    }
+  }
+  playingNotes.clear();
+}
 function soundUI() {
-  $("sound").textContent = `\u58F0\u97F3\uFF1A${sound ? "\u5F00" : "\u5173"}`;
-  $("sound").setAttribute("aria-pressed", String(sound));
+  $2("sound").innerHTML = `<span aria-hidden="true">${sound ? "\u{1F50A}" : "\u{1F508}"}</span>\u97F3\u6548\uFF1A${sound ? "\u5F00" : "\u5173"}`;
+  $2("sound").setAttribute("aria-pressed", String(sound));
 }
 function menu() {
-  const pool = game && !isCasual(game) ? ["salmon", "tuna", "shrimp", "tamago", "cucumber", "ikura", "onigiri", "tea"] : (game?.theme || themeById2(selectedTheme)).foods;
+  const pool = game && !isCasual(game) ? ["salmon", "tuna", "shrimp", "tamago", "cucumber", "ikura", "onigiri", "tea"] : displayTheme().foods;
   const keys = pool.includes("taste_caramel_salmon") ? [...FEATURED, "tea", ...pool.filter((k) => !FEATURED.includes(k) && k !== "tea")] : pool;
   const pages = Math.ceil(keys.length / 12);
   menuPage = Math.min(menuPage, pages - 1);
   const shown = keys.slice(menuPage * 12, menuPage * 12 + 12);
-  $("menu").innerHTML = shown.map((key) => {
+  $2("menu").innerHTML = shown.map((key) => {
     const f = CATALOG2[key], grade = RARITIES[rarityOf(f)];
     return `<div class="menu-item ${game && f.allergen === game.character.allergy ? "allergic" : ""}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}<b>${f.fullness > 0 ? "+" : ""}${Math.round(f.fullness * (f.fullness > 0 ? (game?.character.portion || 1) * (game && !isCasual(game) ? 1 : 0.65) : 1))} <small style="color:${grade?.color || "#66886d"}">${f.collectible ? grade?.name || "\u65E5\u5E38" : "\u8336\u996E"}</small></b></span></div>`;
   }).join("");
-  for (const el of $("menu").children) drawSushi(el.querySelector("canvas").getContext("2d"), el.dataset.food, 50, 48, 1.2);
-  $("menu-page-info").textContent = `${keys.length}\u6B3E\u9910\u54C1 \xB7 ${menuPage + 1}/${pages}\u9875`;
-  $("menu-prev").disabled = menuPage === 0;
-  $("menu-next").disabled = menuPage >= pages - 1;
+  for (const el of $2("menu").children) drawSushi(el.querySelector("canvas").getContext("2d"), el.dataset.food, 50, 48, 1.2);
+  $2("menu-page-info").textContent = `${keys.length}\u6B3E\u9910\u54C1 \xB7 ${menuPage + 1}/${pages}\u9875`;
+  $2("menu-prev").disabled = menuPage === 0;
+  $2("menu-next").disabled = menuPage >= pages - 1;
 }
 function characterUI() {
-  if ($("theme-select")) $("theme-select").disabled = !!game && ["playing", "paused", "card"].includes(game.phase);
+  if ($2("theme-select")) $2("theme-select").disabled = !!game && ["playing", "paused", "card"].includes(game.phase);
   const c = game?.character;
-  drawPortrait($("portrait"), c);
-  $("character-tag").textContent = c ? "\u5DF2\u5165\u5EA7" : "\u7B49\u5F85\u5165\u5EA7";
-  $("character-name").textContent = playerId || "\u8F93\u5165\u4F60\u7684ID";
-  $("character-title").textContent = c ? `${physique(c)} \xB7 ${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u699C" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF" : "\u8054\u7F51\u8BA1\u5206" : "\u7EC3\u4E60\u5C40"}` : "\u6162\u6162\u5403\uFF0C\u4E5F\u6162\u6162\u6536\u85CF";
-  $("character-ability").textContent = c ? c.ability : "\u5165\u5EA7\u540E\u62BD\u53D6\u4E00\u5F20\u89D2\u8272\u5361\uFF0C\u770B\u770B\u4ECA\u5929\u8981\u5FCC\u53E3\u4EC0\u4E48\u3002";
-  $("allergy-name").textContent = c ? ALLERGEN_NAMES[c.allergy] : "\u5F00\u5C40\u63ED\u6653";
-  $("allergy-detail").textContent = c ? isCasual(game) ? "\u5FCC\u53E3\u4F1A\u6709\u4E00\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5C31\u597D" : "\u6807\u300C\u5FCC\u300D\u7684\u76D8\u5B50\u4F1A\u9020\u6210\u8FC7\u654F\u4F24\u5BB3" : "\u770B\u6E05\u518D\u5403\uFF0C\u522B\u592A\u5FC3\u6025";
+  drawPortrait($2("portrait"), c);
+  $2("character-tag").textContent = c ? "\u5DF2\u5165\u5EA7" : "\u7B49\u5F85\u5165\u5EA7";
+  $2("character-name").textContent = playerId || "\u8F93\u5165\u4F60\u7684ID";
+  $2("character-title").textContent = c ? `${physique(c)} \xB7 ${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u699C" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF" : "\u8054\u7F51\u8BA1\u5206" : "\u7EC3\u4E60\u5C40"}` : "\u6162\u6162\u5403\uFF0C\u4E5F\u6162\u6162\u6536\u85CF";
+  $2("character-ability").textContent = c ? c.ability : "\u5165\u5EA7\u540E\u62BD\u53D6\u4E00\u5F20\u89D2\u8272\u5361\uFF0C\u770B\u770B\u4ECA\u5929\u8981\u5FCC\u53E3\u4EC0\u4E48\u3002";
+  $2("allergy-name").textContent = c ? ALLERGEN_NAMES[c.allergy] : "\u5F00\u5C40\u63ED\u6653";
+  $2("allergy-detail").textContent = c ? isCasual(game) ? "\u5FCC\u53E3\u4F1A\u6709\u4E00\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5C31\u597D" : "\u6807\u300C\u5FCC\u300D\u7684\u76D8\u5B50\u4F1A\u9020\u6210\u8FC7\u654F\u4F24\u5BB3" : "\u770B\u6E05\u518D\u5403\uFF0C\u522B\u592A\u5FC3\u6025";
   menu();
 }
 function showOverlay(html) {
-  $("overlay").classList.remove("hidden");
-  $("overlay-content").classList.remove("record-celebration");
-  $("overlay-content").innerHTML = html;
-  const button = $("overlay-content").querySelector("button");
+  $2("overlay").classList.remove("hidden");
+  $2("overlay-content").classList.remove("record-celebration");
+  $2("overlay-content").innerHTML = html;
+  const button = $2("overlay-content").querySelector("button");
   if (button) button.focus({ preventScroll: true });
 }
 function home() {
@@ -5680,9 +6019,10 @@ function home() {
   game = null;
   onlineRun = null;
   ended = false;
-  $("pause").disabled = true;
+  $2("pause").disabled = true;
   characterUI();
   updateUI();
+  shop.paint();
   showOverlay(`<p class="eyebrow">\u968F\u65F6\u5165\u5EA7 \xB7 \u6162\u6162\u6536\u85CF</p><h2>\u5BFF\u53F8<br><em>\u522B\u5403\u6491\uFF01</em></h2><div class="english-title">SUSHI PANIC</div><p>${social.profile ? "\u6B22\u8FCE\u56DE\u6765\uFF0C" + escapeHtml(playerId) + "\u3002\u4ECA\u5929\u60F3\u5C1D\u54EA\u4E00\u76D8\uFF1F" : "\u53D6\u4E2A\u6635\u79F0\uFF0C\u6765\u5403\u51E0\u76D8\u559C\u6B22\u7684\u5BFF\u53F8\u3002"}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">\u4F60\u7684\u6635\u79F0</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u6216\u6570\u5B57" value="${escapeHtml(playerId)}" required><label class="rank-choice"><input type="checkbox" id="ranked-choice" ${rankedChoice ? "checked" : ""}> \u53C2\u52A0\u4ECA\u65E5\u79EF\u5206\u699C\uFF08\u53EF\u9009\uFF09</label><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">\u5165\u5EA7\uFF0C\u5F00\u5403\uFF01 <span aria-hidden="true">\u2192</span></button></form><p class="identity-note">${social.api ? "\u81EA\u52A8\u8BB0\u4F4F\u6B64\u6D4F\u89C8\u5668\u7684\u533F\u540D\u8EAB\u4EFD \xB7 \u5141\u8BB8\u91CD\u540D" : "\u5728\u7EBF\u8EAB\u4EFD\u670D\u52A1\u5F85\u63A5\u901A \xB7 \u5F53\u524D\u53EF\u7EC3\u4E60"}<br>\u7ED1\u5B9A\u90AE\u7BB1\u540E\u53EF\u8DE8\u8BBE\u5907\u53D6\u56DE\u6536\u85CF\uFF1B\u672A\u7ED1\u5B9A\u65F6\uFF0C\u8BF7\u4FDD\u7559\u6D4F\u89C8\u5668\u6570\u636E\u3002</p>${identityWarning ? '<button id="reset-identity" class="text-button">\u4F7F\u7528\u65B0\u7684\u533F\u540D\u8EAB\u4EFD</button>' : ""}`);
   const saved = social.journal.list("active").filter((e) => e.owner === social.profile?.id).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
   if (saved) {
@@ -5691,13 +6031,13 @@ function home() {
     button.className = "secondary-button";
     button.textContent = "\u7EE7\u7EED\u4E0A\u6B21\u672A\u7ED3\u8D26\u7684\u5BF9\u5C40";
     button.onclick = () => restoreProgress(saved);
-    $("overlay-content").append(button);
+    $2("overlay-content").append(button);
   }
-  $("entry-form").onsubmit = (e) => {
+  $2("entry-form").onsubmit = (e) => {
     e.preventDefault();
-    beginRun($("player-id-input").value);
+    beginRun($2("player-id-input").value);
   };
-  if ($("reset-identity")) $("reset-identity").onclick = async () => {
+  if ($2("reset-identity")) $2("reset-identity").onclick = async () => {
     try {
       await social.reset();
       playerId = "";
@@ -5710,9 +6050,9 @@ function home() {
 }
 async function beginRun(id) {
   if (entryBusy) return;
-  if ($("ranked-choice")) rankedChoice = $("ranked-choice").checked;
+  if ($2("ranked-choice")) rankedChoice = $2("ranked-choice").checked;
   entryBusy = true;
-  const button = $("new-game") || $("retry");
+  const button = $2("new-game") || $2("retry");
   if (button) {
     button.disabled = true;
     button.textContent = "\u6B63\u5728\u5165\u5EA7\u2026";
@@ -5728,7 +6068,7 @@ async function beginRun(id) {
       identityWarning = error.message;
       home();
     }
-    if ($("entry-error")) $("entry-error").textContent = error.message;
+    if ($2("entry-error")) $2("entry-error").textContent = error.message;
     else toast(error.message, true);
     if (button) {
       button.disabled = false;
@@ -5750,19 +6090,20 @@ function newGame(options = {}) {
   accumulator = 0;
   renderer.effects = [];
   clearTimeout(toastTimer);
-  $("toast").classList.remove("visible");
+  $2("toast").classList.remove("visible");
   characterUI();
   updateUI();
   const c = game.character;
   showOverlay(`<p class="eyebrow">\u4F60\u7684\u672C\u5C40\u89D2\u8272\u5361</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">\u672C\u5C40\u4F53\u8D28\uFF1A${physique(c)}</p><div class="card-traits"><span>${isCasual(game) ? "\u7CBE\u795E" : "\u751F\u547D"} ${c.hp}</span><span>\u6E29\u548C\u6D88\u5316 ${(c.drain * (isCasual(game) ? 0.18 : 1)).toFixed(2)}/\u79D2</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">\u672C\u5C40\u5FCC\u53E3\uFF1A<strong>${ALLERGEN_NAMES[c.allergy]}</strong> \xB7 ${isCasual(game) ? "\u8BEF\u98DF\u7CBE\u795E \u22124\uFF0C\u4E0D\u4F1A\u6B7B\u4EA1" : "\u8BEF\u98DF\u6263 24 \u751F\u547D"}</div><button class="primary-button" id="start-game">\u8BB0\u4F4F\u4E86\uFF0C\u5F00\u59CB\uFF01</button><p class="tiny-note">${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u5C40 \xB7 \u4E0E\u516C\u7F51\u699C\u5355\u72EC\u7ACB" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF\u5C40 \xB7 \u7ED3\u8D26\u4FDD\u5B58\uFF0C\u4E0D\u53C2\u4E0E\u4ECA\u65E5\u699C" : "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u7ED3\u675F\u540E\u53C2\u4E0E\u4ECA\u65E5\u5168\u7403\u699C" : "\u7EC3\u4E60\u5C40 \xB7 \u672A\u8FDE\u63A5\u4ECA\u65E5\u699C\uFF0C\u672C\u5C40\u4E0D\u4E0A\u699C"}</p>`);
-  drawPortrait($("card-portrait"), c);
-  $("start-game").onclick = startGame;
+  drawPortrait($2("card-portrait"), c);
+  $2("start-game").onclick = startGame;
   paintNetwork();
 }
 function startGame() {
   if (!game?.start()) return;
-  $("overlay").classList.add("hidden");
-  $("pause").disabled = false;
+  shop.paint();
+  $2("overlay").classList.add("hidden");
+  $2("pause").disabled = false;
   accumulator = 0;
   lastFrame = performance.now();
   updateUI();
@@ -5775,23 +6116,23 @@ function pauseGame(reason = "\u5BFF\u53F8\u4F1A\u7B49\u4F60\u3002") {
   if (!game || !(game.pause() || isCasual(game) && game.phase === "paused" && game.autoRest)) return;
   accumulator = 0;
   saveProgress();
-  showOverlay(`<p class="eyebrow">\u4E2D\u573A\u4F11\u606F</p><h2>\u6B47\u4E00\u53E3\u6C14\u3002</h2><p>${reason}<br>\u9971\u8179\u3001\u751F\u547D\u4E0E\u8BA1\u65F6\u90FD\u5DF2\u6682\u505C\u3002</p><button class="primary-button" id="resume-game">\u7EE7\u7EED\u5F00\u5403</button><button class="secondary-button" id="back-home">\u8FD4\u56DE\u95E8\u53E3</button>`);
+  showOverlay(`<p class="eyebrow">\u4E2D\u573A\u4F11\u606F</p><h2>${game.autoRest ? "\u5077\u5077\u6253\u4E2A\u76F9\u513F\uFF5E" : "\u6B47\u4E00\u53E3\u6C14\u3002"}</h2><p>${reason}<br>\u8FD9\u4E00\u684C\u66FF\u4F60\u7559\u7740\uFF0C\u4F11\u606F\u65F6\u4E0D\u6D88\u8017\uFF0C\u4E5F\u4E0D\u52A0\u5206\u3002</p><button class="primary-button" id="resume-game">\u7EE7\u7EED\u5F00\u5403</button><button class="secondary-button" id="back-home">\u8FD4\u56DE\u95E8\u53E3</button>`);
   if (isCasual(game)) {
     const b = document.createElement("button");
     b.className = "secondary-button";
     b.id = "rest-checkout";
     b.textContent = "\u7ED3\u8D26\uFF0C\u4FDD\u5B58\u6536\u85CF";
     b.onclick = checkout;
-    $("overlay-content").append(b);
+    $2("overlay-content").append(b);
   }
-  $("resume-game").onclick = resumeGame;
-  $("back-home").onclick = home;
+  $2("resume-game").onclick = resumeGame;
+  $2("back-home").onclick = home;
   updateUI();
 }
 function resumeGame() {
   if (!game?.resume()) return;
   if (isCasual(game) && onlineRun) actionLog.push([activeTicks, 0]);
-  $("overlay").classList.add("hidden");
+  $2("overlay").classList.add("hidden");
   accumulator = 0;
   lastFrame = performance.now();
   updateUI();
@@ -5799,8 +6140,8 @@ function resumeGame() {
 function finish() {
   if (ended || !game) return;
   ended = true;
-  $("pause").disabled = true;
-  $("theme-select").disabled = false;
+  $2("pause").disabled = true;
+  $2("theme-select").disabled = false;
   lastReceipt = null;
   if (game.score > high) {
     high = game.score;
@@ -5809,38 +6150,38 @@ function finish() {
     } catch {
     }
   }
-  $("best-score").textContent = scoreText(high);
-  drawPortrait($("portrait"), game.character, "sad");
-  showOverlay(`<p class="eyebrow">${escapeHtml(playerId)} \xB7 \u672C\u684C\u5DF2\u7ED3\u8D26</p><h2 style="font-size:25px">${game.deathReason}</h2><div class="result-score" id="confirmed-score">${scoreText(game.score)}</div><div class="receipt-stats"><span><b>${timeText(game.time)}</b>${isCasual(game) ? "\u7528\u9910\u65F6\u95F4" : "\u751F\u5B58\u65F6\u95F4"}</span><span><b>${game.sushiEaten}</b>\u5BFF\u53F8\u76D8\u6570</span><span><b>${game.bestCombo}</b>\u6700\u9AD8\u8FDE\u51FB</span></div><div class="result-totals"><span><b id="result-today">\u2014</b>\u4ECA\u65E5\u6700\u9AD8</span><span><b id="result-best">\u2014</b>\u5386\u53F2\u6700\u9AD8</span><span><b id="result-rank">\u2014</b>\u4ECA\u65E5\u5168\u7403\u6392\u540D</span></div><p id="result-badges" class="result-badges" role="status"></p><p id="rank-result" class="rank-result" role="status">${onlineRun ? "\u63D0\u4EA4\u4E2D \xB7 \u6B63\u5728\u6838\u9A8C\u672C\u5C40\u79EF\u5206\u2026" : "\u7EC3\u4E60\u5C40 \xB7 \u672C\u5C40\u4E0D\u4E0A\u4F20\u4ECA\u65E5\u699C"}</p><p id="result-times" class="receipt-times"></p><div class="result-actions"><button class="primary-button" id="retry">\u518D\u6765\u4E00\u5C40\uFF01</button><button class="secondary-button" id="result-board">\u67E5\u770B\u6392\u884C\u699C</button><button class="secondary-button" id="result-share">\u5206\u4EAB\u6210\u7EE9</button><button class="secondary-button" id="result-submit" disabled>\u91CD\u8BD5\u63D0\u4EA4</button></div><button class="text-button" id="result-home">\u56DE\u5230\u95E8\u53E3 / \u4FEE\u6539\u6635\u79F0</button>`);
-  $("retry").onclick = () => beginRun(playerId);
-  $("result-home").onclick = home;
-  $("result-board").onclick = showLeaderboard;
-  $("result-share").onclick = shareScore;
-  $("result-submit").onclick = async () => {
-    const b = $("result-submit");
+  $2("best-score").textContent = scoreText(high);
+  drawPortrait($2("portrait"), game.character, "sad");
+  showOverlay(`<p class="eyebrow">${escapeHtml(playerId)} \xB7 \u672C\u684C\u5DF2\u7ED3\u8D26</p><h2 style="font-size:25px">${game.deathReason}</h2><div class="result-score" id="confirmed-score">${scoreText(game.score)}</div><div class="receipt-stats"><span><b>${timeText(game.time)}</b>${isCasual(game) ? "\u7528\u9910\u65F6\u95F4" : "\u751F\u5B58\u65F6\u95F4"}</span><span><b>${game.sushiEaten}</b>\u5BFF\u53F8\u76D8\u6570</span><span><b>${game.bestCombo}</b>\u6700\u9AD8\u8FDE\u51FB</span></div><div class="result-totals"><span><b id="result-today">\u2014</b>\u4ECA\u65E5\u6700\u9AD8</span><span><b id="result-best">\u2014</b>\u5386\u53F2\u6700\u9AD8</span><span><b id="result-rank">\u2014</b>\u4ECA\u65E5\u5168\u7403\u6392\u540D</span></div><p id="result-badges" class="result-badges" role="status"></p><p id="rank-result" class="rank-result" role="status">${onlineRun ? "\u63D0\u4EA4\u4E2D \xB7 \u6B63\u5728\u6838\u9A8C\u672C\u5C40\u79EF\u5206\u2026" : "\u7EC3\u4E60\u5C40 \xB7 \u672C\u5C40\u4E0D\u4E0A\u4F20\u4ECA\u65E5\u699C"}</p><details class="receipt-detail"><summary>\u770B\u770B\u8FD9\u684C\u5C0F\u7968</summary><p id="result-times" class="receipt-times"></p></details><div class="result-actions"><button class="primary-button" id="retry">\u518D\u6765\u4E00\u5C40\uFF01</button><button class="secondary-button" id="result-board">\u67E5\u770B\u6392\u884C\u699C</button><button class="secondary-button" id="result-share">\u5206\u4EAB\u6210\u7EE9</button><button class="secondary-button" id="result-submit" disabled>\u91CD\u8BD5\u63D0\u4EA4</button></div><button class="text-button" id="result-home">\u56DE\u5230\u95E8\u53E3 / \u4FEE\u6539\u6635\u79F0</button>`);
+  $2("retry").onclick = () => beginRun(playerId);
+  $2("result-home").onclick = home;
+  $2("result-board").onclick = showLeaderboard;
+  $2("result-share").onclick = shareScore;
+  $2("result-submit").onclick = async () => {
+    const b = $2("result-submit");
     b.disabled = true;
     try {
       const results = await social.retry();
       for (const r of results) {
         if (r.result && r.result.runId === onlineRun?.runId) applyReceipt(r.result);
-        else if (r.error) $("rank-result").textContent = "\u63D0\u4EA4\u672A\u5B8C\u6210\uFF1A" + r.error;
+        else if (r.error) $2("rank-result").textContent = "\u63D0\u4EA4\u672A\u5B8C\u6210\uFF1A" + r.error;
       }
       await refreshLeaderboard();
     } finally {
-      if ($("result-submit") && social.pending.some((e) => e.runId === onlineRun?.runId)) $("result-submit").disabled = false;
+      if ($2("result-submit") && social.pending.some((e) => e.runId === onlineRun?.runId)) $2("result-submit").disabled = false;
     }
   };
   if (onlineRun) {
     const finished = game;
     social.submit(onlineRun, activeTicks, actionLog, isCasual(game) ? { checkout: true } : {}).then((data) => {
-      if (game !== finished || !$("rank-result")) return;
+      if (game !== finished || !$2("rank-result")) return;
       applyReceipt(data.result);
       paintBoard(data.board);
       paintCollection();
     }).catch((error) => {
-      if (game === finished && $("rank-result")) {
-        $("rank-result").textContent = error.code === "quarantined" ? "\u6210\u7EE9\u5F85\u6838\u67E5 \xB7 \u6682\u4E0D\u8BA1\u5165\u6392\u884C\u699C" : error.saved ? "\u63D0\u4EA4\u5931\u8D25 \xB7 \u7B49\u5F85\u91CD\u8BD5\uFF0C\u6253\u5F00\u699C\u5355\u53EF\u91CD\u8BD5\u4E0A\u4F20" : `\u672A\u4E0A\u699C\uFF1A${error.message}`;
-        if ($("result-submit")) $("result-submit").disabled = !error.saved;
+      if (game === finished && $2("rank-result")) {
+        $2("rank-result").textContent = error.code === "quarantined" ? "\u6210\u7EE9\u5F85\u6838\u67E5 \xB7 \u6682\u4E0D\u8BA1\u5165\u6392\u884C\u699C" : error.saved ? "\u63D0\u4EA4\u5931\u8D25 \xB7 \u7B49\u5F85\u91CD\u8BD5\uFF0C\u6253\u5F00\u699C\u5355\u53EF\u91CD\u8BD5\u4E0A\u4F20" : `\u672A\u4E0A\u699C\uFF1A${error.message}`;
+        if ($2("result-submit")) $2("result-submit").disabled = !error.saved;
       }
     });
   }
@@ -5850,25 +6191,26 @@ function bjTime(value) {
 }
 function applyReceipt(result) {
   lastReceipt = result;
+  localSaveFailed = false;
   paintNetwork();
-  if (!$("rank-result")) return;
-  if ($("result-submit")) {
-    $("result-submit").disabled = true;
-    $("result-submit").textContent = "\u6210\u7EE9\u5DF2\u540C\u6B65";
+  if (!$2("rank-result")) return;
+  if ($2("result-submit")) {
+    $2("result-submit").disabled = true;
+    $2("result-submit").textContent = "\u6210\u7EE9\u5DF2\u540C\u6B65";
   }
-  $("confirmed-score").textContent = scoreText(result.score);
-  $("result-today").textContent = result.todayBest == null ? "\u6682\u65E0" : scoreText(result.todayBest);
-  $("result-best").textContent = scoreText(result.allTimeBest);
-  $("result-rank").textContent = result.rank ? "\u7B2C " + result.rank + " \u540D" : "\u6682\u65E0";
-  $("rank-result").textContent = "\u63D0\u4EA4\u6210\u529F \xB7 \u5DF2\u901A\u8FC7\u670D\u52A1\u7AEF\u6838\u9A8C" + (result.ranked === false ? " \xB7 \u672C\u5C40\u4EC5\u6536\u85CF\uFF0C\u4E0D\u53C2\u52A0\u6392\u540D" : "") + (social.mode === "local" ? "\uFF08\u672C\u5730\u8054\u8C03\u699C\uFF09" : "");
+  $2("confirmed-score").textContent = scoreText(result.score);
+  $2("result-today").textContent = result.todayBest == null ? "\u6682\u65E0" : scoreText(result.todayBest);
+  $2("result-best").textContent = scoreText(result.allTimeBest);
+  $2("result-rank").textContent = result.rank ? "\u7B2C " + result.rank + " \u540D" : "\u6682\u65E0";
+  $2("rank-result").textContent = "\u63D0\u4EA4\u6210\u529F \xB7 \u8FD9\u684C\u5DF2\u8BB0\u8FDB\u4E91\u7AEF\u624B\u5E10" + (result.ranked === false ? " \xB7 \u672C\u5C40\u4EC5\u6536\u85CF\uFF0C\u4E0D\u53C2\u52A0\u6392\u540D" : "") + (social.mode === "local" ? "\uFF08\u672C\u5730\u8054\u8C03\u699C\uFF09" : "");
   const badges = [];
   if (result.personalRecord) badges.push("\u65B0\u7684\u4E2A\u4EBA\u7EAA\u5F55\uFF01");
   if (result.dailyRecord) badges.push("\u4ECA\u65E5\u6700\u4F73\u6210\u7EE9\u5237\u65B0\uFF01");
   if (result.enteredTop100) badges.push("\u6210\u529F\u8FDB\u5165\u4ECA\u65E5\u6392\u884C\u699C\uFF01");
   if (result.champion) badges.push("\u4ECA\u65E5\u699C\u9996\uFF01");
-  $("result-badges").textContent = badges.join(" ");
-  if (badges.length) $("overlay-content").classList.add("record-celebration");
-  $("result-times").textContent = `\u6210\u7EE9\u5F52\u5C5E ${result.day}\uFF08\u5317\u4EAC\u65F6\u95F4\uFF09 \xB7 \u5F00\u59CB ${bjTime(result.startedAt)} \xB7 \u7ED3\u675F ${bjTime(result.endedAt)} \xB7 \u6392\u540D\u67E5\u8BE2 ${bjTime(result.rankQueriedAt)}`;
+  $2("result-badges").textContent = badges.join(" ");
+  if (badges.length) $2("overlay-content").classList.add("record-celebration");
+  $2("result-times").textContent = `\u6210\u7EE9\u5F52\u5C5E ${result.day}\uFF08\u5317\u4EAC\u65F6\u95F4\uFF09 \xB7 \u5F00\u59CB ${bjTime(result.startedAt)} \xB7 \u7ED3\u675F ${bjTime(result.endedAt)} \xB7 \u6392\u540D\u67E5\u8BE2 ${bjTime(result.rankQueriedAt)}`;
 }
 async function shareScore() {
   const r = lastReceipt;
@@ -5889,17 +6231,17 @@ ${r.rank ? `\u5F53\u5929\u5168\u7403\u6392\u540D\u7B2C ${r.rank} \u540D\uFF01\uF
     area.readOnly = true;
     area.value = text2;
     area.setAttribute("aria-label", "\u5206\u4EAB\u6587\u6848\uFF0C\u8BF7\u9009\u4E2D\u590D\u5236");
-    $("overlay-content").append(area);
+    $2("overlay-content").append(area);
     area.focus();
     area.select();
   }
 }
 function toast(message, bad = false) {
-  $("toast").textContent = message;
-  $("toast").classList.toggle("bad", bad);
-  $("toast").classList.add("visible");
+  $2("toast").textContent = message;
+  $2("toast").classList.toggle("bad", bad);
+  $2("toast").classList.add("visible");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => $("toast").classList.remove("visible"), 1500);
+  toastTimer = setTimeout(() => $2("toast").classList.remove("visible"), 1500);
 }
 function paintBoard(board) {
   if (!board) return;
@@ -5907,49 +6249,50 @@ function paintBoard(board) {
   social.mode = board.mode || social.mode;
   clockAnchor = { time: Date.parse(board.serverTime), reset: Date.parse(board.resetsAt), at: performance.now() };
   const local = board.mode === "local";
-  $("board-day").textContent = board.day;
-  $("mini-board-day").textContent = board.day + (local ? " \xB7 \u672C\u5730\u8054\u8C03" : "");
-  $("board-champion").textContent = board.entries.length ? `\u4ECA\u65E5\u5927\u80C3\u738B \xB7 ${board.entries[0].nickname}` : "\u4ECA\u65E5\u9996\u4F4D\u5927\u80C3\u738B\uFF0C\u7B49\u4F60\u4E0A\u699C";
-  $("board-status").textContent = board.entries.length ? local ? "\u672C\u5730\u6D4B\u8BD5\u699C\uFF0C\u4E0E\u516C\u7F51\u72EC\u7ACB" : "\u6BCF\u4EBA\u6BCF\u65E5\u6700\u9AD8\u79EF\u5206 \xB7 \u540C\u5206\u5148\u8FBE\u5230\u8005\u4F18\u5148" : "\u4ECA\u5929\u8FD8\u6CA1\u6709\u5DF2\u9A8C\u8BC1\u6210\u7EE9\uFF0C\u6765\u5403\u4E0B\u7B2C\u4E00\u4EFD\u8363\u8000\u3002";
+  $2("board-day").textContent = board.day;
+  $2("mini-board-day").textContent = board.day + (local ? " \xB7 \u672C\u5730\u8054\u8C03" : "");
+  $2("board-champion").innerHTML = board.entries.length ? `<span class="sushi-medal"><canvas width="80" height="58" data-medal aria-hidden="true"></canvas><small>\u5927\u80C3\u738B</small></span><span><small>\u4ECA\u5929\u5403\u5F97\u6700\u5F00\u5FC3\u7684\u5BA2\u4EBA</small><strong>${escapeHtml(board.entries[0].nickname)}</strong></span>` : "\u4ECA\u65E5\u9996\u4F4D\u5927\u80C3\u738B\uFF0C\u7B49\u4F60\u6765\u5F00\u5E2D\u3002";
+  $2("board-status").textContent = board.entries.length ? local ? "\u672C\u5730\u6D4B\u8BD5\u699C\uFF0C\u4E0E\u516C\u7F51\u72EC\u7ACB" : "\u6BCF\u4EBA\u6BCF\u65E5\u6700\u9AD8\u79EF\u5206 \xB7 \u540C\u5206\u5148\u8FBE\u5230\u8005\u4F18\u5148" : "\u4ECA\u5929\u8FD8\u6CA1\u6709\u5DF2\u9A8C\u8BC1\u6210\u7EE9\uFF0C\u6765\u5403\u4E0B\u7B2C\u4E00\u4EFD\u8363\u8000\u3002";
   const own = board.me?.playerId;
-  const list = $("board-list"), scroll = list.scrollTop;
-  list.innerHTML = board.entries.map((row) => `<li class="board-row ${row.rank === 1 ? "champion-row" : ""} podium-${row.rank <= 3 ? row.rank : 0} ${row.playerId === own ? "is-me" : ""}"><span class="board-position">${row.rank === 1 ? "\u738B" : row.rank}</span><div class="board-player"><strong>${escapeHtml(row.nickname)}${row.playerId === own ? " \xB7 \u6211" : ""}</strong><small>\u98DF\u5BA2 ${row.playerId.slice(-4)}${row.rank === 1 ? " \xB7 \u4ECA\u65E5\u5927\u80C3\u738B" : ""}</small></div><b>${scoreText(row.score)}<small>\u79EF\u5206</small></b></li>`).join("");
+  const list = $2("board-list"), scroll = list.scrollTop;
+  list.innerHTML = board.entries.map((row) => `<li class="board-row ${row.rank === 1 ? "champion-row" : ""} podium-${row.rank <= 3 ? row.rank : 0} ${row.playerId === own ? "is-me" : ""}"><span class="board-position">${row.rank === 1 ? '<span class="sushi-medal"><canvas width="80" height="58" data-medal aria-hidden="true"></canvas><small>\u5927\u80C3\u738B</small></span>' : row.rank}</span><div class="board-player"><strong>${escapeHtml(row.nickname)}${row.playerId === own ? " \xB7 \u6211" : ""}</strong><small>\u98DF\u5BA2 ${row.playerId.slice(-4)}${row.rank === 1 ? " \xB7 \u7B2C1\u540D" : ""}</small></div><b>${scoreText(row.score)}<small>\u79EF\u5206</small></b></li>`).join("");
   list.scrollTop = scroll;
   const me = board.me ? `\u6211 \xB7 \u7B2C ${board.me.rank} \u540D \xB7 ${board.me.score} \u5206` : board.identityUnavailable || !board.profile && social.profile?.id ? "\u8EAB\u4EFD\u6682\u672A\u786E\u8BA4 \xB7 \u672C\u4EBA\u540D\u6B21\u5F85\u91CD\u65B0\u8FDE\u63A5" : "\u6211 \xB7 \u4ECA\u65E5\u5C1A\u65E0\u5DF2\u9A8C\u8BC1\u6210\u7EE9";
-  $("board-me").textContent = me;
-  $("mini-board-me").textContent = me;
-  $("board-updated").textContent = "\u6392\u540D\u67E5\u8BE2\uFF1A\u5317\u4EAC\u65F6\u95F4 " + bjTime(board.serverTime) + " \xB7 \u53EF\u4E3B\u52A8\u5237\u65B0\uFF0C\u6D4F\u89C8\u65F6\u6BCF60\u79D2\u540C\u6B65";
-  $("mini-board-list").innerHTML = board.entries.slice(0, 5).map((row) => `<li class="${row.playerId === own ? "is-me" : ""}"><span>${row.rank === 1 ? "\u738B" : row.rank}</span><strong>${escapeHtml(row.nickname)}</strong><b>${row.score}</b></li>`).join("");
-  $("mini-board-status").textContent = board.entries.length ? local ? "\u672C\u5730\u8054\u8C03\u699C \xB7 \u975E\u5168\u7403\u6210\u7EE9" : "\u4ECA\u65E5\u524D\u4E94\u540D \xB7 \u5B8C\u6574\u699C\u5355 TOP 100" : "\u4ECA\u65E5\u8FD8\u6CA1\u4EBA\u4E0A\u699C\uFF0C\u4F60\u6765\u5F00\u5E2D\u5427\u3002";
+  $2("board-me").textContent = me;
+  $2("mini-board-me").textContent = me;
+  $2("board-updated").textContent = "\u6392\u540D\u67E5\u8BE2\uFF1A\u5317\u4EAC\u65F6\u95F4 " + bjTime(board.serverTime) + " \xB7 \u53EF\u4E3B\u52A8\u5237\u65B0\uFF0C\u6D4F\u89C8\u65F6\u6BCF60\u79D2\u540C\u6B65";
+  $2("mini-board-list").innerHTML = board.entries.slice(0, 5).map((row) => `<li class="${row.playerId === own ? "is-me" : ""}"><span class="mini-position">${row.rank === 1 ? '<span class="mini-medal">\u{1F363}<small>\u5927\u80C3\u738B</small></span>' : row.rank}</span><strong>${escapeHtml(row.nickname)}</strong><b>${row.score}</b></li>`).join("");
+  $2("mini-board-status").textContent = board.entries.length ? local ? "\u672C\u5730\u8054\u8C03\u699C \xB7 \u975E\u5168\u7403\u6210\u7EE9" : "\u4ECA\u65E5\u524D\u4E94\u540D \xB7 \u5B8C\u6574\u699C\u5355 TOP 100" : "\u4ECA\u5929\u7684\u7B2C\u4E00\u5F20\u5C0F\u9910\u5238\uFF0C\u8FD8\u5728\u7B49\u4F60\u3002";
+  for (const c of document.querySelectorAll("[data-medal]")) drawSushi(c.getContext("2d"), "salmon", 40, 33, 0.68);
   tickCountdown();
 }
 async function refreshLeaderboard({ quiet = false } = {}) {
   if (boardBusy) return;
   boardBusy = true;
-  $("board-refresh").disabled = true;
-  if (!quiet) $("board-status").textContent = "\u6B63\u5728\u8BFB\u53D6\u4ECA\u65E5\u699C\u2026";
+  $2("board-refresh").disabled = true;
+  if (!quiet) $2("board-status").textContent = "\u6B63\u5728\u8BFB\u53D6\u4ECA\u65E5\u699C\u2026";
   try {
     paintBoard(await social.board());
   } catch (error) {
-    $("board-champion").textContent = "\u4ECA\u65E5\u699C\u6682\u65F6\u8FDE\u4E0D\u4E0A";
-    $("board-status").textContent = "\u8BF7\u7A0D\u540E\u5237\u65B0\u3002\u6E38\u620F\u53EF\u4EE5\u7EE7\u7EED\u7EC3\u4E60\uFF0C\u672A\u540C\u6B65\u7684\u6210\u7EE9\u4E0D\u4F1A\u663E\u793A\u4E3A\u5DF2\u4E0A\u699C\u3002";
-    $("mini-board-status").textContent = "\u699C\u5355\u6682\u4E0D\u53EF\u7528\uFF0C\u70B9\u4E0B\u65B9\u6309\u94AE\u91CD\u8BD5";
+    $2("board-champion").textContent = "\u4ECA\u65E5\u699C\u6682\u65F6\u8FDE\u4E0D\u4E0A";
+    $2("board-status").textContent = "\u8BF7\u7A0D\u540E\u5237\u65B0\u3002\u6E38\u620F\u53EF\u4EE5\u7EE7\u7EED\u7EC3\u4E60\uFF0C\u672A\u540C\u6B65\u7684\u6210\u7EE9\u4E0D\u4F1A\u663E\u793A\u4E3A\u5DF2\u4E0A\u699C\u3002";
+    $2("mini-board-status").textContent = "\u699C\u5355\u6682\u4E0D\u53EF\u7528\uFF0C\u70B9\u4E0B\u65B9\u6309\u94AE\u91CD\u8BD5";
     if (!social.lastBoard) {
-      $("board-list").replaceChildren();
-      $("mini-board-list").replaceChildren();
-      $("board-me").textContent = "\u5C1A\u672A\u53D6\u5F97\u6709\u6548\u6392\u540D";
-    } else $("board-updated").textContent = "\u5F53\u524D\u663E\u793A\u4E0A\u6B21\u8BFB\u53D6\u7684\u6570\u636E\uFF0C\u8BF7\u8054\u7F51\u540E\u5237\u65B0\u3002";
+      $2("board-list").replaceChildren();
+      $2("mini-board-list").replaceChildren();
+      $2("board-me").textContent = "\u5C1A\u672A\u53D6\u5F97\u6709\u6548\u6392\u540D";
+    } else $2("board-updated").textContent = "\u5F53\u524D\u663E\u793A\u4E0A\u6B21\u8BFB\u53D6\u7684\u6570\u636E\uFF0C\u8BF7\u8054\u7F51\u540E\u5237\u65B0\u3002";
   } finally {
     boardBusy = false;
-    $("board-refresh").disabled = false;
+    $2("board-refresh").disabled = false;
   }
   social.retry().then(async (outcomes) => {
     let updated = false;
     for (const o of outcomes) {
       if (o.result) {
         updated = true;
-        if ($("rank-result") && onlineRun?.runId === o.result.runId) applyReceipt(o.result);
-      } else if (o.error && $("rank-result") && onlineRun?.runId === o.runId) $("rank-result").textContent = (o.retryable ? "\u7B49\u5F85\u91CD\u8BD5\uFF1A" : "\u6210\u7EE9\u672A\u4E0A\u699C\uFF1A") + o.error;
+        if ($2("rank-result") && onlineRun?.runId === o.result.runId) applyReceipt(o.result);
+      } else if (o.error && $2("rank-result") && onlineRun?.runId === o.runId) $2("rank-result").textContent = (o.retryable ? "\u7B49\u5F85\u91CD\u8BD5\uFF1A" : "\u6210\u7EE9\u672A\u4E0A\u699C\uFF1A") + o.error;
     }
     if (updated) paintBoard(await social.board());
   }).catch(() => {
@@ -5967,7 +6310,8 @@ function tickCountdown() {
 }
 function showLeaderboard() {
   if (game?.phase === "playing") pauseGame("\u770B\u5B8C\u4ECA\u65E5\u699C\uFF0C\u518D\u7EE7\u7EED\u5F00\u5403\u3002");
-  if (!$("leaderboard-dialog").open) $("leaderboard-dialog").showModal();
+  if (!$2("leaderboard-dialog").open) $2("leaderboard-dialog").showModal();
+  selectNavigation("leaderboard");
   refreshLeaderboard();
 }
 function eatTarget(target) {
@@ -5980,11 +6324,13 @@ function eatTarget(target) {
   if (onlineRun) actionLog.push([activeTicks, target.id]);
   renderer.bite(target, e);
   tone(e.type);
-  toast(e.text, e.type === "allergy");
+  toast(e.newDiscovery ? "\u65B0\u53D1\u73B0\uFF01" + CATALOG2[e.item.key].name : e.text, e.type === "allergy");
   if (isCasual(game)) {
+    shop.discover(e);
     paintCollection();
     scheduleCollectionSync();
   }
+  shop.paint();
   updateUI();
   saveProgress();
   if (game.phase === "gameover") finish();
@@ -5992,42 +6338,42 @@ function eatTarget(target) {
 function updateUI() {
   const g = game, c = g?.character, full = g?.fullness ?? 55, hp = g?.hp ?? 100;
   document.body.classList.toggle("play-mode", !!g);
-  $("score").textContent = scoreText(g?.score ?? 0);
-  $("time").textContent = timeText(g?.time ?? 0);
-  $("level").innerHTML = isCasual(g) || !g ? "\u6162\u6162\u8F6C" : `${difficultyAt(g?.time ?? 0).level} <small>/ 6</small>`;
-  $("hp").textContent = String(Math.ceil(hp));
-  $("hp-max").textContent = ` / ${c?.hp ?? 100}`;
-  $("fullness").textContent = String(Math.round(full));
-  $("health-fill").style.width = `${hp / (c?.hp ?? 100) * 100}%`;
-  $("health-bar").setAttribute("aria-valuemax", String(c?.hp ?? 100));
-  $("health-bar").setAttribute("aria-valuenow", String(Math.ceil(hp)));
-  $("fullness-bar").setAttribute("aria-valuenow", String(Math.round(full)));
-  $("fullness-pointer").style.left = `${full / 120 * 100}%`;
-  $("fullness-fill").style.width = `${full / 120 * 100}%`;
+  $2("score").textContent = scoreText(g?.score ?? 0);
+  $2("time").textContent = timeText(g?.time ?? 0);
+  $2("level").innerHTML = isCasual(g) || !g ? "\u6162\u6162\u8F6C" : `${difficultyAt(g?.time ?? 0).level} <small>/ 6</small>`;
+  $2("hp").textContent = String(Math.ceil(hp));
+  $2("hp-max").textContent = ` / ${c?.hp ?? 100}`;
+  $2("fullness").textContent = String(Math.round(full));
+  $2("health-fill").style.width = `${hp / (c?.hp ?? 100) * 100}%`;
+  $2("health-bar").setAttribute("aria-valuemax", String(c?.hp ?? 100));
+  $2("health-bar").setAttribute("aria-valuenow", String(Math.ceil(hp)));
+  $2("fullness-bar").setAttribute("aria-valuenow", String(Math.round(full)));
+  $2("fullness-pointer").style.left = `${full / 120 * 100}%`;
+  $2("fullness-fill").style.width = `${full / 120 * 100}%`;
   const zone = fullnessZone(full), danger = zone !== "safe", lowHealth = hp > 0 && hp < (c?.hp ?? 100) * 0.4;
   const panel = document.querySelector(".game-panel");
   panel.classList.toggle("danger", danger);
   panel.dataset.bellyState = danger ? zone : full < 25 ? "low" : full > 85 ? "high" : "comfortable";
   panel.dataset.lowHealth = String(lowHealth);
-  $("zone-text").textContent = zone === "hungry" ? "\u592A\u997F\u4E86 \xB7 \u5FEB\u5403\uFF01" : zone === "overfull" ? "\u5403\u6491\u4E86 \xB7 \u505C\u4E00\u505C" : full >= 25 && full <= 85 ? "\u6070\u5230\u597D\u5904" : full < 25 ? "\u504F\u997F \xB7 \u8BE5\u5403\u4E86" : "\u504F\u6491 \xB7 \u6162\u4E00\u70B9";
-  $("health-status").textContent = hp === 0 ? "\u5DF2\u7ED3\u8D26" : danger && g?.hazardTime >= 2 ? "\u751F\u547D\u6D41\u5931\u4E2D" : danger ? `${Math.max(0, 2 - (g?.hazardTime ?? 0)).toFixed(1)}\u79D2\u540E\u6389\u8840` : hp < (c?.hp ?? 100) * 0.4 ? "\u6709\u70B9\u865A\u5F31" : "\u7CBE\u795E\u6EE1\u6EE1";
+  $2("zone-text").textContent = zone === "hungry" ? "\u592A\u997F\u4E86 \xB7 \u5FEB\u5403\uFF01" : zone === "overfull" ? "\u5403\u6491\u4E86 \xB7 \u505C\u4E00\u505C" : full >= 25 && full <= 85 ? "\u6070\u5230\u597D\u5904" : full < 25 ? "\u504F\u997F \xB7 \u8BE5\u5403\u4E86" : "\u504F\u6491 \xB7 \u6162\u4E00\u70B9";
+  $2("health-status").textContent = hp === 0 ? "\u5DF2\u7ED3\u8D26" : danger && g?.hazardTime >= 2 ? "\u751F\u547D\u6D41\u5931\u4E2D" : danger ? `${Math.max(0, 2 - (g?.hazardTime ?? 0)).toFixed(1)}\u79D2\u540E\u6389\u8840` : hp < (c?.hp ?? 100) * 0.4 ? "\u6709\u70B9\u865A\u5F31" : "\u7CBE\u795E\u6EE1\u6EE1";
   const nearlyHungry = full < 25, nearlyFull = full > 85;
-  const cue = $("scene-warning"), cueTitle = danger ? zone === "hungry" ? "\u5FEB\u997F\u574F\u4E86\uFF0C\u5403\u4E00\u53E3\uFF01" : "\u5403\u6491\u5566\uFF0C\u5148\u505C\u5634\uFF01" : lowHealth ? "\u751F\u547D\u4E0D\u591A\u4E86\uFF0C\u5C0F\u5FC3\u5FCC\u53E3\uFF01" : nearlyHungry ? "\u8BE5\u5403\u4E00\u53E3\u4E86\uFF01" : nearlyFull ? "\u5FEB\u5403\u6491\u5566\uFF0C\u6162\u4E00\u70B9\uFF01" : "";
+  const cue = $2("scene-warning"), cueTitle = danger ? zone === "hungry" ? "\u5FEB\u997F\u574F\u4E86\uFF0C\u5403\u4E00\u53E3\uFF01" : "\u5403\u6491\u5566\uFF0C\u5148\u505C\u5634\uFF01" : lowHealth ? "\u751F\u547D\u4E0D\u591A\u4E86\uFF0C\u5C0F\u5FC3\u5FCC\u53E3\uFF01" : nearlyHungry ? "\u8BE5\u5403\u4E00\u53E3\u4E86\uFF01" : nearlyFull ? "\u5FEB\u5403\u6491\u5566\uFF0C\u6162\u4E00\u70B9\uFF01" : "";
   cue.hidden = !(g?.phase === "playing" && cueTitle);
   cue.dataset.severity = danger || lowHealth ? "danger" : "caution";
-  if ($("scene-warning-title").textContent !== cueTitle) $("scene-warning-title").textContent = cueTitle;
-  $("scene-warning-detail").textContent = danger ? g?.hazardTime >= 2 ? "\u6B63\u5728\u6389\u8840\uFF01" : `${Math.max(0, 2 - (g?.hazardTime ?? 0)).toFixed(1)} \u79D2\u540E\u5F00\u59CB\u6389\u8840` : lowHealth ? "\u907F\u5F00\u7EA2\u8272\u300C\u5FCC\u300D\uFF0C\u7A33\u4F4F\u80C3\u53E3" : nearlyHungry ? "\u5148\u6311\u4E00\u76D8\u4E0D\u8FC7\u654F\u7684\u5BFF\u53F8" : nearlyFull ? "\u5148\u7B49\u6D88\u5316\uFF0C\u4E4C\u9F99\u8336\u4E5F\u80FD\u51CF\u9971\u8179" : "";
-  $("combo").textContent = g?.combo >= 2 ? `${g.combo} \u8FDE\u51FB \xB7 \u5403\u5F97\u521A\u521A\u597D` : " ";
-  $("game-hint").innerHTML = `<span class="hint-dot"></span>${g ? `\u672C\u5C40\u5FCC\u53E3\uFF1A${ALLERGEN_NAMES[g.character.allergy]} \xB7 \u7EA2\u8272\u300C\u5FCC\u300D\u522B\u4E71\u5403` : "\u70B9\u51FB\u76D8\u5B50\u5F00\u5403 \xB7 \u770B\u6E05\u7EA2\u8272\u8FC7\u654F\u6807\u8BB0"}`;
+  if ($2("scene-warning-title").textContent !== cueTitle) $2("scene-warning-title").textContent = cueTitle;
+  $2("scene-warning-detail").textContent = danger ? g?.hazardTime >= 2 ? "\u6B63\u5728\u6389\u8840\uFF01" : `${Math.max(0, 2 - (g?.hazardTime ?? 0)).toFixed(1)} \u79D2\u540E\u5F00\u59CB\u6389\u8840` : lowHealth ? "\u907F\u5F00\u7EA2\u8272\u300C\u5FCC\u300D\uFF0C\u7A33\u4F4F\u80C3\u53E3" : nearlyHungry ? "\u5148\u6311\u4E00\u76D8\u4E0D\u8FC7\u654F\u7684\u5BFF\u53F8" : nearlyFull ? "\u5148\u7B49\u6D88\u5316\uFF0C\u4E4C\u9F99\u8336\u4E5F\u80FD\u51CF\u9971\u8179" : "";
+  $2("combo").textContent = g?.combo >= 2 ? `${g.combo} \u8FDE\u51FB \xB7 \u5403\u5F97\u521A\u521A\u597D` : " ";
+  $2("game-hint").innerHTML = `<span class="hint-dot"></span>${g ? `\u672C\u5C40\u5FCC\u53E3\uFF1A${ALLERGEN_NAMES[g.character.allergy]} \xB7 \u7EA2\u8272\u300C\u5FCC\u300D\u522B\u4E71\u5403` : "\u70B9\u51FB\u76D8\u5B50\u5F00\u5403 \xB7 \u770B\u6E05\u7EA2\u8272\u8FC7\u654F\u6807\u8BB0"}`;
   if (isCasual(g)) {
-    $("health-status").textContent = hp < 40 ? "\u6B47\u4E00\u4F1A\u513F\u4E5F\u5F88\u597D" : "\u6162\u6162\u4EAB\u7528";
-    $("zone-text").textContent = full > 100 ? "\u809A\u5B50\u6EE1\u6EE1 \xB7 \u62BF\u53E3\u8336" : full < 25 ? "\u809A\u5B50\u5495\u5495 \xB7 \u5403\u4E00\u53E3" : "\u5403\u5F97\u521A\u521A\u597D";
-    $("scene-warning-detail").textContent = full > 85 ? "\u5148\u6B47\u4E00\u53E3\uFF0C\u4E4C\u9F99\u8336\u80FD\u5E2E\u5FD9\u6D88\u5316" : "\u6311\u4E00\u76D8\u559C\u6B22\u7684\u5BFF\u53F8\uFF0C\u4E0D\u7528\u7740\u6025";
-    $("scene-warning-title").textContent = full > 85 ? "\u732B\u5E08\u5085\uFF1A\u5148\u62BF\u53E3\u8336\u5427" : full < 25 ? "\u809A\u5B50\u5495\u5495\uFF0C\u6765\u4E00\u53E3\uFF1F" : "";
+    $2("health-status").textContent = hp < 40 ? "\u6B47\u4E00\u4F1A\u513F\u4E5F\u5F88\u597D" : "\u6162\u6162\u4EAB\u7528";
+    $2("zone-text").textContent = full > 100 ? "\u809A\u5B50\u6EE1\u6EE1 \xB7 \u62BF\u53E3\u8336" : full < 25 ? "\u809A\u5B50\u5495\u5495 \xB7 \u5403\u4E00\u53E3" : "\u5403\u5F97\u521A\u521A\u597D";
+    $2("scene-warning-detail").textContent = full > 85 ? "\u5148\u6B47\u4E00\u53E3\uFF0C\u4E4C\u9F99\u8336\u80FD\u5E2E\u5FD9\u6D88\u5316" : "\u6311\u4E00\u76D8\u559C\u6B22\u7684\u5BFF\u53F8\uFF0C\u4E0D\u7528\u7740\u6025";
+    $2("scene-warning-title").textContent = full > 85 ? "\u732B\u5E08\u5085\uFF1A\u5148\u62BF\u53E3\u8336\u5427" : full < 25 ? "\u809A\u5B50\u5495\u5495\uFF0C\u6765\u4E00\u53E3\uFF1F" : "";
     cue.dataset.severity = "caution";
-    $("checkout").disabled = !["playing", "paused"].includes(g.phase);
-  } else $("checkout").disabled = true;
-  $("pause").disabled = !g || !["playing", "paused"].includes(g.phase);
+    $2("checkout").disabled = !["playing", "paused"].includes(g.phase);
+  } else $2("checkout").disabled = true;
+  $2("pause").disabled = !g || !["playing", "paused"].includes(g.phase);
 }
 function frame(now) {
   const realDt = Math.max(0, (now - lastFrame) / 1e3);
@@ -6055,24 +6401,25 @@ function frame(now) {
   renderer.draw(game ?? preview, now / 1e3, Math.min(realDt, 0.05));
   requestAnimationFrame(frame);
 }
-$("game").addEventListener("pointerdown", (e) => {
+$2("game").addEventListener("pointerdown", (e) => {
   if (e.button !== 0 || !e.isPrimary || game?.phase !== "playing") return;
   e.preventDefault();
-  const b = $("game").getBoundingClientRect();
+  const b = $2("game").getBoundingClientRect();
   eatTarget(renderer.hit(e.clientX - b.left, e.clientY - b.top));
 });
-$("game").addEventListener("pointermove", (e) => {
-  const b = $("game").getBoundingClientRect();
+$2("game").addEventListener("pointermove", (e) => {
+  const b = $2("game").getBoundingClientRect();
   renderer.hover = renderer.hit(e.clientX - b.left, e.clientY - b.top)?.id ?? null;
 });
-$("game").addEventListener("pointerleave", () => renderer.hover = null);
-$("pause").onclick = () => game?.phase === "paused" ? resumeGame() : pauseGame();
+$2("game").addEventListener("pointerleave", () => renderer.hover = null);
+$2("pause").onclick = () => game?.phase === "paused" ? resumeGame() : pauseGame();
 document.querySelector(".brand").onclick = (e) => {
   e.preventDefault();
   home();
 };
-$("sound").onclick = () => {
+$2("sound").onclick = () => {
   sound = !sound;
+  if (!sound) stopSound();
   soundUI();
   try {
     localStorage.setItem("sushi-panic.sound", sound ? "on" : "off");
@@ -6080,68 +6427,72 @@ $("sound").onclick = () => {
   }
   tone();
 };
-$("help").onclick = () => {
+$2("help").onclick = () => {
   if (game?.phase === "playing") pauseGame("\u83DC\u5355\u8FD8\u5728\uFF0C\u770B\u5B8C\u73A9\u6CD5\u518D\u7EE7\u7EED\u3002");
-  $("help-dialog").showModal();
+  $2("help-dialog").showModal();
+  selectNavigation("help");
 };
-$("leaderboard").onclick = showLeaderboard;
-$("sidebar-leaderboard").onclick = showLeaderboard;
-$("board-refresh").onclick = () => refreshLeaderboard();
-$("close-board").onclick = () => $("leaderboard-dialog").close();
-$("account").onclick = () => {
+$2("leaderboard").onclick = showLeaderboard;
+$2("sidebar-leaderboard").onclick = showLeaderboard;
+$2("board-refresh").onclick = () => refreshLeaderboard();
+$2("close-board").onclick = () => $2("leaderboard-dialog").close();
+$2("account").onclick = () => {
   if (game?.phase === "playing") pauseGame("\u4FDD\u5B58\u6216\u6062\u590D\u540E\uFF0C\u518D\u7EE7\u7EED\u5F00\u5403\u3002");
-  $("account-dialog").showModal();
-  $("account-status").textContent = "";
+  $2("account-dialog").showModal();
+  selectNavigation("account");
+  shop.refreshAuth();
+  $2("account-status").textContent = "";
   if (!social.local && !social.emailAvailable) {
-    $("bind-email").disabled = true;
-    $("recover-email").disabled = true;
-    $("account-status").textContent = "\u90AE\u7BB1\u5B58\u6863\u6682\u672A\u5F00\u653E\u3002\u5F53\u524D\u6D4F\u89C8\u5668\u4F1A\u8BB0\u4F4F\u6E38\u5BA2\u8EAB\u4EFD\uFF1B\u6E05\u9664\u7F51\u7AD9\u6570\u636E\u6216\u66F4\u6362\u8BBE\u5907\u540E\uFF0C\u53EF\u80FD\u65E0\u6CD5\u6062\u590D\u3002";
+    $2("bind-email").disabled = true;
+    $2("recover-email").disabled = true;
+    $2("account-status").textContent = "\u90AE\u7BB1\u5B58\u6863\u6682\u672A\u5F00\u653E\u3002\u5F53\u524D\u6D4F\u89C8\u5668\u4F1A\u8BB0\u4F4F\u6E38\u5BA2\u8EAB\u4EFD\uFF1B\u6E05\u9664\u7F51\u7AD9\u6570\u636E\u6216\u66F4\u6362\u8BBE\u5907\u540E\uFF0C\u53EF\u80FD\u65E0\u6CD5\u6062\u590D\u3002";
   }
   paintArchive();
   social.initialize().then(paintArchive).catch(() => {
   });
   if (!social.local && social.emailAvailable) currentIdentity().then((u) => {
-    if (u?.email_confirmed_at && !u.is_anonymous) $("account-status").textContent = "\u90AE\u7BB1\u5DF2\u9A8C\u8BC1 \xB7 \u53EF\u4EE5\u5728\u5176\u4ED6\u8BBE\u5907\u901A\u8FC7\u90AE\u4EF6\u6062\u590D\u6B64\u6863\u6848";
+    if (u?.email_confirmed_at && !u.is_anonymous) $2("account-status").textContent = "\u90AE\u7BB1\u5DF2\u9A8C\u8BC1 \xB7 \u53EF\u4EE5\u5728\u5176\u4ED6\u8BBE\u5907\u901A\u8FC7\u90AE\u4EF6\u6062\u590D\u6B64\u6863\u6848";
   }).catch(() => {
   });
 };
 function paintArchive() {
   const p = social.profile;
-  $("account-archive").innerHTML = p ? `<h3>\u6211\u7684\u5386\u53F2\u6210\u7EE9</h3><p>\u5386\u53F2\u6700\u9AD8 <b>${p.bestScore}</b> \xB7 \u7D2F\u8BA1 ${p.playCount} \u5C40<br>\u7D2F\u8BA1\u5BFF\u53F8 ${p.totalSushi ?? 0} \u76D8 \xB7 \u5DF2\u6536\u85CF ${(p.collection || []).length} \u79CD<br>\u7D2F\u8BA1\u6709\u6548\u79EF\u5206 ${p.totalScore} \xB7 \u6BCF\u65E5\u51A0\u519B ${p.championships} \u6B21</p><ol>${(p.dailyHistory || []).map((row) => `<li><span>${escapeHtml(row.day)}</span><b>${row.score} \u5206</b></li>`).join("")}</ol><p class="identity-note">\u98DF\u5BA2ID ${escapeHtml(p.id.slice(-8))} \xB7 \u663E\u793A\u6700\u8FD131\u4E2A\u6709\u6210\u7EE9\u7684\u65E5\u671F\uFF0C\u5168\u90E8\u5386\u53F2\u4FDD\u5B58\u5728\u670D\u52A1\u5668\u3002</p>` : "\u5B8C\u6210\u8054\u7F51\u8BA1\u5206\u5C40\u540E\uFF0C\u8FD9\u91CC\u4F1A\u663E\u793A\u4F60\u7684\u5386\u53F2\u6210\u7EE9\u3002";
+  $2("account-archive").innerHTML = p ? `<h3>\u6211\u7684\u5386\u53F2\u6210\u7EE9</h3><p>\u5386\u53F2\u6700\u9AD8 <b>${p.bestScore}</b> \xB7 \u7D2F\u8BA1 ${p.playCount} \u5C40<br>\u7D2F\u8BA1\u5BFF\u53F8 ${p.totalSushi ?? 0} \u76D8 \xB7 \u5DF2\u6536\u85CF ${(p.collection || []).length} \u79CD<br>\u7D2F\u8BA1\u6709\u6548\u79EF\u5206 ${p.totalScore} \xB7 \u6BCF\u65E5\u51A0\u519B ${p.championships} \u6B21</p><ol>${(p.dailyHistory || []).map((row) => `<li><span>${escapeHtml(row.day)}</span><b>${row.score} \u5206</b></li>`).join("")}</ol><p class="identity-note">\u98DF\u5BA2ID ${escapeHtml(p.id.slice(-8))} \xB7 \u663E\u793A\u6700\u8FD131\u4E2A\u6709\u6210\u7EE9\u7684\u65E5\u671F\uFF0C\u5168\u90E8\u5386\u53F2\u4FDD\u5B58\u5728\u670D\u52A1\u5668\u3002</p>` : "\u5B8C\u6210\u8054\u7F51\u8BA1\u5206\u5C40\u540E\uFF0C\u8FD9\u91CC\u4F1A\u663E\u793A\u4F60\u7684\u5386\u53F2\u6210\u7EE9\u3002";
 }
-$("close-account").onclick = () => $("account-dialog").close();
+$2("close-account").onclick = () => $2("account-dialog").close();
 var emailOperation = null;
 async function emailSubmit(recover) {
-  const buttons = [$("bind-email"), $("recover-email")];
+  const buttons = [$2("bind-email"), $2("recover-email")];
   buttons.forEach((b) => b.disabled = true);
-  $("account-status").textContent = "\u6B63\u5728\u8BF7\u6C42\u53D1\u9001\u90AE\u4EF6\u2026";
+  $2("account-status").textContent = "\u6B63\u5728\u8BF7\u6C42\u53D1\u9001\u90AE\u4EF6\u2026";
   try {
-    const email = $("account-email").value.trim();
+    const email = $2("account-email").value.trim();
     await social.email(email, recover);
     emailOperation = { email, recover };
-    $("email-code-section").hidden = false;
-    $("account-status").textContent = "\u90AE\u4EF6\u8BF7\u6C42\u5DF2\u53D7\u7406\uFF0C\u8BF7\u5728\u8FD9\u91CC\u8F93\u5165\u90AE\u4EF6\u4E2D\u7684\u9A8C\u8BC1\u7801\u3002\u672A\u9A8C\u8BC1\u524D\u5C1A\u672A\u7ED1\u5B9A\u6216\u6062\u590D\u3002";
+    $2("email-code-section").hidden = false;
+    $2("account-status").textContent = "\u90AE\u4EF6\u8BF7\u6C42\u5DF2\u53D7\u7406\uFF0C\u8BF7\u5728\u8FD9\u91CC\u8F93\u5165\u90AE\u4EF6\u4E2D\u7684\u9A8C\u8BC1\u7801\u3002\u672A\u9A8C\u8BC1\u524D\u5C1A\u672A\u7ED1\u5B9A\u6216\u6062\u590D\u3002";
   } catch (error) {
-    $("account-status").textContent = error.message;
+    $2("account-status").textContent = error.message;
   } finally {
     buttons.forEach((b) => b.disabled = !social.local && !social.emailAvailable);
   }
 }
-$("bind-email").onclick = () => emailSubmit(false);
-$("recover-email").onclick = () => emailSubmit(true);
-$("verify-email").onclick = async () => {
+$2("bind-email").onclick = () => emailSubmit(false);
+$2("recover-email").onclick = () => emailSubmit(true);
+$2("verify-email").onclick = async () => {
   if (!emailOperation) return;
-  const button = $("verify-email");
+  const button = $2("verify-email");
   button.disabled = true;
   saveProgress();
   const previous = social.profile?.id;
   try {
-    await social.verifyEmail(emailOperation.email, $("account-code").value, emailOperation.recover);
+    await social.verifyEmail(emailOperation.email, $2("account-code").value, emailOperation.recover);
     playerId = social.profile.nickname;
-    $("account-code").value = "";
+    $2("account-code").value = "";
     emailOperation = null;
-    $("account-status").textContent = "\u90AE\u7BB1\u9A8C\u8BC1\u6210\u529F \xB7 \u4E91\u7AEF\u6863\u6848\u5DF2\u6062\u590D";
-    $("email-code-section").hidden = true;
+    $2("account-status").textContent = "\u90AE\u7BB1\u9A8C\u8BC1\u6210\u529F \xB7 \u4E91\u7AEF\u6863\u6848\u5DF2\u6062\u590D";
+    $2("email-code-section").hidden = true;
+    shop.refreshAuth();
     paintArchive();
     if (previous !== social.profile.id) {
       game = null;
@@ -6150,20 +6501,20 @@ $("verify-email").onclick = async () => {
     }
     await refreshLeaderboard();
   } catch (error) {
-    $("account-status").textContent = error.message;
+    $2("account-status").textContent = error.message;
   } finally {
     button.disabled = false;
   }
 };
-$("close-help").onclick = () => $("help-dialog").close();
-$("help-dialog").addEventListener("click", (e) => {
-  if (e.target === $("help-dialog")) {
-    const r = $("help-dialog").getBoundingClientRect();
-    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) $("help-dialog").close();
+$2("close-help").onclick = () => $2("help-dialog").close();
+$2("help-dialog").addEventListener("click", (e) => {
+  if (e.target === $2("help-dialog")) {
+    const r = $2("help-dialog").getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) $2("help-dialog").close();
   }
 });
 document.addEventListener("keydown", (e) => {
-  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $("help-dialog").open || $("leaderboard-dialog").open || $("account-dialog").open || $("collection-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $2("help-dialog").open || $2("leaderboard-dialog").open || $2("account-dialog").open || $2("collection-dialog").open || $2("menu-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
   if (e.code === "KeyP" || e.code === "Escape") {
     if (game?.phase === "playing") {
       e.preventDefault();
@@ -6184,7 +6535,7 @@ document.addEventListener("visibilitychange", () => {
 window.addEventListener("blur", () => {
   if (game?.phase === "playing") pauseGame("\u79BB\u5F00\u7A97\u53E3\u65F6\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
 });
-new ResizeObserver(() => renderer.resize()).observe($("stage"));
+new ResizeObserver(() => renderer.resize()).observe($2("stage"));
 if (new URLSearchParams(location.search).get("test") === "1") {
   window.__sushi = { get game() {
     return game;
@@ -6200,14 +6551,14 @@ if (new URLSearchParams(location.search).get("test") === "1") {
     else if (isCasual(game) && game.autoRest) pauseGame("\u6CA1\u6709\u64CD\u4F5C\uFF0C\u5DF2\u81EA\u52A8\u4F11\u606F\u3002");
   }, snapshot: () => game?.snapshot(), version: VERSION };
 }
-$("best-score").textContent = scoreText(high);
+$2("best-score").textContent = scoreText(high);
 soundUI();
 home();
 requestAnimationFrame(frame);
 social.initialize().then(() => {
   playerId = social.playerId;
   if (document.documentElement.dataset.emailLinkIgnored) identityWarning = "\u4E3A\u4FDD\u62A4\u5DF2\u6709\u5B58\u6863\uFF0C\u90AE\u4EF6\u94FE\u63A5\u4E0D\u4F1A\u81EA\u52A8\u5207\u6362\u8EAB\u4EFD\u3002\u8BF7\u70B9\u5B58\u6863\uFF0C\u7528\u90AE\u7BB1\u9A8C\u8BC1\u7801\u6062\u590D\u3002";
-  if (!game && document.activeElement !== $("player-id-input")) home();
+  if (!game && document.activeElement !== $2("player-id-input")) home();
 }).catch((error) => {
   if (error.code === "identity_lost") {
     identityWarning = error.message;
@@ -6217,12 +6568,13 @@ social.initialize().then(() => {
 refreshLeaderboard({ quiet: true });
 setInterval(tickCountdown, 1e3);
 setInterval(() => {
-  if (!document.hidden && ($("leaderboard-dialog").open || $("daily-board-panel").getBoundingClientRect().width > 0)) refreshLeaderboard({ quiet: true });
+  if (!document.hidden && ($2("leaderboard-dialog").open || $2("daily-board-panel").getBoundingClientRect().width > 0)) refreshLeaderboard({ quiet: true });
 }, 6e4);
 window.addEventListener("online", () => social.initialize().catch(() => {
 }).finally(() => refreshLeaderboard({ quiet: true })));
 function paintNetwork() {
-  const el = $("network-status");
+  shop.paint();
+  const el = $2("network-status");
   if (!el) return;
   const count = social.pending.filter((e) => !e.owner || e.owner === social.profile?.id).length;
   el.dataset.state = count ? "pending" : game && !onlineRun ? "practice" : social.profile ? "online" : "connecting";
@@ -6231,7 +6583,9 @@ function paintNetwork() {
 function saveProgress() {
   if (!onlineRun || !game || !["playing", "paused"].includes(game.phase)) return;
   const saved = social.journal.write({ kind: "active", owner: social.profile?.id, runId: onlineRun.runId, run: onlineRun, body: { ticks: activeTicks, actions: [...actionLog] }, updatedAt: Date.now() });
-  if (!saved && $("network-status")) $("network-status").textContent = "\u6D4F\u89C8\u5668\u672A\u80FD\u4FDD\u5B58\u5BF9\u5C40\uFF0C\u8BF7\u4FDD\u6301\u9875\u9762\u5F00\u542F\uFF0C\u7ED3\u675F\u540E\u786E\u8BA4\u6210\u7EE9\u5DF2\u63D0\u4EA4";
+  localSaveFailed = !saved;
+  shop.paint();
+  if (!saved && $2("network-status")) $2("network-status").textContent = "\u6D4F\u89C8\u5668\u672A\u80FD\u4FDD\u5B58\u5BF9\u5C40\uFF0C\u8BF7\u4FDD\u6301\u9875\u9762\u5F00\u542F\uFF0C\u7ED3\u675F\u540E\u786E\u8BA4\u6210\u7EE9\u5DF2\u63D0\u4EA4";
 }
 function restoreProgress(entry) {
   try {
@@ -6251,12 +6605,15 @@ function restoreProgress(entry) {
     toast(error.message, true);
   }
 }
-social.onState = paintNetwork;
+social.onState = () => {
+  paintNetwork();
+  if ($2("collection-dialog").open && collectionPaintSignature !== collectionSignature()) paintCollection();
+};
 paintNetwork();
 setInterval(saveProgress, 5e3);
 window.addEventListener("pagehide", saveProgress);
-$("retry-network").onclick = async () => {
-  const b = $("retry-network");
+$2("retry-network").onclick = async () => {
+  const b = $2("retry-network");
   b.disabled = true;
   try {
     await social.initialize();
@@ -6275,8 +6632,8 @@ $("retry-network").onclick = async () => {
     b.disabled = false;
   }
 };
-$("copy-diagnostics").onclick = async () => {
-  const text2 = JSON.stringify({ version: "1.2.1", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
+$2("copy-diagnostics").onclick = async () => {
+  const text2 = JSON.stringify({ version: "1.2.2", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
   try {
     await navigator.clipboard.writeText(text2);
     toast("\u8BCA\u65AD\u5DF2\u590D\u5236\uFF0C\u4E0D\u5305\u542B\u5BC6\u7801\u6216\u767B\u5F55\u51ED\u636E");
@@ -6295,6 +6652,7 @@ if (social.api && !social.local) watchIdentity((event, id) => {
     playerId = social.playerId;
     if (document.documentElement.dataset.emailLinkIgnored) identityWarning = "\u4E3A\u4FDD\u62A4\u5DF2\u6709\u5B58\u6863\uFF0C\u90AE\u4EF6\u94FE\u63A5\u4E0D\u4F1A\u81EA\u52A8\u5207\u6362\u8EAB\u4EFD\u3002\u8BF7\u70B9\u5B58\u6863\uFF0C\u7528\u90AE\u7BB1\u9A8C\u8BC1\u7801\u6062\u590D\u3002";
     if (!game) home();
+    shop.refreshAuth();
     paintArchive();
     refreshLeaderboard({ quiet: true });
   }).catch((error) => {
@@ -6308,7 +6666,7 @@ function checkout() {
   clearTimeout(checkpointTimer);
   finish();
 }
-$("checkout").onclick = checkout;
+$2("checkout").onclick = checkout;
 function scheduleCollectionSync() {
   if (!onlineRun || !isCasual(game) || checkpointTimer) return;
   checkpointTimer = setTimeout(() => {
@@ -6326,10 +6684,10 @@ async function syncCollection() {
     syncedEaten.set(run.runId, eaten);
     if (owner === social.profile?.id) {
       paintCollection();
-      $("collection-status").textContent = "\u6536\u85CF\u5DF2\u4FDD\u5B58\u81F3\u4E91\u7AEF";
+      $2("collection-status").textContent = "\u6536\u85CF\u5DF2\u4FDD\u5B58\u81F3\u4E91\u7AEF";
     }
   } catch {
-    $("collection-status").textContent = "\u6536\u85CF\u5F85\u540C\u6B65 \xB7 \u6B64\u6D4F\u89C8\u5668\u5DF2\u4FDD\u7559\u672C\u5C40\uFF0C\u8054\u7F51\u540E\u91CD\u8BD5\u6216\u7ED3\u8D26";
+    $2("collection-status").textContent = "\u6536\u85CF\u5F85\u540C\u6B65 \xB7 \u6B64\u6D4F\u89C8\u5668\u5DF2\u4FDD\u7559\u672C\u5C40\uFF0C\u8054\u7F51\u540E\u91CD\u8BD5\u6216\u7ED3\u8D26";
   } finally {
     checkpointBusy = false;
   }
@@ -6338,79 +6696,95 @@ setInterval(() => {
   if (!document.hidden) syncCollection();
 }, 2e4);
 window.addEventListener("online", () => syncCollection());
+function collectionSignature() {
+  return JSON.stringify([social.profile?.id, social.profile?.collection, social.profile?.totalSushi]);
+}
 function paintCollection() {
+  collectionPaintSignature = collectionSignature();
   const profile = social.profile, counts = new Map((profile?.collection || []).map((c) => [c.sushiId, c]));
-  const local = isCasual(game) ? game.discoveries : /* @__PURE__ */ new Set();
-  const filter = $("collection-theme").value || "all", tier = $("collection-rarity").value || "all", query = $("collection-search").value.trim();
-  const list = Object.values(CATALOG2).filter((f) => f.collectible && (filter === "all" || filter === "hidden" && rarityOf(f) === "treasure" || f.themeId === filter) && (tier === "all" || rarityOf(f) === tier) && (!query || f.name.includes(query) || String(f.number).includes(query))).sort((a, b) => Number(counts.has(b.id) || local.has(b.id)) - Number(counts.has(a.id) || local.has(a.id)) || a.number - b.number);
+  shop.paint();
+  const local = new Set(shop.pendingIds());
+  const filter = $2("collection-theme").value || "all", tier = $2("collection-rarity").value || "all", query = $2("collection-search").value.trim();
+  const list = Object.values(CATALOG2).filter((f) => f.collectible && (filter === "all" || filter === "hidden" && rarityOf(f) === "treasure" || f.themeId === filter) && (tier === "all" || rarityOf(f) === tier) && (!query || f.name.includes(query) || String(f.number).includes(query))).sort((a, b) => Number(counts.has(b.id) || local.has(b.id)) - Number(counts.has(a.id) || local.has(a.id)) || ($2("collection-sort").value === "recent" ? shop.recent(b.id, counts.get(b.id)) - shop.recent(a.id, counts.get(a.id)) : 0) || a.number - b.number);
   const pages = Math.max(1, Math.ceil(list.length / 24));
   collectionPage = Math.min(collectionPage, pages - 1);
   const shown = list.slice(collectionPage * 24, collectionPage * 24 + 24);
-  $("collection-summary").textContent = profile ? `${counts.size} / ${Object.values(CATALOG2).filter((f) => f.collectible).length} \u79CD\u5DF2\u6536\u85CF \xB7 \u7D2F\u8BA1 ${profile.totalSushi || 0} \u76D8` : "\u8F93\u5165\u6635\u79F0\u5165\u5EA7\uFF0C\u7ED3\u8D26\u540E\u7559\u4E0B\u4F60\u7684\u6536\u85CF";
-  $("collection-grid").innerHTML = shown.map((f) => {
+  $2("collection-summary").textContent = profile ? `${counts.size} / ${Object.values(CATALOG2).filter((f) => f.collectible).length} \u79CD${social.local ? "\u672C\u5730\u8054\u8C03\u5DF2\u786E\u8BA4" : "\u4E91\u7AEF\u5DF2\u6536\u85CF"} \xB7 \u7D2F\u8BA1 ${profile.totalSushi || 0} \u76D8${[...local].some((id) => !counts.has(id)) ? " \xB7 \u53E6\u6709 " + [...local].filter((id) => !counts.has(id) && CATALOG2[id]?.collectible).length + " \u79CD\u672C\u673A\u5F85\u786E\u8BA4" : ""}` : "\u7B2C\u4E00\u53E3\u5BFF\u53F8\uFF0C\u8FD8\u5728\u7B49\u4F60\u5462\uFF01\u5165\u5EA7\u540E\u4F1A\u66FF\u4F60\u8BB0\u8FDB\u624B\u5E10\u3002";
+  $2("collection-grid").innerHTML = shown.map((f) => {
     const owned = counts.get(f.id), pending = local.has(f.id) && !owned, known = !!owned || pending, grade = RARITIES[rarityOf(f)];
-    return `<article class="collection-card ${known ? "unlocked" : "locked"}" data-rarity="${rarityOf(f)}"><small>NO.${String(f.number).padStart(3, "0")} \xB7 <span style="color:${grade.color}">${grade.name}</span></small><canvas width="120" height="90" data-sushi="${f.id}" aria-label="${known ? escapeHtml(f.name) : "\u672A\u53D1\u73B0\u5BFF\u53F8\u526A\u5F71"}"></canvas><h3>${known ? escapeHtml(f.name) : "\uFF1F\uFF1F\uFF1F"}</h3><p>${known ? escapeHtml(f.description) : "\u6162\u6162\u54C1\u5C1D\uFF0C\u603B\u4F1A\u9047\u89C1\u3002"}</p><b>${owned ? `\u5DF2\u54C1\u5C1D ${owned.tasteCount} \u6B21` : pending ? "\u65B0\u53D1\u73B0 \xB7 \u5F85\u4E91\u7AEF\u786E\u8BA4" : "\u5C1A\u672A\u53D1\u73B0"}</b>${owned ? `<small>\u521D\u9047 ${bjTime(owned.firstDiscoveredAt)}</small>` : ""}</article>`;
+    return `<article class="collection-card ${known ? "unlocked" : "locked"} ${known && shop.book.unseen(f.id) ? "is-new" : ""}" data-sushi-id="${f.id}" data-rarity="${rarityOf(f)}">${known && shop.book.unseen(f.id) ? '<span class="new-tag">NEW</span>' : ""}<small>NO.${String(f.number).padStart(3, "0")} \xB7 <span style="color:${grade.color}">${grade.name}</span></small><canvas width="120" height="90" data-sushi="${f.id}" aria-label="${known ? escapeHtml(f.name) : "\u672A\u53D1\u73B0\u5BFF\u53F8\u526A\u5F71"}"></canvas><h3>${known ? escapeHtml(f.name) : "\uFF1F\uFF1F\uFF1F"}</h3><p>${known ? escapeHtml(flavorCopy(f)) : "\u4E3B\u53A8\u7559\u4E86\u4E00\u70B9\u5C0F\u60CA\u559C\u3002"}</p><b>${owned ? `\u5DF2\u54C1\u5C1D ${owned.tasteCount} \u6B21` : pending ? "\u65B0\u53D1\u73B0 \xB7 \u7B49\u5F85\u4E91\u7AEF\u786E\u8BA4" : "\u7B49\u4F60\u6765\u5C1D\u9C9C"}</b>${owned ? `<small>\u521D\u9047 ${bjTime(owned.firstDiscoveredAt)}</small>` : ""}</article>`;
   }).join("");
-  for (const c of $("collection-grid").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.sushi, 60, 48, 0.9);
-  $("collection-page-info").textContent = `${list.length}\u6B3E \xB7 \u7B2C${collectionPage + 1}/${pages}\u9875`;
-  $("collection-prev").disabled = collectionPage === 0;
-  $("collection-next").disabled = collectionPage >= pages - 1;
-  $("theme-progress").textContent = THEMES2.map((t) => {
+  for (const c of $2("collection-grid").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.sushi, 60, 48, 0.9);
+  $2("collection-page-info").textContent = `${list.length}\u6B3E \xB7 \u7B2C${collectionPage + 1}/${pages}\u9875`;
+  $2("collection-prev").disabled = collectionPage === 0;
+  $2("collection-next").disabled = collectionPage >= pages - 1;
+  shop.observeCards();
+  $2("theme-progress").textContent = THEMES2.map((t) => {
     const ids = (t.collectionFoods || t.foods).filter((k) => CATALOG2[k].collectible);
     return `${t.name} ${ids.filter((k) => counts.has(k)).length}/${ids.length}`;
   }).join(" \xB7 ");
 }
-$("collection").onclick = () => {
+$2("collection").onclick = () => {
   if (game?.phase === "playing") pauseGame("\u56FE\u9274\u66FF\u4F60\u7559\u7740\u6BCF\u4E00\u6B21\u5C0F\u53D1\u73B0\u3002");
   paintCollection();
-  $("collection-dialog").showModal();
-  $("collection-status").textContent = "\u6B63\u5728\u8BFB\u53D6\u4E91\u7AEF\u56FE\u9274\u2026";
+  $2("collection-dialog").showModal();
+  selectNavigation("collection");
+  shop.observeCards();
+  $2("collection-status").textContent = "\u6B63\u5728\u7FFB\u5F00\u4E91\u7AEF\u624B\u5E10\u2026";
   social.initialize().then(() => {
-    paintCollection();
-    $("collection-status").textContent = "\u4E91\u7AEF\u786E\u8BA4\u540E\u6C38\u4E45\u4FDD\u7559\uFF1B\u6BCF\u65E5\u6362\u699C\u4E0D\u4F1A\u6E05\u7A7A\u6536\u85CF\u3002";
+    if (collectionPaintSignature !== collectionSignature()) paintCollection();
+    $2("collection-status").textContent = social.local ? "\u672C\u5730\u8054\u8C03\u624B\u5E10\u5DF2\u8BFB\u5230\uFF0C\u4E0E\u6B63\u5F0F\u4E91\u7AEF\u5206\u5F00\u4FDD\u5B58\u3002" : "\u4E91\u7AEF\u5DF2\u8BFB\u5230\uFF0C\u4ECA\u5929\u7684\u6536\u85CF\u4E5F\u5728\u8FD9\u91CC\u3002\u6BCF\u65E5\u6362\u699C\u4E0D\u6E05\u7A7A\u624B\u5E10\u3002";
   }).catch(() => {
-    $("collection-status").textContent = "\u4E91\u7AEF\u6682\u4E0D\u53EF\u7528\uFF0C\u663E\u793A\u5DF2\u8BFB\u53D6\u6536\u85CF\uFF1B\u672A\u786E\u8BA4\u7684\u53D1\u73B0\u4E0D\u4F1A\u5192\u5145\u5DF2\u4FDD\u5B58\u3002";
+    $2("collection-status").textContent = "\u4E91\u7AEF\u6682\u4E0D\u53EF\u7528\uFF0C\u663E\u793A\u5DF2\u8BFB\u53D6\u6536\u85CF\uFF1B\u672A\u786E\u8BA4\u7684\u53D1\u73B0\u4E0D\u4F1A\u5192\u5145\u5DF2\u4FDD\u5B58\u3002";
   });
 };
-$("close-collection").onclick = () => $("collection-dialog").close();
-$("collection-theme").innerHTML = '<option value="all">\u5168\u90E8\u5BFF\u53F8</option><option value="hidden">\u73CD\u85CF\u5BFF\u53F8</option>' + THEMES2.map((t) => `<option value="${t.id}">${t.name}</option>`).join("");
-for (const id of ["collection-theme", "collection-rarity", "collection-search"]) $(id).addEventListener(id === "collection-search" ? "input" : "change", () => {
+$2("close-collection").onclick = () => $2("collection-dialog").close();
+$2("collection-theme").innerHTML = '<option value="all">\u5168\u90E8\u5BFF\u53F8</option><option value="hidden">\u73CD\u85CF\u5BFF\u53F8</option>' + THEMES2.map((t) => `<option value="${t.id}">${t.name}</option>`).join("");
+for (const id of ["collection-theme", "collection-rarity", "collection-search", "collection-sort"]) $2(id).addEventListener(id === "collection-search" ? "input" : "change", () => {
   collectionPage = 0;
   paintCollection();
 });
-$("collection-prev").onclick = () => {
+$2("collection-prev").onclick = () => {
   collectionPage--;
   paintCollection();
-  $("collection-grid").scrollIntoView({ block: "start" });
+  $2("collection-grid").scrollIntoView({ block: "start" });
 };
-$("collection-next").onclick = () => {
+$2("collection-next").onclick = () => {
   collectionPage++;
   paintCollection();
-  $("collection-grid").scrollIntoView({ block: "start" });
+  $2("collection-grid").scrollIntoView({ block: "start" });
 };
-$("menu-prev").onclick = () => {
+$2("menu-prev").onclick = () => {
   menuPage--;
   menu();
 };
-$("menu-next").onclick = () => {
+$2("menu-next").onclick = () => {
   menuPage++;
   menu();
 };
 function paintMenus() {
-  const select = $("theme-select");
+  const select = $2("theme-select");
   select.innerHTML = THEMES2.map((t2) => {
     const state = menuState(t2, menuServerTime);
     return `<option value="${t2.id}">${t2.name}${state === "current" ? " \xB7 \u672C\u5468" : state === "archive" ? " \xB7 \u5F80\u671F" : state === "permanent" ? " \xB7 \u5E38\u9A7B" : " \xB7 \u65F6\u95F4\u5F85\u540C\u6B65"}</option>`;
   }).join("");
   select.value = selectedTheme;
   select.disabled = !!game && ["playing", "paused", "card"].includes(game.phase);
-  const t = game?.theme || themeById2(selectedTheme);
-  $("theme-description").textContent = t.description;
-  $("theme-save-note").textContent = "\u9650\u5B9A\u83DC\u5355\u7ED3\u675F\u540E\u4FDD\u7559\u5728\u5F80\u671F\u83DC\u5355\uFF0C\u4E0D\u4F1A\u6C38\u4E45\u7EDD\u7248\u3002";
+  const t = displayTheme();
+  $2("theme-description").textContent = themeCopy(t);
+  document.querySelector(".menu-panel").dataset.theme = t.id;
+  shop.paint();
+  if ($2("menu-picker")) {
+    $2("menu-picker").innerHTML = select.innerHTML;
+    $2("menu-picker").value = selectedTheme;
+    $2("menu-picker").disabled = select.disabled;
+    $2("menu-picker-note").textContent = select.disabled ? "\u8FD9\u684C\u5148\u6162\u6162\u5403\uFF0C\u7ED3\u8D26\u56DE\u95E8\u53E3\u540E\u53EF\u4EE5\u6362\u83DC\u5355\u3002" : themeCopy(t);
+  }
+  $2("theme-save-note").textContent = "\u60F3\u5FF5\u7684\u5473\u9053\u4F1A\u7559\u5728\u5F80\u671F\uFF0C\u968F\u65F6\u56DE\u6765\u5C1D\u3002";
   menu();
 }
-$("theme-select").onchange = () => {
-  selectedTheme = $("theme-select").value;
+$2("theme-select").onchange = () => {
+  selectedTheme = $2("theme-select").value;
   menuPage = 0;
   themeChosen = true;
   try {
@@ -6427,10 +6801,57 @@ social.request("/api/menus").then((data) => {
   paintMenus();
 }).catch(() => {
   paintMenus();
-  $("theme-save-note").textContent = "\u83DC\u5355\u65F6\u95F4\u672A\u8FDE\u63A5\uFF1B\u4ECD\u53EF\u54C1\u5C1D\u7ECF\u5178\u4E0E\u5DF2\u77E5\u4E3B\u9898\uFF0C\u6536\u85CF\u5728\u8054\u7F51\u540E\u540C\u6B65\u3002";
+  $2("theme-save-note").textContent = "\u83DC\u5355\u65F6\u95F4\u672A\u8FDE\u63A5\uFF1B\u4ECD\u53EF\u54C1\u5C1D\u7ECF\u5178\u4E0E\u5DF2\u77E5\u4E3B\u9898\uFF0C\u6536\u85CF\u5728\u8054\u7F51\u540E\u540C\u6B65\u3002";
 });
 paintMenus();
 paintCollection();
+function themeCopy(t) {
+  return t.id === "first-taste" ? "188\u6B3E\u719F\u6089\u597D\u5473\uFF0C\u52A0\u4E0A28\u9053\u672C\u671F\u5C0F\u60CA\u559C\u3002\u6162\u6162\u627E\uFF0C\u4E0B\u4E00\u76D8\u8BF4\u4E0D\u5B9A\u5C31\u662F\u5FC3\u5934\u597D\u3002" : t.id === "classic" ? "\u719F\u6089\u7684188\u6B3E\u5E38\u9A7B\u597D\u5473\uFF0C\u968F\u65F6\u4E3A\u4F60\u5F00\u5E2D\u3002\u559D\u53E3\u8336\uFF0C\u6162\u6162\u6311\u3002" : "\u79CB\u5929\u7684\u597D\u5473\u9053\u7559\u7740\u5462\uFF0C\u518D\u6765\u5C1D\u4E00\u76D8\u3002";
+}
+function selectNavigation(id) {
+  for (const b of document.querySelectorAll(".nav-button[aria-controls]")) {
+    const active = b.id === id;
+    b.classList.toggle("is-active", active);
+    b.setAttribute("aria-expanded", String(active));
+    if (active) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
+  }
+}
+for (const dialog of document.querySelectorAll("dialog")) dialog.addEventListener("close", () => selectNavigation("today-menu"));
+$2("open-progress").onclick = () => $2("collection").click();
+$2("today-menu").onclick = () => {
+  if (game?.phase === "playing") pauseGame("\u4E3B\u53A8\u628A\u83DC\u5355\u9012\u8FC7\u6765\u5566\uFF0C\u770B\u5B8C\u7EE7\u7EED\u3002");
+  paintMenus();
+  const t = displayTheme();
+  $2("menu-preview").innerHTML = (t.featured || t.foods).slice(0, 6).map((id) => `<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(CATALOG2[id].name)}</span></div>`).join("");
+  for (const c of $2("menu-preview").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.preview, 50, 44, 0.9);
+  $2("menu-dialog").showModal();
+  selectNavigation("today-menu");
+};
+$2("menu-picker").onchange = () => {
+  $2("theme-select").value = $2("menu-picker").value;
+  $2("theme-select").dispatchEvent(new Event("change"));
+  const t = themeById2(selectedTheme);
+  $2("menu-preview").innerHTML = (t.featured || t.foods).slice(0, 6).map((id) => `<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(CATALOG2[id].name)}</span></div>`).join("");
+  for (const c of $2("menu-preview").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.preview, 50, 44, 0.9);
+};
+$2("close-menu").onclick = () => $2("menu-dialog").close();
+$2("account-retry").onclick = async () => {
+  await $2("retry-network").onclick();
+  shop.paint();
+};
+function displayTheme() {
+  return game?.theme && ["playing", "paused", "card"].includes(game.phase) ? game.theme : themeById2(selectedTheme);
+}
+function flavorCopy(f) {
+  if (f.rarity === "hidden" || ["lucky_tamago", "cat_tamago"].includes(f.id)) return "\u4E3B\u53A8\u5077\u5077\u7559\u7684\u4E00\u53E3\u798F\u6C14\uFF0C\u88AB\u4F60\u627E\u5230\u5566\u3002";
+  if (f.topping === "caramel") return "\u4E00\u70B9\u7126\u9999\uFF0C\u7ED9\u8FD9\u4E00\u53E3\u6DFB\u4E00\u70B9\u751C\u3002";
+  if (f.topping === "spicy") return "\u5FAE\u5FAE\u4E00\u53E3\u8FA3\uFF0C\u80C3\u53E3\u4E5F\u9192\u8FC7\u6765\u3002";
+  if (f.categoryId === "sweet") return "\u751C\u751C\u7684\u4E00\u53E3\uFF0C\u7ED9\u4ECA\u5929\u7559\u70B9\u597D\u5FC3\u60C5\u3002";
+  if (f.categoryId === "meat") return "\u624E\u5B9E\u53C8\u6EE1\u8DB3\uFF0C\u6162\u6162\u56BC\u624D\u9999\u3002";
+  if (f.topping === "citrus") return "\u4E00\u70B9\u6E05\u65B0\u679C\u9999\uFF0C\u50CF\u5439\u6765\u4E00\u9635\u6D77\u98CE\u3002";
+  return f.description.replace("\u672C\u671F\u7AEF\u4E0A\u56DE\u8F6C\u53F0\u7684\u5C0F\u60CA\u559C\uFF0C\u8FC7\u671F\u540E\u4E5F\u80FD\u56DE\u6765\u7EE7\u7EED\u54C1\u5C1D\u3002", "\u8FD9\u671F\u7684\u5C0F\u60CA\u559C\uFF0C\u60F3\u5FF5\u65F6\u4E5F\u80FD\u53BB\u5F80\u671F\u518D\u5C1D\u4E00\u53E3\u3002");
+}
 
 </script>
 </body>
