@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M5 5.5q7-2 14 0v14q-7-2-14 0zM8 9h8M8 12h6M8 15h5"/><path d="M8 3v4M16 3v4"/></symbol>
+<symbol id="book" viewBox="0 0 24 24"><path d="M3 5q5-2 9 1 4-3 9-1v14q-5-2-9 1-4-3-9-1zM12 6v14M6 9h3M15 9h3M6 12h3M15 12h3"/></symbol>
+<symbol id="rank" viewBox="0 0 24 24"><path d="M7 4h10v5q0 6-5 6T7 9zM7 6H4v3q0 4 5 4M17 6h3v3q0 4-5 4M12 15v4M8 21h8M9 19h6"/></symbol>
+<symbol id="cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 0 0 .2-8 6 6 0 0 0-11.5-2A5 5 0 0 0 6 18"/><path d="m9 13 3 3 3-3M12 10v6"/></symbol>
+<symbol id="help" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 5 7l-5 2 1-5zM10 8a2.5 2.5 0 0 1 4 2c0 2-2 2-2 4"/><circle cx="12" cy="17" r=".5"/></symbol>
+<symbol id="sound" viewBox="0 0 24 24"><path d="m11 5-5 4H3v6h3l5 4zM15 9q3 3 0 6M18 6q6 6 0 12"/></symbol>
+<symbol id="muted" viewBox="0 0 24 24"><path d="m11 5-5 4H3v6h3l5 4zM16 9l5 6M21 9l-5 6"/></symbol>
+<symbol id="bowl" viewBox="0 0 24 24"><path d="M3 10h18q-1 8-9 8t-9-8zM7 21h10M9 18v3M15 18v3M7 3l4 5M16 2l-3 6"/></symbol>
+<symbol id="tea" viewBox="0 0 24 24"><path d="M5 9h12v7q0 5-6 5t-6-5zM17 10h2a3 3 0 0 1 0 6h-2M8 2q-2 2 0 4M13 2q-2 2 0 4M8 12v5M13 12v5"/></symbol>
+<symbol id="rest" viewBox="0 0 24 24"><path d="M18 5a8 8 0 1 0 1 13A9 9 0 0 1 18 5M15 3h5l-5 5h5"/></symbol>
+<symbol id="play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h15M14 7l5 5-5 5"/></symbol>
+<symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+<symbol id="spark" viewBox="0 0 24 24"><path d="m12 3 2.6 6.4L21 12l-6.4 2.6L12 21l-2.6-6.4L3 12l6.4-2.6z"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 6"/></symbol>
+<symbol id="heart" viewBox="0 0 24 24"><path d="M12 20S2 14 3 8q1-7 9-2 8-5 9 2 1 6-9 12z"/></symbol>
+<symbol id="rice" viewBox="0 0 24 24"><path d="M5 10q-2-6 4-6 3-4 6 0 6 0 4 6M4 10h16v7q-8 5-16 0zM8 12v5M16 12v5"/></symbol>
+</defs></svg>

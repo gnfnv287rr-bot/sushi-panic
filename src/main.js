@@ -1,5 +1,5 @@
 import { Game as LegacyGame, ALLERGEN_NAMES, STEP, difficultyAt, fullnessZone, VERSION } from './core.js';
-import { Renderer, drawPortrait, drawSushi } from './renderer-v12.js';
+import { Renderer, drawPortrait, drawSushi } from './renderer-cozy.js';
 import {shopExperience} from './shop-experience.js';
 import {SocialClient,escapeHtml} from './social.js';
 import {rebuildActiveRun} from './run-state.js';
@@ -33,7 +33,7 @@ function tone(kind='eat'){
 }
 function rememberSound(o){playingNotes.add(o);o.onended=()=>playingNotes.delete(o);}
 function stopSound(){for(const o of playingNotes){try{o.stop();o.disconnect?.();}catch{}}playingNotes.clear();}
-function soundUI(){$('sound').innerHTML=`<span aria-hidden="true">${sound?'🔊':'🔈'}</span>音效：${sound?'开':'关'}`;$('sound').setAttribute('aria-pressed',String(sound));}
+function soundUI(){$('sound').innerHTML=`<svg class="icon" aria-hidden="true"><use href="#cozy-${sound?'sound':'muted'}"/></svg><span>音效：${sound?'开':'关'}</span>`;$('sound').setAttribute('aria-pressed',String(sound));}
 function menu(){
  const pool=game&&!isCasual(game)?['salmon','tuna','shrimp','tamago','cucumber','ikura','onigiri','tea']:displayTheme().foods;
  const keys=pool.includes('taste_caramel_salmon')?[...FEATURED,'tea',...pool.filter(k=>!FEATURED.includes(k)&&k!=='tea')]:pool;
@@ -167,6 +167,11 @@ function updateUI(){
   $('game-hint').innerHTML=`<span class="hint-dot"></span>${g?`本局忌口：${ALLERGEN_NAMES[g.character.allergy]} · 红色「忌」别乱吃`:'点击盘子开吃 · 看清红色过敏标记'}`;
   if(isCasual(g)){ $('health-status').textContent=hp<40?'歇一会儿也很好':'慢慢享用';$('zone-text').textContent=full>100?'肚子满满 · 抿口茶':full<25?'肚子咕咕 · 吃一口':'吃得刚刚好';$('scene-warning-detail').textContent=full>85?'先歇一口，乌龙茶能帮忙消化':'挑一盘喜欢的寿司，不用着急';$('scene-warning-title').textContent=full>85?'猫师傅：先抿口茶吧':full<25?'肚子咕咕，来一口？':'';cue.dataset.severity='caution';$('checkout').disabled=!['playing','paused'].includes(g.phase);}else $('checkout').disabled=true;
   $('pause').disabled=!g||!['playing','paused'].includes(g.phase);
+  $('pause').setAttribute('aria-pressed',String(g?.phase==='paused'));
+  $('pause').setAttribute('aria-label',g?.phase==='paused'?'继续游戏':'暂停游戏');
+  $('pause').querySelector('span').textContent=g?.phase==='paused'?'继续慢慢吃':'歇一歇';
+  $('cozy-tea-action').disabled=g?.phase!=='playing'||!g.foods.some(f=>f.key==='tea');
+  $('chef-copy').textContent=g?.phase==='paused'?'这一桌，替你留着。':full>85?'先抿口茶，好味道会等你。':full<25?'肚子咕咕，来吃一口吧。':'慢慢来，好味道会等你。';
 }
 function frame(now){
   const realDt=Math.max(0,(now-lastFrame)/1000);lastFrame=now;
@@ -178,6 +183,10 @@ function frame(now){
   if(!game){preview.time+=Math.min(realDt,.1);const speed=difficultyAt(0).speed;preview.beltTravel+=Math.min(realDt,.1)*speed;for(const f of preview.foods)f.p=(f.p+Math.min(realDt,.1)*speed)%1;}
   renderer.draw(game??preview,now/1000,Math.min(realDt,.05));requestAnimationFrame(frame);
 }
+renderer.onEat=eatTarget;
+$('cozy-menu-open').onclick=()=>$('today-menu').click();
+$('cozy-tea-action').onclick=()=>eatTarget(renderer.targets.find(t=>t.key==='tea'));
+for(const c of document.querySelectorAll('[data-cozy-food]'))drawSushi(c.getContext('2d'),c.dataset.cozyFood,c.width/2,c.height*.53,c.width<80?.52:.76);
 $('game').addEventListener('pointerdown',e=>{if(e.button!==0||!e.isPrimary||game?.phase!=='playing')return;e.preventDefault();const b=$('game').getBoundingClientRect();eatTarget(renderer.hit(e.clientX-b.left,e.clientY-b.top));});
 $('game').addEventListener('pointermove',e=>{const b=$('game').getBoundingClientRect();renderer.hover=renderer.hit(e.clientX-b.left,e.clientY-b.top)?.id??null;});
 $('game').addEventListener('pointerleave',()=>renderer.hover=null);
@@ -222,7 +231,7 @@ function saveProgress(){if(!onlineRun||!game||!['playing','paused'].includes(gam
 function restoreProgress(entry){try{game=rebuildActiveRun(entry);onlineRun=entry.run;activeTicks=entry.body.ticks;actionLog=[...entry.body.actions];ended=false;accumulator=0;renderer.effects=[];characterUI();updateUI();if(game.phase==='gameover')finish();else pauseGame('已恢复上次对局；未操作期间没有消耗饱腹。');paintNetwork();}catch(error){toast(error.message,true);}}
 social.onState=()=>{paintNetwork();if($('collection-dialog').open&&collectionPaintSignature!==collectionSignature())paintCollection();};paintNetwork();setInterval(saveProgress,5000);window.addEventListener('pagehide',saveProgress);
 $('retry-network').onclick=async()=>{const b=$('retry-network');b.disabled=true;try{await social.initialize();if(!game){playerId=social.playerId;home();}await refreshLeaderboard();paintNetwork();}catch(error){social.lastError=error.message;paintNetwork();toast(error.message,true);await refreshLeaderboard();}finally{b.disabled=false;}};
-$('copy-diagnostics').onclick=async()=>{const text=JSON.stringify({version:'1.2.4',url:location.origin+location.pathname,apiHost:social.api?new URL(social.api).host:null,identity:social.profile?.id?.slice(-8)||null,mode:social.mode,run:onlineRun?'online':game?'practice':'home',pending:social.pending.length,day:social.lastBoard?.day,error:social.lastError||null},null,2);try{await navigator.clipboard.writeText(text);toast('诊断已复制，不包含密码或登录凭据');}catch{toast('浏览器不允许复制，请记录联网状态提示',true);}};
+$('copy-diagnostics').onclick=async()=>{const text=JSON.stringify({version:'1.3.0',url:location.origin+location.pathname,apiHost:social.api?new URL(social.api).host:null,identity:social.profile?.id?.slice(-8)||null,mode:social.mode,run:onlineRun?'online':game?'practice':'home',pending:social.pending.length,day:social.lastBoard?.day,error:social.lastError||null},null,2);try{await navigator.clipboard.writeText(text);toast('诊断已复制，不包含密码或登录凭据');}catch{toast('浏览器不允许复制，请记录联网状态提示',true);}};
 if(social.api&&!social.local)watchIdentity((event,id)=>{if(!['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event)||id===social.profile?.id&&event!=='USER_UPDATED')return;saveProgress();if(game&&id!==social.profile?.id){game=null;onlineRun=null;}social.initialize().then(()=>{playerId=social.playerId;if(document.documentElement.dataset.emailLinkIgnored)identityWarning='为保护已有存档，邮件链接不会自动切换身份。请点存档，用邮箱验证码恢复。';if(!game)home();shop.refreshAuth();paintArchive();refreshLeaderboard({quiet:true});}).catch(error=>{social.lastError=error.message;paintNetwork();});}).catch(()=>{});
 
 function checkout(){if(!isCasual(game)||!game.checkout())return;clearTimeout(checkpointTimer);finish();}
@@ -250,7 +259,7 @@ $('collection-search').addEventListener('input',()=>{collectionPage=0;paintColle
 $('collection-reset').onclick=()=>{Object.assign(collectionFilters,{theme:'all',rarity:'all',sort:'recent'});$('collection-search').value='';collectionPage=0;paintCollection();};
 $('collection-prev').onclick=()=>{collectionPage--;paintCollection();$('collection-grid').scrollIntoView({block:'start'});};$('collection-next').onclick=()=>{collectionPage++;paintCollection();$('collection-grid').scrollIntoView({block:'start'});};
 $('menu-prev').onclick=()=>{menuPage--;menu();};$('menu-next').onclick=()=>{menuPage++;menu();};
-function paintMenus(){const select=$('theme-select');select.innerHTML=THEMES.map(t=>{const state=menuState(t,menuServerTime);return `<option value="${t.id}">${t.name}${state==='current'?' · 本周':state==='archive'?' · 往期':state==='permanent'?' · 常驻':' · 时间待同步'}</option>`;}).join('');select.value=selectedTheme;select.disabled=!!game&&['playing','paused','card'].includes(game.phase);const t=displayTheme();$('theme-description').textContent=themeCopy(t);document.querySelector('.menu-panel').dataset.theme=t.id;shop.paint();if($('menu-picker')){$('menu-picker').innerHTML=select.innerHTML;$('menu-picker').value=selectedTheme;$('menu-picker').disabled=select.disabled;$('menu-picker-note').textContent=select.disabled?'这桌先慢慢吃，结账回门口后可以换菜单。':themeCopy(t);}$('theme-save-note').textContent='想念的味道会留在往期，随时回来尝。';menu();}
+function paintMenus(){const select=$('theme-select');select.innerHTML=THEMES.map(t=>{const state=menuState(t,menuServerTime);return `<option value="${t.id}">${t.name}${state==='current'?' · 本周':state==='archive'?' · 往期':state==='permanent'?' · 常驻':' · 时间待同步'}</option>`;}).join('');select.value=selectedTheme;select.disabled=!!game&&['playing','paused','card'].includes(game.phase);const t=displayTheme();$('cozy-theme-name').textContent=t.name;paintCozyMenuCards(t,select.disabled);$('theme-description').textContent=themeCopy(t);document.querySelector('.menu-panel').dataset.theme=t.id;shop.paint();if($('menu-picker')){$('menu-picker').innerHTML=select.innerHTML;$('menu-picker').value=selectedTheme;$('menu-picker').disabled=select.disabled;$('menu-picker-note').textContent=select.disabled?'这桌先慢慢吃，结账回门口后可以换菜单。':themeCopy(t);}$('theme-save-note').textContent='想念的味道会留在往期，随时回来尝。';menu();}
 $('theme-select').onchange=()=>{selectedTheme=$('theme-select').value;menuPage=0;themeChosen=true;try{localStorage.setItem('sushi.theme.v12',selectedTheme);}catch{}paintMenus();};
 social.request('/api/menus').then(data=>{menuServerTime=data.serverTime;if(!themeChosen&&!game){selectedTheme=data.themes.find(t=>t.state==='current')?.id||'classic';}paintMenus();}).catch(()=>{paintMenus();$('theme-save-note').textContent='菜单时间未连接；仍可品尝经典与已知主题，收藏在联网后同步。';});
 paintMenus();paintCollection();
@@ -262,9 +271,18 @@ $('open-progress').onclick=()=>$('collection').click();
 $('today-menu').onclick=()=>{if(game?.phase==='playing')pauseGame('主厨把菜单递过来啦，看完继续。');paintMenus();const t=displayTheme();$('menu-preview').innerHTML=(t.featured||t.foods).slice(0,6).map(id=>`<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(FOODS[id].name)}</span></div>`).join('');for(const c of $('menu-preview').querySelectorAll('canvas'))drawSushi(c.getContext('2d'),c.dataset.preview,50,44,.9);$('menu-dialog').showModal();selectNavigation('today-menu');};
 $('menu-picker').onchange=()=>{$('theme-select').value=$('menu-picker').value;$('theme-select').dispatchEvent(new Event('change'));const t=themeById(selectedTheme);$('menu-preview').innerHTML=(t.featured||t.foods).slice(0,6).map(id=>`<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(FOODS[id].name)}</span></div>`).join('');for(const c of $('menu-preview').querySelectorAll('canvas'))drawSushi(c.getContext('2d'),c.dataset.preview,50,44,.9);};
 $('close-menu').onclick=()=>$('menu-dialog').close();
+$('cozy-menu-dismiss').onclick=()=>$('close-menu').click();
 
 $('account-retry').onclick=async()=>{await $('retry-network').onclick();shop.paint();};
 
 function displayTheme(){return game?.theme&&['playing','paused','card'].includes(game.phase)?game.theme:themeById(selectedTheme);}
 
 function flavorCopy(f){if(f.rarity==='hidden'||['lucky_tamago','cat_tamago'].includes(f.id))return'主厨偷偷留的一口福气，被你找到啦。';if(f.topping==='caramel')return'一点焦香，给这一口添一点甜。';if(f.topping==='spicy')return'微微一口辣，胃口也醒过来。';if(f.categoryId==='sweet')return'甜甜的一口，给今天留点好心情。';if(f.categoryId==='meat')return'扎实又满足，慢慢嚼才香。';if(f.topping==='citrus')return'一点清新果香，像吹来一阵海风。';return f.description.replace('本期端上回转台的小惊喜，过期后也能回来继续品尝。','这期的小惊喜，想念时也能去往期再尝一口。');}
+
+// Approved menu-paper component, backed by all real current/permanent/archive configurations.
+function paintCozyMenuCards(current,disabled){
+ const container=$('cozy-theme-options');
+ container.innerHTML=THEMES.map(t=>`<button type="button" class="theme-card ${t.id===current.id?'is-selected':''}" data-theme="${t.id}" aria-pressed="${t.id===current.id}" ${disabled?'disabled':''}><span class="theme-caption">${escapeHtml(collectionMenuName(t))}</span><b class="round-type">${escapeHtml(t.name)}</b><span class="theme-foods">${(t.featured||t.foods).filter(k=>k!=='tea').slice(0,3).map(k=>`<canvas width="100" height="75" data-cozy-menu-food="${k}" aria-hidden="true"></canvas>`).join('')}</span><small>${escapeHtml(t.id==='autumn'?'想念的味道，随时回来尝。':t.id==='classic'?'熟悉的188款常驻好味。':'188款经典，加上28道本期惊喜。')}</small><span class="theme-check"><svg class="icon" aria-hidden="true"><use href="#cozy-check"/></svg></span></button>`).join('');
+ for(const c of container.querySelectorAll('canvas'))drawSushi(c.getContext('2d'),c.dataset.cozyMenuFood,50,40,.76);
+ for(const b of container.querySelectorAll('button'))b.onclick=()=>{$('menu-picker').value=b.dataset.theme;$('menu-picker').dispatchEvent(new Event('change'));};
+}

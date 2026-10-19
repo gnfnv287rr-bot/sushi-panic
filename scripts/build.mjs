@@ -9,14 +9,17 @@ const out = resolve(root, 'dist');
 await rm(out, { recursive: true, force: true }); await mkdir(out, { recursive: true });
 for (const file of ['index.html', 'style.css', 'src', 'favicon.svg', 'assets']) await cp(resolve(root, file), resolve(out, file), { recursive: true });
 // A tiny project-specific concatenation, not a general JS bundler. Module boundaries stay in src/.
-const modules=await Promise.all(['config.js','identity.js','storage.js','core.js','menus-v1.js','menus-v2.js','menu-catalog-v2.js','casual-v12.js','casual-v121.js','casual-engine.js','run-state.js','renderer.js','renderer-v12.js','social.js','collection-feedback.js','shop-experience.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
+const modules=await Promise.all(['config.js','identity.js','storage.js','core.js','menus-v1.js','menus-v2.js','menu-catalog-v2.js','casual-v12.js','casual-v121.js','casual-engine.js','run-state.js','renderer.js','renderer-v12.js','renderer-cozy.js','cozy-scene.js','social.js','collection-feedback.js','shop-experience.js','main.js'].map(f=>readFile(resolve(root,'src',f),'utf8')));
 const bundled=await esbuild({entryPoints:[resolve(root,'src/main.js')],bundle:true,write:false,format:'esm',platform:'browser',target:['es2020']});
 const script=bundled.outputFiles[0].text;
 const css=await readFile(resolve(root,'style.css'),'utf8'),icon=await readFile(resolve(root,'favicon.svg'),'utf8');
 const menuFont=await readFile(resolve(root,'assets/fonts/sushi-menu.woff2'));
-const offlineCss=css.replace('./assets/fonts/sushi-menu.woff2','data:font/woff2;base64,'+menuFont.toString('base64'));
+const cozyFont=await readFile(resolve(root,'assets/cozy/cozy-round.woff2'));
+const chef=await readFile(resolve(root,'assets/cozy/chef.svg'),'utf8');
+const offlineCss=css.replace('./assets/fonts/sushi-menu.woff2','data:font/woff2;base64,'+menuFont.toString('base64')).replace('./assets/cozy/cozy-round.woff2','data:font/woff2;base64,'+cozyFont.toString('base64'));
 const html=(await readFile(resolve(root,'index.html'),'utf8'))
   .replace('<link rel="stylesheet" href="./style.css" />',()=>`<style>${offlineCss}</style>`)
+  .replace('src="./assets/cozy/chef.svg"',()=>`src="data:image/svg+xml,${encodeURIComponent(chef)}"`)
   .replace('href="./favicon.svg"',()=>`href="data:image/svg+xml,${encodeURIComponent(icon)}"`)
   .replace('<script type="module" src="./src/main.js"></script>',()=>`<script type="module">\n${script}\n</script>`);
 await writeFile(resolve(root,'play.html'),html);await writeFile(resolve(out,'play.html'),html);
@@ -28,13 +31,13 @@ for(const packageName of ['@supabase/supabase-js','@supabase/auth-js','@supabase
 await writeFile(resolve(root,'vendor/NOTICES.txt'),notices.join('\n\n'));
 await cp(resolve(root,'vendor'),resolve(out,'vendor'),{recursive:true});
 // New HTML points to one immutable release directory, preventing mixed cached modules on Pages.
-const releaseId=createHash('sha256').update(modules.join('\n')+css+html).update(menuFont).digest('hex').slice(0,12);
+const releaseId=createHash('sha256').update(modules.join('\n')+css+html).update(menuFont).update(cozyFont).update(chef).digest('hex').slice(0,12);
 const releaseRoot=resolve(out,'assets',releaseId);await mkdir(releaseRoot,{recursive:true});
 for(const file of ['src','vendor','style.css'])await cp(resolve(out,file),resolve(releaseRoot,file),{recursive:true});
 await cp(resolve(root,'assets'),resolve(releaseRoot,'assets'),{recursive:true});
 await writeFile(resolve(releaseRoot,'src/config.js'),'export const PUBLIC_CONFIG=Object.freeze('+JSON.stringify({...PUBLIC_CONFIG,assetBase:'./assets/'+releaseId+'/'})+');\n');
 const entry=await readFile(resolve(out,'index.html'),'utf8');
-await writeFile(resolve(out,'index.html'),entry.replace('./style.css','./assets/'+releaseId+'/style.css').replace('./src/main.js','./assets/'+releaseId+'/src/main.js'));
+await writeFile(resolve(out,'index.html'),entry.replace('./style.css','./assets/'+releaseId+'/style.css').replace('./src/main.js','./assets/'+releaseId+'/src/main.js').replaceAll('./assets/cozy/','./assets/'+releaseId+'/assets/cozy/'));
 const pkg=JSON.parse(await readFile(resolve(root,'package.json'),'utf8'));
 await writeFile(resolve(out,'build.json'),JSON.stringify({version:pkg.version,releaseId,rulesVersion:'1.2.1'}));
 const shared=resolve(root,'supabase/functions/_shared');await mkdir(shared,{recursive:true});
