@@ -32,3 +32,25 @@ GitHub Pages公网预览只证明静态游戏与新UI可访问，未接通时明
 最后一次定向回归9/9通过（7尺寸、断网、存档邮箱弹窗）。完整24项JSON单独保留，最新browser-results.json仅为定向9项。Supabase CLI migration list --local 因没有Docker/Postgres端口54322而连接失败；没有把该检查写成通过，业务SQL/RLS由PGlite PostgreSQL实际执行验证。
 
 公网预览在Pages构建built后，桌面及390px触屏模拟两个新匿名浏览器均HTTP200，能开局、进食得分和暂停，无JS错误、普通URL无测试接口。均明确练习局，不伪造榜单。见 artifacts/v1-public-preview.json；这不是Supabase联网同步验证。生产发布保护脚本在公开配置为空时按预期拒绝正式发布。
+
+# 2026-10-19 云端接通与正式入口复验（最新）
+
+此节取代上文“云端尚未连接”的旧状态，仍保留旧测试的历史记录。
+
+| 实际测试 | 结果 | 证据/范围 |
+| --- | --- | --- |
+| 全部规则/API/真实本地PG/SDK契约 | 57/57通过（原32 + V1 25） | `artifacts/v1-cloud-release-unit-output.txt`；SDK部分是契约模拟，不能单独证明邮件可用 |
+| Chrome完整浏览器回归 | 25/25通过，51.7秒 | `artifacts/v1-cloud-release-browser-output.txt`；含7尺寸、离线、预警、真实进食与重试 |
+| 独立Supabase云端浏览器验收 | 10项检查通过 | `artifacts/v1-cloud-acceptance.json`；两个新浏览器游客、同名不同UUID、真实操作/死亡/Edge复算、断网重试、幂等、双方同步、改名/重新访问、RLS拒绝；静态资产由dist在生产origin下路由加载，API/Auth/PG不模拟 |
+| 独立云端安全测试 | 4项通过 | `artifacts/v1-cloud-security.json`；未认证/坏Origin拒绝、跨玩家finish拒绝、加速自报高分隔离且有效局数不变、第13次开局429 |
+| 云端受控日期测试 | 全部SQL断言通过 | `artifacts/v1-cloud-calendar.json`；23:59/00:00、跨日归属、历史最高、冠军幂等/冻结昵称、空日；独立测试库事务全部回滚，未修改生产时间 |
+| 生产部署 | Actions build/deploy success | [run39236478068](https://github.com/gnfnv287rr-bot/sushi-panic/actions/runs/39236478068)；健康检查独立通过 |
+| 生产正式URL | 两个全新Chrome会话通过 | `artifacts/v1-public-online-smoke.json`；真实公开资源，桌面1440×1100/手机模拟390×844，HTTP200、无账号登录、真实游客联网开局/进食/暂停/读榜、邮箱关闭提示、无横溢出/JS异常；没有向生产榜提交测试分 |
+| 生产数据库与advisors | 6表RLS启用，2项路径提醒已修复 | `artifacts/v1-production-rls.json`、`v1-production-advisors.json`；剩余3项游客自身SELECT提醒是有意配置，云端实测不能读其他人、写分或调用服务RPC |
+| 本机代码/Git凭据扫描 | 核心与渲染哈希未变；已知模式匹配0 | `npm run test:security`；不等于完整密钥审计或渗透测试 |
+
+云端测试脚本最初两次未等待异步响应/昵称初始化完成，出现测试断言失败。查库证实首局已verified；修正脚本等待后全部通过，没有更改得分或绕过后端验证。`artifacts/v1-cloud-acceptance-attempt2.json`保留第二次失败证据。生产榜切换前为0行，测试分全部在独立项目，没有制造正式冠军。
+
+**未完成：公共SMTP与实际邮件绑定/恢复。** 生产配置 `emailEnabled=false`，界面和调用均明确拒绝，不显示虚假成功。需要邮件服务授权和真实收信验收后再打开。
+
+**未实际验证：** 中国朋友原网络、真实iPhone/Android、Safari/Edge/Windows、真实跨夜运行、长局Edge CPU配额/持续压力、分布式机器人、正式100人规模、受控真人可玩性研究。自动模拟不是人工验收。

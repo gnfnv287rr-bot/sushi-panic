@@ -144,3 +144,7 @@ Sites 返回部署 succeeded，站点访问范围为 public。公网 URL 为 htt
 ## V1.0 RC 最新报告入口
 
 最终迁移方案已由Owner改为GitHub Pages + Supabase Free / Edge Functions。最新56项规则/API/数据库/认证邮箱契约、24项完整浏览器及定向显示检查，见 [V1完整报告](v1/TEST_REPORT.md)。SDK stub、PGlite本地、真实云端/真机/网络的边界在该报告中单独列出；不得用旧公网验证替代V1生产验证。
+
+## 2026-10-19 最新云端验收
+
+Supabase生产与独立测试后端、GitHub Pages正式入口已接通。最新结果：57项本地测试、25项完整Chrome回归、云端双玩家10项、安全4项、云端日期事务断言、正式URL两个新匿名会话通过。全部范围、证据和未验证边界见 `v1/TEST_REPORT.md` 与 `v1/ACCEPTANCE.md`。邮箱恢复因SMTP未配置而明确暂不开放；中国原网络和真机尚未验收。

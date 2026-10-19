@@ -2,9 +2,9 @@
 
 V1.0 RC · Canvas + DOM 原游戏，GitHub Pages + Supabase Free / Edge Functions。
 
-**当前状态：Supabase Free 生产数据库、游客认证、Edge 后端已经部署；独立云端双玩家验收通过，GitHub Pages 正在切换。** [游戏入口](https://gnfnv287rr-bot.github.io/sushi-panic/)。是否完成公开链接验收以 `docs/v1/STATUS.md` 的最终记录为准。旧源码分支与 Sites/D1 保留。
+**每日联网榜已上线。** [直接开玩 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/)，无需登录。首次输入昵称后创建游客身份，服务器记录当日最高积分，每天北京时间00:00换榜。右下角可查看今日排行榜。
 
-邮箱恢复目前明确标为暂未开放：公共 SMTP 尚未配置，游客身份和每日榜不受影响。
+当前为联网测试版。**邮箱跨设备恢复暂未开放**（公共SMTP待配置）；中国原网络与真实手机待验收。清除网站数据可能丢失游客身份。详见 [状态](docs/v1/STATUS.md) 和 [验收边界](docs/v1/ACCEPTANCE.md)。
 
 ## 本地运行
 
@@ -36,7 +36,7 @@ npm start
 3. 仅在 Edge Function Secrets 设置 `.env.example` 所列私密值。实际密钥不可提交 Git。
 4. 将项目 URL 和 **publishable key** 写到 `src/config.js`，它们是公开配置，不是管理员密钥。
 5. `npm run build` 生成浏览器 SDK 和 Edge 共享模块。部署 `supabase/functions/sushi-api/`。网关允许公开读榜，函数对所有玩家操作调用 Auth.getUser 验证 JWT。
-6. 独立浏览器验证真实云端计分后，将 `dist/` 发布到 GitHub Pages。原根入口在此之前保留旧版。
+6. 独立浏览器验证真实云端计分后，将 `dist/` 发布到 GitHub Pages。目前根入口已切换，旧分支与Sites/D1保留。
 
 详细步骤、接口、安全边界与费用见 [部署说明](docs/v1/DEPLOYMENT.md)、[API](docs/v1/API.md)、[安全说明](docs/v1/SECURITY.md)、[费用](docs/v1/COSTS.md)。
 
@@ -53,3 +53,7 @@ npx --yes deno check supabase/functions/sushi-api/index.ts
 报告：[完整测试报告](docs/v1/TEST_REPORT.md)。测试证据在 `artifacts/`，不进入公开站点。第三方 SDK、测试依赖已锁版本。原 D1/Drizzle 文件仅作旧版审计保留，不参与 V1 部署。
 
 继续开发前先读 `docs/v1/STATUS.md` 和 `docs/DECISIONS.md`。核心规则与渲染的保护哈希在 `docs/v1/BASELINE.json`。不要把旧单机纪录、演示玩家或测试分数直接写入公开每日榜。
+
+## 后续更新
+
+默认分支 `codex/daily-leaderboard-v1`；push游戏代码会自动运行GitHub Actions测试、健康检查、构建和Pages发布。只改README或docs不重发。Edge逻辑更改先 `npm run build`，再用已授权CLI部署 `sushi-api`，追加SQL迁移而不改写已应用文件。生产项目与独立测试项目、完整步骤见部署说明。管理员凭据不提交Git。无需Vercel。

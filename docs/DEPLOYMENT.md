@@ -1,3 +1,7 @@
+# 当前部署入口（2026-10-19）
+
+当前使用GitHub Pages + Supabase Free / Edge Functions；[公开游戏](https://gnfnv287rr-bot.github.io/sushi-panic/)，无ChatGPT登录或Sites接口依赖。默认源码分支 `codex/daily-leaderboard-v1`，Actions自动发布。更新流程与实际项目ref见 `v1/DEPLOYMENT.md`，验收见 `v1/ACCEPTANCE.md`。以下记录仅为旧Sites/D1发布历史，旧数据未删除。
+
 # 公网发布
 
 游戏版本：v0.2.0；2026-10-19。已更新现有 Sites 与 GitHub Pages 入口，无需本机持续开机。

@@ -1,9 +1,9 @@
 # 安全与数据边界
 
-- Supabase Anonymous Auth 自动生成身份，昵称可重复/修改。未绑定邮箱时清除浏览器存储或关闭无痕会话可能丢失身份；不提供凭昵称认领成绩。自愿验证邮箱后可取回同一身份，恢复不同账号不合并当前游客数据。
+- Supabase Anonymous Auth 自动生成身份，昵称可重复/修改。未绑定邮箱时清除浏览器存储或关闭无痕会话可能丢失身份；不提供凭昵称认领成绩。邮箱恢复实现已预留，目前公共SMTP未配置、生产开关关闭；未来自愿验证邮箱后可取回同一身份，恢复不同账号不合并当前游客数据。
 - Edge 验证 bearer Token 的 getUser 结果后使用 UUID，不信任客户端指定的玩家 ID。管理员 Secret 仅在 Edge 环境；前端仅公开项目 URL/publishable key。
 - 六张业务表均启用 RLS。authenticated 仅能 SELECT 自己的玩家、对局、每日记录，不能 INSERT/UPDATE/DELETE；anon 无表权限。榜单通过服务器受控查询返回。所有 sushi_* RPC 显式撤销 PUBLIC/anon/authenticated 执行权限，仅 service_role 可调用，避免绕过重放直接写分。
-- SECURITY DEFINER 仅供受限服务端事务和聚合使用，设置固定 search_path；RLS、权限、越权 RPC 已在本地真实 PostgreSQL(PGlite)角色中测试。云端 advisors 仍未运行，不能冒充云端已验收。
+- SECURITY DEFINER 仅供受限服务端事务和聚合使用，设置固定 search_path；RLS、权限、越权 RPC 已在本地真实 PostgreSQL(PGlite)角色中测试。云端RLS/RPC/越权实测通过；advisors时间函数路径提示已由追加迁移修复，剩余3项游客自身SELECT提示属于有意权限。
 - 服务端创建随机种子，按原 Game 的60Hz重放成功进食事件，独立算分、校验结束状态/真实经过时间/盘子合法性；不以客户端总分或时长自报为唯一依据。
 - 按用户与哈希网络出口限流，重复结算事务锁保护计数，错误日志进入隔离和审计摘要。Supabase Auth 另有匿名注册限流；分布式机器人和合法脚本仍可能构造合法操作，这不是专业防作弊保证。代理 IP 的可信性还需在真实 Edge 运行中核验，不只依赖 IP 限流。
 - 单局日志上限1MB、25,000事件、6小时活动 ticks；服务器首次结算确认有效期10分钟，原会话7天。客户端最多保留10份重试记录。输入错误/隔离不应被 UI 当成已上榜。
