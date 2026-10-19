@@ -89,7 +89,7 @@
 
 /* V1.2 P0: visible sync status, matching the original shop palette. */
 .network-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 16px;border-top:1px dashed #d5dacb;background:#edf1e5;font-size:12px;color:#355a50}
-.network-bar #network-status{flex:1;min-width:160px;font-weight:700}.network-bar .text-button{font-size:12px;padding:7px;min-height:36px;margin:0}
+.network-bar #network-status{flex:1;min-width:160px;font-weight:700}.network-bar .text-button{font-size:12px;padding:7px;min-height:44px;margin:0}
 #network-status[data-state="pending"],#network-status[data-state="practice"]{color:#a14f36}#email-code-section{margin:16px 0}
 </style>
   <title>寿司别吃撑！ · SUSHI PANIC</title>
@@ -141,7 +141,7 @@ const PUBLIC_CONFIG=Object.freeze({
 let clientPromise;
 async function authClient(){
  if(!PUBLIC_CONFIG.supabaseUrl||!PUBLIC_CONFIG.publishableKey)throw new Error('在线身份服务尚未配置，可先进行练习');
- clientPromise??=import(new URL('./vendor/supabase.js',document.baseURI).href).then(({createClient})=>createClient(PUBLIC_CONFIG.supabaseUrl,PUBLIC_CONFIG.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}})).catch(error=>{clientPromise=null;throw error;});
+ clientPromise??=import(new URL((PUBLIC_CONFIG.assetBase||'./')+'vendor/supabase.js',document.baseURI).href).then(({createClient})=>createClient(PUBLIC_CONFIG.supabaseUrl,PUBLIC_CONFIG.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}})).catch(error=>{clientPromise=null;throw error;});
  return clientPromise;
 }
 async function sessionToken({create=false}={}){

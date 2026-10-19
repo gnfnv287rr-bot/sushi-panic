@@ -26,6 +26,7 @@ jobs:
       - name: Require verified public cloud configuration
         run: node scripts/release-check.mjs
       - run: npm run build
+      - run: node scripts/verify-build.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

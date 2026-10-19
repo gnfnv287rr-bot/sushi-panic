@@ -2,7 +2,7 @@ import {PUBLIC_CONFIG} from './config.js';
 let clientPromise;
 export async function authClient(){
  if(!PUBLIC_CONFIG.supabaseUrl||!PUBLIC_CONFIG.publishableKey)throw new Error('在线身份服务尚未配置，可先进行练习');
- clientPromise??=import(new URL('./vendor/supabase.js',document.baseURI).href).then(({createClient})=>createClient(PUBLIC_CONFIG.supabaseUrl,PUBLIC_CONFIG.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}})).catch(error=>{clientPromise=null;throw error;});
+ clientPromise??=import(new URL((PUBLIC_CONFIG.assetBase||'./')+'vendor/supabase.js',document.baseURI).href).then(({createClient})=>createClient(PUBLIC_CONFIG.supabaseUrl,PUBLIC_CONFIG.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}})).catch(error=>{clientPromise=null;throw error;});
  return clientPromise;
 }
 export async function sessionToken({create=false}={}){

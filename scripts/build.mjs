@@ -2,6 +2,8 @@ import {build as esbuild} from 'esbuild';
 import { mkdir, cp, rm, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {createHash} from 'node:crypto';
+import {PUBLIC_CONFIG} from '../src/config.js';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const out = resolve(root, 'dist');
 await rm(out, { recursive: true, force: true }); await mkdir(out, { recursive: true });
@@ -22,6 +24,15 @@ const notices=[];
 for(const packageName of ['@supabase/supabase-js','@supabase/auth-js','@supabase/functions-js','@supabase/postgrest-js','@supabase/realtime-js','@supabase/storage-js','@supabase/phoenix','iceberg-js']){for(const license of ['LICENSE','LICENSE.md']){try{notices.push(packageName+'\n'+await readFile(resolve(root,'node_modules',packageName,license),'utf8'));break;}catch(error){if(error.code!=='ENOENT')throw error;}}}
 await writeFile(resolve(root,'vendor/NOTICES.txt'),notices.join('\n\n'));
 await cp(resolve(root,'vendor'),resolve(out,'vendor'),{recursive:true});
+// New HTML points to one immutable release directory, preventing mixed cached modules on Pages.
+const releaseId=createHash('sha256').update(modules.join('\n')+css+html).digest('hex').slice(0,12);
+const releaseRoot=resolve(out,'assets',releaseId);await mkdir(releaseRoot,{recursive:true});
+for(const file of ['src','vendor','style.css'])await cp(resolve(out,file),resolve(releaseRoot,file),{recursive:true});
+await writeFile(resolve(releaseRoot,'src/config.js'),'export const PUBLIC_CONFIG=Object.freeze('+JSON.stringify({...PUBLIC_CONFIG,assetBase:'./assets/'+releaseId+'/'})+');\n');
+const entry=await readFile(resolve(out,'index.html'),'utf8');
+await writeFile(resolve(out,'index.html'),entry.replace('./style.css','./assets/'+releaseId+'/style.css').replace('./src/main.js','./assets/'+releaseId+'/src/main.js'));
+const pkg=JSON.parse(await readFile(resolve(root,'package.json'),'utf8'));
+await writeFile(resolve(out,'build.json'),JSON.stringify({version:pkg.version,releaseId,rulesVersion:'0.2.0'}));
 const shared=resolve(root,'supabase/functions/_shared');await mkdir(shared,{recursive:true});
 await cp(resolve(root,'src/core.js'),resolve(shared,'core.js'));
 const legacy=await readFile(resolve(root,'server/api.js'),'utf8');

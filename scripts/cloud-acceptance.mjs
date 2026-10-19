@@ -17,17 +17,17 @@ try{
  for(const mobile of [false,true]){
   const context=await browser.newContext({viewport:mobile?{width:390,height:844}:{width:1440,height:1100},isMobile:mobile,hasTouch:mobile});
   await context.route(root+'**',async r=>{const u=new URL(r.request().url()),relative=decodeURIComponent(u.pathname.slice('/sushi-panic/'.length))||'index.html';const path=resolve('dist',relative);if(!path.startsWith(resolve('dist')+'/'))return r.abort();
-   if(relative==='src/config.js')return r.fulfill({contentType:'text/javascript',body:`export const PUBLIC_CONFIG=${JSON.stringify({supabaseUrl,publishableKey,edgeFunction:'sushi-api'})};`});
+   if(relative.endsWith('src/config.js'))return r.fulfill({contentType:'text/javascript',body:`export const PUBLIC_CONFIG=${JSON.stringify({supabaseUrl,publishableKey,edgeFunction:'sushi-api'})};`});
    const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml'};return r.fulfill({contentType:types[extname(path)]||'text/plain',body:await readFile(path)});
   });
   const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));clients.push({context,page});
  }
  async function api(page,path,body,rest=false){return page.evaluate(async({path,body,supabaseUrl,publishableKey,rest})=>{
-  const {authClient}=await import(new URL('./src/identity.js',document.baseURI).href);const c=await authClient(),{data}=await c.auth.getSession();
+  const {authClient}=await import(new URL('./identity.js',document.querySelector('script[src$="/src/main.js"]').src).href);const c=await authClient(),{data}=await c.auth.getSession();
   const r=await fetch(supabaseUrl+(rest?'/rest/v1/':'/functions/v1/sushi-api')+path,{method:body===undefined?'GET':'POST',headers:{apikey:publishableKey,...(data.session?{authorization:'Bearer '+data.session.access_token}:{}),...(body===undefined?{}:{'content-type':'application/json'})},body:body===undefined?undefined:JSON.stringify(body)});return{status:r.status,data:await r.json()};
  },{path,body,supabaseUrl,publishableKey,rest});}
  for(let i=0;i<clients.length;i++){
-  const {page}=clients[i];await page.goto(root+'?test=1');await page.locator('#player-id-input').fill('同名食客');await page.getByRole('button',{name:'入座，开吃！'}).click();await page.getByRole('button',{name:'记住了，开始！'}).click();
+  const {page}=clients[i];await page.goto(root+'?test=1');assert.equal(await page.evaluate(async()=>{const m=await import(new URL('./config.js',document.querySelector('script[src$="/src/main.js"]').src).href);return m.PUBLIC_CONFIG.supabaseUrl;}),supabaseUrl,'Staging routing is mandatory before creating any player');await page.locator('#player-id-input').fill('同名食客');await page.getByRole('button',{name:'入座，开吃！'}).click();await page.getByRole('button',{name:'记住了，开始！'}).click();
   const mine=await api(page,'/api/identity');assert.equal(mine.status,200);clients[i].id=mine.data.profile.id;
   assert.ok(!await page.locator('#character-title').innerText().then(t=>t.includes('练习局')));
   check(`player ${i+1} anonymous login + nickname`,{playerId:clients[i].id,mobile:i===1});

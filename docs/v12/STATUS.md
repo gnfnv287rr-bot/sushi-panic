@@ -28,3 +28,5 @@ Owner已在Supabase官方页面保存163 SMTP，CLI确认enabled=true；授权�
 已完成本地规则/API/数据库/SDK契约测试、27项Chrome回归、独立Supabase云端双玩家11项检查、真实测试PG受控日期断言。详细最新结果见TEST_REPORT.md。邮件SDK契约不视为真实收信成功。SMTP已保存也不等于P0通过。
 
 下一步：发布仅P0修复 → 真实邮箱绑定与全新会话恢复 → 确认P0门禁 → 才开始休闲玩法/主题图鉴P1。
+
+缓存一致性：新增按内容哈希发布的浏览器资源目录与build.json，新HTML只加载同一版本的JS/CSS/Auth SDK，避免Pages更新后旧缓存与新模块混用；CI检查资源目录一致。P0核心与得分仍未改变。
