@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f9f5eb" />
+  <meta name="description" content="寿司别吃撑！点击回转寿司，维持饱腹，避开过敏。免费的本地超休闲生存游戏。" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%23e76b54%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2228%22%20width%3D%2244%22%20height%3D%2224%22%20rx%3D%2210%22%20fill%3D%22%23fff8e9%22%2F%3E%3Cpath%20d%3D%22M8%2029Q10%2012%2031%2012T56%2029Z%22%20fill%3D%22%23ffb18a%22%2F%3E%3Cpath%20d%3D%22m20%2017%208%2012m4-14%208%2014%22%20stroke%3D%22%23fff4d8%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%2225%22%20cy%3D%2239%22%20r%3D%222%22%20fill%3D%22%23283b3c%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2239%22%20r%3D%222%22%20fill%3D%22%23283b3c%22%2F%3E%3Cpath%20d%3D%22M29%2044q4%204%208%200%22%20fill%3D%22none%22%20stroke%3D%22%23283b3c%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E%0A" type="image/svg+xml" />
+  <style>@charset "UTF-8";
+:root{--paper:#f9f5eb;--ink:#293f40;--muted:#7d8277;--coral:#df6853;--teal:#4e7970;--line:#dcdccd;--mint:#dfe8d7;--wood:#e9cfa3;--white:#fffdf7;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--paper);font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;background-image:radial-gradient(#9b8d6c14 .7px,transparent .7px);background-size:7px 7px}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;color:inherit}button:disabled{cursor:default;opacity:.38}button:focus-visible,a:focus-visible,canvas:focus-visible{outline:3px solid var(--coral);outline-offset:4px}button{touch-action:manipulation}a{color:inherit;text-decoration:none}.app{max-width:1300px;padding:0 42px;margin:auto}.topbar{height:100px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;gap:12px;align-items:center;font-size:18px;font-weight:800;letter-spacing:1px}.brand-stamp{display:grid;place-items:center;width:44px;height:44px;background:var(--coral);color:var(--paper);font-family:"STKaiti","KaiTi",serif;font-size:29px;border-radius:12px 12px 4px 12px;transform:rotate(-5deg)}.brand small{display:block;font-size:9px;letter-spacing:3.5px;margin-top:4px;font-family:ui-monospace,monospace}.top-actions{display:flex;align-items:center;gap:20px}.open-sign{font-size:11px;letter-spacing:1px;color:var(--teal);margin-right:14px}.open-sign i,.hint-dot{display:inline-block;width:6px;height:6px;background:var(--teal);border-radius:50%;margin-right:7px}.quiet-button{border:0;background:none;padding:12px 0;font-size:12px}.quiet-button:hover{color:var(--coral)}.intro{display:flex;align-items:center;justify-content:space-between;padding:29px 0 26px}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:600;margin:0 0 12px}.intro .eyebrow{color:var(--teal)}h1{font-size:36px;letter-spacing:-1px;margin:0;font-weight:850;line-height:1.3}h1 span{color:var(--coral)}.subtitle{font-size:12px;color:var(--muted);margin:12px 0 0;letter-spacing:1px}.best-record{display:flex;flex-direction:column;text-align:right;border-right:3px solid var(--coral);padding-right:17px}.best-record span{font-size:10px;color:var(--muted);letter-spacing:1px}.best-record strong{font-size:29px;font-family:ui-monospace,"Courier New",monospace;font-weight:600;letter-spacing:3px;line-height:1.5}.best-record small{font-size:8px;letter-spacing:3px;color:var(--muted)}.game-layout{display:grid;grid-template-columns:minmax(0,1fr) 265px;gap:26px;align-items:start}.game-panel{background:var(--white);border:1px solid #ccd3c3;border-radius:18px;overflow:hidden;box-shadow:0 5px 0 #dadccc66}.scoreboard{display:flex;align-items:center;gap:36px;padding:19px 25px 17px;border-bottom:1px dashed var(--line)}.scoreboard>div{display:flex;flex-direction:column}.scoreboard>div:first-child{flex:1}.stat-label{font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:5px}.scoreboard strong{font-size:29px;line-height:1;font-family:ui-monospace,"Courier New",monospace;font-weight:700;letter-spacing:2px}.scoreboard #score{color:var(--coral)}.scoreboard .time-stat strong{font-size:23px}.scoreboard .level-stat strong{font-size:22px}.scoreboard strong small{font-size:12px;color:#a1a597;letter-spacing:0}.pause-button{width:38px;height:38px;flex:none;border:1px solid var(--line);border-radius:50%;background:transparent;font-size:16px;font-weight:900}.pause-button:hover:enabled{background:var(--mint)}.vitals{padding:15px 25px 13px}.health-row{display:flex;gap:12px;align-items:center;font-size:10px;margin-bottom:15px}.health-row>span:first-child{width:62px;flex:none}.health-row b{font-family:ui-monospace,monospace;margin-left:5px}.health-row>span:last-child{font-size:9px;color:var(--muted);width:68px;text-align:right;flex:none}.health-track{height:6px;border-radius:8px;background:#f1e6dc;flex:1;overflow:hidden}.health-track i{display:block;width:100%;height:100%;background:var(--coral);border-radius:8px;transition:width .12s linear}.fullness-heading{display:flex;justify-content:space-between;align-items:center;font-size:10px;margin-bottom:9px}.fullness-heading b{font-size:15px;margin-left:5px;font-family:ui-monospace,monospace}.fullness-heading small{font-size:9px;color:var(--muted)}.fullness-heading strong{font-size:10px;font-weight:500;color:var(--teal);letter-spacing:1px}.fullness-track{position:relative;height:13px;background:linear-gradient(to right,#f2c09c 0%,#f2c09c 12.5%,#ece7ca 12.5%,#ece7ca 20.83%,#bbd0ab 20.83%,#bbd0ab 70.83%,#ece7ca 70.83%,#ece7ca 83.33%,#eea18e 83.33%);border-radius:4px}.fullness-track i{position:absolute;left:45.833%;top:-4px;height:21px;width:6px;border:2px solid var(--white);border-radius:4px;background:var(--ink);transform:translateX(-50%);box-shadow:0 1px 3px #0002;transition:left .08s linear}.danger-line{position:absolute;top:0;height:100%;border-left:1px dashed #a1745788}.hunger-line{left:12.5%}.full-line{left:83.333%}.gauge-labels{display:flex;justify-content:space-between;font-size:8px;color:var(--muted);margin-top:7px}.stage{height:520px;position:relative;background:#f2e3c9;overflow:hidden;border-top:1px solid #e2d3b8;border-bottom:1px solid #e2d3b8}#game{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}.table-footer{padding:13px 20px;display:flex;justify-content:space-between;gap:8px;align-items:center;min-height:47px}.table-footer p{margin:0;font-size:10px}.keyboard-hint{font-size:8px;color:var(--muted);white-space:nowrap}kbd{font-family:inherit;border:1px solid var(--line);padding:1px 3px;border-radius:2px;font-size:8px}.sidebar{display:grid;gap:18px}.character-panel{background:#edf0e6;border:1px solid #d7decd;border-radius:14px;padding:20px}.character-panel .eyebrow{font-size:10px;display:flex;justify-content:space-between;letter-spacing:1px}.character-panel .eyebrow span{font-size:8px;color:var(--muted);font-weight:400}.character-heading{display:flex;align-items:center;gap:10px;margin:16px 0 13px}.character-heading canvas{width:57px;height:57px;border-radius:50%;background:#dce6d7;flex:none}.character-heading h2{font-size:17px;margin:0 0 5px;letter-spacing:.5px}.character-heading p{font-size:9px;color:var(--muted);margin:0;line-height:1.6}.ability{font-size:10px;line-height:1.9;color:#596b60;min-height:38px;margin:0 0 15px}.allergy-notice{padding-top:13px;border-top:1px solid #ced7c6;display:grid;grid-template-columns:1fr auto;gap:5px;font-size:10px}.allergy-notice span{color:#7d8277}.allergy-notice strong{color:#c75b4c}.allergy-notice small{grid-column:1/-1;color:#8a8373;font-size:9px}.menu-panel{border:1px solid var(--line);border-radius:14px;padding:19px 17px;background:#faf8ef}.section-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.section-heading h2{font-size:13px;margin:0}.section-heading>span{font-size:8px;color:var(--muted)}.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 8px}.menu-item{display:grid;grid-template-columns:39px 1fr;align-items:center;position:relative;min-width:0}.menu-item canvas{width:38px;height:36px}.menu-item span{font-size:9px;white-space:nowrap}.menu-item b{display:block;font-size:10px;color:var(--teal);margin-top:4px;font-family:ui-monospace,monospace;font-weight:500}.menu-item.allergic span,.menu-item.allergic b{color:#cc594a}.menu-item.allergic:after{content:'忌';font-size:8px;background:#e56851;color:white;border-radius:3px;position:absolute;left:24px;top:-3px;padding:1px 3px}.menu-note{font-size:9px;color:var(--muted);line-height:1.9;border-top:1px dashed var(--line);padding-top:12px;margin:15px 0 0}.diner-note{display:flex;gap:13px;align-items:center;justify-content:center;padding:5px 0}.seal{font-family:"STKaiti","KaiTi",serif;writing-mode:vertical-rl;border:1px solid #c2705c;padding:6px;color:#c2705c;letter-spacing:2px;font-size:11px;transform:rotate(5deg)}.diner-note p{font-size:10px;line-height:2;color:var(--muted)}.diner-note strong{color:#68796c;font-weight:500}.page-footer{display:flex;align-items:center;justify-content:space-between;font-size:8px;color:#94998c;letter-spacing:1px;padding:27px 0}.page-footer b{font-size:9px;margin-left:9px;font-weight:500}.overlay{position:absolute;inset:0;display:grid;place-items:center;padding:20px;background:#f4e9d140;backdrop-filter:blur(3px);z-index:4}.overlay.hidden{display:none}.overlay-card{position:relative;width:min(360px,100%);padding:27px 30px;background:var(--white);border:1px solid #c4cbb9;border-radius:14px;box-shadow:0 7px 0 #9a705320,0 16px 60px #4b3f3320;text-align:center;max-height:100%;overflow:auto}.overlay-card:before{content:'';position:absolute;top:0;left:35%;width:30%;height:5px;background:var(--coral);border-radius:0 0 5px 5px}.overlay-card .eyebrow{font-size:9px;color:var(--teal);letter-spacing:2px;margin-bottom:15px}.overlay-card h2{font-size:37px;line-height:1.28;letter-spacing:-1px;margin:0 0 8px;font-weight:900}.overlay-card h2 em{font-style:normal;color:var(--coral)}.overlay-card .english-title{font-family:ui-monospace,monospace;font-size:10px;letter-spacing:5px;font-weight:700;margin:12px 0 17px}.overlay-card p{font-size:11px;line-height:1.9;color:#798276;margin:10px 0 18px}.primary-button{background:var(--coral);color:var(--white);border:1px solid #c85c47;border-radius:8px;box-shadow:0 3px 0 #bd5343;padding:14px 20px;width:100%;font-size:14px;letter-spacing:2px;font-weight:650;transition:transform .12s,background .12s;min-height:48px}.primary-button:hover{background:#d65d47;transform:translateY(-1px)}.primary-button:active{transform:translateY(2px);box-shadow:0 1px 0 #bd5343}.secondary-button{background:none;border:1px solid var(--line);border-radius:8px;padding:11px;width:100%;font-size:11px;margin-top:12px;min-height:44px}.secondary-button:hover{background:var(--paper)}.overlay-card .tiny-note{font-size:8px;letter-spacing:1px;margin:15px 0 0}.overlay-card .card-portrait{width:95px;height:95px;margin:0 auto 9px;border-radius:50%;background:var(--mint)}.overlay-card .card-name{font-size:30px}.card-traits{display:flex;justify-content:center;gap:7px;margin:12px 0}.card-traits span{background:var(--mint);font-size:10px;border-radius:4px;padding:5px 7px}.overlay-card .allergy-pill{color:#b84e3b;background:#fbebe2;padding:9px;border-radius:6px;margin:14px 0;font-size:11px}.overlay-card .result-score{font-family:ui-monospace,monospace;font-size:44px;color:var(--coral);letter-spacing:3px;margin:13px 0}.receipt-stats{border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);padding:11px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:14px 0 18px}.receipt-stats span{font-size:8px;color:var(--muted)}.receipt-stats b{display:block;font-size:16px;margin-bottom:4px;color:var(--ink);font-family:ui-monospace,monospace}.toast{position:absolute;top:13px;left:50%;transform:translate(-50%,-8px);opacity:0;pointer-events:none;background:var(--white);padding:10px 20px;border-radius:24px;font-size:12px;box-shadow:0 3px 12px #665e3020;border:1px solid #cdd4bd;white-space:nowrap;transition:opacity .15s,transform .15s;z-index:3}.toast.visible{opacity:1;transform:translate(-50%,0)}.toast.bad{color:#c54d3e;background:#fff1e9;border-color:#e6a58d}.combo{position:absolute;left:50%;top:66%;transform:translateX(-50%);font-size:11px;color:var(--coral);font-weight:700;pointer-events:none;white-space:nowrap}dialog{border:1px solid #cdd2bf;border-radius:16px;padding:0;max-width:470px;width:calc(100% - 32px);background:var(--white);color:var(--ink);max-height:90dvh}dialog::backdrop{background:#243f4266;backdrop-filter:blur(5px)}.dialog-inner{padding:30px}.dialog-inner h2{font-size:27px;margin:0 0 24px}.dialog-inner .eyebrow{color:var(--teal);font-size:9px}.help-list{padding-left:20px;display:grid;gap:17px;font-size:12px}.help-list li::marker{color:var(--coral);font-family:ui-monospace,monospace}.help-list b{font-size:12px;display:block;margin-bottom:5px}.help-list span,.help-note{font-size:10px;line-height:1.9;color:var(--muted)}.help-note{margin:20px 0}.danger .fullness-heading strong{color:#c65442}.danger .fullness-track{box-shadow:0 0 0 2px #dc765a55}.danger #health-status{color:#c65442}
+@media(min-width:1450px){.stage{height:550px}.app{max-width:1380px}}@media(max-width:1050px){.app{padding:0 24px}.game-layout{grid-template-columns:minmax(0,1fr) 225px;gap:18px}.character-panel{padding:16px}.character-heading{gap:7px}.character-heading canvas{width:47px;height:47px}.character-heading h2{font-size:15px}.keyboard-hint{display:none}.menu-panel{padding:16px 12px}.menu-grid{gap:12px 3px}.menu-item{grid-template-columns:33px 1fr}.menu-item canvas{width:32px}.menu-item span{font-size:8px}.scoreboard{gap:23px}.stage{height:510px}}
+@media(max-width:760px){.app{padding:0 16px}.topbar{height:77px}.brand{font-size:15px;gap:9px}.brand-stamp{width:35px;height:35px;font-size:24px}.brand small{font-size:8px;letter-spacing:2.3px}.top-actions{gap:15px}.open-sign{display:none}.quiet-button{font-size:10px;min-height:44px}.intro{padding:23px 0 22px}.intro .eyebrow{font-size:8px;margin-bottom:8px}h1{font-size:28px}.subtitle{font-size:10px;margin-top:8px;letter-spacing:0}.best-record{padding-right:10px}.best-record strong{font-size:22px;letter-spacing:1px}.best-record span{font-size:8px}.best-record small{font-size:6px;letter-spacing:1.5px}.game-layout{grid-template-columns:minmax(0,1fr);gap:19px}.sidebar{grid-template-columns:1fr 1fr;gap:12px}.character-panel{padding:17px}.character-panel .eyebrow{font-size:9px}.character-panel .eyebrow span{display:none}.character-heading{display:block;margin:8px 0 10px}.character-heading canvas{float:left;margin-right:7px;width:40px;height:40px}.character-heading h2{font-size:15px;padding-top:2px}.character-heading p{font-size:8px}.ability{font-size:9px;clear:both;padding-top:5px;min-height:0}.allergy-notice{font-size:9px}.menu-panel{padding:17px 10px}.section-heading{margin-bottom:12px}.section-heading h2{font-size:11px}.section-heading>span{font-size:7px}.menu-grid{gap:9px 3px}.menu-item{grid-template-columns:29px 1fr}.menu-item canvas{width:28px;height:30px}.menu-item span{font-size:8px}.menu-item b{font-size:9px;margin-top:3px}.menu-note{font-size:8px;padding-top:9px;margin-top:10px}.diner-note{display:none}.scoreboard{padding:16px 18px;gap:23px}.scoreboard strong{font-size:26px}.scoreboard .time-stat strong{font-size:21px}.scoreboard .level-stat strong{font-size:20px}.stat-label{font-size:8px}.pause-button{height:44px;width:44px}.vitals{padding:13px 18px}.stage{height:500px}.table-footer{padding:12px 15px}.table-footer p{font-size:9px}.page-footer{padding:22px 0;gap:8px;letter-spacing:0;font-size:7px}.footer-motto{display:none}.page-footer b{font-size:8px;margin-left:6px}.overlay-card{padding:25px 25px}.overlay-card h2{font-size:36px}.overlay-card p{font-size:11px}.overlay{padding:18px}.toast{font-size:10px;padding:10px 15px}.combo{top:64%}}
+@media(max-width:380px){.app{padding:0 10px}.top-actions{gap:10px}h1{font-size:24px}.scoreboard{gap:14px}.scoreboard strong{font-size:24px}.stage{height:470px}.overlay-card{padding:23px 18px}.overlay-card h2{font-size:32px}.card-traits span{font-size:9px}.intro .eyebrow{letter-spacing:1px}.sidebar{gap:8px}.character-panel{padding:14px 11px}.menu-panel{padding:14px 8px}.menu-item{grid-template-columns:25px 1fr}.menu-item canvas{width:24px}.menu-item span{font-size:7px}}
+@media(max-height:500px) and (orientation:landscape){.intro{padding:15px 0}.stage{height:450px}.topbar{height:65px}}
+.scoreboard .level-stat strong{white-space:nowrap}.scoreboard .level-stat{flex:none}
+@media(max-width:760px) and (min-height:540px){body.play-mode .intro,body.play-mode .sidebar,body.play-mode .page-footer{display:none}body.play-mode .topbar{height:54px;border:0}body.play-mode .stage{height:clamp(360px,calc(100dvh - 270px),580px)}body.play-mode .scoreboard{padding-top:12px;padding-bottom:12px}body.play-mode .vitals{padding-top:11px;padding-bottom:11px}body.play-mode .health-row{margin-bottom:12px}body.play-mode .table-footer{padding-top:10px;padding-bottom:10px;min-height:34px}body.play-mode .app{padding-bottom:8px}}
+@media(max-width:760px) and (min-height:540px){body.play-mode .overlay{position:fixed;inset:54px 10px 8px;background:#f4e9d1ba}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+/* v0.1.1: make the survival instruments readable while watching the belt. */
+.game-panel{--gauge-color:#357d62}
+.vitals{padding:18px 25px 16px;background:#f3f1df;border-bottom:3px solid #d7dfc8}
+.health-row{font-size:12px;gap:12px;margin-bottom:17px;min-height:28px}
+.health-row>span:first-child{width:auto;white-space:nowrap;font-weight:650}
+.health-row b{font-size:25px;line-height:1;margin-left:7px;color:#be4e3d;font-weight:800;vertical-align:baseline}
+.health-row small{font-size:10px;font-weight:500;color:#667263}
+.health-row>span:last-child{width:auto;min-width:72px;font-size:11px;font-weight:650;color:#50634f}
+.health-track{height:14px;min-width:28px;border:1px solid #d4b59c;background:#e5d5bd;box-shadow:inset 0 2px 3px #71543b19}
+.health-track i{background:#df6853;box-shadow:inset 0 2px 0 #f9aa8455}
+.fullness-heading{font-size:13px;margin-bottom:14px;min-height:35px;font-weight:700}
+.fullness-heading b{font-size:34px;line-height:1;color:var(--gauge-color);font-weight:850;margin-left:10px;font-variant-numeric:tabular-nums}
+.fullness-heading small{font-size:11px;color:#63715d}
+.fullness-heading strong{font-size:12px;font-weight:750;letter-spacing:0;padding:6px 10px;border:1px solid #93ae91;background:#e0ecd6;border-radius:6px;color:#2d6448;white-space:nowrap}
+.fullness-track{height:29px;border:2px solid #abb895;border-radius:7px;box-shadow:inset 0 2px 3px #61704619;background:linear-gradient(to right,#f1bda1 0 12.5%,#ecdcab 12.5% 20.83%,#c9dcb1 20.83% 70.83%,#ecdcab 70.83% 83.33%,#f1ae9a 83.33%)}
+.fullness-fill{position:absolute;inset:0 auto 0 0;width:45.833%;background:var(--gauge-color);border-radius:4px 0 0 4px;box-shadow:inset 0 3px 0 #ffffff33;opacity:.88;transition:width .08s linear,background-color .2s}
+.fullness-track i{z-index:2;width:10px;height:43px;top:-9px;border:3px solid #fffdf2;background:#203b38;box-shadow:0 0 0 2px #203b38,0 2px 4px #203b3833;transition:left .08s linear}
+.fullness-track i:before{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #203b38}
+.danger-line{border-left:2px dashed #a35e40aa;z-index:1}
+.gauge-labels{font-size:10px;font-weight:600;color:#5f6e59;margin-top:10px}
+.gauge-labels span:nth-child(2){color:#2d6448;font-weight:800}
+.game-panel[data-belly-state="low"],.game-panel[data-belly-state="high"]{--gauge-color:#b57924}
+.game-panel[data-belly-state="low"] .fullness-heading strong,.game-panel[data-belly-state="high"] .fullness-heading strong{color:#85591c;border-color:#cba565;background:#f6e5bb}
+.game-panel.danger{--gauge-color:#ce4e38}
+.danger .vitals{background:#ffeadb;border-bottom-color:#cf6248;box-shadow:inset 5px 0 #cf6248,inset -5px 0 #cf6248}
+.danger .fullness-heading strong{color:#fffaf0;background:#bf4936;border-color:#a83c2b}
+.danger .fullness-track{border-color:#bd4c36;box-shadow:0 0 0 3px #df785443}
+.danger #health-status,.game-panel[data-low-health="true"] #health-status{color:#ad392a;font-weight:800}
+.game-panel[data-low-health="true"] .health-track{outline:2px solid #bd4c36;outline-offset:2px}
+.game-panel[data-low-health="true"] #hp{color:#ad392a}
+.scene-warning{position:absolute;z-index:2;left:50%;top:53%;transform:translate(-50%,-50%);width:max-content;max-width:70%;padding:12px 17px;background:#fff7e9f5;color:#ad392a;text-align:center;border:2px solid #c6573f;border-radius:12px;box-shadow:0 4px 0 #c6573f33,0 7px 20px #71483115;pointer-events:none}
+.scene-warning[hidden]{display:none}.scene-warning strong{display:block;font-size:17px;line-height:1.5;font-weight:850}.scene-warning span{display:block;font-size:12px;line-height:1.5;margin-top:3px;font-weight:650}
+.scene-warning[data-severity="caution"]{background:#fff4d9f5;color:#85591c;border-color:#b57924;box-shadow:0 4px 0 #b5792426,0 7px 20px #71483115}
+@media(max-width:760px){.vitals{padding:15px 18px 14px}.health-row{gap:8px;min-height:25px;margin-bottom:14px;font-size:11px}.health-row b{font-size:23px;margin-left:5px}.health-row small{font-size:9px}.health-row>span:last-child{min-width:60px;font-size:10px}.health-track{height:12px}.fullness-heading{font-size:12px;min-height:31px;margin-bottom:12px}.fullness-heading b{font-size:30px;margin-left:7px}.fullness-heading small{font-size:10px}.fullness-heading strong{font-size:10px;padding:6px 8px}.fullness-track{height:26px}.fullness-track i{height:38px;top:-8px;width:9px}.gauge-labels{font-size:9px;margin-top:9px}.scene-warning{padding:10px 12px;max-width:75%}.scene-warning strong{font-size:14px}.scene-warning span{font-size:11px}}
+@media(max-width:760px) and (min-height:540px){body.play-mode .stage{height:clamp(310px,calc(100dvh - 315px),540px)}body.play-mode .health-row{margin-bottom:12px}}
+@media(prefers-reduced-motion:reduce){.fullness-fill{transition:none}}
+@media(max-width:380px){.scoreboard{gap:8px;padding-left:14px;padding-right:14px}.scoreboard>div:first-child{min-width:0}.scoreboard strong{font-size:22px;letter-spacing:1px}.scoreboard .time-stat strong{font-size:18px;letter-spacing:0}.scoreboard .level-stat strong{font-size:17px;letter-spacing:0}}
+
+/* v0.2.0: player identity and the shared score table. */
+.player-id-label{display:block;text-align:left;font-size:11px;font-weight:700;margin:0 0 7px}
+.player-id-input{font:inherit;font-size:15px;letter-spacing:.5px;width:100%;min-height:44px;border:1.5px solid #9eae91;border-radius:7px;background:#f8f7e9;padding:10px 12px;color:var(--ink);outline-offset:3px}
+.player-id-input:focus-visible{outline:2px solid var(--teal)}
+.overlay-card .entry-error{font-size:10px;line-height:1.5;color:#b64231;text-align:left;min-height:15px;margin:5px 0 10px}
+.overlay-card:has(#player-id-input){padding:21px 25px}.overlay-card:has(#player-id-input) h2{font-size:31px}.overlay-card:has(#player-id-input) .english-title{margin:8px 0 11px}.overlay-card:has(#player-id-input)>p:not(.eyebrow):not(.tiny-note){font-size:10px;margin:6px 0 13px}
+.text-button{border:0;background:none;color:var(--muted);font-size:10px;min-height:36px;padding:6px 10px;margin-top:6px}
+.rank-result{font-weight:650;color:var(--teal)!important}
+#leaderboard-dialog{max-width:510px}#leaderboard-dialog .dialog-inner{padding:27px}#leaderboard-dialog h2{margin-bottom:14px}
+.board-champion{font-size:16px;font-weight:800;padding:15px;background:#f5e7ba;color:#83601f;border:1px solid #d9b86b;border-radius:9px;overflow-wrap:anywhere}
+.board-status{font-size:10px;line-height:1.7;color:var(--muted);margin:12px 0}
+.board-list{list-style:none;padding:0;margin:14px 0;max-height:42dvh;overflow-y:auto;overscroll-behavior:contain}
+.board-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:13px 7px;border-bottom:1px dashed var(--line)}
+.board-position{font-family:ui-monospace,monospace;font-size:15px;font-weight:700;color:var(--muted);text-align:center}
+.board-player{min-width:0}.board-player strong{display:block;font-size:13px;overflow-wrap:anywhere}.board-player small{display:block;font-size:9px;color:var(--muted);margin-top:5px}
+.board-row>b{font-size:19px;font-family:ui-monospace,monospace;letter-spacing:1px;color:var(--teal);text-align:right}.board-row>b small{display:block;font-size:8px;font-family:inherit;color:var(--muted);margin-top:4px;letter-spacing:0}
+.champion-row{background:#fbf0d1;border-radius:8px;border:1px solid #e3c880}.champion-row .board-position{background:#bc8735;color:#fff9e7;border-radius:6px;line-height:30px;font-size:17px}.champion-row .board-player strong{color:#8e6220}
+.board-me{font-size:10px;padding:11px;background:var(--mint);border-radius:6px;line-height:1.8;overflow-wrap:anywhere}
+.board-actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px;align-items:center}.board-actions .secondary-button{margin:0;min-height:48px}
+@media(max-width:380px){.top-actions{gap:9px}.brand{font-size:14px;gap:7px}.brand small{letter-spacing:1.8px}.quiet-button{font-size:9px}#leaderboard-dialog .dialog-inner{padding:22px 18px}.board-row{gap:7px}.board-row>b{font-size:17px}}
+.character-heading>div{min-width:0}#character-name,.overlay-card .card-name{overflow-wrap:anywhere}
+</style>
+  <title>寿司别吃撑！ · SUSHI PANIC</title>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="寿司别吃撑 首页"><span class="brand-stamp" aria-hidden="true">寿</span><span>寿司别吃撑！<small>SUSHI PANIC</small></span></a>
+      <div class="top-actions"><span class="open-sign"><i></i> 本日营业中</span><button id="leaderboard" class="quiet-button">大胃王榜</button><button id="sound" class="quiet-button" aria-pressed="false">声音：关</button><button id="help" class="quiet-button">怎么玩</button></div>
+    </header>
+    <main>
+      <section class="intro" aria-label="游戏介绍"><div><p class="eyebrow">回转不停 · 快乐有度</p><h1>今天也要，<span>刚刚好。</span></h1><p class="subtitle">一口是幸福，多一口可能是事故。</p></div><div class="best-record"><span>本机最高纪录</span><strong id="best-score">00000</strong><small>BEST SCORE</small></div></section>
+      <div class="game-layout">
+        <section class="game-panel" aria-label="游戏区域">
+          <div class="scoreboard"><div><span class="stat-label">本局得分</span><strong id="score">00000</strong></div><div class="time-stat"><span class="stat-label">生存时间</span><strong id="time">00:00</strong></div><div class="level-stat"><span class="stat-label">回转速度</span><strong id="level">1 <small>/ 6</small></strong></div><button id="pause" class="pause-button" aria-label="暂停游戏" disabled>Ⅱ</button></div>
+          <div class="vitals"><div class="health-row"><span>生命 <b id="hp">100</b><small id="hp-max"> / 100</small></span><div class="health-track" role="progressbar" aria-label="生命值" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="health-bar"><i id="health-fill"></i></div><span id="health-status">精神满满</span></div><div class="fullness-heading"><span>饱腹值 <b id="fullness">55</b><small> / 120</small></span><strong id="zone-text">恰到好处</strong></div><div class="fullness-track" id="fullness-bar" role="progressbar" aria-label="饱腹值" aria-valuemin="0" aria-valuemax="120" aria-valuenow="55"><span class="healthy-band"></span><span id="fullness-fill" class="fullness-fill"></span><i id="fullness-pointer"></i><span class="danger-line hunger-line"></span><span class="danger-line full-line"></span></div><div class="gauge-labels"><span>饿过头 &lt;15</span><span>舒适区 25–85</span><span>吃太撑 &gt;100</span></div></div>
+          <div class="stage" id="stage">
+            <canvas id="game" role="img" aria-label="回转寿司传送带。点击盘子吃寿司，或按 1 到 8 吃对应编号的盘子。"></canvas>
+            <div id="toast" class="toast" role="status" aria-live="polite"></div>
+            <div class="combo" id="combo" aria-hidden="true"></div>
+            <div id="scene-warning" class="scene-warning" hidden><strong id="scene-warning-title" role="status" aria-live="polite"></strong><span id="scene-warning-detail" aria-hidden="true"></span></div>
+            <div id="overlay" class="overlay"><div id="overlay-content" class="overlay-card"></div></div>
+          </div>
+          <div class="table-footer"><p id="game-hint"><span class="hint-dot"></span> 点击盘子开吃 · 看清红色过敏标记</p><span class="keyboard-hint">键盘 <kbd>1</kbd>–<kbd>8</kbd> 抢盘 · <kbd>P</kbd> 暂停</span></div>
+        </section>
+        <aside class="sidebar" aria-label="本局角色与菜单">
+          <section class="character-panel"><p class="eyebrow">今日食客 <span id="character-tag">随机入座</span></p><div class="character-heading"><canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas><div><h2 id="character-name">谁来吃寿司？</h2><p id="character-title">每局都有不一样的胃口</p></div></div><p id="character-ability" class="ability">入座后抽取一张角色卡，看看今天要忌口什么。</p><div id="allergy-notice" class="allergy-notice"><span>过敏食物</span><strong id="allergy-name">开局揭晓</strong><small id="allergy-detail">看清再吃，别太心急</small></div></section>
+          <section class="menu-panel"><div class="section-heading"><h2>本日菜单</h2><span>饱腹变化</span></div><div id="menu" class="menu-grid"></div><p class="menu-note">红色「忌」= 本局过敏源<br>乌龙茶减饱腹，太饿时别喝哦。</p></section>
+          <div class="diner-note"><span class="seal">腹八分目</span><p>别贪心，也别空着肚子。<br><strong>活久一点，多吃几口。</strong></p></div>
+        </aside>
+      </div>
+    </main>
+    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>v0.2.0 · 共享积分榜 · 无广告</span><span class="footer-motto">请带着你的求生欲入座。</span></footer>
+  </div>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">好好吃，慢慢活。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹会持续下降。维持 25–85，有舒适进食奖励。低于 15 或高于 100 持续 2 秒后会掉血。</span></li><li><b>红色「忌」，吃了会过敏。</b><span>每局角色不同，过敏源也不同。误食扣 24 生命，所有盘子都提前标记。</span></li><li><b>连击比乱吃更值钱。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">每 25 秒提升一级，180 秒后数值封顶。切换页面自动暂停，回来后手动继续。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
+  <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">朋友之间，比比谁更会吃</p><h2 id="board-title">大胃王排行榜</h2><p id="board-champion" class="board-champion">正在寻找大胃王…</p><p id="board-status" class="board-status" role="status">按单局最高积分排名</p><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div></div></dialog>
+  <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
+  <script type="module">
+/** Pure, deterministic game rules. Time is seconds; fullness is 0–120. */
+const VERSION = '0.2.0';
+const STEP = 1 / 60;
+const RULES = Object.freeze({ startFullness: 55, hunger: 15, overfull: 100, grace: 2, hungerDamage: 8, overfullDamage: 10, allergyDamage: 24, biteCooldown: 0.24 });
+const FOODS = Object.freeze({
+  salmon: { name: '三文鱼', fullness: 19, points: 100, allergen: 'fish', color: '#f78069' },
+  tuna: { name: '金枪鱼', fullness: 15, points: 120, allergen: 'fish', color: '#d95166' },
+  shrimp: { name: '鲜虾', fullness: 16, points: 110, allergen: 'shellfish', color: '#f5a285' },
+  tamago: { name: '玉子烧', fullness: 22, points: 90, allergen: 'egg', color: '#f8c94d' },
+  cucumber: { name: '黄瓜卷', fullness: 12, points: 80, allergen: null, color: '#84ad72' },
+  ikura: { name: '鱼子军舰', fullness: 14, points: 140, allergen: 'roe', color: '#f58c3a' },
+  onigiri: { name: '大饭团', fullness: 30, points: 110, allergen: null, color: '#e9e1cf' },
+  tea: { name: '乌龙茶', fullness: -18, points: 20, allergen: null, color: '#81a38a' },
+});
+const ALLERGEN_NAMES = Object.freeze({ fish: '鱼类', shellfish: '虾类', egg: '鸡蛋', roe: '鱼子' });
+const CHARACTERS = Object.freeze([
+  { id: 'momo', name: '桃桃', title: '杂食小行家', drain: 3.6, portion: 1, hp: 100, allergy: 'shellfish', color: '#e77c72', ability: '换着吃：不同安全寿司回复 1 生命', short: '换着吃 · 回血', mark: '桃' },
+  { id: 'taro', name: '阿太', title: '快饿大胃王', drain: 4.3, portion: 0.85, hp: 110, allergy: 'roe', color: '#d6a448', ability: '好胃口：饱腹增量 ×0.85，食物分 ×1.15', short: '快消化 · 高食物分', mark: '太' },
+  { id: 'yuzu', name: '柚子', title: '慢食观察家', drain: 3, portion: 1.15, hp: 90, allergy: 'egg', color: '#7e9a76', ability: '护身符：首次过敏免伤；饱腹增量 ×1.15', short: '慢消化 · 一次免伤', mark: '柚' },
+  { id: 'nori', name: '小海', title: '黄瓜卷信徒', drain: 3.8, portion: 1, hp: 100, allergy: 'fish', color: '#6d9ba4', ability: '清爽派：每份黄瓜卷回复 3 生命', short: '黄瓜卷 · 回血', mark: '海' },
+]);
+const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+function seededRandom(seed) {
+  let a = Number(seed) >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+class FoodDeck {
+  constructor(rng) { this.rng = rng; this.bag = []; this.unsafeStreak = 0; this.draws = 0; this.guarantees = 0; }
+  next() {
+    // At most two non-universal dishes in a row. An injection does not consume the bag.
+    if (this.unsafeStreak >= 2) { this.unsafeStreak = 0; this.draws++; this.guarantees++; return 'cucumber'; }
+    if (!this.bag.length) {
+      this.bag = Object.keys(FOODS);
+      for (let i = this.bag.length - 1; i > 0; i--) { const j = Math.floor(this.rng() * (i + 1)); [this.bag[i], this.bag[j]] = [this.bag[j], this.bag[i]]; }
+    }
+    const key = this.bag.pop();
+    this.unsafeStreak = FOODS[key].fullness > 0 && !FOODS[key].allergen ? 0 : this.unsafeStreak + 1;
+    this.draws++;
+    return key;
+  }
+}
+function difficultyAt(time) {
+  const t = Math.max(0, time);
+  return { level: Math.min(6, 1 + Math.floor(t / 25)), drainMultiplier: 1 + Math.min(t / 180, 1) * 0.65, speed: 0.044 + Math.min(t / 180, 1) * 0.026, spawnInterval: 1.85 - Math.min(t / 180, 1) * 0.7 };
+}
+function fullnessZone(fullness) { return fullness < RULES.hunger ? 'hungry' : fullness > RULES.overfull ? 'overfull' : 'safe'; }
+function isAllergic(character, foodKey) { return FOODS[foodKey]?.allergen === character.allergy; }
+class Game {
+  constructor({ seed = Date.now(), characterId } = {}) {
+    this.seed = Number(seed) >>> 0;
+    // Character choice and food RNG have independent streams, enabling fair same-seed comparisons.
+    const characterRng = seededRandom(this.seed ^ 0x9e3779b9);
+    this.character = CHARACTERS.find(c => c.id === characterId) || CHARACTERS[Math.floor(characterRng() * CHARACTERS.length)];
+    this.deck = new FoodDeck(seededRandom(this.seed));
+    this.phase = 'card'; this.time = 0; this.fullness = RULES.startFullness; this.hp = this.character.hp;
+    this.score = 0; this.combo = 0; this.bestCombo = 0; this.eaten = 0; this.sushiEaten = 0; this.allergies = 0; this.perfects = 0;
+    this.hazardTime = 0; this.hazardZone = 'safe'; this.deathReason = ''; this.shield = this.character.id === 'yuzu' ? 1 : 0;
+    this.lastBite = -10; this.lastFood = null; this.nextSpawn = 0; this.nextId = 1; this.foods = []; this.events = []; this.beltTravel = 0;
+    this.survivalScore = 0; this.foodScore = 0; this.bonusScore = 0; this.seenFoods = new Set();
+    this.scoreFactor = this.character.portion * 3.6 / this.character.drain;
+  }
+  start() {
+    if (this.phase !== 'card') return false;
+    this.phase = 'playing';
+    // Immediate food, including a universally safe dish, with spaced targets.
+    for (const [key, p] of [['cucumber', 0.12], [this.deck.next(), 0.34], [this.deck.next(), 0.56], ['onigiri', 0.78]]) this.addFood(key, p);
+    this.nextSpawn = difficultyAt(0).spawnInterval;
+    return true;
+  }
+  pause() { if (this.phase !== 'playing') return false; this.phase = 'paused'; return true; }
+  resume() { if (this.phase !== 'paused') return false; this.phase = 'playing'; return true; }
+  addFood(key, p = 0) { const f = { id: this.nextId++, key, p, distance: 0 }; this.foods.push(f); return f; }
+  refreshScore() { this.score = Math.floor(this.survivalScore + this.foodScore + this.bonusScore + 1e-8); }
+  step(dt = STEP) {
+    if (this.phase !== 'playing' || !Number.isFinite(dt) || dt <= 0) return;
+    // Small substeps preserve grace timing and movement even for a coarse simulator caller.
+    let remaining = Math.min(dt, 1);
+    while (remaining > 1e-8 && this.phase === 'playing') { const h = Math.min(remaining, STEP); this.tick(h); remaining -= h; }
+  }
+  tick(dt) {
+    const d = difficultyAt(this.time);
+    this.time += dt;
+    this.fullness = clamp(this.fullness - this.character.drain * d.drainMultiplier * dt, 0, 120);
+    const zone = fullnessZone(this.fullness);
+    if (zone === 'safe') { this.hazardTime = 0; this.hazardZone = zone; }
+    else {
+      if (zone !== this.hazardZone) this.hazardTime = 0;
+      const old = this.hazardTime; this.hazardTime += dt; this.hazardZone = zone;
+      const damageTime = Math.max(0, this.hazardTime - RULES.grace) - Math.max(0, old - RULES.grace);
+      this.hp = clamp(this.hp - damageTime * (zone === 'hungry' ? RULES.hungerDamage : RULES.overfullDamage), 0, this.character.hp);
+      if (this.hp <= 0) this.end(zone === 'hungry' ? '饿得眼冒金星' : '这次真的吃撑了');
+    }
+    this.survivalScore += dt * (this.fullness >= 25 && this.fullness <= 85 ? 12 : 8);
+    this.beltTravel += d.speed * dt;
+    for (const f of this.foods) { const move = d.speed * dt; f.p = (f.p + move) % 1; f.distance += move; }
+    this.foods = this.foods.filter(f => f.distance < 1 && f.p < 0.98); // One trip; no invisible offscreen reservoir.
+    this.nextSpawn -= dt;
+    if (this.nextSpawn <= 0) {
+      // Keep a readable gap across the entry/exit seam; blocked spawns never accrue debt.
+      const entryClear = this.foods.every(f => Math.min(f.p, 1 - f.p) >= 0.08);
+      if (this.foods.length < 14 && entryClear) { this.addFood(this.deck.next()); this.nextSpawn += d.spawnInterval; }
+      else this.nextSpawn = 0;
+    }
+    this.refreshScore();
+  }
+  eat(id) {
+    if (this.phase !== 'playing' || this.time - this.lastBite < RULES.biteCooldown) return null;
+    const index = this.foods.findIndex(f => f.id === id);
+    if (index < 0) return null;
+    const item = this.foods.splice(index, 1)[0], food = FOODS[item.key];
+    this.lastBite = this.time; this.eaten++; if(food.fullness>0)this.sushiEaten++;
+    const change = food.fullness > 0 ? food.fullness * this.character.portion : food.fullness;
+    this.fullness = clamp(this.fullness + change, 0, 120);
+    let event;
+    if (isAllergic(this.character, item.key)) {
+      this.allergies++; this.combo = 0;
+      const shielded = this.shield > 0; if (shielded) this.shield--;
+      const damage = shielded ? 0 : RULES.allergyDamage;
+      this.hp = clamp(this.hp - damage, 0, this.character.hp);
+      event = { type: 'allergy', text: shielded ? '护身符！免伤一次' : '过敏！生命 −24', item, change, damage };
+      if (this.hp <= 0) this.end('误食过敏寿司');
+    } else {
+      const comfortable = this.fullness >= 25 && this.fullness <= 85;
+      if (food.fullness > 0) {
+        this.combo = comfortable ? this.combo + 1 : 0;
+        this.bestCombo = Math.max(this.bestCombo, this.combo);
+        this.foodScore += food.points * this.scoreFactor * (this.character.id === 'taro' ? 1.15 : 1);
+        if (comfortable) { this.perfects++; this.bonusScore += (30 + Math.min(this.combo, 10) * 8) * this.scoreFactor; }
+        if (!this.seenFoods.has(item.key)) { this.seenFoods.add(item.key); this.bonusScore += 25 * this.scoreFactor; }
+        if (this.character.id === 'momo' && this.lastFood && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
+        if (this.character.id === 'nori' && item.key === 'cucumber') this.hp = Math.min(this.character.hp, this.hp + 3);
+        this.lastFood = item.key;
+      } else { this.foodScore += food.points * this.scoreFactor; }
+      event = { type: food.fullness < 0 ? 'tea' : comfortable ? 'perfect' : 'eat', text: food.fullness < 0 ? '清清爽爽 · 饱腹 −18' : comfortable ? `恰到好处！${this.combo > 1 ? this.combo + ' 连击' : ''}` : '慢点吃，小心撑！', item, change };
+    }
+    if (fullnessZone(this.fullness) === 'safe') { this.hazardTime = 0; this.hazardZone = 'safe'; }
+    this.refreshScore(); this.events.push(event); if (this.events.length > 32) this.events.shift(); return event;
+  }
+  end(reason) { if (this.phase !== 'playing') return; this.phase = 'gameover'; this.deathReason = reason; this.hp = 0; }
+  snapshot() { return { version: VERSION, seed: this.seed, phase: this.phase, character: this.character.id, time: this.time, hp: this.hp, fullness: this.fullness, score: this.score, eaten: this.eaten,sushiEaten:this.sushiEaten, allergies: this.allergies, perfects: this.perfects, bestCombo: this.bestCombo, deathReason: this.deathReason }; }
+}
+
+const INK = '#293f40';
+function round(c,x,y,w,h,r,fill,stroke) { c.beginPath(); c.roundRect(x,y,w,h,r); if(fill){c.fillStyle=fill;c.fill();} if(stroke){c.strokeStyle=stroke;c.stroke();} }
+function oval(c,x,y,rx,ry,fill,stroke) { c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2); if(fill){c.fillStyle=fill;c.fill();}if(stroke){c.strokeStyle=stroke;c.stroke();} }
+function line(c, points, color, width=2) { c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle=color;c.lineWidth=width;c.lineCap='round';c.lineJoin='round';c.stroke(); }
+function text(c,str,x,y,size=12,color=INK,weight=500) {c.fillStyle=color;c.textAlign='center';c.textBaseline='middle';c.font=`${weight} ${size}px "PingFang SC","Microsoft YaHei",sans-serif`;c.fillText(str,x,y);}
+
+/** Original procedural sushi illustration, shared by the board and menu. */
+function drawSushi(c,key,x,y,scale=1) {
+  c.save();c.translate(x,y);c.scale(scale,scale);c.lineWidth=1.4;
+  if(key==='tea') {
+    oval(c,0,17,19,6,'#35453b20');round(c,-17,-19,34,35,[3,3,12,12],'#7f9c76','#526e55');
+    for(let i=-9;i<13;i+=7)line(c,[[i,-12],[i,7]],'#b3c4a1',2);
+    oval(c,0,-18,17,6,'#d1d8ae','#526e55');oval(c,0,-18,12,3.7,'#6b7b40');
+    line(c,[[-7,-32],[-10,-27],[-6,-23]],'#f9f5eaaa',1.5);line(c,[[6,-35],[3,-30],[7,-26]],'#f9f5eaaa',1.5);
+  } else if(key==='cucumber'||key==='ikura') {
+    const places=key==='cucumber'?[[-11,3],[11,4],[0,-10]]:[[0,0]];
+    for(const [px,py] of places) {
+      const rx=key==='ikura'?25:13, ry=key==='ikura'?14:8;
+      round(c,px-rx,py-3,rx*2,22,7,'#344b40');oval(c,px,py+16,rx,ry,'#263e36');oval(c,px,py,rx,ry,'#f8f3dc','#364c3d');
+      oval(c,px,py,rx-4,ry-2,key==='ikura'?'#6d4930':'#95ad69');
+      if(key==='ikura') {for(let j=0;j<3;j++)for(let i=0;i<5;i++){const xx=-16+i*8+(j%2)*3,yy=-6+j*6;oval(c,xx,yy,4.3,4,'#ee8743','#b9612d');oval(c,xx-1,yy-1.5,1.4,1.1,'#ffd189');}}
+      else {round(c,px-4,py-4,8,7,1,'#d5e5a1');line(c,[[px-6,py],[px+5,py]],'#517642',1.5);}
+    }
+  } else if(key==='onigiri') {
+    c.beginPath();c.moveTo(-23,18);c.quadraticCurveTo(-32,17,-26,5);c.lineTo(-7,-25);c.quadraticCurveTo(0,-34,7,-24);c.lineTo(29,9);c.quadraticCurveTo(34,19,22,22);c.closePath();c.fillStyle='#dbd7bf';c.fill();
+    c.beginPath();c.moveTo(-24,13);c.quadraticCurveTo(-30,12,-24,1);c.lineTo(-6,-27);c.quadraticCurveTo(0,-33,7,-24);c.lineTo(26,5);c.quadraticCurveTo(32,15,20,17);c.closePath();c.fillStyle='#fff9e7';c.fill();round(c,-10,1,21,20,2,'#354d3e');
+    for(let i=0;i<7;i++) oval(c,-15+(i*13)%33,-6+(i*7)%14,1,1.4,'#d6ceb2');
+  } else {
+    oval(c,0,15,31,12,'#d4d2bb');round(c,-30,-5,60,23,13,'#fff9e8');oval(c,0,-5,30,11,'#fffdf1');
+    for(let i=0;i<14;i++)oval(c,-23+(i*11)%48,2+(i*7)%12,1.8,.9,'#ddd6bc');
+    if(key==='tamago') {round(c,-33,-20,66,26,7,'#dab248');round(c,-33,-24,66,25,7,'#f2ce55');line(c,[[-26,-18],[25,-18]],'#ffe992',2);round(c,-6,-25,13,48,2,'#344e40');line(c,[[-2,-20],[-2,15]],'#58705c',1);}
+    else if(key==='shrimp') {
+      c.beginPath();c.moveTo(-31,-4);c.quadraticCurveTo(-22,-33,20,-20);c.quadraticCurveTo(30,-17,31,1);c.quadraticCurveTo(3,10,-31,-4);c.fillStyle='#f8b18a';c.fill();
+      for(let i=0;i<5;i++)line(c,[[-19+i*9,-17],[-15+i*9,-3]],'#e38165',3);
+      c.beginPath();c.moveTo(25,-5);c.lineTo(39,-19);c.lineTo(38,-1);c.lineTo(43,7);c.lineTo(27,3);c.fillStyle='#e57a5b';c.fill();
+    } else {
+      round(c,-34,-23,68,29,11,key==='salmon'?'#d97157':'#b74958');round(c,-34,-27,68,28,11,FOODS[key].color);
+      c.save();c.beginPath();c.roundRect(-34,-27,68,28,11);c.clip();
+      for(let i=-45;i<50;i+=16)line(c,[[i,-30],[i+16,-8],[i+29,0]],key==='salmon'?'#ffd2ab':'#ed8f98',key==='salmon'?3.4:1.4);c.restore();
+    }
+  }
+  c.restore();
+}
+
+function drawPortrait(canvas,character,emotion='happy') {
+  const c=canvas.getContext('2d'),size=canvas.width;c.clearRect(0,0,size,canvas.height);c.save();c.scale(size/100,canvas.height/100);
+  const color=character?.color||'#8aab90';oval(c,50,54,47,47,'#dfe7d7');
+  round(c,22,72,56,42,18,color);oval(c,50,48,29,32,'#f8d9b5');
+  c.beginPath();c.arc(50,38,30,Math.PI,0);c.lineTo(79,51);c.quadraticCurveTo(64,43,58,28);c.quadraticCurveTo(41,51,21,47);c.closePath();c.fillStyle='#344743';c.fill();
+  if(character?.id==='momo'){oval(c,22,29,10,10,'#344743');oval(c,78,29,10,10,'#344743');}
+  if(character?.id==='taro'){round(c,18,24,64,11,3,color);round(c,39,16,23,14,3,color);}
+  if(character?.id==='yuzu'){oval(c,77,26,10,7,'#ecc34a');line(c,[[78,19],[81,14]],'#6b8b58',2);}
+  if(character?.id==='nori'){round(c,19,24,62,11,4,color);text(c,'海',50,30,9,'#fff9e9');}
+  c.lineWidth=2;oval(c,39,52,2.1,2.8,INK);oval(c,61,52,2.1,2.8,INK);oval(c,30,60,5,2.8,'#edaa92');oval(c,70,60,5,2.8,'#edaa92');
+  if(emotion==='sad')line(c,[[44,69],[50,66],[56,69]],INK,2);else{c.beginPath();c.arc(50,59,7,.25,Math.PI-.25);c.strokeStyle=INK;c.stroke();}
+  round(c,37,80,26,23,3,'#fff6de');text(c,character?.mark||'食',50,90,13,color,700);c.restore();
+}
+
+function trackGeometry(w,h) {
+  const margin=w<500?48:62, left=margin,right=w-margin,top=w<500?96:113,bottom=h-(w<500?60:72);
+  const radius=Math.min(67,(right-left)/3,(bottom-top)/3),a=right-left-2*radius,b=bottom-top-2*radius;
+  const total=2*a+2*b+2*Math.PI*radius;
+  const point=p=>{
+    let d=((p%1+1)%1)*total;
+    const segments=[a,Math.PI*radius/2,b,Math.PI*radius/2,a,Math.PI*radius/2,b,Math.PI*radius/2];
+    let i=0;while(i<7&&d>segments[i]){d-=segments[i];i++;}
+    if(i===0)return{x:left+radius+d,y:top,angle:0};
+    if(i===2)return{x:right,y:top+radius+d,angle:Math.PI/2};
+    if(i===4)return{x:right-radius-d,y:bottom,angle:Math.PI};
+    if(i===6)return{x:left,y:bottom-radius-d,angle:-Math.PI/2};
+    const centers=[[right-radius,top+radius],[right-radius,bottom-radius],[left+radius,bottom-radius],[left+radius,top+radius]];
+    const j=(i-1)/2,angle=-Math.PI/2+j*Math.PI/2+d/radius;
+    return{x:centers[j][0]+Math.cos(angle)*radius,y:centers[j][1]+Math.sin(angle)*radius,angle:angle+Math.PI/2};
+  };
+  return{left,right,top,bottom,radius,total,point};
+}
+
+class Renderer {
+  constructor(canvas){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.w=0;this.h=0;this.targets=[];this.effects=[];this.hover=null;this.motion=matchMedia('(prefers-reduced-motion: reduce)').matches;}
+  resize(){const b=this.canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);if(b.width!==this.w||b.height!==this.h||this.dpr!==dpr){this.w=b.width;this.h=b.height;this.dpr=dpr;this.canvas.width=Math.round(b.width*dpr);this.canvas.height=Math.round(b.height*dpr);}}
+  hit(x,y){return [...this.targets].reverse().filter(f=>Math.hypot(x-f.x,y-f.y)<f.radius+4).sort((a,b)=>Math.hypot(x-a.x,y-a.y)-Math.hypot(x-b.x,y-b.y))[0];}
+  bite(target,event){this.effects.push({x:target.x,y:target.y,text:event.type==='allergy'?'忌口呀！':`${event.change>0?'+':''}${Math.round(event.change)}`,bad:event.type==='allergy',age:0});}
+  draw(game,clock,dt=0){
+    this.resize(); const c=this.ctx,w=this.w,h=this.h;if(!w||!h)return;c.setTransform(this.dpr,0,0,this.dpr,0,0);c.clearRect(0,0,w,h);
+    const mobile=w<500,g=trackGeometry(w,h),cx=w/2,cy=(g.top+g.bottom)/2;
+    // Warm maple counter with grain and inset rails.
+    c.fillStyle='#ecd6b2';c.fillRect(0,0,w,h);
+    for(let y=9;y<h;y+=27){line(c,[[0,y],[w,y]],'#c9a97620',1);for(let x=20;x<w;x+=160)line(c,[[x+(y%53),y+8],[x+83+(y%53),y+8]],'#fff9e928',1);}
+    round(c,0,0,w,65,0,'#f4e7cd');line(c,[[0,65],[w,65]],'#b8ac8d',1);
+    // Shop noren, deliberately a quiet frame around the moving food.
+    for(let i=0;i<5;i++){const ww=mobile?40:51,xx=cx-ww*2.5+i*ww;round(c,xx,0,ww-2,51,[0,0,5,5],i===2?'#38645b':'#4d776a');text(c,['寿','司','腹','八','分'][i],xx+ww/2,26,15,'#f7efd8',600);}
+    const lantern=(x)=>{line(c,[[x,0],[x,13]],'#73705b',1);round(c,x-12,13,24,32,9,'#dc7760');for(let i=-6;i<10;i+=6)line(c,[[x+i,17],[x+i,40]],'#edaa7c',1);round(c,x-7,10,14,4,1,'#5b6554');round(c,x-7,44,14,4,1,'#5b6554');};lantern(mobile?29:49);lantern(w-(mobile?29:49));
+    const path=()=>{c.beginPath();c.roundRect(g.left,g.top,g.right-g.left,g.bottom-g.top,g.radius);};
+    c.save();c.translate(0,8);path();c.lineWidth=mobile?77:91;c.strokeStyle='#b99f7d';c.stroke();c.restore();
+    path();c.lineWidth=mobile?82:96;c.strokeStyle='#b9bdae';c.stroke();path();c.lineWidth=mobile?73:87;c.strokeStyle='#e0dfc9';c.stroke();path();c.lineWidth=mobile?64:78;c.strokeStyle='#5d7168';c.stroke();
+    const slats=Math.ceil(g.total/13),offset=(game.beltTravel??0)%1;
+    for(let i=0;i<slats;i++){const p=g.point(i/slats+offset);c.save();c.translate(p.x,p.y);c.rotate(p.angle);line(c,[[0,-(mobile?31:38)],[0,mobile?31:38]],'#94a18b88',1.6);c.restore();}
+    // Chef island.
+    const s=mobile?Math.min(.7,Math.max(.42,(g.bottom-g.top-85)/185)):1; c.save();c.translate(cx,cy+8);c.scale(s,s);
+    oval(c,0,62,77,15,'#9678531c');round(c,-73,38,146,46,20,'#edd3aa');line(c,[[-61,61],[60,61]],'#c5a37455',1);
+    // Lucky cat chef, all original vector drawing.
+    c.lineWidth=2;round(c,-42,12,84,58,22,'#f5edda','#c9bfa4');round(c,-27,34,54,36,5,'#d37860');text(c,'寿',0,52,21,'#fff8de',700);
+    c.beginPath();c.moveTo(-45,-34);c.lineTo(-42,-61);c.lineTo(-18,-44);c.lineTo(20,-44);c.lineTo(43,-61);c.lineTo(45,-28);c.closePath();c.fillStyle='#fff9e9';c.fill();c.strokeStyle='#bdbaa1';c.stroke();
+    oval(c,0,-15,49,39,'#fff9e9','#bdbba3');c.beginPath();c.moveTo(-38,-48);c.lineTo(-36,-37);c.lineTo(-24,-42);c.fillStyle='#e8a88f';c.fill();c.beginPath();c.moveTo(38,-48);c.lineTo(36,-37);c.lineTo(24,-42);c.fill();
+    if(game.phase==='gameover'||game.fullness<15){line(c,[[-25,-13],[-15,-8]],INK,2);line(c,[[25,-13],[15,-8]],INK,2);}
+    else{line(c,[[-25,-10],[-20,-14],[-15,-10]],INK,2);line(c,[[15,-10],[20,-14],[25,-10]],INK,2);}
+    oval(c,-31,0,8,4,'#efb49e');oval(c,31,0,8,4,'#efb49e');oval(c,0,-2,3.5,2.4,'#b37c65');line(c,[[0,0],[0,5],[-5,8]],INK,1.4);line(c,[[0,5],[5,8]],INK,1.4);
+    for(const sign of [-1,1]){line(c,[[sign*36,-1],[sign*48,-5]],'#a9a590',1);line(c,[[sign*36,5],[sign*49,6]],'#a9a590',1);}
+    round(c,-36,-63,72,18,4,'#fdfbf1','#c6c6b1');oval(c,-21,-66,19,17,'#fdfbf1','#c6c6b1');oval(c,0,-75,21,20,'#fdfbf1','#c6c6b1');oval(c,22,-66,18,17,'#fdfbf1','#c6c6b1');round(c,-34,-65,68,15,2,'#fdfbf1');round(c,-36,-54,72,10,2,'#d77b65');
+    oval(c,-46,29,14,10,'#fff9e9','#c5c3a9');oval(c,46,29,14,10,'#fff9e9','#c5c3a9');line(c,[[48,29],[70,-15]],'#856346',3);line(c,[[54,30],[78,-13]],'#856346',3);
+    c.restore();
+    if(!mobile){text(c,'おいしい。でも、ほどほどに。',cx,cy+114,10,'#9b896b');}
+    text(c,'点击盘子 · 刚好就好',cx,h-17,9,'#8f7f63');
+    this.targets=[];
+    c.lineWidth=1.4; // Belt strokes must not leak into dish/badge outlines.
+    const ordered=game.foods.map((f,i)=>({...f,number:i<8?i+1:null,...g.point(f.p)})).sort((a,b)=>a.y-b.y);
+    for(const f of ordered){
+      const r=mobile?25:35,fs=mobile?.62:.84,allergy=isAllergic(game.character,f.key),hover=this.hover===f.id;
+      c.save();c.translate(f.x,f.y);if(hover)c.translate(0,-3);
+      oval(c,1,10,r+3,r*.62,'#183c312c');oval(c,0,4,r+3,r*.65,'#c5bda1');oval(c,0,0,r+3,r*.65,allergy?'#f8d8c6':'#fff7dc',allergy?'#ce6852':'#d9cba6');oval(c,0,-1,r-3,r*.49,null,allergy?'#e5a58d':'#d9bd83');
+      if(hover){oval(c,0,-1,r+7,r*.77,null,'#fff8e5');}
+      drawSushi(c,f.key,0,-10,fs);
+      const labelWidth=mobile?58:74;
+      round(c,-labelWidth/2,21,labelWidth,16,4,allergy?'#cb604e':'#fff9e9');text(c,`${FOODS[f.key].name} ${FOODS[f.key].fullness>0?'+':''}${Math.round(FOODS[f.key].fullness*(FOODS[f.key].fullness>0?game.character.portion:1))}`,0,29,mobile?8:9,allergy?'#fff8e7':'#485d50',600);
+      if(allergy){oval(c,r-4,-24,10,10,'#c95242','#fff6df');text(c,'忌',r-4,-24,10,'#fff9e9',700);}
+      if(f.number){oval(c,-r+1,-22,8,8,'#f6efd9');text(c,String(f.number),-r+1,-22,9,'#667765',700);}
+      c.restore();this.targets.push({id:f.id,key:f.key,x:f.x,y:f.y,radius:r+3,number:f.number,allergic:allergy});
+    }
+    this.effects=this.effects.filter(f=>f.age<.8);
+    for(const e of this.effects){e.age+=dt;c.save();c.globalAlpha=Math.max(0,1-e.age/.8);text(c,e.text,e.x,e.y-20-e.age*55,18,e.bad?'#ca5141':'#335e47',800);if(!this.motion){for(let i=0;i<6;i++){const a=i*Math.PI/3;oval(c,e.x+Math.cos(a)*e.age*65,e.y+Math.sin(a)*e.age*65,2.5,2.5,e.bad?'#e48369':'#f3cb69');}}c.restore();}
+  }
+}
+
+const escapeHtml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function playerIdValue(value){const id=String(value??'').normalize('NFKC').trim();return /^[\p{L}\p{N}_-]{2,16}$/u.test(id)?id:null;}
+const CLOUD_API='https://sushi-panic.rubyssss98.chatgpt.site';
+class SocialClient{
+  constructor(){
+    this.api=location.protocol==='file:'?null:['localhost','127.0.0.1'].includes(location.hostname)?location.origin:CLOUD_API;
+    this.playerId='';this.key='';this.pending=[];
+    try{this.playerId=playerIdValue(localStorage.getItem('sushi.player-id'))||'';this.key=localStorage.getItem('sushi.player-key')||'';const pending=JSON.parse(localStorage.getItem('sushi.pending')||'[]');if(Array.isArray(pending))this.pending=pending.slice(-3);}catch{}
+    if(!/^[a-f0-9]{64}$/.test(this.key))this.key=Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
+    this.persist();
+  }
+  persist(){try{localStorage.setItem('sushi.player-id',this.playerId);localStorage.setItem('sushi.player-key',this.key);localStorage.setItem('sushi.pending',JSON.stringify(this.pending));return true;}catch{return false;}}
+  async request(path,body){
+    if(!this.api){const e=new Error('离线文件不连接共享榜单，请打开在线版');e.offline=true;throw e;}
+    const response=await fetch(this.api+path,{method:body?'POST':'GET',headers:{'X-Player-Key':this.key,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,credentials:'omit',signal:AbortSignal.timeout(6000)});
+    let data;try{data=await response.json();}catch{throw new Error('排行榜暂时无法连接');}
+    if(!response.ok){const e=new Error(data.error||'排行榜暂时无法连接');e.status=response.status;throw e;}
+    return data;
+  }
+  async start(id){
+    const playerId=playerIdValue(id);if(!playerId){const e=new Error('ID需为2–16个中英文字母、数字、下划线或短横线');e.status=400;throw e;}
+    let run;
+    try{run=await this.request('/api/runs',{playerId});}catch(error){if([400,409,429].includes(error.status))throw error;run={online:false};}
+    this.playerId=playerId;this.persist();return run;
+  }
+  board(){return this.request('/api/leaderboard');}
+  async submit(run,ticks,actions){
+    const entry={runId:run.runId,body:{ticks,actions}};
+    this.pending=this.pending.filter(p=>p.runId!==entry.runId).concat(entry).slice(-3);const saved=this.persist();
+    try{const result=await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();return result;}
+    catch(error){if(error.status&&![429,503].includes(error.status)){this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();}error.saved=saved;throw error;}
+  }
+  async retry(){for(const entry of [...this.pending]){try{await this.request(`/api/runs/${entry.runId}/finish`,entry.body);this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();}catch(error){if(error.status&&![429,503].includes(error.status)){this.pending=this.pending.filter(p=>p.runId!==entry.runId);this.persist();}else throw error;}}}
+}
+
+const $=id=>document.getElementById(id), renderer=new Renderer($('game'));
+let game=null,preview=new Game({seed:414}),lastFrame=performance.now(),accumulator=0,toastTimer,ended=false,audio;
+const social=new SocialClient();let playerId=social.playerId,onlineRun=null,activeTicks=0,actionLog=[],entryBusy=false;
+const physique=c=>c.id==='momo'?'杂食型':c.id==='taro'?'快消化型':c.id==='yuzu'?'慢消化型':'清爽型';
+preview.start();preview.character={...preview.character,allergy:'none'};
+let high=0,sound=false;
+try{const n=Number(localStorage.getItem('sushi-panic.best.v1'));if(Number.isSafeInteger(n)&&n>=0)high=n;sound=localStorage.getItem('sushi-panic.sound')==='on';}catch{}
+const scoreText=n=>String(Math.floor(n)).padStart(5,'0'),timeText=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+function newSeed(){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0];}
+function tone(kind='eat'){
+  if(!sound)return;
+  try{audio??=new(window.AudioContext||window.webkitAudioContext)();audio.resume().catch(()=>{});const o=audio.createOscillator(),gain=audio.createGain();o.type='sine';o.frequency.setValueAtTime(kind==='allergy'?180:kind==='perfect'?680:450,audio.currentTime);o.frequency.exponentialRampToValueAtTime(kind==='allergy'?80:950,audio.currentTime+.09);gain.gain.setValueAtTime(.065,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.15);o.connect(gain);gain.connect(audio.destination);o.start();o.stop(audio.currentTime+.16);}catch{}
+}
+function soundUI(){$('sound').textContent=`声音：${sound?'开':'关'}`;$('sound').setAttribute('aria-pressed',String(sound));}
+function menu(){
+  $('menu').innerHTML=Object.entries(FOODS).map(([key,f])=>`<div class="menu-item ${game&&f.allergen===game.character.allergy?'allergic':''}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${f.name}<b>${f.fullness>0?'+':''}${Math.round(f.fullness*(f.fullness>0&&game?game.character.portion:1))}</b></span></div>`).join('');
+  for(const el of $('menu').children){const c=el.querySelector('canvas').getContext('2d');drawSushi(c,el.dataset.food,50,48,1.2);}
+}
+function characterUI(){
+  const c=game?.character;drawPortrait($('portrait'),c);
+  $('character-tag').textContent=c?'已入座':'等待入座';$('character-name').textContent=playerId||'输入你的ID';$('character-title').textContent=c?`${physique(c)} · ${onlineRun?'联网计分':'练习局'}`:'和朋友一起挑战大胃王';
+  $('character-ability').textContent=c?c.ability:'入座后抽取一张角色卡，看看今天要忌口什么。';
+  $('allergy-name').textContent=c?ALLERGEN_NAMES[c.allergy]:'开局揭晓';$('allergy-detail').textContent=c?'标「忌」的盘子会造成过敏伤害':'看清再吃，别太心急';menu();
+}
+function showOverlay(html){$('overlay').classList.remove('hidden');$('overlay-content').innerHTML=html;const button=$('overlay-content').querySelector('button');if(button)button.focus({preventScroll:true});}
+function home(){
+  game=null;onlineRun=null;ended=false;$('pause').disabled=true;characterUI();updateUI();
+  showOverlay(`<p class="eyebrow">欢迎光临 · 谁是下一位大胃王</p><h2>寿司<br><em>别吃撑！</em></h2><div class="english-title">SUSHI PANIC</div><p>输入你的ID，用积分和朋友一决高下。</p><form id="entry-form"><label class="player-id-label" for="player-id-input">你的玩家ID</label><input id="player-id-input" class="player-id-input" maxlength="16" autocomplete="nickname" placeholder="2–16字，例如：寿司小王" value="${escapeHtml(playerId)}" required><p id="entry-error" class="entry-error" role="status"></p><button class="primary-button" id="new-game" type="submit">入座，开吃！ <span aria-hidden="true">→</span></button></form><p class="tiny-note">此浏览器记住你的ID · 每人保留单局最高积分</p>`);
+  $('entry-form').onsubmit=e=>{e.preventDefault();beginRun($('player-id-input').value);};
+}
+async function beginRun(id){
+  if(entryBusy)return;entryBusy=true;const button=$('new-game')||$('retry');if(button){button.disabled=true;button.textContent='正在入座…';}
+  try{const run=await social.start(id);playerId=social.playerId;newGame(run.runId?{seed:run.seed,characterId:run.characterId,onlineRun:run}:{});}
+  catch(error){if($('entry-error'))$('entry-error').textContent=error.message;else toast(error.message,true);if(button){button.disabled=false;button.textContent=button.id==='retry'?'再来一局！':'入座，开吃！ →';}}
+  finally{entryBusy=false;}
+}
+function newGame(options={}){
+  if(!playerId&&new URLSearchParams(location.search).get('test')==='1')playerId='测试食客';
+  game=new Game({seed:options.seed??newSeed(),characterId:options.characterId});onlineRun=options.onlineRun||null;activeTicks=0;actionLog=[];ended=false;accumulator=0;renderer.effects=[];clearTimeout(toastTimer);$('toast').classList.remove('visible');characterUI();updateUI();
+  const c=game.character;
+  showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">本局体质：${physique(c)}</p><div class="card-traits"><span>生命 ${c.hp}</span><span>基础消化 ${c.drain}/秒</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">本局忌口：<strong>${ALLERGEN_NAMES[c.allergy]}</strong> · 误食扣 24 生命</div><button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">${onlineRun?'联网计分局 · 结束后按积分上榜':'练习局 · 当前未连接共享排行榜'}</p>`);
+  drawPortrait($('card-portrait'),c);$('start-game').onclick=startGame;
+}
+function startGame(){if(!game?.start())return;$('overlay').classList.add('hidden');$('pause').disabled=false;accumulator=0;lastFrame=performance.now();updateUI();renderer.draw(game,lastFrame/1000);tone();}
+function pauseGame(reason='寿司会等你。'){
+  if(!game?.pause())return;
+  accumulator=0;
+  showOverlay(`<p class="eyebrow">中场休息</p><h2>歇一口气。</h2><p>${reason}<br>饱腹、生命与计时都已暂停。</p><button class="primary-button" id="resume-game">继续开吃</button><button class="secondary-button" id="back-home">返回门口</button>`);
+  $('resume-game').onclick=resumeGame;$('back-home').onclick=home;updateUI();
+}
+function resumeGame(){if(!game?.resume())return;$('overlay').classList.add('hidden');accumulator=0;lastFrame=performance.now();updateUI();}
+function finish(){
+  if(ended||!game)return;ended=true;$('pause').disabled=true;
+  const record=game.score>high;if(record){high=game.score;try{localStorage.setItem('sushi-panic.best.v1',String(high));}catch{}}
+  $('best-score').textContent=scoreText(high);drawPortrait($('portrait'),game.character,'sad');
+  showOverlay(`<p class="eyebrow">${escapeHtml(playerId)} · ${record?'本机新纪录！':'本桌已结账'}</p><h2 style="font-size:29px">${game.deathReason}</h2><div class="result-score">${scoreText(game.score)}</div><div class="receipt-stats"><span><b>${timeText(game.time)}</b>生存时间</span><span><b>${game.sushiEaten}</b>寿司盘数</span><span><b>${game.bestCombo}</b>最高连击</span></div><p id="rank-result" class="rank-result" role="status">${onlineRun?'正在核对本局积分…':'练习局 · 不上传共享榜单'}</p><button class="primary-button" id="retry">再来一局！</button><button class="secondary-button" id="result-board">查看大胃王榜</button><button class="text-button" id="result-home">回到门口</button><p class="tiny-note">${physique(game.character)} · 种子 ${game.seed}</p>`);
+  $('retry').onclick=()=>beginRun(playerId);$('result-home').onclick=home;$('result-board').onclick=showLeaderboard;
+  if(onlineRun){const finished=game;social.submit(onlineRun,activeTicks,actionLog).then(data=>{if(game!==finished||!$('rank-result'))return;const me=data.board.me;$('rank-result').textContent=me?.rank===1?'你登顶了！现任大胃王就是你！':me?`已上榜 · 你的最高积分排名第 ${me.rank} 名`:'本局已记录';}).catch(error=>{if(game===finished&&$('rank-result'))$('rank-result').textContent=error.status?`未上榜：${error.message}`:error.saved?'网络未连接，成绩已保留，点榜单可重试':'暂未上传，请在本页重试';});}
+}
+function toast(message,bad=false){$('toast').textContent=message;$('toast').classList.toggle('bad',bad);$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),1500);}
+async function refreshLeaderboard(){
+  $('board-refresh').disabled=true;$('board-status').textContent='正在读取共享积分榜…';
+  try{
+    await social.retry();const board=await social.board();
+    $('board-champion').textContent=board.entries.length?`现任大胃王 · ${board.entries[0].playerId}`:'第一位大胃王，等你上榜';
+    $('board-status').textContent=board.entries.length?'按每人单局最高积分排名，第一名就是大胃王。':'还没有已验证成绩，完成你的第一局吧。';
+    $('board-list').innerHTML=board.entries.map(row=>`<li class="board-row ${row.rank===1?'champion-row':''}"><span class="board-position">${row.rank===1?'王':row.rank}</span><div class="board-player"><strong>${escapeHtml(row.playerId)}</strong><small>${row.sushi} 盘寿司 · ${timeText(row.seconds)}${row.rank===1?' · 大胃王':''}</small></div><b>${scoreText(row.score)}<small>积分</small></b></li>`).join('');
+    $('board-me').textContent=board.me?`${board.me.playerId} · 最高 ${scoreText(board.me.score)} 分 · 第 ${board.me.rank} 名`:'完成联网计分局后，你的成绩会出现在这里。';
+  }catch(error){$('board-champion').textContent='共享排行榜暂不可用';$('board-status').textContent=social.api?'暂时连不上共享榜单，请稍后重试。':'离线文件不连接共享榜单，请打开在线版。';$('board-list').replaceChildren();$('board-me').textContent='没有成功读取名次；游戏仍可进行练习。';}
+  finally{$('board-refresh').disabled=false;}
+}
+function showLeaderboard(){if(game?.phase==='playing')pauseGame('看完大胃王榜，再继续开吃。');if(!$('leaderboard-dialog').open)$('leaderboard-dialog').showModal();refreshLeaderboard();}
+function eatTarget(target){
+  if(!target||!game)return;
+  const e=game.eat(target.id);if(!e)return;
+  if(onlineRun)actionLog.push([activeTicks,target.id]);
+  renderer.bite(target,e);tone(e.type);toast(e.text,e.type==='allergy');
+  // Effects are handled once at input time; the engine keeps only a bounded event history.
+  updateUI();if(game.phase==='gameover')finish();
+}
+function updateUI(){
+  const g=game,c=g?.character,full=g?.fullness??55,hp=g?.hp??100;
+  document.body.classList.toggle('play-mode',!!g);
+  $('score').textContent=scoreText(g?.score??0);$('time').textContent=timeText(g?.time??0);$('level').innerHTML=`${difficultyAt(g?.time??0).level} <small>/ 6</small>`;
+  $('hp').textContent=String(Math.ceil(hp));$('hp-max').textContent=` / ${c?.hp??100}`;$('fullness').textContent=String(Math.round(full));$('health-fill').style.width=`${hp/(c?.hp??100)*100}%`;
+  $('health-bar').setAttribute('aria-valuemax',String(c?.hp??100));$('health-bar').setAttribute('aria-valuenow',String(Math.ceil(hp)));$('fullness-bar').setAttribute('aria-valuenow',String(Math.round(full)));
+  $('fullness-pointer').style.left=`${full/120*100}%`;
+  $('fullness-fill').style.width=`${full/120*100}%`;
+  const zone=fullnessZone(full),danger=zone!=='safe',lowHealth=hp>0&&hp<(c?.hp??100)*.4;
+  const panel=document.querySelector('.game-panel');panel.classList.toggle('danger',danger);panel.dataset.bellyState=danger?zone:full<25?'low':full>85?'high':'comfortable';panel.dataset.lowHealth=String(lowHealth);
+  $('zone-text').textContent=zone==='hungry'?'太饿了 · 快吃！':zone==='overfull'?'吃撑了 · 停一停':full>=25&&full<=85?'恰到好处':full<25?'偏饿 · 该吃了':'偏撑 · 慢一点';
+  $('health-status').textContent=hp===0?'已结账':danger&&g?.hazardTime>=2?'生命流失中':danger?`${Math.max(0,2-(g?.hazardTime??0)).toFixed(1)}秒后掉血`:hp<(c?.hp??100)*.4?'有点虚弱':'精神满满';
+  const nearlyHungry=full<25,nearlyFull=full>85;
+  const cue=$('scene-warning'),cueTitle=danger?(zone==='hungry'?'快饿坏了，吃一口！':'吃撑啦，先停嘴！'):lowHealth?'生命不多了，小心忌口！':nearlyHungry?'该吃一口了！':nearlyFull?'快吃撑啦，慢一点！':'';
+  cue.hidden=!(g?.phase==='playing'&&cueTitle);
+  cue.dataset.severity=danger||lowHealth?'danger':'caution';
+  if($('scene-warning-title').textContent!==cueTitle)$('scene-warning-title').textContent=cueTitle;
+  $('scene-warning-detail').textContent=danger?(g?.hazardTime>=2?'正在掉血！':`${Math.max(0,2-(g?.hazardTime??0)).toFixed(1)} 秒后开始掉血`):lowHealth?'避开红色「忌」，稳住胃口':nearlyHungry?'先挑一盘不过敏的寿司':nearlyFull?'先等消化，乌龙茶也能减饱腹':'';
+  $('combo').textContent=g?.combo>=2?`${g.combo} 连击 · 吃得刚刚好`:' ';
+  $('game-hint').innerHTML=`<span class="hint-dot"></span>${g?`本局忌口：${ALLERGEN_NAMES[g.character.allergy]} · 红色「忌」别乱吃`:'点击盘子开吃 · 看清红色过敏标记'}`;
+  $('pause').disabled=!g||!['playing','paused'].includes(g.phase);
+}
+function frame(now){
+  const realDt=Math.max(0,(now-lastFrame)/1000);lastFrame=now;
+  if(game?.phase==='playing'){
+    // Large foreground stalls pause instead of silently discarding survival time.
+    if(realDt>0.5)pauseGame('刚才画面停顿，已替你暂停。');
+    else{accumulator+=realDt;while(accumulator>=STEP&&game.phase==='playing'){game.step(STEP);activeTicks++;accumulator-=STEP;}updateUI();if(game.phase==='gameover')finish();}
+  }
+  if(!game){preview.time+=Math.min(realDt,.1);const speed=difficultyAt(0).speed;preview.beltTravel+=Math.min(realDt,.1)*speed;for(const f of preview.foods)f.p=(f.p+Math.min(realDt,.1)*speed)%1;}
+  renderer.draw(game??preview,now/1000,Math.min(realDt,.05));requestAnimationFrame(frame);
+}
+$('game').addEventListener('pointerdown',e=>{if(e.button!==0||!e.isPrimary||game?.phase!=='playing')return;e.preventDefault();const b=$('game').getBoundingClientRect();eatTarget(renderer.hit(e.clientX-b.left,e.clientY-b.top));});
+$('game').addEventListener('pointermove',e=>{const b=$('game').getBoundingClientRect();renderer.hover=renderer.hit(e.clientX-b.left,e.clientY-b.top)?.id??null;});
+$('game').addEventListener('pointerleave',()=>renderer.hover=null);
+$('pause').onclick=()=>game?.phase==='paused'?resumeGame():pauseGame();
+document.querySelector('.brand').onclick=e=>{e.preventDefault();home();};
+$('sound').onclick=()=>{sound=!sound;soundUI();try{localStorage.setItem('sushi-panic.sound',sound?'on':'off');}catch{}tone();};
+$('help').onclick=()=>{if(game?.phase==='playing')pauseGame('菜单还在，看完玩法再继续。');$('help-dialog').showModal();};
+$('leaderboard').onclick=showLeaderboard;$('board-refresh').onclick=refreshLeaderboard;$('close-board').onclick=()=>$('leaderboard-dialog').close();
+$('close-help').onclick=()=>$('help-dialog').close();
+$('help-dialog').addEventListener('click',e=>{if(e.target===$('help-dialog')){const r=$('help-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('help-dialog').close();}});
+document.addEventListener('keydown',e=>{
+  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('help-dialog').open||$('leaderboard-dialog').open||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName))return;
+  if(e.code==='KeyP'||e.code==='Escape'){if(game?.phase==='playing'){e.preventDefault();pauseGame();}else if(game?.phase==='paused'){e.preventDefault();resumeGame();}}
+  if(/^[1-8]$/.test(e.key)&&game?.phase==='playing'){e.preventDefault();eatTarget(renderer.targets.find(f=>f.number===Number(e.key)));}
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGame('切换页面时，已替你暂停。');});
+window.addEventListener('blur',()=>{if(game?.phase==='playing')pauseGame('离开窗口时，已替你暂停。');});
+new ResizeObserver(()=>renderer.resize()).observe($('stage'));
+if(new URLSearchParams(location.search).get('test')==='1'){
+  // Explicit test-only seam; normal builds expose no mutation hook.
+  window.__sushi={get game(){return game;},renderer,newGame,start:startGame,advance(seconds){for(let i=0;i<Math.ceil(seconds/STEP)&&game?.phase==='playing';i++){game.step(STEP);activeTicks++;}updateUI();if(game?.phase==='gameover')finish();},snapshot:()=>game?.snapshot(),version:VERSION};
+}
+$('best-score').textContent=scoreText(high);soundUI();home();requestAnimationFrame(frame);
+
+</script>
+</body>
+</html>

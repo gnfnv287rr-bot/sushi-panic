@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f9f5eb" />
+  <meta name="description" content="寿司别吃撑！点击回转寿司，维持饱腹，避开过敏。免费的本地超休闲生存游戏。" />
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+  <title>寿司别吃撑！ · SUSHI PANIC</title>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="寿司别吃撑 首页"><span class="brand-stamp" aria-hidden="true">寿</span><span>寿司别吃撑！<small>SUSHI PANIC</small></span></a>
+      <div class="top-actions"><span class="open-sign"><i></i> 本日营业中</span><button id="leaderboard" class="quiet-button">大胃王榜</button><button id="sound" class="quiet-button" aria-pressed="false">声音：关</button><button id="help" class="quiet-button">怎么玩</button></div>
+    </header>
+    <main>
+      <section class="intro" aria-label="游戏介绍"><div><p class="eyebrow">回转不停 · 快乐有度</p><h1>今天也要，<span>刚刚好。</span></h1><p class="subtitle">一口是幸福，多一口可能是事故。</p></div><div class="best-record"><span>本机最高纪录</span><strong id="best-score">00000</strong><small>BEST SCORE</small></div></section>
+      <div class="game-layout">
+        <section class="game-panel" aria-label="游戏区域">
+          <div class="scoreboard"><div><span class="stat-label">本局得分</span><strong id="score">00000</strong></div><div class="time-stat"><span class="stat-label">生存时间</span><strong id="time">00:00</strong></div><div class="level-stat"><span class="stat-label">回转速度</span><strong id="level">1 <small>/ 6</small></strong></div><button id="pause" class="pause-button" aria-label="暂停游戏" disabled>Ⅱ</button></div>
+          <div class="vitals"><div class="health-row"><span>生命 <b id="hp">100</b><small id="hp-max"> / 100</small></span><div class="health-track" role="progressbar" aria-label="生命值" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="health-bar"><i id="health-fill"></i></div><span id="health-status">精神满满</span></div><div class="fullness-heading"><span>饱腹值 <b id="fullness">55</b><small> / 120</small></span><strong id="zone-text">恰到好处</strong></div><div class="fullness-track" id="fullness-bar" role="progressbar" aria-label="饱腹值" aria-valuemin="0" aria-valuemax="120" aria-valuenow="55"><span class="healthy-band"></span><span id="fullness-fill" class="fullness-fill"></span><i id="fullness-pointer"></i><span class="danger-line hunger-line"></span><span class="danger-line full-line"></span></div><div class="gauge-labels"><span>饿过头 &lt;15</span><span>舒适区 25–85</span><span>吃太撑 &gt;100</span></div></div>
+          <div class="stage" id="stage">
+            <canvas id="game" role="img" aria-label="回转寿司传送带。点击盘子吃寿司，或按 1 到 8 吃对应编号的盘子。"></canvas>
+            <div id="toast" class="toast" role="status" aria-live="polite"></div>
+            <div class="combo" id="combo" aria-hidden="true"></div>
+            <div id="scene-warning" class="scene-warning" hidden><strong id="scene-warning-title" role="status" aria-live="polite"></strong><span id="scene-warning-detail" aria-hidden="true"></span></div>
+            <div id="overlay" class="overlay"><div id="overlay-content" class="overlay-card"></div></div>
+          </div>
+          <div class="table-footer"><p id="game-hint"><span class="hint-dot"></span> 点击盘子开吃 · 看清红色过敏标记</p><span class="keyboard-hint">键盘 <kbd>1</kbd>–<kbd>8</kbd> 抢盘 · <kbd>P</kbd> 暂停</span></div>
+        </section>
+        <aside class="sidebar" aria-label="本局角色与菜单">
+          <section class="character-panel"><p class="eyebrow">今日食客 <span id="character-tag">随机入座</span></p><div class="character-heading"><canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas><div><h2 id="character-name">谁来吃寿司？</h2><p id="character-title">每局都有不一样的胃口</p></div></div><p id="character-ability" class="ability">入座后抽取一张角色卡，看看今天要忌口什么。</p><div id="allergy-notice" class="allergy-notice"><span>过敏食物</span><strong id="allergy-name">开局揭晓</strong><small id="allergy-detail">看清再吃，别太心急</small></div></section>
+          <section class="menu-panel"><div class="section-heading"><h2>本日菜单</h2><span>饱腹变化</span></div><div id="menu" class="menu-grid"></div><p class="menu-note">红色「忌」= 本局过敏源<br>乌龙茶减饱腹，太饿时别喝哦。</p></section>
+          <div class="diner-note"><span class="seal">腹八分目</span><p>别贪心，也别空着肚子。<br><strong>活久一点，多吃几口。</strong></p></div>
+        </aside>
+      </div>
+    </main>
+    <footer class="page-footer"><span>SUSHI PANIC <b>寿司别吃撑！</b></span><span>v0.2.0 · 共享积分榜 · 无广告</span><span class="footer-motto">请带着你的求生欲入座。</span></footer>
+  </div>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">好好吃，慢慢活。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹会持续下降。维持 25–85，有舒适进食奖励。低于 15 或高于 100 持续 2 秒后会掉血。</span></li><li><b>红色「忌」，吃了会过敏。</b><span>每局角色不同，过敏源也不同。误食扣 24 生命，所有盘子都提前标记。</span></li><li><b>连击比乱吃更值钱。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">每 25 秒提升一级，180 秒后数值封顶。切换页面自动暂停，回来后手动继续。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
+  <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">朋友之间，比比谁更会吃</p><h2 id="board-title">大胃王排行榜</h2><p id="board-champion" class="board-champion">正在寻找大胃王…</p><p id="board-status" class="board-status" role="status">按单局最高积分排名</p><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div></div></dialog>
+  <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
