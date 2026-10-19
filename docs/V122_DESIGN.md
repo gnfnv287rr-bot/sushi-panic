@@ -19,3 +19,5 @@ NEW、已查看和温和提醒只保存当前浏览器、按玩家UUID分隔；�
 ## 字体核查
 
 [Ma Shan Zheng官方OFL](https://github.com/google/fonts/blob/main/ofl/mashanzheng/OFL.txt)允许按OFL分发/嵌入；保留版权和许可文件。源字体约5.6MB，仅截取标题字生成9.3KB WOFF2，同站托管、离线版内嵌；不依赖Google字体CDN。下载API截断后改用同一官方仓库raw地址完整文件，未转用来源不明字体。
+
+百分比保留一位小数，避免首口1/222被整数舍入成0%而没有进度条增长；已发现/确认数量仍按整数去重。

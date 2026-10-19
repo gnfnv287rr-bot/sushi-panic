@@ -2,7 +2,7 @@
 export function collectionProgress(catalog,theme,collection=[],pendingIds=[]){
  const all=Object.values(catalog).filter(f=>f.collectible),valid=new Set(all.map(f=>f.id));
  const confirmed=new Set(collection.map(c=>c.sushiId).filter(id=>valid.has(id))),pending=new Set([...pendingIds].filter(id=>valid.has(id)&&!confirmed.has(id))),tasted=new Set([...confirmed,...pending]);
- const ids=(theme.collectionFoods||theme.foods).filter(id=>valid.has(id));return{confirmed:confirmed.size,pending:pending.size,count:tasted.size,total:valid.size,percent:valid.size?Math.round(tasted.size/valid.size*100):0,themeCount:ids.filter(id=>tasted.has(id)).length,themeConfirmed:ids.filter(id=>confirmed.has(id)).length,themeTotal:ids.length};
+ const ids=(theme.collectionFoods||theme.foods).filter(id=>valid.has(id));return{confirmed:confirmed.size,pending:pending.size,count:tasted.size,total:valid.size,percent:valid.size?Math.round(tasted.size/valid.size*1000)/10:0,themeCount:ids.filter(id=>tasted.has(id)).length,themeConfirmed:ids.filter(id=>confirmed.has(id)).length,themeTotal:ids.length};
 }
 export function archiveStatus({profile,bound=false,busy=false,error='',pending=0,practice=false,local=false,offline=false,localUnsaved=false}){
  if(localUnsaved)return{state:'failed',label:'本机暂未保存',detail:'浏览器没能留住本机记录。请保持页面开启，结账后确认云端保存。'};

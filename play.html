@@ -4897,7 +4897,7 @@ function collectionProgress(catalog2, theme, collection = [], pendingIds = []) {
   const all = Object.values(catalog2).filter((f) => f.collectible), valid = new Set(all.map((f) => f.id));
   const confirmed = new Set(collection.map((c) => c.sushiId).filter((id) => valid.has(id))), pending = new Set([...pendingIds].filter((id) => valid.has(id) && !confirmed.has(id))), tasted = /* @__PURE__ */ new Set([...confirmed, ...pending]);
   const ids = (theme.collectionFoods || theme.foods).filter((id) => valid.has(id));
-  return { confirmed: confirmed.size, pending: pending.size, count: tasted.size, total: valid.size, percent: valid.size ? Math.round(tasted.size / valid.size * 100) : 0, themeCount: ids.filter((id) => tasted.has(id)).length, themeConfirmed: ids.filter((id) => confirmed.has(id)).length, themeTotal: ids.length };
+  return { confirmed: confirmed.size, pending: pending.size, count: tasted.size, total: valid.size, percent: valid.size ? Math.round(tasted.size / valid.size * 1e3) / 10 : 0, themeCount: ids.filter((id) => tasted.has(id)).length, themeConfirmed: ids.filter((id) => confirmed.has(id)).length, themeTotal: ids.length };
 }
 function archiveStatus({ profile, bound = false, busy = false, error = "", pending = 0, practice = false, local = false, offline = false, localUnsaved = false }) {
   if (localUnsaved) return { state: "failed", label: "\u672C\u673A\u6682\u672A\u4FDD\u5B58", detail: "\u6D4F\u89C8\u5668\u6CA1\u80FD\u7559\u4F4F\u672C\u673A\u8BB0\u5F55\u3002\u8BF7\u4FDD\u6301\u9875\u9762\u5F00\u542F\uFF0C\u7ED3\u8D26\u540E\u786E\u8BA4\u4E91\u7AEF\u4FDD\u5B58\u3002" };
