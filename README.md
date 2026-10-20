@@ -1,4 +1,4 @@
-# SUSHI PANIC《寿司别吃撑！》 · V1.2.4
+# SUSHI PANIC《寿司别吃撑！》 · V1.3
 
 [公开游戏 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/) · [源码仓库](https://github.com/gnfnv287rr-bot/sushi-panic)
 
@@ -68,10 +68,12 @@ npx --yes supabase@2.121.0 functions deploy sushi-api --project-ref <PROJECT_REF
 P0真实邮箱已由Owner在Safari绑定、Chrome恢复同ID并保留12盘/6种收藏。浏览器尺寸模拟不等于真机测试；中国不同网络、真实手机及长期负载仍需实测。服务端重放防任意改分，但不证明操作来自真人。旧Sites/D1与生产历史记录均保留。
 
 
-## V1.3 · 已验收视觉的正式功能整合（本地，尚未发布）
+## V1.3 · Cozy Sushi Bar（已正式上线）
 
-本地分支`codex/v1.3-cozy-integration`以Owner已验收的`design-preview/v1.3/`为唯一视觉基准，复用原素材/字体/组件；真实引擎、游客/邮箱身份、排行榜、图鉴、结账/重试/云端存档保持。线上仍为V1.2.4，本轮未部署、未修改生产数据。
+本地分支`codex/v1.3-cozy-integration`以Owner已验收的`design-preview/v1.3/`为唯一视觉基准，复用原素材/字体/组件；真实引擎、游客/邮箱身份、排行榜、图鉴、结账/重试/云端存档保持。2026-10-20已正式发布V1.3.0；未执行数据库迁移或改动原玩家存档。
 
 - [整合与本地启动](docs/v13/IMPLEMENTATION.md) · [52项浏览器＋87项规则测试、真实staging12项及限制](docs/v13/TEST_REPORT.md)
 - `node scripts/verify-cozy-integration.mjs`核验16个业务模块和126个旧控件不丢失；`node scripts/verify-build.mjs`核验正式/离线美术资源。
 - 不要把纯视觉Demo的模拟数据逻辑接入真实游戏。后续改动应保持已验收风格；发布须遵循Owner的发布边界。
+
+- [V1.3公开游戏](https://gnfnv287rr-bot.github.io/sushi-panic/?release=130-cozy) · [最终部署及双身份公开验收、网络限制](docs/v13/DEPLOYMENT.md)

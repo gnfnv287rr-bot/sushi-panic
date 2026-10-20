@@ -1,6 +1,6 @@
 // Real published page smoke: no routed assets, no authenticated owner browser, no fabricated scores.
 import {chromium} from '@playwright/test';import assert from 'node:assert/strict';import {writeFile,mkdir} from 'node:fs/promises';
-const root='https://gnfnv287rr-bot.github.io/sushi-panic/';const browser=await chromium.launch({channel:'chrome',headless:true});const report={url:root,startedAt:new Date().toISOString(),checks:[],clientVersion:'1.3.0',scope:'fresh independent headless Chrome contexts, real published assets and production anonymous Auth/Edge; no final scores submitted'};
+const root='https://gnfnv287rr-bot.github.io/sushi-panic/';const browser=await chromium.launch({channel:'chrome',headless:true,...(process.env.SUSHI_BROWSER_PROXY?{proxy:{server:process.env.SUSHI_BROWSER_PROXY}}:{})});const report={url:root,startedAt:new Date().toISOString(),checks:[],clientVersion:'1.3.0',explicitProxyUsed:!!process.env.SUSHI_BROWSER_PROXY,scope:'fresh independent headless Chrome contexts, real published assets and production anonymous Auth/Edge; no final scores submitted'};
 await mkdir('artifacts/v13',{recursive:true});
 const players=[];
 try{for(const [label,viewport,mobile] of [['desktop',{width:1440,height:1100},false],['mobile-emulation',{width:390,height:844},true]]){

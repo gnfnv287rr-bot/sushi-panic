@@ -1,6 +1,6 @@
-# V1.3 Cozy Sushi Bar · 正式功能整合（尚未发布）
+# V1.3 Cozy Sushi Bar · 正式功能整合（已正式发布）
 
-Owner已于本轮明确验收V1.3 Demo并锁定风格。唯一视觉基准：`design-preview/v1.3/`，提交`0e397ea`。禁止重新设计、用模拟功能替换业务或丢失玩家数据。本地开发分支`codex/v1.3-cozy-integration`；线上仍为V1.2.4。
+Owner已于本轮明确验收V1.3 Demo并锁定风格。唯一视觉基准：`design-preview/v1.3/`，提交`0e397ea`。禁止重新设计、用模拟功能替换业务或丢失玩家数据。本地开发分支`codex/v1.3-cozy-integration`；最初整合时线上为V1.2.4；2026-10-20已获Owner恢复部署授权并完成发布，见DEPLOYMENT.md。
 
 ## 整合边界
 
@@ -49,6 +49,6 @@ node scripts/verify-build.mjs
 
 构建同时保留离线play.html和不可变资源发布目录，嵌入离线字体/主厨；以后批准发布时，图片与JS/CSS一同使用同一发布哈希，不把V1.3美术留在可混版本的地址。
 
-## 后续发布边界
+## 发布授权记录
 
-当前只在本地分支提交，不push、不触发Pages，不执行生产SQL/Edge/SMTP操作。Owner明确要求正式发布之后，再执行现有Actions发布和公开URL核验；本地构建、测试环境联网通过均不等于正式上线。
+最初只完成本地整合；Owner于2026-10-20明确要求继续部署，现已推送发布分支并通过Actions与真实公开URL验收。未执行生产SQL/Edge/SMTP操作。以后仍需区分构建、部署和实际公开可玩。

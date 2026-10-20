@@ -1,12 +1,12 @@
 {
-  "status": "passed_local_and_staging_not_deployed",
+  "status": "passed_public_deployment",
   "visualBaseline": "0e397ea",
   "sourceBranch": "codex/v1.3-cozy-integration",
   "clientVersion": "1.3.0",
   "rulesVersion": "1.2.1",
   "build": {
     "version": "1.3.0",
-    "releaseId": "8cfd966031c2",
+    "releaseId": "c1d43a1f8a84",
     "rulesVersion": "1.2.1"
   },
   "unit": {
@@ -43,8 +43,7 @@
   },
   "protectedModules": 16,
   "preservedBusinessIds": 126,
-  "productionDataChanged": false,
-  "pagesDeployed": false,
+  "pagesDeployed": true,
   "emailRealDeliveryRetested": false,
   "realMobileDevicesTested": false,
   "finalTargeted": {
@@ -57,5 +56,57 @@
     "existingCommitsScanned": 26,
     "credentialPatternMatches": 0,
     "rlsTables": 9
+  },
+  "existingProductionPlayerDataReset": false,
+  "productionSchemaChanged": false,
+  "productionAuthSettingsChanged": false,
+  "productionCodeCommit": "3ebdded8a897509a6c046c080b987591642dceac",
+  "productionWorkflow": "https://github.com/gnfnv287rr-bot/sushi-panic/actions/runs/39381805026",
+  "publicAcceptance": {
+    "url": "https://gnfnv287rr-bot.github.io/sushi-panic/",
+    "startedAt": "2026-10-20T06:46:51.385Z",
+    "checks": [
+      {
+        "label": "desktop",
+        "status": "passed",
+        "httpStatus": 200,
+        "anonymousOnlineRunStarted": true,
+        "gameplayPauseAndBoard": true,
+        "collectionAndCombinedFilters": true,
+        "dynamicProgressAndDiscovery": true,
+        "menuNavigationAndMedal": true,
+        "emailSettingsMatchPublicConfig": true,
+        "noJavaScriptErrors": true
+      },
+      {
+        "label": "mobile-emulation",
+        "status": "passed",
+        "httpStatus": 200,
+        "anonymousOnlineRunStarted": true,
+        "gameplayPauseAndBoard": true,
+        "collectionAndCombinedFilters": true,
+        "dynamicProgressAndDiscovery": true,
+        "menuNavigationAndMedal": true,
+        "emailSettingsMatchPublicConfig": true,
+        "noJavaScriptErrors": true
+      }
+    ],
+    "clientVersion": "1.3.0",
+    "explicitProxyUsed": true,
+    "scope": "fresh independent headless Chrome contexts, real published assets and production anonymous Auth/Edge; no final scores submitted",
+    "build": {
+      "version": "1.3.0",
+      "releaseId": "c1d43a1f8a84",
+      "rulesVersion": "1.2.1"
+    },
+    "boardDay": "2026-10-20",
+    "distinctAnonymousPlayers": true,
+    "productionBoardConsistentAcrossTwoIdentities": true,
+    "status": "passed",
+    "finishedAt": "2026-10-20T06:47:19.283Z"
+  },
+  "releaseAccessibilityRegression": {
+    "passed": 11,
+    "failed": 0
   }
 }
