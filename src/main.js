@@ -34,6 +34,8 @@ const shop=shopExperience({social,getGame:()=>game,getRun:()=>onlineRun,getTheme
 const taste=new TasteStore({request:(...args)=>social.request(...args),onChange:()=>tasteView.paint()});
 const tasteView=tasteUI({store:taste,drawSushi,onChange:()=>{renderer.getTaste=()=>taste.value;characterUI();}});
 const tasteFeedback=new TasteFeedback();let tasteBubble='',tasteUntil=0,tasteTimer;
+function holdTasteFeedback(){clearTimeout(tasteTimer);if(!tasteBubble)return;if(!$('discovery-card').hidden){tasteUntil=Infinity;return;}tasteUntil=performance.now()+3000;tasteTimer=setTimeout(()=>{tasteBubble='';$('chef').dataset.taste='neutral';updateUI();},3000);}
+new MutationObserver(holdTasteFeedback).observe($('discovery-card'),{attributes:true,attributeFilter:['hidden']});
 function openTaste(){if(loopRun()&&['playing','paused'].includes(game.phase))enterRest();tasteView.open();}
 function tasteOwner(){const id=social.profile?.id;if(!id&&taste.owner&&taste.owner!=='practice'){taste.select('practice');return;}if(id&&taste.owner!==id){tasteBubble='';tasteFeedback.streak=0;taste.select(id);}}
 const abilityText=c=>game?.tasteMode&&c.id==='yuzu'?'慢食观察家：温和消化，饱腹增量 ×1.15':c.ability;
@@ -73,6 +75,7 @@ function characterUI(){
 }
 function showOverlay(html){$('overlay').classList.remove('hidden');$('overlay-content').classList.remove('record-celebration');$('overlay-content').innerHTML=html;const button=$('overlay-content').querySelector('button');if(button)button.focus({preventScroll:true});}
 function home(){
+  tasteBubble='';tasteUntil=0;clearTimeout(tasteTimer);$('chef').dataset.taste='neutral';
   saveProgress();lease.release();game=null;onlineRun=null;practiceRun=null;ended=false;$('pause').disabled=true;characterUI();updateUI();shop.paint();
   showOverlay(`<p class="eyebrow">随时入座 · 慢慢收藏</p><h2>寿司<br><em>转转！</em></h2><div class="english-title">SUSHI LOOP</div><p>${social.profile?'欢迎回来，'+escapeHtml(playerId)+'。今天想尝哪一盘？':'取个昵称，来吃几盘喜欢的寿司。'}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">你的昵称</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2–12个中文、英文或数字" value="${escapeHtml(playerId)}" required><label class="rank-choice"><input type="checkbox" id="ranked-choice" ${rankedChoice?'checked':''}> 参加今日积分榜（可选）</label><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">入座，开吃！ <span aria-hidden="true">→</span></button></form><p class="identity-note">${social.api?'自动记住此浏览器的匿名身份 · 允许重名':'在线身份服务待接通 · 当前可练习'}<br>绑定邮箱后可跨设备取回收藏；未绑定时，请保留浏览器数据。</p>${identityWarning?'<button id="reset-identity" class="text-button">使用新的匿名身份</button>':''}`);
   const saved=social.journal.list('active').filter(e=>e.owner===(social.profile?.id||'practice')).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0))[0];if(autoRestoreOnLoad&&saved?.run&&isCasualVersion(saved.run.rulesVersion)&&restoreAttempt!==saved.runId){autoRestoreOnLoad=false;restoreAttempt=saved.runId;queueMicrotask(()=>restoreProgress(saved));}if(saved){const button=document.createElement('button');button.id='restore-run';button.className='secondary-button';button.textContent='继续上次未结账的对局';button.onclick=()=>restoreProgress(saved);$('overlay-content').append(button);}
@@ -86,6 +89,7 @@ async function beginRun(id){
   finally{entryBusy=false;}
 }
 function newGame(options={}){
+  tasteBubble='';tasteUntil=0;clearTimeout(tasteTimer);$('chef').dataset.taste='neutral';
   autoRestoreOnLoad=false;
   saveProgress();
   if(!playerId&&new URLSearchParams(location.search).get('test')==='1')playerId='测试食客';
@@ -170,7 +174,7 @@ function eatTarget(target){
   if(onlineRun||practiceRun)actionLog.push([activeTicks,target.id]);
   renderer.bite(target,e);sounds.eat(FOODS[e.item.key]);toast(e.newDiscovery?'新发现！'+FOODS[e.item.key].name:e.text,e.type==='allergy');if(isCasual(game)){shop.discover(e);paintCollection();scheduleCollectionSync();}shop.paint();
   // Effects are handled once at input time; the engine keeps only a bounded event history.
-  const friend=loopRun()&&game.theme.id==='friends-special'&&game.friendProfile?.foodId===e.item.key?friendForFood(e.item.key):null;if(friend)sounds.confirm();if(game.tasteMode){const kind=tasteOf(e.item.key,taste.value),line=tasteFeedback.bite(kind);tasteBubble=[line,friend?.easterEgg].filter(Boolean).join(' · ');tasteUntil=performance.now()+3000;$('chef').dataset.taste=kind;clearTimeout(tasteTimer);tasteTimer=setTimeout(()=>{tasteBubble='';$('chef').dataset.taste='neutral';updateUI();},3000);}else if(friend)toast(friend.easterEgg);
+  const friend=loopRun()&&game.theme.id==='friends-special'&&game.friendProfile?.foodId===e.item.key?friendForFood(e.item.key):null;if(friend)sounds.confirm();if(game.tasteMode){const kind=tasteOf(e.item.key,taste.value),line=tasteFeedback.bite(kind);tasteBubble=[line,friend?.easterEgg].filter(Boolean).join(' · ');$('chef').dataset.taste=kind;holdTasteFeedback();}else if(friend)toast(friend.easterEgg);
   updateUI();saveProgress();if(game.phase==='gameover')finish();
 }
 function updateUI(){

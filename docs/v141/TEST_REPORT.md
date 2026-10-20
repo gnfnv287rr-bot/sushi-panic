@@ -66,3 +66,7 @@
 - 汇总证据：`evidence/public-acceptance.json`、`staging-cloud.json`、`production-preservation.json`、`browser-summary.json`。原始包含玩家数据的备份不入Git。
 
 公开体验：https://gnfnv287rr-bot.github.io/sushi-panic/?release=141-tastes
+
+### 首遇反馈可见性补丁
+
+公开截图人工复核发现旧收藏卡会遮住猫咪的前2.1秒。补丁仅在收藏卡收起后保留完整3秒口味表情/气泡；气泡宽度约束在猫咪所在的空白岛内，不盖传送带。补充320/390/1440三尺寸实际可见性与宽度断言；**口味专项10/10通过**，截图见previews/taste-feedback-*.png。没有改变收藏卡布局/收藏写入或游戏规则。最终重新发布与公开复测记录见下文。

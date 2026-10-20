@@ -1,0 +1,463 @@
+{
+  "config": {
+    "argv": [
+      "/usr/local/bin/node",
+      "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/node_modules/.bin/playwright",
+      "test",
+      "tests/browser/tastes.spec.js"
+    ],
+    "configFile": "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/playwright.config.js",
+    "rootDir": "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/tests/browser",
+        "snapshotDir": "/Users/uxy/Documents/ChatGPT/IEITS 7 冲冲冲/sushi-panic/tests/browser",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:5174",
+          "headless": true,
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "browserName": "chromium",
+          "channel": "chrome"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "artifacts/browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "node scripts/serve.mjs --port 5174",
+      "url": "http://127.0.0.1:5174",
+      "reuseExistingServer": true,
+      "env": {
+        "SUSHI_DB_FILE": ":memory:",
+        "SUSHI_TEST_PEERS": "1"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "tastes.spec.js",
+      "file": "tastes.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "first optional setup, max three favorites, direct conflict, tag priority, saved UUID and page reopen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3553,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:23.421Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-7c671d7a82e0352a114c",
+          "file": "tastes.spec.js",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "favorites/dislikes/neutral always eat; successive complaints, friend line survives and live changes do not reset game",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 903,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:27.341Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-172b104778fad00552f2",
+          "file": "tastes.spec.js",
+          "line": 7,
+          "column": 1
+        },
+        {
+          "title": "skip is saved, optional old-player nudge once; no mandatory setup and empty settings playable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2910,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:28.252Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-0e2ebb14ffaac1aaf541",
+          "file": "tastes.spec.js",
+          "line": 9,
+          "column": 1
+        },
+        {
+          "title": "offline edits stay local, refresh restores pending and reconnect truthfully saves; independent user cannot see these tastes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3782,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:31.168Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-f9fd2f99f948ad426a06",
+          "file": "tastes.spec.js",
+          "line": 10,
+          "column": 1
+        },
+        {
+          "title": "touch/mouse settings scroll, all actual recipes searchable, cat/scene preserved 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 683,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:34.957Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-05581df0cf6d2c78b1e7",
+          "file": "tastes.spec.js",
+          "line": 11,
+          "column": 50
+        },
+        {
+          "title": "touch/mouse settings scroll, all actual recipes searchable, cat/scene preserved 1440",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 632,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:35.646Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-237292407d05191e25bc",
+          "file": "tastes.spec.js",
+          "line": 11,
+          "column": 50
+        },
+        {
+          "title": "existing profile receives optional nudge once, skip persists without changing identity or collection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 449,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:36.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-d01b46c8bf3435a7594c",
+          "file": "tastes.spec.js",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "first discovery finishes before full visible taste feedback 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3819,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:36.739Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-94a3833f703dfc94c866",
+          "file": "tastes.spec.js",
+          "line": 14,
+          "column": 60
+        },
+        {
+          "title": "first discovery finishes before full visible taste feedback 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3886,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:40.565Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-7264da4d69740fd57a66",
+          "file": "tastes.spec.js",
+          "line": 14,
+          "column": 60
+        },
+        {
+          "title": "first discovery finishes before full visible taste feedback 1440",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3876,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-20T10:00:44.458Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9180a21c3d3205a4a4b2-597bd26fa926b9267d00",
+          "file": "tastes.spec.js",
+          "line": 14,
+          "column": 60
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-20T10:00:21.281Z",
+    "duration": 27206.105,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
