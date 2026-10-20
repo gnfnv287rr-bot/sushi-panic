@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 test.use({extraHTTPHeaders:{'x-sushi-test-peer':'cozy-integration'}});
 test('approved live menu cards cover all themes and keep active sessions locked',async({page})=>{
  await page.goto('/?test=1&casual=1');await page.locator('#today-menu').click();
- await expect(page.locator('#cozy-theme-options .theme-card')).toHaveCount(3);
+ await expect(page.locator('#cozy-theme-options .theme-card')).toHaveCount(4);
  await page.locator('#cozy-theme-options [data-theme="autumn"]').click();
  await expect(page.locator('#menu-picker')).toHaveValue('autumn');await expect(page.locator('#cozy-theme-name')).toHaveText('往期 · 秋日小食堂');
  const close=await page.locator('#cozy-menu-dismiss').boundingBox();expect(close.width).toBeGreaterThanOrEqual(44);expect(close.height).toBeGreaterThanOrEqual(44);await page.locator('#cozy-menu-dismiss').click();await page.locator('#player-id-input').fill('暖店菜单食客');await page.locator('#new-game').click();await page.locator('#start-game').click();

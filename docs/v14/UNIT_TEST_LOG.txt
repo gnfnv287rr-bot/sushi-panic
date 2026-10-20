@@ -1,0 +1,131 @@
+
+> sushi-panic@1.4.0 test
+> node --test tests/core.test.mjs tests/api.test.mjs tests/audio.test.mjs && npm run test:v1
+
+(node:66811) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ID validation normalizes full-width input and rejects markup/empty/long IDs (1.266833ms)
+✔ registration binds unique case-insensitive ID to device key; owner may rename (19.587084ms)
+✔ server derives score from replay, duplicate finish is idempotent and ranking is shared (7.773459ms)
+✔ only best score is kept; changing champion removes old champion title (5.979459ms)
+✔ cannot submit another player run, fast-forward wall time or impossible food clicks (1.797917ms)
+✔ CORS preflight permits game mirror and rejects arbitrary origins; unavailable DB is honest (0.724625ms)
+✔ runs are rate limited without arbitrary client score acceptance (1.824333ms)
+✔ SQLite data survives connection close/reopen using immutable generated migrations (4.215959ms)
+✔ replay rejects excess duration, malformed action sequence and frames after death (0.352458ms)
+✔ fresh mute and restored preferences never create an audio context before gesture (0.712875ms)
+✔ malformed preferences, storage errors and unsupported browser do not break gameplay (1.204583ms)
+✔ independent categories cover actual catalog, tea precedes normal (0.466916ms)
+✔ voice cap, event debounce, mute stops existing voices and cancels delayed stamps (261.487584ms)
+✔ disabling effects also silences paper/discovery; preferences persist (261.522542ms)
+✔ in-flight resources cannot play after mute/background; load errors remain recoverable (0.306458ms)
+✔ every generated effect is short, finite, amplitude limited and smoothly starts/ends (16.65375ms)
+✔ sushi count includes positive food but excludes tea (0.898ms)
+✔ fullness decays in seconds; survival scoring uses comfortable zone (0.216583ms)
+✔ safe food changes fullness exactly once; stale IDs and duplicate bites cannot score (0.095917ms)
+✔ rapid multi-input cannot bypass bite cooldown (0.088958ms)
+✔ hunger grace lasts 2 continuous seconds before damage (0.964666ms)
+✔ overfull grace and 10 HP/sec damage (0.200917ms)
+✔ safe recovery resets grace; switching hazard zones resets grace too (0.250291ms)
+✔ zone boundaries are explicit and fullness is clamped (0.082209ms)
+✔ allergic food damages, breaks combo, and never grants food/bonus points (0.081792ms)
+✔ allergy can end game immediately; dead players cannot eat or advance (0.605125ms)
+✔ Yuzu shield works once and portion multiplier affects only positive fullness (0.324083ms)
+✔ characters differ in drain, portion, HP, allergens and passive abilities (0.328042ms)
+✔ score normalization offsets different food throughput without changing survival score (0.665708ms)
+✔ correct eating builds combo; overfilling resets it; tea does not farm combos (0.169042ms)
+✔ state machine prevents premature eating, repeated start, pause advances and illegal resume (0.490625ms)
+✔ frame partition has equivalent rules at 30, 60, 120 Hz (1.162708ms)
+✔ difficulty grows smoothly, levels cap and drain/speed/interval cap at 180 sec (0.059458ms)
+✔ same seed gives reproducible stream independent of character selection (0.105083ms)
+✔ food generator never has more than two consecutive non-universal dishes over 100k draws (7.602167ms)
+✔ character lottery has all four cards without biased missing class across 10k seeds (2.587709ms)
+✔ food reservoir stays bounded, spawning starts immediately and initial safe food exists (5.545292ms)
+✔ entry/exit seam stays clear and blocked spawns cannot burst when a slot frees (0.153167ms)
+✔ idle game ends from hunger; invalid delta cannot corrupt state (0.165375ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 586.842042
+
+> sushi-panic@1.4.0 test:v1
+> node --test --test-concurrency=1 tests/v1/*.test.mjs
+
+✔ F/L: ten idle minutes auto rest without death or passive score (2.224209ms)
+✔ G/H: discovery once per run, repeat counts as food; tea never farms score (0.44675ms)
+✔ J/K: config-driven menu deck stays in selected menu and archives remain playable (0.714417ms)
+✔ server replay rejects fake eating, missing checkout and ticks during rest (0.900125ms)
+✔ explicit resume after auto rest replays identically (0.570208ms)
+✔ cloud archive RPC and final checkout are idempotent, two players share board (1027.564708ms)
+✔ casual rollback preserves existing scores, counts and discoveries (670.351625ms)
+✔ optional non-ranking session saves score/archive once without entering daily board (744.752208ms)
+✔ 188 permanent +28 feature dishes, original eight requests, stable IDs/numbers and three grades (0.645ms)
+✔ 100k deterministic draws: bounded droughts, tea, universal safe dish and all entries reachable (1126.90675ms)
+✔ unseen-first deterministic bags improve variety; old 1.2.0 engine remains independently replayable (14.55125ms)
+✔ new version server replay and database archive accepts feature/old sessions without double counting (1255.599792ms)
+✔ new private buffet saves archive without ranking, invalid seed events rejected (750.776167ms)
+✔ per-run journal survives reload, preserves more than ten scores, separate tabs cannot overwrite other runs (0.461792ms)
+✔ every 5xx, timeout and authentication interruption remains retryable, validation failures do not (0.061125ms)
+✔ HTTP500 finish remains durable and a retry with another profile never sends or deletes it (12.845584ms)
+✔ a rejected score is retained for diagnostics, while public board still loads (0.450208ms)
+✔ unfinished run restores deterministic state and score from legal event log rather than local values (0.977959ms)
+✔ late pre-signup identity response cannot erase a newly created cloud profile (0.493916ms)
+✔ Edge adapter verifies bearer JWT with Supabase getUser, never a client player ID (14.815791ms)
+✔ Edge public board is allowed but forged/missing bearer cannot create or modify a profile (0.959334ms)
+✔ Edge CORS allows the Pages origin, handles anonymous preflight and rejects arbitrary origin (0.335083ms)
+✔ production refuses incomplete or public/legacy administrator key configuration (0.108583ms)
+✔ expired bearer cannot hide the public ranking but still cannot write (0.88375ms)
+✔ temporary Auth outage cannot block public rows or falsely confirm personal identity (0.536708ms)
+✔ nickname validation permits Chinese English numbers, duplicates; rejects empty markup profanity and length (0.659916ms)
+✔ anonymous identity persists, same nickname is allowed, rename retains history and ID (1224.375791ms)
+✔ server replays real run, ignores forged score and player ID, exactly-once counters on duplicate (713.882875ms)
+✔ multiple games keep daily and all-time maximum while valid totals count every run (585.081875ms)
+✔ two authenticated players can see each other, own row and own out-of-top100 rank returned (595.250042ms)
+✔ Beijing midnight separates dates; cross-midnight run uses first server end confirmation (569.685125ms)
+✔ date and countdown are based on PostgreSQL authority, client date fields ignored (592.518666ms)
+✔ tie ordering uses first achievement then stable UUID; lower score never changes achievement time (568.282833ms)
+✔ TOP100 truncation still returns personal rank 101 and highlights by unique identity (513.952958ms)
+✔ champion archival is idempotent, includes empty days and immutable nickname/score snapshot (524.453708ms)
+{"event":"api_failure","code":"dependency_unavailable"}
+✔ pending pre-midnight claim defers archive; retry preserves acknowledged date (507.32825ms)
+✔ expired processing claim is isolated before immutable historical champion finalization (498.257375ms)
+✔ invalid score log or accelerated wall time quarantines, never enters rank and records audit (492.733708ms)
+✔ incomplete games and impossible food events are isolated, not accepted as final scores (500.526209ms)
+✔ ownership, forged cookies, cross-origin and rate limits reject malicious requests (506.710292ms)
+✔ PostgreSQL RLS denies score writes and service RPC to anonymous/authenticated roles; own reads only (505.174916ms)
+✔ multiple concurrent finish requests count once; independent windows may run separate sessions (514.255583ms)
+✔ P0 cloud archive counts verified sushi once, permanent discovery survives date reset and rename (514.886041ms)
+✔ archive compatibility rollback retains every score and collection record (498.984375ms)
+✔ voluntary email binding updates current identity and keeps Pages callback URL (SDK contract) (0.556375ms)
+✔ email recovery requests existing identity only; it does not silently create or merge accounts (0.097417ms)
+✔ invalid address and provider errors do not claim email binding success (0.189333ms)
+✔ public email feature stays disabled until a working SMTP service is verified (0.067334ms)
+✔ OTP recovery and email binding use distinct verification types, binding keeps original UUID (0.189625ms)
+✔ collection progress unions confirmed/pending, rejects tea/unknown, theme counts dynamic (0.917333ms)
+✔ notebook persists unseen/read per owner, suppresses replay on refresh and respects reminder dismissal (0.168ms)
+✔ read/write failures and email recovery are independent truthful archive states (0.086458ms)
+✔ three rarity tones and legacy hidden discoveries have distinct presentation without score changes (0.092791ms)
+✔ storage denial keeps ephemeral discovery feedback usable (0.06ms)
+✔ checkpoint exposes actual in-flight/error/success, independent of binding status (8.884459ms)
+✔ all original 222 collection recipes/IDs and themes retained; seven independently numbered new dishes (0.535334ms)
+✔ seven names/aliases normalize; real UUID has priority, but does not act as authentication (0.574ms)
+✔ 100k ordinary/friend draws: all seven reachable, bounded own drought, no three identical food plates (18.025208ms)
+✔ other menus preserve exact seeded deck sequence and scores (40.21625ms)
+✔ twenty seconds -> rest; simulated two days cannot change food, HP, hunger, score or drought; seeded save resumes same run (2.386625ms)
+✔ new server locks friend profile, ignores forged UUID/friend fields; cross-user board and exactly-once collections (778.091375ms)
+✔ long idle session survives beyond seven days, ends on authoritative Beijing new day; old verified history unchanged (561.379084ms)
+✔ forged time/score is quarantined; old sessions and direct RLS writes stay protected (508.594333ms)
+✔ compatibility rollback retains every old/new archive row; forward reapplies idempotently (509.654583ms)
+✔ fallback lease cannot steal a resumed tab lease, and releases its timer (0.529875ms)
+ℹ tests 65
+ℹ suites 0
+ℹ pass 65
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18979.07375

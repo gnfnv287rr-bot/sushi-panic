@@ -1,6 +1,6 @@
 // No context, audio resources or sound are created until a user gesture.
 export const AUDIO_KEY='sushi-panic.audio.v1';
-export const AUDIO_DEFAULTS=Object.freeze({music:false,effects:false,muted:true,musicVolume:.25,effectsVolume:.36});
+export const AUDIO_DEFAULTS=Object.freeze({music:true,effects:false,muted:false,musicVolume:.25,effectsVolume:.36});
 export function audioPreferences(value){
  const out={...AUDIO_DEFAULTS};
  for(const k of ['music','effects','muted'])if(typeof value?.[k]==='boolean')out[k]=value[k];

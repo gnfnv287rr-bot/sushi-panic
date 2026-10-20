@@ -26,9 +26,9 @@ max_client_conn = 200
 enabled = false
 
 [auth.email.template.magic_link]
-subject = "SUSHI PANIC 云端存档登录验证码"
+subject = "SUSHI LOOP 云端存档登录验证码"
 content_path = "./supabase/templates/magic-link.html"
 
 [auth.email.template.email_change]
-subject = "SUSHI PANIC 游客邮箱绑定验证码"
+subject = "SUSHI LOOP 游客邮箱绑定验证码"
 content_path = "./supabase/templates/email-change.html"

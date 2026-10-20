@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "scope": "existing rows preserved; original catalog/themes/champion snapshots exact; score/archive counters never decreased",
+  "before": {
+    "catalog": 222,
+    "champions": 0,
+    "collection": 56,
+    "players": 31,
+    "scores": 26,
+    "sessions": 46,
+    "themes": 3
+  },
+  "after": {
+    "catalog": 229,
+    "champions": 1,
+    "collection": 59,
+    "players": 33,
+    "scores": 28,
+    "sessions": 49,
+    "themes": 4
+  },
+  "checkedAt": "2026-10-20T07:40:30.790Z"
+}

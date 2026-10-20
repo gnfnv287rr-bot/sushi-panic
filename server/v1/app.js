@@ -1,3 +1,5 @@
+import {MENU_EDITION as LOOP_EDITION,themeById as loopTheme,menuPayload as loopPayload} from '../../src/menus-v14.js';
+import {friendSnapshot} from '../../src/friends-special.js';
 async function digest(value){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');}
 async function ipDigest(secret,value){const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);return Array.from(new Uint8Array(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');}
 import {Game} from '../../src/core.js';
@@ -22,7 +24,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
    if(origin&&origin!==url.origin&&!allowedOrigins.includes(origin))throw new HttpError(403,'请从游戏页面发起请求','origin');
    if(!allowedOrigins.length&&request.headers.get('sec-fetch-site')==='cross-site')throw new HttpError(403,'请求来源无效','origin');
    if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
-   if(path==='/api/health')return json({app:'SUSHI PANIC',version:'1.2.1',mode,clock:await rpc('sushi_clock')});
+   if(path==='/api/health')return json({app:'SUSHI LOOP',version:'1.4.0',mode,clock:await rpc('sushi_clock')});
    if(path==='/api/finalize'){
     if(!cronSecret||request.headers.get('authorization')!==`Bearer ${cronSecret}`)throw new HttpError(401,'此操作需要服务端授权');
     return json({finalized:await rpc('sushi_finalize')});
@@ -30,7 +32,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
    const scope=path==='/api/identity'?'identity':path.endsWith('/finish')?'finish':path==='/api/runs'?'start':'read';
    const ipHash=await ipDigest(ipSecret,ip);
    if(!await rpc('sushi_limit',{p_key:`ip:${scope}:${ipHash}`,p_limit:scope==='identity'?120:scope==='read'?180:60,p_seconds:60}))throw new HttpError(429,'操作有点频繁，请稍后再试','rate_limit');
-   if(path==='/api/menus'&&request.method==='GET'){const clock=await rpc('sushi_clock');return json({...menuPayload(clock.serverTime),...clock});}
+   if(path==='/api/menus'&&request.method==='GET'){const clock=await rpc('sushi_clock');return json({...loopPayload(clock.serverTime),...clock});}
    if(path==='/api/identity/reset'&&request.method==='POST'){
     for(const name of ['sushi_access','sushi_refresh','sushi_dev'])headers.append('Set-Cookie',name+'=; Max-Age=0; HttpOnly; SameSite=Lax; Path=/api'+(mode==='production'?'; Secure':''));
     return json({reset:true});
@@ -61,13 +63,14 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
    if(path==='/api/runs'&&request.method==='POST'){
     if(!await rpc('sushi_profile',{p_player:user}))throw new HttpError(409,'请先填写昵称');
     if(body?.rulesVersion&&!isCasualVersion(body.rulesVersion))throw new HttpError(400,'此规则版本暂不支持');
+    if(body?.rulesVersion==='1.4.0'){let theme;try{theme=loopTheme(body.themeId||'friends-special');}catch{throw new HttpError(400,'未找到此主题菜单');}const profile=await rpc('sushi_profile',{p_player:user}),friend=theme.id==='friends-special'?friendSnapshot(profile):null;const run=await rpc('sushi_start_loop',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:LOOP_EDITION,p_ranked:body.ranked!==false,p_friend:friend});return json({...run,characterId:createCasual(run).character.id,mode},201);}
     if(body?.rulesVersion==='1.2.1'){let theme;try{theme=themeById(body.themeId||'first-taste');}catch{throw new HttpError(400,'未找到此主题菜单');}const run=await rpc('sushi_start_catalog',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:MENU_EDITION,p_ranked:body.ranked!==false});return json({...run,characterId:createCasual({...run,seed:run.seed}).character.id,mode},201);}
     if(body?.rulesVersion==='1.2.0'){let theme;try{theme=oldTheme(body.themeId||'classic');}catch{throw new HttpError(400,'未找到此主题菜单');}const run=await rpc(body.ranked===false?'sushi_start_private':'sushi_start_casual',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:OLD_EDITION});return json({...run,ranked:body.ranked!==false,characterId:new CasualGame({seed:run.seed,themeId:run.themeId}).character.id,mode},201);}
     const run=await rpc('sushi_start',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0]});
     return json({...run,characterId:new Game({seed:run.seed}).character.id,mode},201);
    }
    const checkpoint=path.match(/^\/api\/runs\/([a-f0-9-]{36})\/checkpoint$/);
-   if(checkpoint&&request.method==='POST'){const s=await rpc('sushi_session',{p_player:user,p_id:checkpoint[1]});if(!s||!isCasualVersion(s.rules_version)||s.status!=='playing')throw new HttpError(409,'本局暂不能同步收藏');let result;try{if(body.ticks/60>(Date.parse((await rpc('sushi_clock')).serverTime)-Date.parse(s.started_at))/1000+2)throw new Error('wall_time');result=replayVersion(s.rules_version,s.seed,body.ticks,body.actions,{themeId:s.theme_id,menuEdition:s.menu_edition,knownFoods:s.known_foods,checkout:true});}catch{await audit('invalid_collection_checkpoint',checkpoint[1]);throw new HttpError(400,'收藏记录未通过核验');}await rpc('sushi_archive_casual',{p_player:user,p_id:checkpoint[1],p_ticks:result.ticks,p_food_counts:result.foodCounts});return json({saved:true,profile:await rpc('sushi_profile',{p_player:user})});}
+   if(checkpoint&&request.method==='POST'){const s=await rpc('sushi_session',{p_player:user,p_id:checkpoint[1]});if(!s||!isCasualVersion(s.rules_version)||s.status!=='playing')throw new HttpError(409,'本局暂不能同步收藏');let result;try{if(body.ticks/60>(Date.parse((await rpc('sushi_clock')).serverTime)-Date.parse(s.started_at))/1000+2)throw new Error('wall_time');result=replayVersion(s.rules_version,s.seed,body.ticks,body.actions,{themeId:s.theme_id,menuEdition:s.menu_edition,knownFoods:s.known_foods,friendProfile:s.friend_profile,checkout:true});}catch{await audit('invalid_collection_checkpoint',checkpoint[1]);throw new HttpError(400,'收藏记录未通过核验');}await rpc('sushi_archive_casual',{p_player:user,p_id:checkpoint[1],p_ticks:result.ticks,p_food_counts:result.foodCounts});return json({saved:true,profile:await rpc('sushi_profile',{p_player:user})});}
    const match=path.match(/^\/api\/runs\/([a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12})\/finish$/);
    if(match&&request.method==='POST'){
     const id=match[1];const session=await rpc('sushi_session',{p_player:user,p_id:id});
@@ -80,7 +83,7 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
     let result;
     try{
      if(!Number.isSafeInteger(body.ticks)||body.ticks/60>(Date.parse(claim.ended_at)-Date.parse(claim.started_at))/1000+2)throw new Error('wall_time');
-     result=isCasualVersion(claim.rules_version)?replayVersion(claim.rules_version,claim.seed,body.ticks,body.actions,{themeId:claim.theme_id,knownFoods:claim.known_foods,menuEdition:claim.menu_edition,checkout:body.checkout}):replayRun(claim.seed,body.ticks,body.actions);
+     result=isCasualVersion(claim.rules_version)?replayVersion(claim.rules_version,claim.seed,body.ticks,body.actions,{themeId:claim.theme_id,knownFoods:claim.known_foods,menuEdition:claim.menu_edition,friendProfile:claim.friend_profile,checkout:body.checkout}):replayRun(claim.seed,body.ticks,body.actions);
     }catch(error){
      await rpc('sushi_quarantine',{p_player:user,p_id:id,p_reason:error.message==='wall_time'?'wall_time':'invalid_replay'});
      return json({quarantined:true,error:'本局操作或计时未通过校验，暂不计入榜单',code:'quarantined'},202);

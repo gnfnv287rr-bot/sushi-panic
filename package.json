@@ -1,9 +1,9 @@
 {
   "name": "sushi-panic",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "private": true,
   "type": "module",
-  "description": "寿司别吃撑！ — zero-runtime-dependency survival arcade",
+  "description": "寿司转转！ — cozy sushi collection game",
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "start": "node scripts/serve.mjs",

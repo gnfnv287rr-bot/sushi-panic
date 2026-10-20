@@ -1,0 +1,19 @@
+{
+  "version": "1.4.0",
+  "ownerAuthorization": "V1.4 complete development instruction: safe rest, seven friends, preserved accounts and prior rules",
+  "approvedAdapterChanges": {
+    "src/casual-engine.js": "205d9c53dbcb93aa675a00c155f0c6affd3571ad4552d7ee0f3d562681890535",
+    "src/social.js": "aa3036649009bc9a227f5ad67d4ebb7c8719fb5f74758e51944c52ec23f50f30",
+    "src/shop-experience.js": "1fe54c911b397b124c287597ae87afbf1d7b7f8a6c61fcc9c3e377a6d060ff3e"
+  },
+  "originalFrozenEngines": [
+    "src/core.js",
+    "src/renderer.js",
+    "src/renderer-v12.js",
+    "src/casual-v12.js",
+    "src/casual-v121.js",
+    "src/menus-v1.js",
+    "src/menus-v2.js",
+    "src/menu-catalog-v2.js"
+  ]
+}

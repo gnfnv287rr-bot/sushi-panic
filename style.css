@@ -232,3 +232,16 @@ body.cozy-live #audio-dialog{max-width:480px}
 .audio-volume{display:flex;flex-wrap:wrap;justify-content:space-between;gap:9px;margin:16px 0 22px;font-size:14px}
 .audio-volume input{width:100%;min-height:32px;accent-color:#87bba2;cursor:pointer}
 .audio-inner #audio-mute{width:100%;min-height:48px;margin-top:6px}
+
+/* V1.4 additions use the accepted Cozy paper/ink palette. */
+body.cozy-live .friend-plate .dish-svg{visibility:hidden}
+body.cozy-live .friend-plate>canvas{top:0!important}
+body.cozy-live .idle-rest{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);padding:9px 18px;border:1px solid #b5cdb6;background:#fffbedee;border-radius:24px;font-size:13px;color:#426b59;pointer-events:none;z-index:9;box-shadow:0 2px 0 #80685610;max-width:90vw;text-align:center}
+body.cozy-live .idle-rest[hidden]{display:none}
+body.cozy-live .collection-card[data-friend]{cursor:pointer}
+body.cozy-live .collection-card[data-friend]:focus-visible{outline:3px solid #87bba2;outline-offset:3px}
+body.cozy-live .collection-card h3{overflow-wrap:anywhere;line-height:1.65}
+body.cozy-live #food-detail-dialog{max-width:480px}
+body.cozy-live #food-detail-title{font-size:24px;line-height:1.55}
+#food-detail-art{display:block;max-width:100%;height:auto;margin:10px auto}
+body.cozy-live #audio-title{font-size:26px;line-height:1.4}

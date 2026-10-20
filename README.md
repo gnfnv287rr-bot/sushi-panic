@@ -1,10 +1,12 @@
-# SUSHI PANIC《寿司别吃撑！》 · V1.3.1
+# SUSHI LOOP《寿司转转！》 · V1.4
 
 [公开游戏 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/) · [源码仓库](https://github.com/gnfnv287rr-bot/sushi-panic)
 
-Canvas + DOM网页游戏，GitHub Pages + Supabase Free。输入昵称即可建立游客身份；自愿绑定邮箱验证码后可换浏览器恢复。温和饱腹、20秒空闲自动休息、主动结账、自愿参榜、长期寿司图鉴、188常驻＋28本期特色＋往期秋日菜单、每日北京时间00:00换榜。旧角色与视觉保留，旧0.2.0对局仍按旧规则结算。
+Cozy回转寿司收藏小游戏，GitHub Pages + Supabase Free；保留原网址、账号与存档。20秒无操作安全休息，寿司仍慢慢转，点盘自动继续。222款旧图鉴加7款「UU和她的朋友们」，每款独立造型与专属盘子。好友昵称仅作趣味匹配，邮箱验证仍是跨设备恢复凭证。
 
-V1.3.1 音频：点击现有「音效」入口，自愿开启原创咖啡馆循环曲或游戏音效；首次默认静音，设置保存在本机。详细来源、交互与验证边界见 [音频说明](docs/v13/AUDIO.md)。
+BGM首次默认开启，浏览器限制时在首次有效交互启动；已保存的关闭/静音偏好保留。独立音乐/音效音量及一键静音。休息不加分、不消耗；后台不补帧、不结算挂机时长。
+
+[V1.4变更与配置](docs/v14/RELEASE.md) · [测试报告](docs/v14/TEST_REPORT.md) · [7款真实渲染预览](docs/v14/previews/friends-album-1440.png)。
 
 ## 开发
 
@@ -18,7 +20,7 @@ npm run test:security
 node scripts/verify-build.mjs
 ```
 
-本地服务用PGlite +签名Cookie联调，不冒充Supabase云端验收；`play.html`可双击离线练习。新规则`src/casual-v121.js`，菜单资料`src/menu-catalog-v2.js`、主题配置`src/menus-v2.js`；`casual-v12.js`/`menus-v1.js`冻结用于旧1.2.0局，界面`src/main.js`。不要修改仍用于旧局验证的`src/core.js`/`src/renderer.js`原件。未来菜单只扩充配置和迁移，禁止更改已有ID/配方导致已开局种子失效。
+本地服务用PGlite +签名Cookie联调，不冒充Supabase云端验收；`play.html`可双击离线练习。新规则`src/casual-v14.js`，菜单资料`src/menu-catalog-v2.js`、主题配置`src/menus-v14.js`，好友配置`src/friends-special.js`；`casual-v12.js`/`menus-v1.js`冻结用于旧1.2.0局，界面`src/main.js`。不要修改仍用于旧局验证的`src/core.js`/`src/renderer.js`原件。未来菜单只扩充配置和迁移，禁止更改已有ID/配方导致已开局种子失效。
 
 ## 云端与发布
 

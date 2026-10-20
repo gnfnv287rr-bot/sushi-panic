@@ -1,0 +1,15 @@
+{
+  "environment": "real isolated Supabase staging Auth/Edge/PostgreSQL",
+  "checks": [
+    "UU: real anonymous identity, server-locked friend, valid seeded replay, checkpoint and finish/retry exactly once",
+    "UU: direct RPC and arbitrary collection writes rejected",
+    "橘子: real anonymous identity, server-locked friend, valid seeded replay, checkpoint and finish/retry exactly once",
+    "橘子: direct RPC and arbitrary collection writes rejected",
+    "two independent players read identical global board and confirmed personal rank",
+    "previous 1.2.1 rules still settle and archive after new content migration",
+    "real Edge catalog has 229 permanent collectibles and seven friends, including older archives"
+  ],
+  "startedAt": "2026-10-20T07:37:00.355Z",
+  "status": "passed",
+  "finishedAt": "2026-10-20T07:37:15.681Z"
+}

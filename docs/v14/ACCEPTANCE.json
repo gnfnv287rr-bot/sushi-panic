@@ -1,0 +1,28 @@
+{
+  "version": "1.4.0",
+  "localUnit": {
+    "passed": 104,
+    "failed": 0,
+    "evidence": "UNIT_TEST_LOG.txt"
+  },
+  "chromeFullSuite": {
+    "passed": 66,
+    "failed": 0,
+    "evidence": "BROWSER_TEST_LOG.txt"
+  },
+  "lastFocusedSuite": {
+    "passed": 7,
+    "failed": 0,
+    "reason": "meal-record-limit message refinement; v14 gestures/identity/save/network/visuals retested"
+  },
+  "stagingCloud": "CLOUD-ACCEPTANCE.JSON",
+  "controlledStagingTime": "CLOUD-CALENDAR.JSON",
+  "productionExistingData": "PRODUCTION-PRESERVATION.JSON",
+  "productionPages": "pending",
+  "limits": [
+    "6h active replay/25000 events per table, idle wall time excluded",
+    "real authenticated friend UUIDs intentionally unassigned",
+    "physical sleep/lockscreen and physical iPhone/Android/Safari audio not tested",
+    "real OTP delivery not repeated; identity code unchanged"
+  ]
+}

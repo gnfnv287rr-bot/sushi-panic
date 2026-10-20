@@ -5,7 +5,7 @@ async function enable(page,music=false){await settings(page);await page.locator(
 async function start(page){await page.locator('#player-id-input').fill('声音验收食客');await page.locator('#new-game').click();await page.locator('#start-game').click();}
 const snap=page=>page.evaluate(()=>window.__sushi.audio.snapshot());
 test('real Web Audio loop, ducking, pages, pause and persistence; no autoplay after reload',async({page})=>{
- const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/?test=1&casual=1');expect((await snap(page)).contextState).toBe('absent');await start(page);expect((await snap(page)).contextState).toBe('absent');await enable(page,true);
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/?test=1&casual=1');expect((await snap(page)).contextState).toBe('absent');await start(page);await expect.poll(async()=>(await snap(page)).bgm).toBe(true);await enable(page,true);
  await expect.poll(async()=>(await snap(page)).bgm,{timeout:20000}).toBe(true);expect((await snap(page)).contextState).toBe('running');
  const metrics=await page.evaluate(()=>{const b=window.__sushi.audio.musicBuffer,d=b.getChannelData(0);let peak=0,sum=0;for(const v of d){peak=Math.max(peak,Math.abs(v));sum+=v*v;}return{duration:b.duration,channels:b.numberOfChannels,peak,rms:Math.sqrt(sum/d.length),seam:Math.abs(d[0]-d.at(-1))};});
  expect(metrics.duration).toBeGreaterThan(44);expect(metrics.duration).toBeLessThan(46);expect(metrics.channels).toBe(2);expect(metrics.peak).toBeLessThanOrEqual(.521);expect(metrics.rms).toBeGreaterThan(.025);expect(metrics.seam).toBeLessThan(.02);

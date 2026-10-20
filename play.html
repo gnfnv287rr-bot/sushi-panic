@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#FFF9EE" />
-  <meta name="description" content="寿司别吃撑！点击回转寿司，维持饱腹，避开过敏。轻松品尝、收集寿司图鉴，随时回来继续。" />
+  <meta name="description" content="寿司转转！点击回转寿司，维持饱腹，避开过敏。轻松品尝、收集寿司图鉴，随时回来继续。" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%23e76b54%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2228%22%20width%3D%2244%22%20height%3D%2224%22%20rx%3D%2210%22%20fill%3D%22%23fff8e9%22%2F%3E%3Cpath%20d%3D%22M8%2029Q10%2012%2031%2012T56%2029Z%22%20fill%3D%22%23ffb18a%22%2F%3E%3Cpath%20d%3D%22m20%2017%208%2012m4-14%208%2014%22%20stroke%3D%22%23fff4d8%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%2225%22%20cy%3D%2239%22%20r%3D%222%22%20fill%3D%22%23283b3c%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2239%22%20r%3D%222%22%20fill%3D%22%23283b3c%22%2F%3E%3Cpath%20d%3D%22M29%2044q4%204%208%200%22%20fill%3D%22none%22%20stroke%3D%22%23283b3c%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E%0A" type="image/svg+xml" />
   <style>@charset "UTF-8";
 :root{--paper:#f6fbff;--ink:#195584;--muted:#587386;--coral:#e5663f;--teal:#237b61;--line:#d5e8ef;--mint:#e0f5e7;--wood:#ffe8b5;--white:#ffffff;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--paper);font-synthesis:none}
@@ -240,8 +240,21 @@ body.cozy-live #audio-dialog{max-width:480px}
 .audio-volume{display:flex;flex-wrap:wrap;justify-content:space-between;gap:9px;margin:16px 0 22px;font-size:14px}
 .audio-volume input{width:100%;min-height:32px;accent-color:#87bba2;cursor:pointer}
 .audio-inner #audio-mute{width:100%;min-height:48px;margin-top:6px}
+
+/* V1.4 additions use the accepted Cozy paper/ink palette. */
+body.cozy-live .friend-plate .dish-svg{visibility:hidden}
+body.cozy-live .friend-plate>canvas{top:0!important}
+body.cozy-live .idle-rest{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);padding:9px 18px;border:1px solid #b5cdb6;background:#fffbedee;border-radius:24px;font-size:13px;color:#426b59;pointer-events:none;z-index:9;box-shadow:0 2px 0 #80685610;max-width:90vw;text-align:center}
+body.cozy-live .idle-rest[hidden]{display:none}
+body.cozy-live .collection-card[data-friend]{cursor:pointer}
+body.cozy-live .collection-card[data-friend]:focus-visible{outline:3px solid #87bba2;outline-offset:3px}
+body.cozy-live .collection-card h3{overflow-wrap:anywhere;line-height:1.65}
+body.cozy-live #food-detail-dialog{max-width:480px}
+body.cozy-live #food-detail-title{font-size:24px;line-height:1.55}
+#food-detail-art{display:block;max-width:100%;height:auto;margin:10px auto}
+body.cozy-live #audio-title{font-size:26px;line-height:1.4}
 </style>
-  <title>寿司别吃撑！ · SUSHI PANIC</title>
+  <title>寿司转转！ · SUSHI LOOP</title>
 </head>
 <body class="cozy-live">
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><defs>
@@ -265,7 +278,7 @@ body.cozy-live #audio-dialog{max-width:480px}
 </defs></svg>
 
 <div class="app cozy-app">
-<header class="topbar shop-header"><a class="brand" href="./" aria-label="寿司别吃撑 首页"><span class="brand-dish"><canvas width="100" height="80" data-cozy-food="salmon" aria-hidden="true"></canvas></span><span><b>SUSHI PANIC</b><strong class="round-type">寿司别吃撑！</strong></span></a><nav class="top-actions menu-rail" aria-label="寿司店导航"><button id="today-menu" class="nav-button nav-tag is-active is-current" aria-controls="menu-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-menu"/></svg><span>今日菜单</span></button><button id="collection" class="nav-button nav-tag " aria-controls="collection-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-book"/></svg><span>寿司图鉴</span><i id="collection-new-count" aria-hidden="true" hidden>NEW</i></button><button id="leaderboard" class="nav-button nav-tag " aria-controls="leaderboard-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-rank"/></svg><span>排行榜</span></button><button id="account" class="nav-button nav-tag " aria-controls="account-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-cloud"/></svg><span>云端存档</span><span id="nav-save-dot" class="save-dot" aria-hidden="true"></span></button><button id="help" class="nav-button nav-tag " aria-controls="help-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-help"/></svg><span>怎么玩</span></button><button id="sound" class="nav-button nav-tag " aria-pressed="false" aria-controls="audio-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-muted"/></svg><span>音效：关</span></button></nav></header>
+<header class="topbar shop-header"><a class="brand" href="./" aria-label="寿司转转 首页"><span class="brand-dish"><canvas width="100" height="80" data-cozy-food="salmon" aria-hidden="true"></canvas></span><span><b>SUSHI LOOP</b><strong class="round-type">寿司转转！</strong></span></a><nav class="top-actions menu-rail" aria-label="寿司店导航"><button id="today-menu" class="nav-button nav-tag is-active is-current" aria-controls="menu-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-menu"/></svg><span>今日菜单</span></button><button id="collection" class="nav-button nav-tag " aria-controls="collection-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-book"/></svg><span>寿司图鉴</span><i id="collection-new-count" aria-hidden="true" hidden>NEW</i></button><button id="leaderboard" class="nav-button nav-tag " aria-controls="leaderboard-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-rank"/></svg><span>排行榜</span></button><button id="account" class="nav-button nav-tag " aria-controls="account-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-cloud"/></svg><span>云端存档</span><span id="nav-save-dot" class="save-dot" aria-hidden="true"></span></button><button id="help" class="nav-button nav-tag " aria-controls="help-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-help"/></svg><span>怎么玩</span></button><button id="sound" class="nav-button nav-tag " aria-pressed="false" aria-controls="audio-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-muted"/></svg><span>音效：关</span></button></nav></header>
 <main><section class="intro welcome" aria-label="游戏介绍"><div><h1 class="round-type welcome-title">欢迎光临，<span>今天想吃点什么？</span></h1><p class="subtitle">一口喜欢的寿司，一点慢下来的时间。</p></div><div class="best-record open-note"><span><i class="open-dot"></i>小店营业中</span><small>本机最高 <strong id="best-score">00000</strong> · 随时入座，随时再来。</small></div></section>
 <div class="game-layout"><section class="game-panel sushi-shop" aria-label="游戏区域">
 <div class="table-heading"><button id="cozy-menu-open" class="today-ticket" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-menu"/></svg><span><small>今日放题</small><b id="cozy-theme-name">经典寿司放题</b></span><svg class="icon" aria-hidden="true"><use href="#cozy-arrow"/></svg></button>
@@ -273,10 +286,10 @@ body.cozy-live #audio-dialog{max-width:480px}
 <div class="stage shop-scene" id="stage"><canvas id="game" role="img" aria-label="回转寿司传送带。点击盘子吃寿司，或按 1 到 8 吃对应编号的盘子。"></canvas><div class="noren" aria-hidden="true"><span>慢</span><span>慢</span><span>吃</span><span>好</span><span>呀</span></div><div class="chef-island" id="chef"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20220%20220%22%20fill%3D%22none%22%3E%0A%3C!--%20Original%20Sushi%20Panic%20cat-chef%20extension%3B%20no%20third-party%20character%20assets.%20--%3E%0A%3Cellipse%20cx%3D%22110%22%20cy%3D%22204%22%20rx%3D%2278%22%20ry%3D%229%22%20fill%3D%22%23806856%22%20opacity%3D%22.09%22%2F%3E%0A%3Cpath%20d%3D%22M51%20151Q44%20184%2065%20198H157Q177%20182%20167%20150%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22M77%20156H145L153%20202H69Z%22%20fill%3D%22%23B8DCC7%22%2F%3E%3Cpath%20d%3D%22M92%20161H130V196H92Z%22%20fill%3D%22%23FFF9EE%22%2F%3E%0A%3Cellipse%20cx%3D%22111%22%20cy%3D%22178%22%20rx%3D%227%22%20ry%3D%2210%22%20fill%3D%22%23D9BC79%22%20transform%3D%22rotate(-15%20111%20178)%22%2F%3E%3Cpath%20d%3D%22M111%20171q-3%207%201%2014%22%20stroke%3D%22%23FFFCF3%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22M53%2094%2048%2048Q50%2043%2057%2047L83%2069M167%2094l5-46q-2-5-8-1l-26%2022%22%20fill%3D%22%23FFFCF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m56%2055%204%2022%2016-7M163%2055l-4%2022-16-7%22%20fill%3D%22%23F5B9AE%22%2F%3E%0A%3Cpath%20d%3D%22M49%20107Q42%2066%20110%2064q68%202%2061%2043-1%2049-61%2051-60-2-61-51%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m72%20109%206-4%206%204m52%200%206-4%206%204%22%20stroke%3D%22%2368513F%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cellipse%20cx%3D%2268%22%20cy%3D%22124%22%20rx%3D%2211%22%20ry%3D%225%22%20fill%3D%22%23F5B9AE%22%20opacity%3D%22.8%22%2F%3E%3Cellipse%20cx%3D%22152%22%20cy%3D%22124%22%20rx%3D%2211%22%20ry%3D%225%22%20fill%3D%22%23F5B9AE%22%20opacity%3D%22.8%22%2F%3E%0A%3Cpath%20d%3D%22m106%20117%204%203%204-3m-4%203v7m-9%200q4%208%209%200%205%208%209%200%22%20stroke%3D%22%23806856%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22m51%20116-13-3m14%2011-14%202m130-10%2014-3m-14%2011%2014%202%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22M74%2068Q53%2058%2063%2043q7-10%2018-5%202-19%2020-18%2013-1%2017%2012%2011-9%2023%200%2013%208%208%2021l-3%2015%22%20fill%3D%22%23FFFEF8%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22M71%2066h77v16H71z%22%20fill%3D%22%23F5B9AE%22%2F%3E%3Cpath%20d%3D%22M76%2073h66%22%20stroke%3D%22%23FFFCF6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cellipse%20cx%3D%2249%22%20cy%3D%22165%22%20rx%3D%2215%22%20ry%3D%2211%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22164%22%20rx%3D%2215%22%20ry%3D%2211%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m176%20163%2023-39m-16%2042%2023-39%22%20stroke%3D%22%23806856%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E%0A" width="200" height="200" alt="小米主厨，一只戴粉色厨帽的原创猫咪"><p id="chef-copy">慢慢来，好味道会等你。</p></div><div id="live-plates" class="plates" role="group" aria-label="回转餐盘，点击品尝"></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div><aside id="discovery-card" class="discovery-card discovery" role="status" aria-live="polite" hidden><span id="discovery-title" class="discovery-caption"></span><div><canvas id="discovery-art" width="110" height="90" aria-hidden="true"></canvas><p><strong id="discovery-name"></strong><small id="discovery-line"></small></p></div><small id="discovery-save"></small><span class="discovery-stars discovery-stamp" aria-hidden="true">初次品尝</span></aside><div class="combo" id="combo" aria-hidden="true"></div><div id="scene-warning" class="scene-warning" hidden><strong id="scene-warning-title" role="status" aria-live="polite"></strong><span id="scene-warning-detail" aria-hidden="true"></span></div><div id="overlay" class="overlay"><div id="overlay-content" class="overlay-card"></div></div></div>
 <div class="seat-bar"><details class="character-panel guest-details"><summary class="guest-place"><canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas><span><small>你的座位 · <span id="character-tag">等待入座</span></small><b id="character-name">谁来吃寿司？</b></span><span class="allergy" id="allergy-notice"><svg class="icon" aria-hidden="true"><use href="#cozy-heart"/></svg><span>本局忌口 <b id="allergy-name">开局揭晓</b></span></span></summary><div class="guest-paper"><h2 id="character-title">每局都有不一样的胃口</h2><p id="character-ability" class="ability">入座后抽取一张角色卡，看看今天要忌口什么。</p><small id="allergy-detail">看清再吃，别太心急</small></div></details><div class="table-actions"><button class="tea-button" id="cozy-tea-action" disabled><svg class="icon" aria-hidden="true"><use href="#cozy-tea"/></svg>喝口茶</button><button id="pause" class="pause-button rest-button" aria-label="暂停游戏" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#cozy-rest"/></svg><span>歇一歇</span></button></div></div></section>
-<section class="collection-sheet" aria-label="我的寿司收藏"><div class="binding" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="collection-heading"><svg class="icon" aria-hidden="true"><use href="#cozy-book"/></svg><div><h2 class="round-type">我的寿司收藏</h2><p><b id="progress-count">已尝鲜 0 / 222 种</b>，都是小小的喜欢。</p></div></div><div class="collection-memory"><div class="memory-dishes" aria-hidden="true"><canvas width="70" height="55" data-cozy-food="salmon"></canvas><canvas width="70" height="55" data-cozy-food="tamago"></canvas><canvas width="70" height="55" data-cozy-food="cucumber"></canvas></div><div class="collection-progress progress-meter"><span id="progress-fill"></span></div><small><span id="progress-theme"></span> <b id="progress-percent">0%</b></small></div><button id="open-progress" class="album-button" aria-label="打开寿司图鉴">翻开寿司图鉴<svg class="icon" aria-hidden="true"><use href="#cozy-arrow"/></svg></button><p id="progress-sync" role="status"></p></section>
-<div class="game-utilities"><section class="save-strip" aria-label="云端存档状态"><span id="save-state" role="status">等你入座</span><span id="save-detail">游客也能留下云端收藏。</span></section><div class="network-bar"><span id="network-status" role="status">正在连接云端档案…</span><button id="retry-network" class="text-button">重新连接</button></div><aside id="archive-nudge" class="archive-nudge" hidden><div><strong>给你的寿司手帐安个家吧～</strong><span>绑定邮箱，换台设备也能继续收集！</span></div><button id="nudge-bind" class="text-button">绑定邮箱</button><button id="nudge-dismiss" class="quiet-button" aria-label="暂时收起邮箱提醒">×</button></aside><div class="table-footer"><p id="game-hint">点击盘子开吃 · 看清红色过敏标记</p><span class="keyboard-hint">键盘 <kbd>1</kbd>–<kbd>8</kbd> 品尝 · <kbd>P</kbd> 休息</span><button id="checkout" class="quiet-button checkout-ticket" disabled>结账离席</button></div></div></div></main><footer class="page-footer preview-footer"><span>SUSHI PANIC 寿司别吃撑！</span><span>V1.3 · Cozy Sushi Bar · 随时入座，随时再来。</span></footer></div>
+<section class="collection-sheet" aria-label="我的寿司收藏"><div class="binding" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="collection-heading"><svg class="icon" aria-hidden="true"><use href="#cozy-book"/></svg><div><h2 class="round-type">我的寿司收藏</h2><p><b id="progress-count">正在翻开收藏手帐</b>，都是小小的喜欢。</p></div></div><div class="collection-memory"><div class="memory-dishes" aria-hidden="true"><canvas width="70" height="55" data-cozy-food="salmon"></canvas><canvas width="70" height="55" data-cozy-food="tamago"></canvas><canvas width="70" height="55" data-cozy-food="cucumber"></canvas></div><div class="collection-progress progress-meter"><span id="progress-fill"></span></div><small><span id="progress-theme"></span> <b id="progress-percent">0%</b></small></div><button id="open-progress" class="album-button" aria-label="打开寿司图鉴">翻开寿司图鉴<svg class="icon" aria-hidden="true"><use href="#cozy-arrow"/></svg></button><p id="progress-sync" role="status"></p></section>
+<div class="game-utilities"><section class="save-strip" aria-label="云端存档状态"><span id="save-state" role="status">等你入座</span><span id="save-detail">游客也能留下云端收藏。</span></section><div class="network-bar"><span id="network-status" role="status">正在连接云端档案…</span><button id="retry-network" class="text-button">重新连接</button></div><aside id="archive-nudge" class="archive-nudge" hidden><div><strong>给你的寿司手帐安个家吧～</strong><span>绑定邮箱，换台设备也能继续收集！</span></div><button id="nudge-bind" class="text-button">绑定邮箱</button><button id="nudge-dismiss" class="quiet-button" aria-label="暂时收起邮箱提醒">×</button></aside><div class="table-footer"><p id="game-hint">点击盘子开吃 · 看清红色过敏标记</p><span class="keyboard-hint">键盘 <kbd>1</kbd>–<kbd>8</kbd> 品尝 · <kbd>P</kbd> 休息</span><button id="checkout" class="quiet-button checkout-ticket" disabled>结账离席</button></div></div></div></main><footer class="page-footer preview-footer"><span>SUSHI LOOP 寿司转转！</span><span>V1.4 · Cozy Sushi Bar · 随时入座，随时再来。</span></footer></div>
   <dialog id="menu-dialog" aria-labelledby="menu-title"><div class="dialog-inner"><p class="eyebrow">欢迎光临！今天想吃点什么？</p><div class="section-heading"><h2 id="menu-title" class="hand-title">今日放题</h2><button id="cozy-menu-dismiss" class="close-dialog" aria-label="收好菜单"><svg class="icon" aria-hidden="true"><use href="#cozy-close"/></svg></button></div><label for="menu-picker" class="player-id-label">换一份放题菜单</label><select id="menu-picker" class="player-id-input"></select><p id="menu-picker-note" class="identity-note"></p><div id="cozy-theme-options" class="theme-options"></div><div id="menu-preview" class="menu-preview"></div><p class="identity-note">点击传送带上的盘子开吃，第一次尝鲜就能认识新寿司。往期菜单也一直留着，不用赶时间。</p><section class="menu-panel" id="today-menu-panel"><div class="section-heading"><h2 class="hand-title">今日放题</h2><span class="menu-seal">主厨推荐</span></div><p class="menu-welcome">欢迎光临！今天想吃点什么？</p><label class="player-id-label" for="theme-select">换一份放题菜单</label><select hidden id="theme-select" class="player-id-input"></select><p id="theme-description" class="tiny-note"></p><p id="theme-save-note" class="tiny-note"></p><div id="menu" class="menu-grid"></div><div class="menu-pager"><button id="menu-prev" class="quiet-button">上一页</button><span id="menu-page-info"></span><button id="menu-next" class="quiet-button">下一页</button></div><p class="menu-note">红色「忌」= 本局过敏源<br>喝口茶，歇一歇～<br>茶能调节饱腹，不计入寿司收藏。</p></section><button id="close-menu" class="primary-button">就吃这期，回到座位</button></div></dialog>
-  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">欢迎光临，先吃一口。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹温和下降，保持 25–85 有舒适奖励。太饱时先喝茶或歇一会儿，精神降低也不会导致死亡。</span></li><li><b>红色「忌」，这桌少碰它。</b><span>每局角色不同，过敏源也不同。误食精神 −4，盘子会提前标记；角色和各自的小能力仍保留。</span></li><li><b>吃得舒服，连击也开心。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">偷偷打个盹儿～20秒没动就替你休息，不消耗也不加分。第一次吃到新品会记进手帐；「结账离席」保存这一桌，云端存档可查看同步状态。绑定邮箱完全自愿。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">欢迎光临，先吃一口。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹温和下降，保持 25–85 有舒适奖励。太饱时先喝茶或歇一会儿，精神降低也不会导致死亡。</span></li><li><b>红色「忌」，这桌少碰它。</b><span>每局角色不同，过敏源也不同。误食精神 −4，盘子会提前标记；角色和各自的小能力仍保留。</span></li><li><b>吃得舒服，连击也开心。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">偷偷打个盹儿～20秒没动就替你休息，寿司继续慢慢转；点一盘就能继续，不消耗也不加分。第一次吃到新品会记进手帐；「结账离席」保存这一桌，云端存档可查看同步状态。绑定邮箱完全自愿。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
   <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">今天吃得最开心的客人</p><div class="section-heading"><h2 id="board-title" class="hand-title">今日大胃王</h2><span id="board-day"></span></div><p class="board-clock">北京时间 00:00 换榜 · 距刷新 <strong class="reset-countdown">--:--:--</strong></p><p id="board-champion" class="board-champion">正在寻找今日大胃王…</p><p id="board-status" class="board-status" role="status">每人每日最高积分 · 全球 TOP 100</p><details class="board-quick"><summary>今日前五与我的名次</summary><section id="daily-board-panel" class="daily-board-panel" aria-label="今日大胃王"><div class="section-heading"><h2 class="hand-title">今日大胃王</h2><span>全球积分榜</span></div><div class="daily-date"><span id="mini-board-day">北京时间</span><span>距换榜 <b class="reset-countdown">--:--:--</b></span></div><p id="mini-board-status" class="tiny-note" role="status">正在读取今日榜…</p><ol id="mini-board-list" class="mini-board-list"></ol><p id="mini-board-me" class="mini-board-me">完成联网计分局后查看我的排名</p><button id="sidebar-leaderboard" class="secondary-button">查看全球 TOP 100</button></section></details><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><p id="board-updated" class="tiny-note"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div><p class="tiny-note">匿名身份保存在此浏览器。未绑定邮箱时，清除 Cookie、无痕关闭或换设备后，历史成绩可能无法找回。</p></div></dialog>
   <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">云端存档</h2><p id="account-save-state" class="account-save-state" role="status"></p><p class="identity-note">请在已有成绩的原浏览器绑定邮箱。绑定完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><section id="email-code-section" hidden><label class="player-id-label" for="account-code">邮件验证码</label><input id="account-code" class="player-id-input" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="6–8位验证码"><button id="verify-email" class="primary-button">验证并恢复云端档案</button></section><button id="close-account" class="text-button">暂时不用，继续开吃</button><details class="connection-details"><summary>连接遇到问题？</summary><button id="copy-diagnostics" class="text-button">复制诊断</button></details><button id="account-retry" class="secondary-button">重新连接 / 重试存档</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
   <dialog id="collection-dialog" aria-labelledby="collection-title"><div class="dialog-inner collection-inner"><p class="eyebrow">一盘一盘，收藏小幸福</p><div class="section-heading"><h2 id="collection-title" class="hand-title">我的寿司手帐</h2><button id="close-collection" class="quiet-button">收好图鉴</button></div><p id="collection-summary"></p><div id="theme-progress" class="collection-theme-progress" aria-label="各菜单收藏进度"></div>
@@ -289,13 +302,15 @@ body.cozy-live #audio-dialog{max-width:480px}
     <p id="collection-status" role="status" class="tiny-note">云端确认后永久保留；每日换榜不会清空收藏。</p>
     <details class="collection-rules"><summary>收藏与珍稀说明</summary><p class="rarity-note">食物随机抽档：日常72% · 精选23% · 珍藏5%。8次食物出盘内保证精选或珍藏，40次内保证珍藏；实际含保底与安全盘调整。乌龙茶另备，不计入收藏。每日换榜不会清空收藏。</p></details>
     <div id="collection-grid" class="collection-grid"></div><div class="menu-pager"><button id="collection-prev" class="quiet-button">上一页</button><span id="collection-page-info"></span><button id="collection-next" class="quiet-button">下一页</button></div></div></dialog>
+<div id="idle-rest" class="idle-rest" role="status" hidden>这一桌替你留着 · 点一盘继续</div>
   <dialog id="audio-dialog" aria-labelledby="audio-title"><div class="dialog-inner audio-inner"><p class="eyebrow">给小店添一点温柔的声音</p><div class="section-heading"><h2 id="audio-title" class="hand-title">小店的声音</h2><button id="close-audio" class="close-dialog" aria-label="收好声音设置"><svg class="icon" aria-hidden="true"><use href="#cozy-close"/></svg></button></div>
     <label class="audio-choice"><span><b>背景音乐</b><small>一首轻轻循环的咖啡馆小曲</small></span><input id="audio-music" type="checkbox" role="switch"></label>
     <label class="audio-volume" for="audio-music-volume">音乐音量 <output id="audio-music-volume-value" for="audio-music-volume">25%</output><input id="audio-music-volume" type="range" min="0" max="60" value="25"></label>
     <label class="audio-choice"><span><b>游戏音效</b><small>吃寿司、翻手帐，还有新品的小惊喜</small></span><input id="audio-effects" type="checkbox" role="switch"></label>
     <label class="audio-volume" for="audio-effects-volume">音效音量 <output id="audio-effects-volume-value" for="audio-effects-volume">36%</output><input id="audio-effects-volume" type="range" min="0" max="60" value="36"></label>
-    <button id="audio-mute" class="secondary-button" aria-pressed="true">开启已选声音</button><p id="audio-status" class="identity-note" role="status"></p><p class="tiny-note">设置只记在这台设备。打开手帐会轻轻调低音乐；首次进入保持静音。</p>
+    <button id="audio-mute" class="secondary-button" aria-pressed="true">开启已选声音</button><p id="audio-status" class="identity-note" role="status"></p><p class="tiny-note">设置只记在这台设备。打开手帐会轻轻调低音乐；音乐默认开启，首次轻触后播放。</p>
   </div></dialog>
+  <dialog id="food-detail-dialog" aria-labelledby="food-detail-title"><div class="dialog-inner"><p id="food-detail-friend" class="eyebrow"></p><h2 id="food-detail-title" class="round-type"></h2><canvas id="food-detail-art" width="360" height="280" aria-hidden="true"></canvas><p id="food-detail-copy"></p><p id="food-detail-egg" class="identity-note"></p><p id="food-detail-state" class="tiny-note"></p><button id="close-food-detail" class="primary-button">收好收藏卡</button></div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
   <script type="module">
 var __defProp = Object.defineProperty;
@@ -463,9 +478,104 @@ var init_audio_score = __esm({
   }
 });
 
+// src/run-lease.js
+var RunLease = class {
+  constructor({ locks = globalThis.navigator?.locks, storage, owner = globalThis.crypto.randomUUID(), now = Date.now } = {}) {
+    this.locks = locks;
+    this.owner = owner;
+    this.now = now;
+    try {
+      this.storage = storage || globalThis.localStorage;
+    } catch {
+    }
+    this.id = null;
+  }
+  async acquire(id) {
+    if (this.id === id && this.valid()) return true;
+    this.release();
+    if (!id) return true;
+    if (this.locks) return new Promise((resolve) => {
+      this.locks.request("sushi.active." + id, { ifAvailable: true }, async (lock) => {
+        if (!lock) {
+          resolve(false);
+          return;
+        }
+        this.id = id;
+        resolve(true);
+        await new Promise((done) => this.releaseLock = done);
+      }).catch(() => resolve(false));
+    });
+    try {
+      const key = "sushi.lease." + id, old = JSON.parse(this.storage.getItem(key) || "null");
+      if (old && old.owner !== this.owner && old.until > this.now()) return false;
+      this.id = id;
+      this.renew();
+      this.timer = setInterval(() => this.renew(), 3e4);
+      return true;
+    } catch {
+      this.id = null;
+      return false;
+    }
+  }
+  renew() {
+    if (!this.id) return;
+    try {
+      const current = JSON.parse(this.storage.getItem("sushi.lease." + this.id) || "null");
+      if (current && current.owner !== this.owner && current.until > this.now()) {
+        clearInterval(this.timer);
+        return;
+      }
+      this.storage.setItem("sushi.lease." + this.id, JSON.stringify({ owner: this.owner, until: this.now() + 9e4 }));
+    } catch {
+    }
+  }
+  valid() {
+    if (!this.id) return false;
+    if (this.locks) return true;
+    try {
+      return JSON.parse(this.storage.getItem("sushi.lease." + this.id))?.owner === this.owner;
+    } catch {
+      return false;
+    }
+  }
+  release() {
+    clearInterval(this.timer);
+    if (this.releaseLock) {
+      this.releaseLock();
+      this.releaseLock = null;
+    } else if (this.id) try {
+      if (this.valid()) this.storage.removeItem("sushi.lease." + this.id);
+    } catch {
+    }
+    this.id = null;
+  }
+};
+
+// src/friends-special.js
+var entries = [
+  ["nian", "\u5E74\u5D3D", ["\u5E74\u5D3D", "\u5E74\u5E74", "\u5E74\u4ED4"], "matcha-latte", "\u5E74\u5D3D\u4E0D\u5403\u7684\u62B9\u8336\u62FF\u94C1", "matcha-dot", "\u5E74\u5D3D\uFF1A\u90FD\u8BF4\u4E86\u4E0D\u5403\u8FD9\u4E2A\u5566\uFF01", "common", 10, 70, "\u5976\u6CE1\u8F7B\u8F7B\u76D6\u4F4F\u6D53\u62B9\u8336\uFF0C\u5C0F\u676F\u5B50\u6B63\u5077\u5077\u505A\u9B3C\u8138\u3002"],
+  ["orange", "\u6A58\u5B50", ["\u6A58\u5B50", "\u6A58\u6A58"], "energy-bar", "\u6A58\u5B50\u5F92\u6B65\u6765\u70B9\u58EB\u529B\u67B6\u5427", "orange-hike", "\u5F92\u6B65\u80FD\u91CF\u5DF2\u8865\u5145\uFF01", "common", 20, 100, "\u5DE7\u514B\u529B\u3001\u7126\u7CD6\u548C\u5C0F\u82B1\u751F\uFF0C\u88C5\u8FDB\u4E00\u4EFD\u539F\u521B\u7684\u5C71\u91CE\u80FD\u91CF\u5305\u88C5\u3002"],
+  ["rabbit", "\u5154\u5154\u54AA", ["\u5154\u5154\u54AA", "\u5154\u5154"], "kohada", "\u5154\u5154\u54AA\u6700\u7231\u7684\u5C0F\u808C\u9C7C", "pink-bunny", "\u5154\u5154\u54AA\u7684\u5FEB\u4E50\u5C0F\u9C7C\u5230\u8D27\uFF01", "select", 16, 90, "\u94F6\u767D\u5C0F\u9C7C\u8DB4\u5728\u5706\u996D\u56E2\u4E0A\uFF0C\u7C89\u76D8\u5B50\u4E5F\u7AD6\u8D77\u4E86\u5154\u8033\u6735\u3002"],
+  ["red", "\u7EA2\u679C\u679C", ["\u7EA2\u679C\u679C", "\u679C\u679C"], "matcha-cake", "\u7EA2\u679C\u679C\u6700\u7231\u7684\u82E6\u62B9\u86CB\u7CD5", "green-berry", "\u4ECA\u5929\u4E5F\u662F\u82E6\u62B9\u8111\u888B\uFF01", "select", 18, 70, "\u6DF1\u7EFF\u82E6\u62B9\u4E0E\u7EC6\u7EC6\u86CB\u7CD5\u5C42\uFF0C\u4E00\u5C0F\u6735\u5976\u6CB9\u521A\u597D\u3002"],
+  ["uu", "UU", ["UU", "uu", "\uFF35\uFF35"], "iced-americano", "UU\u6700\u7231\u7684\u51B0\u7F8E\u5F0F", "blue-star", "UU\u7684\u5FEB\u4E50\u7EED\u676F\u6210\u529F\uFF01", "common", 8, 70, "\u51B0\u5757\u78B0\u5230\u5C0F\u5438\u7BA1\uFF0C\u5DE5\u4F5C\u65E5\u4E5F\u6709\u4E00\u53E3\u6E05\u6E05\u723D\u723D\u3002"],
+  ["mum", "UU\u5988\u54AA", ["UU\u5988\u54AA", "uu\u5988\u54AA", "UU\u5988\u5988", "UU\u5988"], "foie", "UU\u5988\u54AA\u6700\u7231\u7684\u9E45\u809D\u5BFF\u53F8", "gold-lace", "\u5988\u54AA\u7684\u7CBE\u81F4\u4E0B\u5348\u8336\u65F6\u95F4\uFF01", "treasure", 24, 120, "\u9999\u69DF\u91D1\u76D8\u5B50\u6258\u4F4F\u7126\u9999\u9E45\u809D\uFF0C\u7CBE\u81F4\u4F46\u4E0D\u7528\u8D76\u65F6\u95F4\u3002"],
+  ["fitness", "\u5065\u8EAB\u4EBA\u58EB", ["\u5065\u8EAB\u4EBA\u58EB", "\u5065\u8EAB\u4EBA"], "beef", "\u5065\u8EAB\u4EBA\u58EB\u5FC5\u5403\u7684\u9AD8\u86CB\u767D\u7099\u70E4\u725B\u8089", "red-power", "\u86CB\u767D\u8D28\u8865\u5145\u6210\u529F\uFF01", "common", 26, 120, "\u539A\u5207\u725B\u8089\u5E26\u7740\u8F7B\u8F7B\u7126\u9999\uFF0C\u4ECA\u5929\u4E5F\u597D\u597D\u5403\u996D\u3002"]
+];
+var friendsSpecialConfig = Object.freeze(entries.map(([id, nickname, aliases, art, name, plateId, easterEgg, rarity, fullness, points, description], i) => Object.freeze({ id, userIds: [], nickname, aliases, foodId: "friends_" + id, plateId, weight: 3, pity: 8, easterEgg, art, name, rarity, fullness, points, description, number: 224 + i })));
+var normalize = (value) => String(value || "").normalize("NFKC").trim().toLocaleLowerCase("en-US");
+function matchFriend(player, config = friendsSpecialConfig) {
+  return config.find((f) => f.userIds.includes(player?.id)) || config.find((f) => f.aliases.some((n) => normalize(n) === normalize(player?.nickname))) || null;
+}
+function friendSnapshot(player) {
+  const f = matchFriend(player);
+  return f ? { friendId: f.id, foodId: f.foodId, weight: f.weight, pity: f.pity } : null;
+}
+var friendForFood = (id) => friendsSpecialConfig.find((f) => f.foodId === id);
+var FRIEND_FOODS = Object.freeze(Object.fromEntries(friendsSpecialConfig.map((f) => [f.foodId, Object.freeze({ id: f.foodId, number: f.number, name: f.name, themeId: "friends-special", category: "\u597D\u53CB\u4E13\u5C5E", categoryId: ["matcha-latte", "energy-bar", "matcha-cake"].includes(f.art) ? "sweet" : "special", rarity: f.rarity, visualKey: "friend-" + f.art, fullness: f.fullness, points: f.points, allergen: f.id === "rabbit" ? "fish" : f.id === "red" ? "egg" : null, collectible: true, topping: ["mum", "fitness"].includes(f.id) ? "seared" : "", description: f.description, friendId: f.id, friendName: f.nickname, plateId: f.plateId, origin: "game-original" })])));
+
 // src/audio-manager.js
 var AUDIO_KEY = "sushi-panic.audio.v1";
-var AUDIO_DEFAULTS = Object.freeze({ music: false, effects: false, muted: true, musicVolume: 0.25, effectsVolume: 0.36 });
+var AUDIO_DEFAULTS = Object.freeze({ music: true, effects: false, muted: false, musicVolume: 0.25, effectsVolume: 0.36 });
 function audioPreferences(value) {
   const out = { ...AUDIO_DEFAULTS };
   for (const k of ["music", "effects", "muted"]) if (typeof value?.[k] === "boolean") out[k] = value[k];
@@ -5160,26 +5270,26 @@ var Renderer = class {
     };
     lantern(mobile ? 29 : 49);
     lantern(w - (mobile ? 29 : 49));
-    const path = () => {
+    const path2 = () => {
       c.beginPath();
       c.roundRect(g.left, g.top, g.right - g.left, g.bottom - g.top, g.radius);
     };
     c.save();
     c.translate(0, 8);
-    path();
+    path2();
     c.lineWidth = mobile ? 77 : 91;
     c.strokeStyle = "#e2c99c";
     c.stroke();
     c.restore();
-    path();
+    path2();
     c.lineWidth = mobile ? 82 : 96;
     c.strokeStyle = "#b4d9ca";
     c.stroke();
-    path();
+    path2();
     c.lineWidth = mobile ? 73 : 87;
     c.strokeStyle = "#effbf2";
     c.stroke();
-    path();
+    path2();
     c.lineWidth = mobile ? 64 : 78;
     c.strokeStyle = "#74b29b";
     c.stroke();
@@ -5347,7 +5457,7 @@ function drawCatalogDish(c, s, x, y, scale) {
   c.scale(scale, scale);
   c.lineWidth = 1.4;
   const k = s.visualKey, color = k === "pudding" ? s.name.includes("\u9ED1\u829D\u9EBB") ? "#b1b0a2" : s.name.includes("\u62B9\u8336") ? "#93ae7a" : "#edcc8f" : s.color || "#cf9d69";
-  const rice = () => {
+  const rice2 = () => {
     oval(c, 0, 15, 30, 11, "#d4d2bb");
     round(c, -29, -3, 58, 24, 12, "#fff8e7");
     oval(c, 0, -4, 29, 10, "#fffbee");
@@ -5391,7 +5501,7 @@ function drawCatalogDish(c, s, x, y, scale) {
       for (let i = 0; i < 6; i++) oval(c, xx - r + 7 + i * 7 % (r * 2 - 10), yy - 3 + i % 3 * 3, 2, 1.6, s.categoryId === "roll" ? "#94ad70" : "#f4d59b");
     }
   } else {
-    rice();
+    rice2();
     if (k === "scallop") {
       for (const xx of [-12, 12]) {
         oval(c, xx, -12, 17, 15, color, "#c6b495");
@@ -5433,6 +5543,513 @@ function drawCatalogDish(c, s, x, y, scale) {
   c.restore();
 }
 
+// src/menus-v14.js
+var MENU_EDITION3 = "2026-10-friends1";
+var CATALOG3 = Object.freeze({ ...CATALOG2, ...FRIEND_FOODS });
+var FRIEND_THEME = Object.freeze({ id: "friends-special", name: "UU\u548C\u5979\u7684\u670B\u53CB\u4EEC", description: "\u4E03\u4F4D\u670B\u53CB\uFF0C\u4E03\u4EFD\u5FC3\u5934\u597D\u3002\u6BCF\u4E2A\u4EBA\u90FD\u80FD\u54C1\u5C1D\u3001\u6536\u85CF\uFF0C\u60F3\u5FF5\u65F6\u968F\u65F6\u56DE\u6765\u3002", permanent: true, opensAt: null, closesAt: null, color: "#86bba1", foods: [...Object.keys(FRIEND_FOODS), "tea"], collectionFoods: Object.keys(FRIEND_FOODS), featured: Object.keys(FRIEND_FOODS) });
+var THEMES3 = Object.freeze([FRIEND_THEME, ...THEMES2]);
+function themeById3(id) {
+  const t = THEMES3.find((t2) => t2.id === id);
+  if (!t) throw new Error("\u672A\u77E5\u4E3B\u9898\u83DC\u5355");
+  return t;
+}
+
+// src/casual-v121.js
+var CASUAL_VERSION = "1.2.1";
+var MenuDeck = class {
+  constructor(rng2, theme, knownFoods = []) {
+    this.rng = rng2;
+    this.theme = theme;
+    this.known = new Set(knownFoods);
+    this.sinceSafe = 0;
+    this.sinceTea = 0;
+    this.sinceSelect = 0;
+    this.sinceTreasure = 0;
+    this.bags = /* @__PURE__ */ new Map();
+    this.lastDraw = null;
+  }
+  drawTier() {
+    if (this.sinceTreasure >= 39) return "treasure";
+    if (this.sinceSelect >= 7) return "select";
+    const p = this.rng();
+    return p < 0.72 ? "common" : p < 0.95 ? "select" : "treasure";
+  }
+  next() {
+    if (this.sinceTea >= 7) {
+      this.sinceTea = 0;
+      this.lastDraw = { kind: "tea" };
+      return "tea";
+    }
+    const tier = this.drawTier(), safe = this.sinceSafe >= 2;
+    const positive = this.theme.foods.filter((k) => CATALOG2[k].fullness > 0), feature = this.theme.featured || [], scope = feature.length && this.rng() < 0.35 ? "featured" : "permanent";
+    let candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (scope === "featured" ? feature.includes(k) : !feature.includes(k)) && (!safe || !CATALOG2[k].allergen));
+    if (!candidates.length) candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (!safe || !CATALOG2[k].allergen));
+    if (!candidates.length) candidates = positive.filter((k) => !safe || !CATALOG2[k].allergen);
+    const bagKey = tier + ":" + scope + ":" + safe;
+    let bag = this.bags.get(bagKey);
+    if (!bag?.length) {
+      bag = [...candidates];
+      for (let i = bag.length - 1; i > 0; i--) {
+        const j = Math.floor(this.rng() * (i + 1));
+        [bag[i], bag[j]] = [bag[j], bag[i]];
+      }
+      bag.sort((a, b) => Number(!this.known.has(a)) - Number(!this.known.has(b)));
+      this.bags.set(bagKey, bag);
+    }
+    const key = bag.pop(), actual = rarityOf(CATALOG2[key]);
+    this.sinceTea++;
+    this.sinceSafe = CATALOG2[key].allergen ? this.sinceSafe + 1 : 0;
+    this.sinceTreasure = actual === "treasure" ? 0 : this.sinceTreasure + 1;
+    this.sinceSelect = actual !== "common" ? 0 : this.sinceSelect + 1;
+    this.lastDraw = { kind: "food", tier: actual, requestedTier: tier, safe, scope };
+    return key;
+  }
+};
+var CasualGame = class extends Game {
+  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION2 } = {}) {
+    super({ seed, characterId });
+    if (menuEdition !== MENU_EDITION2) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
+    this.rulesVersion = CASUAL_VERSION;
+    this.menuEdition = menuEdition;
+    this.theme = themeById2(themeId);
+    this.deck = new MenuDeck(seededRandom(this.seed), this.theme, knownFoods);
+    this.knownFoods = new Set(knownFoods);
+    this.discoveries = /* @__PURE__ */ new Set();
+    this.lastActivity = 0;
+    this.autoRest = false;
+    this.checkoutRequested = false;
+  }
+  start() {
+    if (this.phase !== "card") return false;
+    this.phase = "playing";
+    const safe = this.theme.foods.find((k) => CATALOG2[k].fullness > 0 && !CATALOG2[k].allergen);
+    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
+    this.nextSpawn = 2;
+    return true;
+  }
+  tick(dt) {
+    this.time += dt;
+    if (this.time - this.lastActivity >= 20) {
+      this.autoRest = true;
+      this.phase = "paused";
+      return;
+    }
+    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
+    const unsafe = this.fullness < 15 || this.fullness > 100;
+    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
+    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
+    this.beltTravel += 0.035 * dt;
+    for (const f of this.foods) {
+      f.p = (f.p + 0.035 * dt) % 1;
+      f.distance += 0.035 * dt;
+    }
+    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
+    this.nextSpawn -= dt;
+    if (this.nextSpawn <= 0) {
+      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
+        this.addFood(this.deck.next());
+        this.nextSpawn = 2;
+      } else this.nextSpawn = 0;
+    }
+    this.refreshScore();
+  }
+  resume() {
+    if (!super.resume()) return false;
+    this.lastActivity = this.time;
+    this.autoRest = false;
+    return true;
+  }
+  eat(id) {
+    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
+    const index = this.foods.findIndex((f) => f.id === id);
+    if (index < 0) return null;
+    const item = this.foods[index], food = CATALOG2[item.key];
+    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
+    this.foods.splice(index, 1);
+    this.lastBite = this.time;
+    this.lastActivity = this.time;
+    this.eaten++;
+    if (food.collectible) this.sushiEaten++;
+    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
+    this.fullness = clamp(this.fullness + change, 0, 120);
+    const allergy = food.allergen === this.character.allergy;
+    let text2, type, newDiscovery = false;
+    if (allergy) {
+      const shielded = this.shield > 0;
+      if (shielded) this.shield--;
+      else this.hp = Math.max(1, this.hp - 4);
+      this.allergies++;
+      this.combo = 0;
+      type = "allergy";
+      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
+    } else if (food.collectible) {
+      const comfy = this.fullness >= 25 && this.fullness <= 85;
+      this.combo = comfy ? this.combo + 1 : 0;
+      this.bestCombo = Math.max(this.bestCombo, this.combo);
+      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
+      if (comfy) {
+        this.perfects++;
+        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
+      }
+      type = comfy ? "perfect" : "eat";
+      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
+      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
+      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
+      this.lastFood = item.key;
+    } else {
+      type = "tea";
+      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
+    }
+    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
+      this.discoveries.add(item.key);
+      this.bonusScore += 25;
+      newDiscovery = true;
+      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
+    }
+    this.refreshScore();
+    const event = { type, text: text2, item, change, newDiscovery };
+    this.events.push(event);
+    if (this.events.length > 32) this.events.shift();
+    return event;
+  }
+  checkout() {
+    if (!["playing", "paused"].includes(this.phase)) return false;
+    this.checkoutRequested = true;
+    this.phase = "gameover";
+    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
+    return true;
+  }
+  snapshot() {
+    return { ...super.snapshot(), version: CASUAL_VERSION, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest };
+  }
+};
+
+// src/casual-v14.js
+var CASUAL_VERSION2 = "1.4.0";
+var FriendsDeck = class {
+  constructor(rng2, theme, friendProfile) {
+    this.rng = rng2;
+    this.theme = theme;
+    this.friend = friendProfile;
+    this.sinceOwn = 0;
+    this.sinceTea = 0;
+    this.lastKey = null;
+    this.sameCount = 0;
+    this.lastDraw = null;
+  }
+  next() {
+    if (this.sinceTea >= 7) {
+      this.sinceTea = 0;
+      this.lastDraw = { kind: "tea" };
+      return "tea";
+    }
+    const own = this.friend?.foodId, forced = own && this.sinceOwn >= (this.friend.pity || 8) - 1;
+    let pool = this.theme.collectionFoods.filter((k) => this.sameCount < 2 || k !== this.lastKey), key;
+    if (forced) key = own;
+    else {
+      const weights = pool.map((k) => k === own ? this.friend.weight || 3 : 1), total = weights.reduce((a, b) => a + b, 0);
+      let n = this.rng() * total;
+      key = pool.at(-1);
+      for (let i = 0; i < pool.length; i++) {
+        n -= weights[i];
+        if (n < 0) {
+          key = pool[i];
+          break;
+        }
+      }
+    }
+    this.sinceOwn = key === own ? 0 : this.sinceOwn + 1;
+    this.sinceTea++;
+    this.sameCount = key === this.lastKey ? this.sameCount + 1 : 1;
+    this.lastKey = key;
+    this.lastDraw = { kind: "food", forced, own: key === own };
+    return key;
+  }
+};
+var CasualGame2 = class extends Game {
+  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION3, friendProfile = null } = {}) {
+    super({ seed, characterId });
+    if (menuEdition !== MENU_EDITION3) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
+    this.rulesVersion = CASUAL_VERSION2;
+    this.menuEdition = menuEdition;
+    this.theme = themeById3(themeId);
+    this.friendProfile = friendProfile;
+    this.deck = this.theme.id === "friends-special" ? new FriendsDeck(seededRandom(this.seed), this.theme, friendProfile) : new MenuDeck(seededRandom(this.seed), this.theme, knownFoods);
+    this.knownFoods = new Set(knownFoods);
+    this.discoveries = /* @__PURE__ */ new Set();
+    this.lastActivity = 0;
+    this.autoRest = false;
+    this.checkoutRequested = false;
+  }
+  start() {
+    if (this.phase !== "card") return false;
+    this.phase = "playing";
+    const safe = this.theme.id === "friends-special" ? this.deck.next() : this.theme.foods.find((k) => CATALOG3[k].fullness > 0 && !CATALOG3[k].allergen);
+    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
+    this.nextSpawn = 2;
+    return true;
+  }
+  tick(dt) {
+    this.time += dt;
+    if (this.time - this.lastActivity >= 20 - 1e-8) {
+      this.autoRest = true;
+      this.phase = "paused";
+      return;
+    }
+    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
+    const unsafe = this.fullness < 15 || this.fullness > 100;
+    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
+    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
+    this.beltTravel += 0.035 * dt;
+    for (const f of this.foods) {
+      f.p = (f.p + 0.035 * dt) % 1;
+      f.distance += 0.035 * dt;
+    }
+    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
+    this.nextSpawn -= dt;
+    if (this.nextSpawn <= 0) {
+      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
+        this.addFood(this.deck.next());
+        this.nextSpawn = 2;
+      } else this.nextSpawn = 0;
+    }
+    this.refreshScore();
+  }
+  rest() {
+    if (this.phase === "playing") this.pause();
+    if (this.phase === "paused") {
+      this.autoRest = true;
+      return true;
+    }
+    return false;
+  }
+  resume() {
+    if (!super.resume()) return false;
+    this.lastActivity = this.time;
+    this.autoRest = false;
+    return true;
+  }
+  eat(id) {
+    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
+    const index = this.foods.findIndex((f) => f.id === id);
+    if (index < 0) return null;
+    const item = this.foods[index], food = CATALOG3[item.key];
+    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
+    this.foods.splice(index, 1);
+    this.lastBite = this.time;
+    this.lastActivity = this.time;
+    this.eaten++;
+    if (food.collectible) this.sushiEaten++;
+    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
+    this.fullness = clamp(this.fullness + change, 0, 120);
+    const allergy = food.allergen === this.character.allergy;
+    let text2, type, newDiscovery = false;
+    if (allergy) {
+      const shielded = this.shield > 0;
+      if (shielded) this.shield--;
+      else this.hp = Math.max(1, this.hp - 4);
+      this.allergies++;
+      this.combo = 0;
+      type = "allergy";
+      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
+    } else if (food.collectible) {
+      const comfy = this.fullness >= 25 && this.fullness <= 85;
+      this.combo = comfy ? this.combo + 1 : 0;
+      this.bestCombo = Math.max(this.bestCombo, this.combo);
+      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
+      if (comfy) {
+        this.perfects++;
+        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
+      }
+      type = comfy ? "perfect" : "eat";
+      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
+      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
+      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
+      this.lastFood = item.key;
+    } else {
+      type = "tea";
+      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
+    }
+    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
+      this.discoveries.add(item.key);
+      this.bonusScore += 25;
+      newDiscovery = true;
+      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
+    }
+    this.refreshScore();
+    const event = { type, text: text2, item, change, newDiscovery };
+    this.events.push(event);
+    if (this.events.length > 32) this.events.shift();
+    return event;
+  }
+  checkout() {
+    if (!["playing", "paused"].includes(this.phase)) return false;
+    this.checkoutRequested = true;
+    this.phase = "gameover";
+    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
+    return true;
+  }
+  snapshot() {
+    return { ...super.snapshot(), version: CASUAL_VERSION2, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest, friendProfile: this.friendProfile };
+  }
+};
+
+// src/casual-v12.js
+var CASUAL_VERSION3 = "1.2.0";
+var MenuDeck2 = class {
+  constructor(rng2, theme) {
+    this.rng = rng2;
+    this.theme = theme;
+    this.sinceSafe = 0;
+    this.sinceHidden = 0;
+    this.sinceTea = 0;
+  }
+  next() {
+    const keys = this.theme.foods;
+    if (this.sinceTea >= 8) {
+      this.sinceTea = 0;
+      this.sinceSafe++;
+      this.sinceHidden++;
+      return "tea";
+    }
+    let key;
+    if (this.sinceSafe >= 2) key = keys.find((k) => CATALOG[k].fullness > 0 && !CATALOG[k].allergen);
+    else if (this.sinceHidden >= 35) key = keys.find((k) => CATALOG[k].rarity === "hidden");
+    else {
+      let n = this.rng() * keys.reduce((s, k) => s + CATALOG[k].weight, 0);
+      key = keys.find((k) => (n -= CATALOG[k].weight) < 0) || keys.at(-1);
+    }
+    this.sinceSafe = CATALOG[key].fullness > 0 && !CATALOG[key].allergen ? 0 : this.sinceSafe + 1;
+    this.sinceTea = key === "tea" ? 0 : this.sinceTea + 1;
+    this.sinceHidden = CATALOG[key].rarity === "hidden" ? 0 : this.sinceHidden + 1;
+    return key;
+  }
+};
+var CasualGame3 = class extends Game {
+  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION } = {}) {
+    super({ seed, characterId });
+    if (menuEdition !== MENU_EDITION) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
+    this.rulesVersion = CASUAL_VERSION3;
+    this.menuEdition = menuEdition;
+    this.theme = themeById(themeId);
+    this.deck = new MenuDeck2(seededRandom(this.seed), this.theme);
+    this.knownFoods = new Set(knownFoods);
+    this.discoveries = /* @__PURE__ */ new Set();
+    this.lastActivity = 0;
+    this.autoRest = false;
+    this.checkoutRequested = false;
+  }
+  start() {
+    if (this.phase !== "card") return false;
+    this.phase = "playing";
+    const safe = this.theme.foods.find((k) => CATALOG[k].fullness > 0 && !CATALOG[k].allergen);
+    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
+    this.nextSpawn = 2;
+    return true;
+  }
+  tick(dt) {
+    this.time += dt;
+    if (this.time - this.lastActivity >= 20) {
+      this.autoRest = true;
+      this.phase = "paused";
+      return;
+    }
+    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
+    const unsafe = this.fullness < 15 || this.fullness > 100;
+    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
+    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
+    this.beltTravel += 0.035 * dt;
+    for (const f of this.foods) {
+      f.p = (f.p + 0.035 * dt) % 1;
+      f.distance += 0.035 * dt;
+    }
+    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
+    this.nextSpawn -= dt;
+    if (this.nextSpawn <= 0) {
+      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
+        this.addFood(this.deck.next());
+        this.nextSpawn = 2;
+      } else this.nextSpawn = 0;
+    }
+    this.refreshScore();
+  }
+  resume() {
+    if (!super.resume()) return false;
+    this.lastActivity = this.time;
+    this.autoRest = false;
+    return true;
+  }
+  eat(id) {
+    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
+    const index = this.foods.findIndex((f) => f.id === id);
+    if (index < 0) return null;
+    const item = this.foods[index], food = CATALOG[item.key];
+    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
+    this.foods.splice(index, 1);
+    this.lastBite = this.time;
+    this.lastActivity = this.time;
+    this.eaten++;
+    if (food.collectible) this.sushiEaten++;
+    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
+    this.fullness = clamp(this.fullness + change, 0, 120);
+    const allergy = food.allergen === this.character.allergy;
+    let text2, type, newDiscovery = false;
+    if (allergy) {
+      const shielded = this.shield > 0;
+      if (shielded) this.shield--;
+      else this.hp = Math.max(1, this.hp - 4);
+      this.allergies++;
+      this.combo = 0;
+      type = "allergy";
+      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
+    } else if (food.collectible) {
+      const comfy = this.fullness >= 25 && this.fullness <= 85;
+      this.combo = comfy ? this.combo + 1 : 0;
+      this.bestCombo = Math.max(this.bestCombo, this.combo);
+      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
+      if (comfy) {
+        this.perfects++;
+        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
+      }
+      type = comfy ? "perfect" : "eat";
+      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
+      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
+      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
+      this.lastFood = item.key;
+    } else {
+      type = "tea";
+      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
+    }
+    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
+      this.discoveries.add(item.key);
+      this.bonusScore += 25;
+      newDiscovery = true;
+      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
+    }
+    this.refreshScore();
+    const event = { type, text: text2, item, change, newDiscovery };
+    this.events.push(event);
+    if (this.events.length > 32) this.events.shift();
+    return event;
+  }
+  checkout() {
+    if (!["playing", "paused"].includes(this.phase)) return false;
+    this.checkoutRequested = true;
+    this.phase = "gameover";
+    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
+    return true;
+  }
+  snapshot() {
+    return { ...super.snapshot(), version: CASUAL_VERSION3, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest };
+  }
+};
+
+// src/casual-engine.js
+var isCasualVersion = (v) => ["1.2.0", "1.2.1", "1.4.0"].includes(v);
+function createCasual(options = {}) {
+  return new (options.rulesVersion === "1.4.0" ? CasualGame2 : options.rulesVersion === "1.2.0" ? CasualGame3 : CasualGame)(options);
+}
+
 // src/cozy-scene.js
 var oval2 = (c, x, y, rx, ry, color) => {
   c.beginPath();
@@ -5455,7 +6072,7 @@ var round2 = (c, x, y, w, h, r, color) => {
   c.fill();
 };
 function paintRoom(canvas, travel) {
-  const box = canvas.getBoundingClientRect(), w = box.width, h = box.height, dpr = Math.min(devicePixelRatio || 1, 2);
+  const box2 = canvas.getBoundingClientRect(), w = box2.width, h = box2.height, dpr = Math.min(devicePixelRatio || 1, 2);
   if (!w || !h) return null;
   if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
     canvas.width = Math.round(w * dpr);
@@ -5502,19 +6119,19 @@ function paintRoom(canvas, travel) {
     c.restore();
   }
   c.restore();
-  const path = () => {
+  const path2 = () => {
     c.beginPath();
     c.roundRect(g.left, g.top, g.right - g.left, g.bottom - g.top, g.radius);
   };
   c.save();
   c.translate(0, 6);
-  path();
+  path2();
   c.lineWidth = small ? 82 : 104;
   c.strokeStyle = "#c8ad841f";
   c.stroke();
   c.restore();
   for (const [width, color] of [[small ? 87 : 106, "#d9c4a0"], [small ? 82 : 101, "#fff5db"], [small ? 68 : 85, "#aac6ad"]]) {
-    path();
+    path2();
     c.lineWidth = width;
     c.strokeStyle = color;
     c.stroke();
@@ -5530,7 +6147,176 @@ function paintRoom(canvas, travel) {
   return g;
 }
 
+// src/friends-art.js
+var ink = "#806856";
+function ellipse(c, x, y, rx, ry, fill, stroke) {
+  c.beginPath();
+  c.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+  if (fill) {
+    c.fillStyle = fill;
+    c.fill();
+  }
+  if (stroke) {
+    c.strokeStyle = stroke;
+    c.stroke();
+  }
+}
+function box(c, x, y, w, h, r, fill, stroke = ink) {
+  c.beginPath();
+  c.roundRect(x, y, w, h, r);
+  c.fillStyle = fill;
+  c.fill();
+  if (stroke) {
+    c.strokeStyle = stroke;
+    c.stroke();
+  }
+}
+function path(c, pts, color = ink, width = 1.3) {
+  c.beginPath();
+  pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y));
+  c.strokeStyle = color;
+  c.lineWidth = width;
+  c.lineCap = "round";
+  c.lineJoin = "round";
+  c.stroke();
+  c.lineWidth = 1.3;
+}
+function star(c, x, y, r, color) {
+  c.beginPath();
+  for (let i = 0; i < 10; i++) {
+    const a = i * Math.PI / 5 - Math.PI / 2, d = i % 2 ? r * 0.45 : r;
+    c.lineTo(x + Math.cos(a) * d, y + Math.sin(a) * d);
+  }
+  c.closePath();
+  c.fillStyle = color;
+  c.fill();
+}
+function face(c, x, y) {
+  ellipse(c, x - 5, y, 1, 1.4, ink);
+  ellipse(c, x + 5, y, 1, 1.4, ink);
+  c.beginPath();
+  c.arc(x, y + 1, 2.8, 0, Math.PI);
+  c.strokeStyle = ink;
+  c.stroke();
+}
+function plate(c, f) {
+  const colors = { nian: ["#90bb85", "#d9ecd1"], orange: ["#df9d5e", "#fff0ce"], rabbit: ["#d998ac", "#ffe1e6"], red: ["#668d62", "#deead4"], uu: ["#84b8cc", "#e4f6fb"], mum: ["#c6aa66", "#fff2cd"], fitness: ["#cf7b6e", "#ffe5dc"] }, [rim, fill] = colors[f.id];
+  ellipse(c, 0, 24, 46, 17, "#80685618");
+  ellipse(c, 0, 20, 47, 20, rim);
+  ellipse(c, 0, 16, 47, 20, "#fffbed", rim);
+  ellipse(c, 0, 16, 39, 15, fill, rim);
+  if (f.id === "rabbit") for (const x of [-32, 32]) {
+    ellipse(c, x, -4, 6, 18, "#ffe1e6", rim);
+    ellipse(c, x, -5, 2, 10, "#eea6b9");
+  }
+  if (f.id === "nian") for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6;
+    ellipse(c, 43 * Math.cos(a), 16 + 17 * Math.sin(a), 1.9, 1.4, "#76a36f");
+  }
+  if (f.id === "orange") for (const x of [-33, 32]) path(c, [[x - 6, 18], [x, 8], [x + 6, 18], [x - 6, 18]], rim, 1.6);
+  if (f.id === "red") for (const x of [-34, 34]) {
+    ellipse(c, x, 16, 4, 4.7, "#da8f88");
+    path(c, [[x - 4, 12], [x, 10], [x + 3, 12]], "#668d62", 1.6);
+    for (const d of [-1, 1]) ellipse(c, x + d * 1.5, 16, 0.55, 0.8, "#ffedc7");
+  }
+  if (f.id === "uu") for (const [x, y, r] of [[-35, 11, 4], [33, 17, 4], [-23, 28, 3]]) star(c, x, y, r, "#9dc9d9");
+  if (f.id === "mum") for (let i = 0; i < 22; i++) {
+    const a = i * Math.PI / 11;
+    ellipse(c, 43 * Math.cos(a), 16 + 17 * Math.sin(a), 3, 1.8, "#fff5dd", rim);
+  }
+  if (f.id === "fitness") for (const x of [-34, 34]) {
+    path(c, [[x - 6, 15], [x + 6, 15]], rim, 2.3);
+    path(c, [[x - 5, 11], [x - 5, 19]], rim, 2.8);
+    path(c, [[x + 5, 11], [x + 5, 19]], rim, 2.8);
+  }
+  path(c, [[-32, 7], [-23, 2], [-13, 0]], "#fffef8", 2.2);
+}
+function rice(c) {
+  ellipse(c, 0, 9, 28, 10, "#ded4b9");
+  box(c, -27, -8, 54, 22, 11, "#fffbed", "#d6c9aa");
+  ellipse(c, 0, -7, 26, 9, "#fffdf5");
+  for (let i = 0; i < 12; i++) ellipse(c, -21 + i * 11 % 43, 1 + i * 7 % 8, 1.4, 0.65, "#ded3b6");
+}
+function drawFriendDish(c, key, x, y, scale = 1) {
+  const f = friendForFood(key);
+  if (!f) return false;
+  c.save();
+  c.translate(x, y);
+  c.scale(scale, scale);
+  c.lineWidth = 1.3;
+  plate(c, f);
+  if (["nian", "uu"].includes(f.id)) {
+    const coffee = f.id === "uu";
+    box(c, -17, -34, 34, 49, [4, 4, 10, 10], coffee ? "#f2fbfa" : "#edf7e8", "#a4b8a5");
+    box(c, -14, -21, 28, 33, [0, 0, 8, 8], coffee ? "#715044" : "#7a9d64", null);
+    ellipse(c, 0, -21, 14, 5, coffee ? "#543c33" : "#66894d");
+    if (coffee) {
+      for (const [xx, yy] of [[-9, -21], [4, -18], [-3, -6]]) {
+        c.save();
+        c.translate(xx, yy);
+        c.rotate(-0.15);
+        box(c, -4, -4, 9, 8, 2, "#d7ece6cc", "#a8c9c6");
+        path(c, [[-2, -2], [2, -3]], "#fffaf1", 1);
+        c.restore();
+      }
+      path(c, [[9, 2], [9, -34], [15, -41]], "#e6ad95", 3.2);
+    } else {
+      ellipse(c, 0, -26, 14, 6, "#fcfbef", "#dfdfc6");
+      for (const [xx, yy] of [[-8, -27], [0, -30], [8, -27]]) ellipse(c, xx, yy, 5, 4, "#fffef4");
+      face(c, 0, -5);
+    }
+    path(c, [[-11, -12], [-11, 5]], "#ffffff77", 2);
+    ellipse(c, 0, -34, 17, 5, null, "#afc5b4");
+  } else if (f.id === "orange") {
+    box(c, -31, -13, 62, 24, 5, "#79503d");
+    box(c, -28, -11, 38, 18, 3, "#b77a45");
+    box(c, -27, -9, 35, 5, 2, "#e6b16c", null);
+    for (let i = 0; i < 6; i++) ellipse(c, -24 + i * 6, -1 + i % 2 * 4, 3, 2, "#ead29e", "#b18758");
+    box(c, 3, -17, 29, 32, 3, "#e9a16a");
+    path(c, [[4, -16], [9, -12], [13, -17], [18, -12], [23, -17], [30, -13]], "#ffe8bd", 2);
+    path(c, [[8, 2], [16, -7], [25, 2]], "#fff1d3", 2);
+    c.fillStyle = "#694e3b";
+    c.font = "700 6px sans-serif";
+    c.textAlign = "center";
+    c.fillText("TRAIL", 18, 10);
+  } else if (f.id === "rabbit") {
+    rice(c);
+    box(c, -30, -23, 60, 23, 10, "#dce5df", "#94aaa7");
+    box(c, -29, -24, 58, 7, 5, "#86a3a3", null);
+    for (let i = 0; i < 6; i++) path(c, [[-23 + i * 9, -17], [-19 + i * 9, -3]], "#f7fbef", 1.8);
+    face(c, 14, -10);
+    ellipse(c, -19, -10, 2, 1, "#b9c9c1");
+  } else if (f.id === "red") {
+    box(c, -25, -25, 50, 38, 3, "#63804f");
+    for (const yy of [-13, -3, 7]) box(c, -25, yy, 50, 3, 0, "#bec99a", null);
+    box(c, -25, -29, 50, 8, 3, "#465f39");
+    ellipse(c, 9, -29, 9, 4, "#faf5df");
+    ellipse(c, 8, -33, 5, 4, "#fffbed");
+    ellipse(c, 12, -35, 3, 3, "#fffbed");
+    path(c, [[-19, -25], [0, -25]], "#819868", 1.2);
+  } else if (f.id === "mum") {
+    rice(c);
+    box(c, -31, -24, 62, 24, 8, "#b98042");
+    box(c, -31, -27, 62, 23, 8, "#e5b76c");
+    for (let i = 0; i < 6; i++) path(c, [[-25 + i * 10, -23], [-20 + i * 10, -9]], "#af7945", 2);
+    for (let i = 0; i < 7; i++) ellipse(c, -22 + i * 7, -21 + i % 2 * 11, 1.8, 1.2, "#f6d596");
+    path(c, [[-24, -24], [-9, -25]], "#ffe7ac", 2);
+  } else {
+    rice(c);
+    box(c, -33, -26, 66, 28, 10, "#8b5540");
+    box(c, -33, -29, 66, 24, 9, "#b37b57");
+    for (let i = 0; i < 6; i++) path(c, [[-26 + i * 10, -26], [-17 + i * 10, -8]], "#694737", 2.2);
+    for (let i = 0; i < 4; i++) path(c, [[-25 + i * 16, -22], [-18 + i * 16, -22]], "#dfbb91", 1.5);
+    ellipse(c, 19, -25, 5, 2, "#92a36c");
+  }
+  c.restore();
+  return true;
+}
+
 // src/renderer-cozy.js
+function drawSushi2(c, key, x, y, scale = 1) {
+  if (!drawFriendDish(c, key, x, y, scale)) drawSushi(c, key, x, y, scale);
+}
 function dishSvg(i) {
   const rim = ["#b4c6ad", "#dcb5a2", "#c3d3d7", "#d8c28c"][i % 4];
   return `<svg class="dish-svg" viewBox="0 0 102 65" aria-hidden="true"><ellipse cx="51" cy="43" rx="48" ry="20" fill="#806856" opacity=".10"/><ellipse cx="51" cy="36" rx="49" ry="23" fill="#dfd1b5"/><ellipse cx="51" cy="32" rx="49" ry="23" fill="#fffbef" stroke="${rim}" stroke-width="2.2"/><ellipse cx="51" cy="31" rx="41" ry="17" fill="#fbf5e3" stroke="${rim}" stroke-width="1.1"/><path d="M13 31q4-13 26-15" stroke="#fffefa" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="23" cy="45" r="1.2" fill="${rim}"/><circle cx="30" cy="48" r="1" fill="${rim}"/><circle cx="80" cy="21" r="1.2" fill="${rim}"/></svg>`;
@@ -5554,7 +6340,7 @@ var Renderer2 = class extends Renderer {
   }
   draw(game2, clock, dt = 0) {
     this.resize();
-    const g = paintRoom(this.canvas, game2.beltTravel ?? 0);
+    const g = paintRoom(this.canvas, (game2.beltTravel ?? 0) + (game2.restTravel || 0));
     if (!g) return;
     const small = this.w < 800, liveIds = new Set(game2.foods.map((f) => f.id));
     for (const [id, node] of this.nodes) if (!liveIds.has(id)) {
@@ -5563,7 +6349,7 @@ var Renderer2 = class extends Renderer {
     }
     this.targets = [];
     game2.foods.forEach((food, index) => {
-      const spec = CATALOG2[food.key], point = g.point(food.p), allergic = spec.allergen === game2.character.allergy;
+      const spec = CATALOG3[food.key], point = g.point(food.p + (game2.restTravel || 0)), allergic = spec.allergen === game2.character.allergy;
       let button = this.nodes.get(food.id);
       if (!button) {
         button = document.createElement("button");
@@ -5577,8 +6363,9 @@ var Renderer2 = class extends Renderer {
       if (button.dataset.key !== food.key) {
         const canvas = button.querySelector("canvas"), ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawSushi(ctx, food.key, 63, 53, 0.91);
+        drawSushi2(ctx, food.key, 63, 53, 0.91);
         button.dataset.key = food.key;
+        button.classList.toggle("friend-plate", !!spec.friendId);
       }
       const number = index < 8 ? index + 1 : null, grade = rarityOf(spec);
       button.querySelector(".dish-number").textContent = number ?? "";
@@ -5589,10 +6376,10 @@ var Renderer2 = class extends Renderer {
       rarity.textContent = grade === "treasure" ? "\u73CD" : grade === "select" ? "\u9009" : "";
       rarity.hidden = allergic || grade === "common";
       rarity.dataset.rarity = grade;
-      const change = Math.round(spec.fullness * (spec.fullness > 0 ? game2.character.portion * (game2.rulesVersion?.startsWith("1.2.") ? 0.65 : 1) : 1));
+      const change = Math.round(spec.fullness * (spec.fullness > 0 ? game2.character.portion * (isCasualVersion(game2.rulesVersion) ? 0.65 : 1) : 1));
       button.setAttribute("aria-label", `\u54C1\u5C1D${spec.name}${allergic ? "\uFF0C\u672C\u5C40\u5FCC\u53E3" : ""}\uFF0C\u9971\u8179${change > 0 ? "+" : ""}${change}${spec.collectible ? "\uFF0C" + RARITIES[grade].name : ""}`);
       button.title = button.getAttribute("aria-label");
-      button.disabled = game2.phase !== "playing";
+      button.disabled = game2.phase !== "playing" && !(isCasualVersion(game2.rulesVersion) && game2.phase === "paused" && game2.autoRest);
       button.style.left = point.x + "px";
       button.style.top = point.y + "px";
       button.style.zIndex = String(Math.round(point.y));
@@ -5767,7 +6554,7 @@ async function watchIdentity(listener) {
 
 // src/shop-experience.js
 var $ = (id) => document.getElementById(id);
-function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchived, getLocalSaveFailure, drawSushi: drawSushi2, playSound }) {
+function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchived, getLocalSaveFailure, drawSushi: drawSushi3, playSound }) {
   let storage;
   try {
     storage = localStorage;
@@ -5816,7 +6603,7 @@ function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchi
   }
   function paint() {
     useOwner();
-    const game2 = getGame(), run = getRun(), profile = social2.profile, pending = pendingIds(), p = collectionProgress(CATALOG2, getTheme(), profile?.collection, pending);
+    const game2 = getGame(), run = getRun(), profile = social2.profile, pending = pendingIds(), p = collectionProgress(CATALOG3, getTheme(), profile?.collection, pending);
     $("progress-count").textContent = `\u5DF2\u5C1D\u9C9C ${p.count} / ${p.total} \u79CD`;
     $("progress-percent").textContent = p.percent + "%";
     $("progress-fill").style.width = p.percent + "%";
@@ -5848,7 +6635,7 @@ function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchi
   function next() {
     if (active || !queue.length) return;
     active = queue.shift();
-    const food = CATALOG2[active.id], info = discoveryPresentation(food, rarityOf(food)), card = $("discovery-card");
+    const food = CATALOG3[active.id], info = discoveryPresentation(food, rarityOf(food)), card = $("discovery-card");
     card.dataset.kind = info.kind;
     card.hidden = false;
     $("discovery-title").textContent = info.title;
@@ -5856,7 +6643,7 @@ function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchi
     $("discovery-line").textContent = info.line;
     const c = $("discovery-art");
     c.getContext("2d").clearRect(0, 0, c.width, c.height);
-    drawSushi2(c.getContext("2d"), food.id, 55, 46, 0.95);
+    drawSushi3(c.getContext("2d"), food.id, 55, 46, 0.95);
     card.classList.remove("discover-enter");
     void card.offsetWidth;
     card.classList.add("discover-enter");
@@ -5882,8 +6669,8 @@ function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchi
     for (const t of viewTimers.values()) clearTimeout(t);
     viewTimers.clear();
     if (!$("collection-dialog").open) return;
-    observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
+    observer = new IntersectionObserver((entries2) => {
+      for (const entry of entries2) {
         const el = entry.target, id = el.dataset.sushiId;
         if (!entry.isIntersecting || entry.intersectionRatio < 0.6) {
           clearTimeout(viewTimers.get(id));
@@ -5956,21 +6743,21 @@ var RunJournal = class {
     }
   }
   list(kind) {
-    const entries = /* @__PURE__ */ new Map();
+    const entries2 = /* @__PURE__ */ new Map();
     try {
       for (let i = 0; i < this.storage.length; i++) {
         const key = this.storage.key(i);
         if (!key?.startsWith("sushi.run.v12.")) continue;
         try {
           const e = JSON.parse(this.storage.getItem(key));
-          if (e && typeof e.runId === "string" && Array.isArray(e.body?.actions)) entries.set(e.runId, e);
+          if (e && typeof e.runId === "string" && Array.isArray(e.body?.actions)) entries2.set(e.runId, e);
         } catch {
         }
       }
     } catch {
     }
-    for (const [id, e] of this.memory) entries.set(id, e);
-    return [...entries.values()].filter((e) => !kind || e.kind === kind);
+    for (const [id, e] of this.memory) entries2.set(id, e);
+    return [...entries2.values()].filter((e) => !kind || e.kind === kind);
   }
 };
 function retryableStatus(status) {
@@ -6033,9 +6820,9 @@ var SocialClient = class {
   changed() {
     this.onState();
   }
-  async request(path, body) {
+  async request(path2, body) {
     if (!this.api) throw Object.assign(new Error("\u79BB\u7EBF\u6587\u4EF6\u4EC5\u4F9B\u7EC3\u4E60\uFF0C\u8BF7\u6253\u5F00\u5728\u7EBF\u6E38\u620F\u53C2\u4E0E\u4ECA\u65E5\u699C"), { code: "offline" });
-    const publicBoard = path === "/api/leaderboard" && body === void 0;
+    const publicBoard = path2 === "/api/leaderboard" && body === void 0;
     let token = null;
     if (!this.local) {
       try {
@@ -6046,7 +6833,7 @@ var SocialClient = class {
     }
     const authHeaders = token ? { Authorization: "Bearer " + token } : {};
     if (!this.local) authHeaders.apikey = PUBLIC_CONFIG.publishableKey;
-    const response = await fetch(this.api + path, { method: body !== void 0 ? "POST" : "GET", headers: { ...authHeaders, ...body !== void 0 ? { "Content-Type": "application/json" } : {} }, body: body !== void 0 ? JSON.stringify(body) : void 0, credentials: this.local ? "same-origin" : "omit", signal: AbortSignal.timeout(path.endsWith("/finish") ? 2e4 : 12e3) });
+    const response = await fetch(this.api + path2, { method: body !== void 0 ? "POST" : "GET", headers: { ...authHeaders, ...body !== void 0 ? { "Content-Type": "application/json" } : {} }, body: body !== void 0 ? JSON.stringify(body) : void 0, credentials: this.local ? "same-origin" : "omit", signal: AbortSignal.timeout(path2.endsWith("/finish") ? 2e4 : 12e3) });
     let data;
     try {
       data = await response.json();
@@ -6174,7 +6961,7 @@ var SocialClient = class {
     }
   }
   async checkpoint(run, body) {
-    if (!["1.2.0", "1.2.1"].includes(run.rulesVersion)) return;
+    if (!["1.2.0", "1.2.1", "1.4.0"].includes(run.rulesVersion)) return;
     const owner = this.profile?.id;
     this.archiveBusy++;
     this.changed();
@@ -6229,333 +7016,7 @@ var SocialClient = class {
   }
 };
 
-// src/casual-v12.js
-var CASUAL_VERSION = "1.2.0";
-var MenuDeck = class {
-  constructor(rng2, theme) {
-    this.rng = rng2;
-    this.theme = theme;
-    this.sinceSafe = 0;
-    this.sinceHidden = 0;
-    this.sinceTea = 0;
-  }
-  next() {
-    const keys = this.theme.foods;
-    if (this.sinceTea >= 8) {
-      this.sinceTea = 0;
-      this.sinceSafe++;
-      this.sinceHidden++;
-      return "tea";
-    }
-    let key;
-    if (this.sinceSafe >= 2) key = keys.find((k) => CATALOG[k].fullness > 0 && !CATALOG[k].allergen);
-    else if (this.sinceHidden >= 35) key = keys.find((k) => CATALOG[k].rarity === "hidden");
-    else {
-      let n = this.rng() * keys.reduce((s, k) => s + CATALOG[k].weight, 0);
-      key = keys.find((k) => (n -= CATALOG[k].weight) < 0) || keys.at(-1);
-    }
-    this.sinceSafe = CATALOG[key].fullness > 0 && !CATALOG[key].allergen ? 0 : this.sinceSafe + 1;
-    this.sinceTea = key === "tea" ? 0 : this.sinceTea + 1;
-    this.sinceHidden = CATALOG[key].rarity === "hidden" ? 0 : this.sinceHidden + 1;
-    return key;
-  }
-};
-var CasualGame = class extends Game {
-  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION } = {}) {
-    super({ seed, characterId });
-    if (menuEdition !== MENU_EDITION) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
-    this.rulesVersion = CASUAL_VERSION;
-    this.menuEdition = menuEdition;
-    this.theme = themeById(themeId);
-    this.deck = new MenuDeck(seededRandom(this.seed), this.theme);
-    this.knownFoods = new Set(knownFoods);
-    this.discoveries = /* @__PURE__ */ new Set();
-    this.lastActivity = 0;
-    this.autoRest = false;
-    this.checkoutRequested = false;
-  }
-  start() {
-    if (this.phase !== "card") return false;
-    this.phase = "playing";
-    const safe = this.theme.foods.find((k) => CATALOG[k].fullness > 0 && !CATALOG[k].allergen);
-    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
-    this.nextSpawn = 2;
-    return true;
-  }
-  tick(dt) {
-    this.time += dt;
-    if (this.time - this.lastActivity >= 20) {
-      this.autoRest = true;
-      this.phase = "paused";
-      return;
-    }
-    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
-    const unsafe = this.fullness < 15 || this.fullness > 100;
-    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
-    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
-    this.beltTravel += 0.035 * dt;
-    for (const f of this.foods) {
-      f.p = (f.p + 0.035 * dt) % 1;
-      f.distance += 0.035 * dt;
-    }
-    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
-    this.nextSpawn -= dt;
-    if (this.nextSpawn <= 0) {
-      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
-        this.addFood(this.deck.next());
-        this.nextSpawn = 2;
-      } else this.nextSpawn = 0;
-    }
-    this.refreshScore();
-  }
-  resume() {
-    if (!super.resume()) return false;
-    this.lastActivity = this.time;
-    this.autoRest = false;
-    return true;
-  }
-  eat(id) {
-    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
-    const index = this.foods.findIndex((f) => f.id === id);
-    if (index < 0) return null;
-    const item = this.foods[index], food = CATALOG[item.key];
-    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
-    this.foods.splice(index, 1);
-    this.lastBite = this.time;
-    this.lastActivity = this.time;
-    this.eaten++;
-    if (food.collectible) this.sushiEaten++;
-    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
-    this.fullness = clamp(this.fullness + change, 0, 120);
-    const allergy = food.allergen === this.character.allergy;
-    let text2, type, newDiscovery = false;
-    if (allergy) {
-      const shielded = this.shield > 0;
-      if (shielded) this.shield--;
-      else this.hp = Math.max(1, this.hp - 4);
-      this.allergies++;
-      this.combo = 0;
-      type = "allergy";
-      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
-    } else if (food.collectible) {
-      const comfy = this.fullness >= 25 && this.fullness <= 85;
-      this.combo = comfy ? this.combo + 1 : 0;
-      this.bestCombo = Math.max(this.bestCombo, this.combo);
-      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
-      if (comfy) {
-        this.perfects++;
-        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
-      }
-      type = comfy ? "perfect" : "eat";
-      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
-      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
-      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
-      this.lastFood = item.key;
-    } else {
-      type = "tea";
-      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
-    }
-    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
-      this.discoveries.add(item.key);
-      this.bonusScore += 25;
-      newDiscovery = true;
-      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
-    }
-    this.refreshScore();
-    const event = { type, text: text2, item, change, newDiscovery };
-    this.events.push(event);
-    if (this.events.length > 32) this.events.shift();
-    return event;
-  }
-  checkout() {
-    if (!["playing", "paused"].includes(this.phase)) return false;
-    this.checkoutRequested = true;
-    this.phase = "gameover";
-    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
-    return true;
-  }
-  snapshot() {
-    return { ...super.snapshot(), version: CASUAL_VERSION, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest };
-  }
-};
-
-// src/casual-v121.js
-var CASUAL_VERSION2 = "1.2.1";
-var MenuDeck2 = class {
-  constructor(rng2, theme, knownFoods = []) {
-    this.rng = rng2;
-    this.theme = theme;
-    this.known = new Set(knownFoods);
-    this.sinceSafe = 0;
-    this.sinceTea = 0;
-    this.sinceSelect = 0;
-    this.sinceTreasure = 0;
-    this.bags = /* @__PURE__ */ new Map();
-    this.lastDraw = null;
-  }
-  drawTier() {
-    if (this.sinceTreasure >= 39) return "treasure";
-    if (this.sinceSelect >= 7) return "select";
-    const p = this.rng();
-    return p < 0.72 ? "common" : p < 0.95 ? "select" : "treasure";
-  }
-  next() {
-    if (this.sinceTea >= 7) {
-      this.sinceTea = 0;
-      this.lastDraw = { kind: "tea" };
-      return "tea";
-    }
-    const tier = this.drawTier(), safe = this.sinceSafe >= 2;
-    const positive = this.theme.foods.filter((k) => CATALOG2[k].fullness > 0), feature = this.theme.featured || [], scope = feature.length && this.rng() < 0.35 ? "featured" : "permanent";
-    let candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (scope === "featured" ? feature.includes(k) : !feature.includes(k)) && (!safe || !CATALOG2[k].allergen));
-    if (!candidates.length) candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (!safe || !CATALOG2[k].allergen));
-    if (!candidates.length) candidates = positive.filter((k) => !safe || !CATALOG2[k].allergen);
-    const bagKey = tier + ":" + scope + ":" + safe;
-    let bag = this.bags.get(bagKey);
-    if (!bag?.length) {
-      bag = [...candidates];
-      for (let i = bag.length - 1; i > 0; i--) {
-        const j = Math.floor(this.rng() * (i + 1));
-        [bag[i], bag[j]] = [bag[j], bag[i]];
-      }
-      bag.sort((a, b) => Number(!this.known.has(a)) - Number(!this.known.has(b)));
-      this.bags.set(bagKey, bag);
-    }
-    const key = bag.pop(), actual = rarityOf(CATALOG2[key]);
-    this.sinceTea++;
-    this.sinceSafe = CATALOG2[key].allergen ? this.sinceSafe + 1 : 0;
-    this.sinceTreasure = actual === "treasure" ? 0 : this.sinceTreasure + 1;
-    this.sinceSelect = actual !== "common" ? 0 : this.sinceSelect + 1;
-    this.lastDraw = { kind: "food", tier: actual, requestedTier: tier, safe, scope };
-    return key;
-  }
-};
-var CasualGame2 = class extends Game {
-  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION2 } = {}) {
-    super({ seed, characterId });
-    if (menuEdition !== MENU_EDITION2) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
-    this.rulesVersion = CASUAL_VERSION2;
-    this.menuEdition = menuEdition;
-    this.theme = themeById2(themeId);
-    this.deck = new MenuDeck2(seededRandom(this.seed), this.theme, knownFoods);
-    this.knownFoods = new Set(knownFoods);
-    this.discoveries = /* @__PURE__ */ new Set();
-    this.lastActivity = 0;
-    this.autoRest = false;
-    this.checkoutRequested = false;
-  }
-  start() {
-    if (this.phase !== "card") return false;
-    this.phase = "playing";
-    const safe = this.theme.foods.find((k) => CATALOG2[k].fullness > 0 && !CATALOG2[k].allergen);
-    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
-    this.nextSpawn = 2;
-    return true;
-  }
-  tick(dt) {
-    this.time += dt;
-    if (this.time - this.lastActivity >= 20) {
-      this.autoRest = true;
-      this.phase = "paused";
-      return;
-    }
-    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
-    const unsafe = this.fullness < 15 || this.fullness > 100;
-    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
-    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
-    this.beltTravel += 0.035 * dt;
-    for (const f of this.foods) {
-      f.p = (f.p + 0.035 * dt) % 1;
-      f.distance += 0.035 * dt;
-    }
-    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
-    this.nextSpawn -= dt;
-    if (this.nextSpawn <= 0) {
-      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
-        this.addFood(this.deck.next());
-        this.nextSpawn = 2;
-      } else this.nextSpawn = 0;
-    }
-    this.refreshScore();
-  }
-  resume() {
-    if (!super.resume()) return false;
-    this.lastActivity = this.time;
-    this.autoRest = false;
-    return true;
-  }
-  eat(id) {
-    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
-    const index = this.foods.findIndex((f) => f.id === id);
-    if (index < 0) return null;
-    const item = this.foods[index], food = CATALOG2[item.key];
-    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
-    this.foods.splice(index, 1);
-    this.lastBite = this.time;
-    this.lastActivity = this.time;
-    this.eaten++;
-    if (food.collectible) this.sushiEaten++;
-    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
-    this.fullness = clamp(this.fullness + change, 0, 120);
-    const allergy = food.allergen === this.character.allergy;
-    let text2, type, newDiscovery = false;
-    if (allergy) {
-      const shielded = this.shield > 0;
-      if (shielded) this.shield--;
-      else this.hp = Math.max(1, this.hp - 4);
-      this.allergies++;
-      this.combo = 0;
-      type = "allergy";
-      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
-    } else if (food.collectible) {
-      const comfy = this.fullness >= 25 && this.fullness <= 85;
-      this.combo = comfy ? this.combo + 1 : 0;
-      this.bestCombo = Math.max(this.bestCombo, this.combo);
-      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
-      if (comfy) {
-        this.perfects++;
-        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
-      }
-      type = comfy ? "perfect" : "eat";
-      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
-      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
-      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
-      this.lastFood = item.key;
-    } else {
-      type = "tea";
-      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
-    }
-    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
-      this.discoveries.add(item.key);
-      this.bonusScore += 25;
-      newDiscovery = true;
-      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
-    }
-    this.refreshScore();
-    const event = { type, text: text2, item, change, newDiscovery };
-    this.events.push(event);
-    if (this.events.length > 32) this.events.shift();
-    return event;
-  }
-  checkout() {
-    if (!["playing", "paused"].includes(this.phase)) return false;
-    this.checkoutRequested = true;
-    this.phase = "gameover";
-    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
-    return true;
-  }
-  snapshot() {
-    return { ...super.snapshot(), version: CASUAL_VERSION2, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest };
-  }
-};
-
-// src/casual-engine.js
-var isCasualVersion = (v) => ["1.2.0", "1.2.1"].includes(v);
-function createCasual(options = {}) {
-  return new (options.rulesVersion === "1.2.0" ? CasualGame : CasualGame2)(options);
-}
-
-// src/run-state.js
+// src/run-state-v14.js
 function rebuildActiveRun(entry) {
   const ticks = entry?.body?.ticks, actions = entry?.body?.actions;
   if (!entry?.run || !Number.isSafeInteger(ticks) || ticks < 0 || ticks > 6 * 3600 * 60 || !Array.isArray(actions) || actions.length > 25e3) throw new Error("\u4E0A\u6B21\u5BF9\u5C40\u8BB0\u5F55\u4E0D\u5B8C\u6574");
@@ -6564,7 +7025,7 @@ function rebuildActiveRun(entry) {
     if (!Array.isArray(a) || a.length !== 2 || !Number.isSafeInteger(a[0]) || a[0] < previous || a[0] > ticks || !Number.isSafeInteger(a[1]) || a[1] < (isCasualVersion(entry.run.rulesVersion) ? 0 : 1)) throw new Error("\u4E0A\u6B21\u5BF9\u5C40\u8BB0\u5F55\u65E0\u6548");
     previous = a[0];
   }
-  const g = isCasualVersion(entry.run.rulesVersion) ? createCasual({ rulesVersion: entry.run.rulesVersion, seed: entry.run.seed, themeId: entry.run.themeId, menuEdition: entry.run.menuEdition, knownFoods: entry.run.knownFoods }) : new Game({ seed: entry.run.seed });
+  const g = isCasualVersion(entry.run.rulesVersion) ? createCasual({ rulesVersion: entry.run.rulesVersion, seed: entry.run.seed, themeId: entry.run.themeId, menuEdition: entry.run.menuEdition, knownFoods: entry.run.knownFoods, friendProfile: entry.run.friendProfile }) : new Game({ seed: entry.run.seed });
   g.start();
   let i = 0;
   for (let tick = 0; tick <= ticks; tick++) {
@@ -6579,6 +7040,10 @@ function rebuildActiveRun(entry) {
     if (g.phase !== "playing") throw new Error("\u5DF2\u7ED3\u675F\u7684\u5BF9\u5C40\u4E0D\u80FD\u7EE7\u7EED");
     g.step(STEP);
   }
+  if (entry.run.rulesVersion === "1.4.0") {
+    g.rest();
+    g.restTravel = Number.isFinite(entry.presentation?.restTravel) ? entry.presentation.restTravel % 1 : 0;
+  }
   return g;
 }
 
@@ -6592,16 +7057,16 @@ var menuPage = 0;
 var collectionPage = 0;
 var collectionPaintSignature = "";
 var collectionFilters = { theme: "all", rarity: "all", sort: "recent" };
-var collectionMenuName = (t) => ({ classic: "\u5E38\u9A7B\u83DC\u5355", "first-taste": "\u672C\u671F\u83DC\u5355", autumn: "\u5F80\u671F\u83DC\u5355" })[t.id] || t.name;
-var selectedTheme = "classic";
+var collectionMenuName = (t) => ({ classic: "\u5E38\u9A7B\u83DC\u5355", "first-taste": "\u672C\u671F\u83DC\u5355", autumn: "\u5F80\u671F\u83DC\u5355", "friends-special": "UU\u548C\u5979\u7684\u670B\u53CB\u4EEC" })[t.id] || t.name;
+var selectedTheme = "friends-special";
 var themeChosen = false;
 var menuServerTime = null;
 var checkpointTimer = null;
 var checkpointBusy = false;
 try {
-  selectedTheme = localStorage.getItem("sushi.theme.v12") || "classic";
+  selectedTheme = localStorage.getItem("sushi.theme.v12") || "friends-special";
   themeChosen = !!localStorage.getItem("sushi.theme.v12");
-  themeById2(selectedTheme);
+  themeById3(selectedTheme);
 } catch {
   selectedTheme = "classic";
 }
@@ -6613,6 +7078,13 @@ var lastFrame = performance.now();
 var accumulator = 0;
 var toastTimer;
 var ended = false;
+var practiceRun = null;
+var autoRestoreOnLoad = true;
+var restoreAttempt = "";
+var lastSavedSignature = "";
+var animationFrame = 0;
+var lease = new RunLease();
+var loopRun = () => isCasual(game);
 var sounds = new AudioManager({ onChange: () => soundUI() });
 var social = new SocialClient();
 var playerId = social.playerId;
@@ -6624,7 +7096,7 @@ var lastReceipt = null;
 var boardBusy = false;
 var clockAnchor = null;
 var identityWarning = "";
-var shop = shopExperience({ social, getGame: () => game, getRun: () => onlineRun, getTheme: displayTheme, getLocalSaveFailure: () => localSaveFailed, getUnarchived: () => onlineRun && ["playing", "paused"].includes(game?.phase) ? Math.max(0, game.sushiEaten - (syncedEaten.get(onlineRun.runId) || 0)) : 0, drawSushi, playSound: (kind) => sounds.discovery(kind) });
+var shop = shopExperience({ social, getGame: () => game, getRun: () => onlineRun, getTheme: displayTheme, getLocalSaveFailure: () => localSaveFailed, getUnarchived: () => onlineRun && ["playing", "paused"].includes(game?.phase) ? Math.max(0, game.sushiEaten - (syncedEaten.get(onlineRun.runId) || 0)) : 0, drawSushi: drawSushi2, playSound: (kind) => sounds.discovery(kind) });
 var physique = (c) => c.id === "momo" ? "\u6742\u98DF\u578B" : c.id === "taro" ? "\u5FEB\u6D88\u5316\u578B" : c.id === "yuzu" ? "\u6162\u6D88\u5316\u578B" : "\u6E05\u723D\u578B";
 preview.start();
 preview.character = { ...preview.character, allergy: "none" };
@@ -6669,10 +7141,10 @@ function menu() {
   menuPage = Math.min(menuPage, pages - 1);
   const shown = keys.slice(menuPage * 12, menuPage * 12 + 12);
   $2("menu").innerHTML = shown.map((key) => {
-    const f = CATALOG2[key], grade = RARITIES[rarityOf(f)];
+    const f = CATALOG3[key], grade = RARITIES[rarityOf(f)];
     return `<div class="menu-item ${game && f.allergen === game.character.allergy ? "allergic" : ""}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}<b>${f.fullness > 0 ? "+" : ""}${Math.round(f.fullness * (f.fullness > 0 ? (game?.character.portion || 1) * (game && !isCasual(game) ? 1 : 0.65) : 1))} <small style="color:${grade?.color || "#66886d"}">${f.collectible ? grade?.name || "\u65E5\u5E38" : "\u8336\u996E"}</small></b></span></div>`;
   }).join("");
-  for (const el of $2("menu").children) drawSushi(el.querySelector("canvas").getContext("2d"), el.dataset.food, 50, 48, 1.2);
+  for (const el of $2("menu").children) drawSushi2(el.querySelector("canvas").getContext("2d"), el.dataset.food, 50, 48, 1.2);
   $2("menu-page-info").textContent = `${keys.length}\u6B3E\u9910\u54C1 \xB7 ${menuPage + 1}/${pages}\u9875`;
   $2("menu-prev").disabled = menuPage === 0;
   $2("menu-next").disabled = menuPage >= pages - 1;
@@ -6698,15 +7170,22 @@ function showOverlay(html) {
 }
 function home() {
   saveProgress();
+  lease.release();
   game = null;
   onlineRun = null;
+  practiceRun = null;
   ended = false;
   $2("pause").disabled = true;
   characterUI();
   updateUI();
   shop.paint();
-  showOverlay(`<p class="eyebrow">\u968F\u65F6\u5165\u5EA7 \xB7 \u6162\u6162\u6536\u85CF</p><h2>\u5BFF\u53F8<br><em>\u522B\u5403\u6491\uFF01</em></h2><div class="english-title">SUSHI PANIC</div><p>${social.profile ? "\u6B22\u8FCE\u56DE\u6765\uFF0C" + escapeHtml(playerId) + "\u3002\u4ECA\u5929\u60F3\u5C1D\u54EA\u4E00\u76D8\uFF1F" : "\u53D6\u4E2A\u6635\u79F0\uFF0C\u6765\u5403\u51E0\u76D8\u559C\u6B22\u7684\u5BFF\u53F8\u3002"}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">\u4F60\u7684\u6635\u79F0</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u6216\u6570\u5B57" value="${escapeHtml(playerId)}" required><label class="rank-choice"><input type="checkbox" id="ranked-choice" ${rankedChoice ? "checked" : ""}> \u53C2\u52A0\u4ECA\u65E5\u79EF\u5206\u699C\uFF08\u53EF\u9009\uFF09</label><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">\u5165\u5EA7\uFF0C\u5F00\u5403\uFF01 <span aria-hidden="true">\u2192</span></button></form><p class="identity-note">${social.api ? "\u81EA\u52A8\u8BB0\u4F4F\u6B64\u6D4F\u89C8\u5668\u7684\u533F\u540D\u8EAB\u4EFD \xB7 \u5141\u8BB8\u91CD\u540D" : "\u5728\u7EBF\u8EAB\u4EFD\u670D\u52A1\u5F85\u63A5\u901A \xB7 \u5F53\u524D\u53EF\u7EC3\u4E60"}<br>\u7ED1\u5B9A\u90AE\u7BB1\u540E\u53EF\u8DE8\u8BBE\u5907\u53D6\u56DE\u6536\u85CF\uFF1B\u672A\u7ED1\u5B9A\u65F6\uFF0C\u8BF7\u4FDD\u7559\u6D4F\u89C8\u5668\u6570\u636E\u3002</p>${identityWarning ? '<button id="reset-identity" class="text-button">\u4F7F\u7528\u65B0\u7684\u533F\u540D\u8EAB\u4EFD</button>' : ""}`);
-  const saved = social.journal.list("active").filter((e) => e.owner === social.profile?.id).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
+  showOverlay(`<p class="eyebrow">\u968F\u65F6\u5165\u5EA7 \xB7 \u6162\u6162\u6536\u85CF</p><h2>\u5BFF\u53F8<br><em>\u8F6C\u8F6C\uFF01</em></h2><div class="english-title">SUSHI LOOP</div><p>${social.profile ? "\u6B22\u8FCE\u56DE\u6765\uFF0C" + escapeHtml(playerId) + "\u3002\u4ECA\u5929\u60F3\u5C1D\u54EA\u4E00\u76D8\uFF1F" : "\u53D6\u4E2A\u6635\u79F0\uFF0C\u6765\u5403\u51E0\u76D8\u559C\u6B22\u7684\u5BFF\u53F8\u3002"}</p><form id="entry-form"><label class="player-id-label" for="player-id-input">\u4F60\u7684\u6635\u79F0</label><input id="player-id-input" class="player-id-input" maxlength="12" autocomplete="nickname" placeholder="2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u6216\u6570\u5B57" value="${escapeHtml(playerId)}" required><label class="rank-choice"><input type="checkbox" id="ranked-choice" ${rankedChoice ? "checked" : ""}> \u53C2\u52A0\u4ECA\u65E5\u79EF\u5206\u699C\uFF08\u53EF\u9009\uFF09</label><p id="entry-error" class="entry-error" role="status">${escapeHtml(identityWarning)}</p><button class="primary-button" id="new-game" type="submit">\u5165\u5EA7\uFF0C\u5F00\u5403\uFF01 <span aria-hidden="true">\u2192</span></button></form><p class="identity-note">${social.api ? "\u81EA\u52A8\u8BB0\u4F4F\u6B64\u6D4F\u89C8\u5668\u7684\u533F\u540D\u8EAB\u4EFD \xB7 \u5141\u8BB8\u91CD\u540D" : "\u5728\u7EBF\u8EAB\u4EFD\u670D\u52A1\u5F85\u63A5\u901A \xB7 \u5F53\u524D\u53EF\u7EC3\u4E60"}<br>\u7ED1\u5B9A\u90AE\u7BB1\u540E\u53EF\u8DE8\u8BBE\u5907\u53D6\u56DE\u6536\u85CF\uFF1B\u672A\u7ED1\u5B9A\u65F6\uFF0C\u8BF7\u4FDD\u7559\u6D4F\u89C8\u5668\u6570\u636E\u3002</p>${identityWarning ? '<button id="reset-identity" class="text-button">\u4F7F\u7528\u65B0\u7684\u533F\u540D\u8EAB\u4EFD</button>' : ""}`);
+  const saved = social.journal.list("active").filter((e) => e.owner === (social.profile?.id || "practice")).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
+  if (autoRestoreOnLoad && saved?.run && isCasualVersion(saved.run.rulesVersion) && restoreAttempt !== saved.runId) {
+    autoRestoreOnLoad = false;
+    restoreAttempt = saved.runId;
+    queueMicrotask(() => restoreProgress(saved));
+  }
   if (saved) {
     const button = document.createElement("button");
     button.id = "restore-run";
@@ -6741,7 +7220,8 @@ async function beginRun(id) {
   }
   try {
     const legacyTest = new URLSearchParams(location.search).get("test") === "1" && new URLSearchParams(location.search).get("casual") !== "1";
-    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.2.1", themeId: selectedTheme, ranked: rankedChoice });
+    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.4.0", themeId: selectedTheme, ranked: rankedChoice });
+    if (run.runId && !await lease.acquire(run.runId)) throw new Error("\u8FD9\u4E00\u684C\u5728\u53E6\u4E00\u4E2A\u7A97\u53E3\u5F00\u7740\uFF0C\u8BF7\u56DE\u5230\u539F\u7A97\u53E3\u3002");
     playerId = social.playerId;
     identityWarning = "";
     newGame(run.runId ? { seed: run.seed, characterId: run.characterId, onlineRun: run, legacy: !isCasualVersion(run.rulesVersion) } : {});
@@ -6761,11 +7241,16 @@ async function beginRun(id) {
   }
 }
 function newGame(options = {}) {
+  autoRestoreOnLoad = false;
   saveProgress();
   if (!playerId && new URLSearchParams(location.search).get("test") === "1") playerId = "\u6D4B\u8BD5\u98DF\u5BA2";
   const run = options.onlineRun;
-  game = options.legacy ? new Game({ seed: options.seed ?? newSeed(), characterId: options.characterId }) : createCasual({ rulesVersion: run?.rulesVersion || "1.2.1", seed: options.seed ?? newSeed(), characterId: options.characterId, themeId: run?.themeId || selectedTheme, knownFoods: run?.knownFoods || social.profile?.collection?.map((c2) => c2.sushiId) || [], menuEdition: run?.menuEdition });
+  game = options.legacy ? new Game({ seed: options.seed ?? newSeed(), characterId: options.characterId }) : createCasual({ rulesVersion: run?.rulesVersion || "1.4.0", seed: options.seed ?? newSeed(), characterId: options.characterId, themeId: run?.themeId || selectedTheme, knownFoods: run?.knownFoods || social.profile?.collection?.map((c2) => c2.sushiId) || [], menuEdition: run?.menuEdition, friendProfile: run?.friendProfile || friendSnapshot({ id: social.profile?.id, nickname: playerId }) });
   onlineRun = options.onlineRun || null;
+  practiceRun = onlineRun ? null : { runId: "practice-" + crypto.randomUUID(), online: false, seed: game.seed, rulesVersion: game.rulesVersion, themeId: game.theme?.id, menuEdition: game.menuEdition, knownFoods: [...game.knownFoods || []], friendProfile: game.friendProfile };
+  if (practiceRun) lease.acquire(practiceRun.runId).then((ok) => {
+    if (ok) saveProgress();
+  });
   activeTicks = 0;
   actionLog = [];
   ended = false;
@@ -6780,6 +7265,20 @@ function newGame(options = {}) {
   drawPortrait($2("card-portrait"), c);
   $2("start-game").onclick = startGame;
   paintNetwork();
+}
+function enterRest() {
+  if (!loopRun() || !["playing", "paused"].includes(game.phase)) return;
+  if (!game.autoRest || game.phase === "playing") {
+    if (game.rest) game.rest();
+    else {
+      game.pause();
+      game.autoRest = true;
+    }
+    accumulator = 0;
+    saveProgress();
+  }
+  if (!document.querySelector("dialog[open]")) $2("overlay").classList.add("hidden");
+  updateUI();
 }
 function startGame() {
   if (!game?.start()) return;
@@ -6812,14 +7311,19 @@ function pauseGame(reason = "\u5BFF\u53F8\u4F1A\u7B49\u4F60\u3002") {
   updateUI();
 }
 function resumeGame() {
+  if (loopRun() && (activeTicks >= 6 * 3600 * 60 || actionLog.length >= 24998)) {
+    toast("\u8FD9\u684C\u7684\u7528\u9910\u8BB0\u5F55\u6EE1\u5566\uFF0C\u7ED3\u8D26\u4FDD\u5B58\u540E\u518D\u6765\u4E00\u684C\u3002");
+    return;
+  }
   if (!game?.resume()) return;
-  if (isCasual(game) && onlineRun) actionLog.push([activeTicks, 0]);
+  if (isCasual(game) && (onlineRun || practiceRun)) actionLog.push([activeTicks, 0]);
   $2("overlay").classList.add("hidden");
   accumulator = 0;
   lastFrame = performance.now();
   updateUI();
 }
 function finish() {
+  if (practiceRun) social.journal.remove(practiceRun.runId);
   if (ended || !game) return;
   ended = true;
   $2("pause").disabled = true;
@@ -6896,11 +7400,11 @@ function applyReceipt(result) {
 }
 async function shareScore() {
   const r = lastReceipt;
-  const text2 = r ? `\u{1F363} SUSHI PANIC\u300A\u5BFF\u53F8\u522B\u5403\u6491\uFF01\u300B
+  const text2 = r ? `\u{1F363} SUSHI LOOP\u300A\u5BFF\u53F8\u8F6C\u8F6C\uFF01\u300B
 \u6211\u5728 ${r.day} \u62FF\u4E0B\u4E86 ${r.score} \u5206\uFF01
 ${r.rank ? `\u5F53\u5929\u5168\u7403\u6392\u540D\u7B2C ${r.rank} \u540D\uFF01\uFF08\u5317\u4EAC\u65F6\u95F4 ${bjTime(r.rankQueriedAt)} \u67E5\u8BE2\uFF09` : "\u672C\u5C40\u4EC5\u6536\u85CF\uFF0C\u672A\u53C2\u4E0E\u4ECA\u65E5\u6392\u540D\u3002"}
 \u6562\u4E0D\u6562\u6765\u6311\u6218\uFF1F
-\u6E38\u620F\u94FE\u63A5\uFF1A${location.origin + location.pathname}` : `\u{1F363} SUSHI PANIC\u300A\u5BFF\u53F8\u522B\u5403\u6491\uFF01\u300B
+\u6E38\u620F\u94FE\u63A5\uFF1A${location.origin + location.pathname}` : `\u{1F363} SUSHI LOOP\u300A\u5BFF\u53F8\u8F6C\u8F6C\uFF01\u300B
 \u6211\u521A\u5B8C\u6210\u4E00\u5C40\u5BFF\u53F8\u6311\u6218\uFF0C\u6562\u4E0D\u6562\u6765\u8BD5\u8BD5\uFF1F
 \u672C\u5C40\u5C1A\u65E0\u5DF2\u786E\u8BA4\u7684\u5168\u7403\u6392\u540D\u3002
 \u6E38\u620F\u94FE\u63A5\uFF1A${location.protocol === "file:" ? "\u8BF7\u4F7F\u7528\u5728\u7EBF\u7248\u5206\u4EAB" : location.origin + location.pathname}`;
@@ -6945,7 +7449,7 @@ function paintBoard(board) {
   $2("board-updated").textContent = "\u6392\u540D\u67E5\u8BE2\uFF1A\u5317\u4EAC\u65F6\u95F4 " + bjTime(board.serverTime) + " \xB7 \u53EF\u4E3B\u52A8\u5237\u65B0\uFF0C\u6D4F\u89C8\u65F6\u6BCF60\u79D2\u540C\u6B65";
   $2("mini-board-list").innerHTML = board.entries.slice(0, 5).map((row) => `<li class="${row.playerId === own ? "is-me" : ""}"><span class="mini-position">${row.rank === 1 ? '<span class="mini-medal">\u{1F363}<small>\u5927\u80C3\u738B</small></span>' : row.rank}</span><strong>${escapeHtml(row.nickname)}</strong><b>${row.score}</b></li>`).join("");
   $2("mini-board-status").textContent = board.entries.length ? local ? "\u672C\u5730\u8054\u8C03\u699C \xB7 \u975E\u5168\u7403\u6210\u7EE9" : "\u4ECA\u65E5\u524D\u4E94\u540D \xB7 \u5B8C\u6574\u699C\u5355 TOP 100" : "\u4ECA\u5929\u7684\u7B2C\u4E00\u5F20\u5C0F\u9910\u5238\uFF0C\u8FD8\u5728\u7B49\u4F60\u3002";
-  for (const c of document.querySelectorAll("[data-medal]")) drawSushi(c.getContext("2d"), "salmon", 40, 33, 0.68);
+  for (const c of document.querySelectorAll("[data-medal]")) drawSushi2(c.getContext("2d"), "salmon", 40, 33, 0.68);
   tickCountdown();
 }
 async function refreshLeaderboard({ quiet = false } = {}) {
@@ -6998,21 +7502,35 @@ function showLeaderboard() {
 }
 function eatTarget(target) {
   if (!target || !game) return;
+  if ((onlineRun || practiceRun) && (lease.id !== (onlineRun || practiceRun).runId || !lease.valid())) {
+    enterRest();
+    toast("\u8FD9\u4E00\u684C\u5DF2\u5728\u53E6\u4E00\u4E2A\u7A97\u53E3\u7EE7\u7EED\uFF0C\u8BF7\u56DE\u539F\u7A97\u53E3\u64CD\u4F5C", true);
+    return;
+  }
+  if (loopRun() && game.autoRest && game.phase === "paused" && !document.querySelector("dialog[open]")) {
+    resumeGame();
+    if (game.phase !== "playing") return;
+  }
   const e = game.eat(target.id);
   if (!e) {
     if (isCasual(game)) toast(game.fullness > 100 ? "\u80C3\u91CC\u6EE1\u6EE1\u7684\uFF0C\u5148\u559D\u8336\u6216\u4F11\u606F" : target.key === "tea" ? "\u73B0\u5728\u4E0D\u9700\u8981\u559D\u8336\uFF0C\u6311\u4E00\u76D8\u5BFF\u53F8\u5427" : "\u6162\u6162\u6765\uFF0C\u4E00\u6B21\u4E00\u53E3");
     return;
   }
-  if (onlineRun) actionLog.push([activeTicks, target.id]);
+  if (onlineRun || practiceRun) actionLog.push([activeTicks, target.id]);
   renderer.bite(target, e);
-  sounds.eat(CATALOG2[e.item.key]);
-  toast(e.newDiscovery ? "\u65B0\u53D1\u73B0\uFF01" + CATALOG2[e.item.key].name : e.text, e.type === "allergy");
+  sounds.eat(CATALOG3[e.item.key]);
+  toast(e.newDiscovery ? "\u65B0\u53D1\u73B0\uFF01" + CATALOG3[e.item.key].name : e.text, e.type === "allergy");
   if (isCasual(game)) {
     shop.discover(e);
     paintCollection();
     scheduleCollectionSync();
   }
   shop.paint();
+  const friend = loopRun() && game.theme.id === "friends-special" && game.friendProfile?.foodId === e.item.key ? friendForFood(e.item.key) : null;
+  if (friend) {
+    toast(friend.easterEgg);
+    sounds.confirm();
+  }
   updateUI();
   saveProgress();
   if (game.phase === "gameover") finish();
@@ -7059,41 +7577,61 @@ function updateUI() {
   $2("pause").setAttribute("aria-pressed", String(g?.phase === "paused"));
   $2("pause").setAttribute("aria-label", g?.phase === "paused" ? "\u7EE7\u7EED\u6E38\u620F" : "\u6682\u505C\u6E38\u620F");
   $2("pause").querySelector("span").textContent = g?.phase === "paused" ? "\u7EE7\u7EED\u6162\u6162\u5403" : "\u6B47\u4E00\u6B47";
-  $2("cozy-tea-action").disabled = g?.phase !== "playing" || !g.foods.some((f) => f.key === "tea");
+  $2("cozy-tea-action").disabled = !(g?.phase === "playing" || loopRun() && g.autoRest) || !g.foods.some((f) => f.key === "tea");
+  $2("idle-rest").hidden = !(loopRun() && g?.autoRest && g.phase === "paused");
   $2("chef-copy").textContent = g?.phase === "paused" ? "\u8FD9\u4E00\u684C\uFF0C\u66FF\u4F60\u7559\u7740\u3002" : full > 85 ? "\u5148\u62BF\u53E3\u8336\uFF0C\u597D\u5473\u9053\u4F1A\u7B49\u4F60\u3002" : full < 25 ? "\u809A\u5B50\u5495\u5495\uFF0C\u6765\u5403\u4E00\u53E3\u5427\u3002" : "\u6162\u6162\u6765\uFF0C\u597D\u5473\u9053\u4F1A\u7B49\u4F60\u3002";
 }
 function frame(now) {
+  if (loopRun() && game.autoRest && game.phase === "paused" && now - lastFrame < 1e3 / 30) {
+    animationFrame = requestAnimationFrame(frame);
+    return;
+  }
   const realDt = Math.max(0, (now - lastFrame) / 1e3);
   lastFrame = now;
+  if (document.hidden) {
+    animationFrame = 0;
+    return;
+  }
   if (game?.phase === "playing") {
-    if (realDt > 0.5) pauseGame("\u521A\u624D\u753B\u9762\u505C\u987F\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
-    else {
+    if (realDt > 0.5) {
+      if (loopRun()) enterRest();
+      else pauseGame("\u521A\u624D\u753B\u9762\u505C\u987F\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
+    } else {
       accumulator += realDt;
       while (accumulator >= STEP && game.phase === "playing") {
+        if (loopRun() && (activeTicks >= 6 * 3600 * 60 || actionLog.length >= 24998)) {
+          enterRest();
+          toast("\u8FD9\u684C\u7684\u7528\u9910\u8BB0\u5F55\u6EE1\u5566\uFF0C\u7ED3\u8D26\u4FDD\u5B58\u540E\u518D\u6765\u4E00\u684C\u3002");
+          break;
+        }
         game.step(STEP);
         activeTicks++;
         accumulator -= STEP;
       }
       updateUI();
       if (game.phase === "gameover") finish();
-      else if (isCasual(game) && game.autoRest) pauseGame("\u521A\u624D\u6CA1\u6709\u64CD\u4F5C\uFF0C\u5DF2\u66FF\u4F60\u6B47\u4E00\u4F1A\u513F\uFF1B\u4F11\u606F\u4E0D\u52A0\u5206\uFF0C\u4E5F\u4E0D\u6D88\u8017\u9971\u8179\u3002");
+      else if (game.autoRest) {
+        if (loopRun()) enterRest();
+        else pauseGame("\u521A\u624D\u6CA1\u6709\u64CD\u4F5C\uFF0C\u5DF2\u66FF\u4F60\u6B47\u4E00\u4F1A\u513F\u3002");
+      }
     }
   }
+  if (loopRun() && game.autoRest && game.phase === "paused") game.restTravel = ((game.restTravel || 0) + Math.min(realDt, 0.05) * 8e-3) % 1;
   if (!game) {
     preview.time += Math.min(realDt, 0.1);
-    const speed = difficultyAt(0).speed;
+    const speed = 0.018;
     preview.beltTravel += Math.min(realDt, 0.1) * speed;
     for (const f of preview.foods) f.p = (f.p + Math.min(realDt, 0.1) * speed) % 1;
   }
   renderer.draw(game ?? preview, now / 1e3, Math.min(realDt, 0.05));
-  requestAnimationFrame(frame);
+  animationFrame = requestAnimationFrame(frame);
 }
 renderer.onEat = eatTarget;
 $2("cozy-menu-open").onclick = () => $2("today-menu").click();
 $2("cozy-tea-action").onclick = () => eatTarget(renderer.targets.find((t) => t.key === "tea"));
-for (const c of document.querySelectorAll("[data-cozy-food]")) drawSushi(c.getContext("2d"), c.dataset.cozyFood, c.width / 2, c.height * 0.53, c.width < 80 ? 0.52 : 0.76);
+for (const c of document.querySelectorAll("[data-cozy-food]")) drawSushi2(c.getContext("2d"), c.dataset.cozyFood, c.width / 2, c.height * 0.53, c.width < 80 ? 0.52 : 0.76);
 $2("game").addEventListener("pointerdown", (e) => {
-  if (e.button !== 0 || !e.isPrimary || game?.phase !== "playing") return;
+  if (e.button !== 0 || !e.isPrimary || !(game?.phase === "playing" || loopRun() && game.autoRest)) return;
   e.preventDefault();
   const b = $2("game").getBoundingClientRect();
   eatTarget(renderer.hit(e.clientX - b.left, e.clientY - b.top));
@@ -7215,7 +7753,7 @@ $2("help-dialog").addEventListener("click", (e) => {
   }
 });
 document.addEventListener("keydown", (e) => {
-  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $2("help-dialog").open || $2("leaderboard-dialog").open || $2("account-dialog").open || $2("collection-dialog").open || $2("menu-dialog").open || $2("audio-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $2("food-detail-dialog").open || $2("help-dialog").open || $2("leaderboard-dialog").open || $2("account-dialog").open || $2("collection-dialog").open || $2("menu-dialog").open || $2("audio-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
   if (e.code === "KeyP" || e.code === "Escape") {
     if (game?.phase === "playing") {
       e.preventDefault();
@@ -7225,17 +7763,30 @@ document.addEventListener("keydown", (e) => {
       resumeGame();
     }
   }
-  if (/^[1-8]$/.test(e.key) && game?.phase === "playing") {
+  if (/^[1-8]$/.test(e.key) && (game?.phase === "playing" || loopRun() && game.autoRest)) {
     e.preventDefault();
     eatTarget(renderer.targets.find((f) => f.number === Number(e.key)));
   }
 });
 document.addEventListener("visibilitychange", () => {
   sounds.setVisible(!document.hidden);
-  if (document.hidden) pauseGame("\u5207\u6362\u9875\u9762\u65F6\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
+  if (document.hidden) {
+    if (loopRun()) enterRest();
+    else pauseGame("\u5207\u6362\u9875\u9762\u65F6\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
+    saveProgress(true);
+    cancelAnimationFrame(animationFrame);
+    animationFrame = 0;
+  } else {
+    lastFrame = performance.now();
+    accumulator = 0;
+    if (!animationFrame) animationFrame = requestAnimationFrame(frame);
+  }
 });
 window.addEventListener("blur", () => {
-  if (game?.phase === "playing") pauseGame("\u79BB\u5F00\u7A97\u53E3\u65F6\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
+  if (game?.phase === "playing") {
+    if (loopRun()) enterRest();
+    else pauseGame("\u79BB\u5F00\u7A97\u53E3\u65F6\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
+  }
 });
 new ResizeObserver(() => renderer.resize()).observe($2("stage"));
 if (new URLSearchParams(location.search).get("test") === "1") {
@@ -7250,13 +7801,20 @@ if (new URLSearchParams(location.search).get("test") === "1") {
     }
     updateUI();
     if (game?.phase === "gameover") finish();
-    else if (isCasual(game) && game.autoRest) pauseGame("\u6CA1\u6709\u64CD\u4F5C\uFF0C\u5DF2\u81EA\u52A8\u4F11\u606F\u3002");
+    else if (game.autoRest) {
+      if (loopRun()) enterRest();
+      else pauseGame("\u6CA1\u6709\u64CD\u4F5C\uFF0C\u5DF2\u81EA\u52A8\u4F11\u606F\u3002");
+    }
   }, snapshot: () => game?.snapshot(), version: VERSION };
 }
 $2("best-score").textContent = scoreText(high);
 soundUI();
 home();
-requestAnimationFrame(frame);
+animationFrame = requestAnimationFrame(frame);
+try {
+  if (navigator.getAutoplayPolicy?.("audiocontext") === "allowed") sounds.unlock();
+} catch {
+}
 social.initialize().then(() => {
   playerId = social.playerId;
   if (document.documentElement.dataset.emailLinkIgnored) identityWarning = "\u4E3A\u4FDD\u62A4\u5DF2\u6709\u5B58\u6863\uFF0C\u90AE\u4EF6\u94FE\u63A5\u4E0D\u4F1A\u81EA\u52A8\u5207\u6362\u8EAB\u4EFD\u3002\u8BF7\u70B9\u5B58\u6863\uFF0C\u7528\u90AE\u7BB1\u9A8C\u8BC1\u7801\u6062\u590D\u3002";
@@ -7282,28 +7840,44 @@ function paintNetwork() {
   el.dataset.state = count ? "pending" : game && !onlineRun ? "practice" : social.profile ? "online" : "connecting";
   el.textContent = count ? `\u6709 ${count} \u5C40\u6210\u7EE9\u7B49\u5F85\u540C\u6B65 \xB7 \u53EF\u70B9\u91CD\u65B0\u8FDE\u63A5\u91CD\u8BD5` : game && !onlineRun ? "\u5F53\u524D\u662F\u7EC3\u4E60\u5C40 \xB7 \u672C\u5C40\u4E0D\u4F1A\u4E0A\u699C\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5\u540E\u53E6\u5F00\u4E00\u5C40" : social.profile ? onlineRun ? onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF\u5C40 \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u6536\u85CF\u4E0E\u4E2A\u4EBA\u7EAA\u5F55" : "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u672C\u5C40\u7ED3\u675F\u540E\u81EA\u52A8\u4E0A\u699C" : "\u4E91\u7AEF\u6863\u6848\u5DF2\u8FDE\u63A5 \xB7 \u8F93\u5165\u6635\u79F0\u5373\u53EF\u5F00\u73A9" : social.lastError ? "\u8EAB\u4EFD\u6682\u672A\u8FDE\u63A5 \xB7 \u699C\u5355\u4ECD\u53EF\u67E5\u770B" : "\u6B63\u5728\u8FDE\u63A5\u6E38\u5BA2\u6863\u6848 \xB7 \u699C\u5355\u4E0E\u672C\u673A\u7EAA\u5F55\u5206\u5F00\u4FDD\u5B58";
 }
-function saveProgress() {
-  if (!onlineRun || !game || !["playing", "paused"].includes(game.phase)) return;
-  const saved = social.journal.write({ kind: "active", owner: social.profile?.id, runId: onlineRun.runId, run: onlineRun, body: { ticks: activeTicks, actions: [...actionLog] }, updatedAt: Date.now() });
+function saveProgress(force = false) {
+  const run = onlineRun || practiceRun;
+  if (!run || !game || !["playing", "paused"].includes(game.phase)) return;
+  if (lease.id !== run.runId || !lease.valid()) return;
+  const signature = [run.runId, activeTicks, actionLog.length, game.phase, game.autoRest].join(":");
+  if (!force && signature === lastSavedSignature) return;
+  const saved = social.journal.write({ saveVersion: 2, kind: "active", owner: social.profile?.id || "practice", runId: run.runId, run, body: { ticks: activeTicks, actions: [...actionLog] }, presentation: { restTravel: game.restTravel || 0, phase: game.phase, autoRest: game.autoRest }, updatedAt: Date.now() });
   localSaveFailed = !saved;
+  if (saved) lastSavedSignature = signature;
   shop.paint();
-  if (!saved && $2("network-status")) $2("network-status").textContent = "\u6D4F\u89C8\u5668\u672A\u80FD\u4FDD\u5B58\u5BF9\u5C40\uFF0C\u8BF7\u4FDD\u6301\u9875\u9762\u5F00\u542F\uFF0C\u7ED3\u675F\u540E\u786E\u8BA4\u6210\u7EE9\u5DF2\u63D0\u4EA4";
+  if (!saved) $2("network-status").textContent = "\u6D4F\u89C8\u5668\u672A\u80FD\u4FDD\u5B58\u5BF9\u5C40\uFF0C\u8BF7\u4FDD\u6301\u9875\u9762\u5F00\u542F\uFF0C\u7ED3\u675F\u540E\u786E\u8BA4\u6210\u7EE9\u5DF2\u63D0\u4EA4";
 }
-function restoreProgress(entry) {
+async function restoreProgress(entry) {
   try {
+    if (!await lease.acquire(entry.runId)) {
+      toast("\u8FD9\u4E00\u684C\u8FD8\u5728\u53E6\u4E00\u4E2A\u7A97\u53E3\u5F00\u7740\uFF0C\u56DE\u539F\u7A97\u53E3\u7EE7\u7EED\u5C31\u597D\u3002", true);
+      return;
+    }
     game = rebuildActiveRun(entry);
-    onlineRun = entry.run;
+    onlineRun = entry.run.online === false ? null : entry.run;
+    practiceRun = entry.run.online === false ? entry.run : null;
     activeTicks = entry.body.ticks;
     actionLog = [...entry.body.actions];
     ended = false;
     accumulator = 0;
+    lastFrame = performance.now();
     renderer.effects = [];
     characterUI();
     updateUI();
     if (game.phase === "gameover") finish();
-    else pauseGame("\u5DF2\u6062\u590D\u4E0A\u6B21\u5BF9\u5C40\uFF1B\u672A\u64CD\u4F5C\u671F\u95F4\u6CA1\u6709\u6D88\u8017\u9971\u8179\u3002");
+    else if (loopRun()) {
+      $2("overlay").classList.add("hidden");
+      enterRest();
+      toast("\u8FD9\u684C\u66FF\u4F60\u7559\u597D\u4E86\uFF0C\u70B9\u4E00\u76D8\u7EE7\u7EED\u3002");
+    } else pauseGame("\u5DF2\u6062\u590D\u4E0A\u6B21\u5BF9\u5C40\uFF1B\u672A\u64CD\u4F5C\u671F\u95F4\u6CA1\u6709\u6D88\u8017\u9971\u8179\u3002");
     paintNetwork();
   } catch (error) {
+    lease.release();
     toast(error.message, true);
   }
 }
@@ -7313,7 +7887,16 @@ social.onState = () => {
 };
 paintNetwork();
 setInterval(saveProgress, 5e3);
-window.addEventListener("pagehide", saveProgress);
+window.addEventListener("pagehide", () => {
+  saveProgress(true);
+  lease.release();
+});
+window.addEventListener("pageshow", async (e) => {
+  if (e.persisted && onlineRun && !await lease.acquire(onlineRun.runId)) {
+    enterRest();
+    toast("\u8FD9\u4E00\u684C\u5DF2\u5728\u53E6\u4E00\u4E2A\u7A97\u53E3\u7EE7\u7EED\u3002", true);
+  }
+});
 $2("retry-network").onclick = async () => {
   const b = $2("retry-network");
   b.disabled = true;
@@ -7335,7 +7918,7 @@ $2("retry-network").onclick = async () => {
   }
 };
 $2("copy-diagnostics").onclick = async () => {
-  const text2 = JSON.stringify({ version: "1.3.0", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
+  const text2 = JSON.stringify({ version: "1.4.0", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
   try {
     await navigator.clipboard.writeText(text2);
     toast("\u8BCA\u65AD\u5DF2\u590D\u5236\uFF0C\u4E0D\u5305\u542B\u5BC6\u7801\u6216\u767B\u5F55\u51ED\u636E");
@@ -7407,22 +7990,22 @@ function paintCollection() {
   shop.paint();
   const local = new Set(shop.pendingIds());
   const filter = collectionFilters.theme, tier = collectionFilters.rarity, query = $2("collection-search").value.trim();
-  const list = Object.values(CATALOG2).filter((f) => f.collectible && (filter === "all" || f.themeId === filter) && (tier === "all" || rarityOf(f) === tier) && (!query || f.name.includes(query) || String(f.number).includes(query))).sort((a, b) => collectionFilters.sort === "number" ? a.number - b.number : Number(counts.has(b.id) || local.has(b.id)) - Number(counts.has(a.id) || local.has(a.id)) || shop.recent(b.id, counts.get(b.id)) - shop.recent(a.id, counts.get(a.id)) || a.number - b.number);
+  const list = Object.values(CATALOG3).filter((f) => f.collectible && (filter === "all" || f.themeId === filter) && (tier === "all" || rarityOf(f) === tier) && (!query || f.name.includes(query) || String(f.number).includes(query))).sort((a, b) => collectionFilters.sort === "number" ? a.number - b.number : Number(counts.has(b.id) || local.has(b.id)) - Number(counts.has(a.id) || local.has(a.id)) || shop.recent(b.id, counts.get(b.id)) - shop.recent(a.id, counts.get(a.id)) || a.number - b.number);
   const pages = Math.max(1, Math.ceil(list.length / 24));
   collectionPage = Math.min(collectionPage, pages - 1);
   const shown = list.slice(collectionPage * 24, collectionPage * 24 + 24);
-  $2("collection-summary").textContent = profile ? `${counts.size} / ${Object.values(CATALOG2).filter((f) => f.collectible).length} \u79CD${social.local ? "\u672C\u5730\u8054\u8C03\u5DF2\u786E\u8BA4" : "\u4E91\u7AEF\u5DF2\u6536\u85CF"} \xB7 \u7D2F\u8BA1 ${profile.totalSushi || 0} \u76D8${[...local].some((id) => !counts.has(id)) ? " \xB7 \u53E6\u6709 " + [...local].filter((id) => !counts.has(id) && CATALOG2[id]?.collectible).length + " \u79CD\u672C\u673A\u5F85\u786E\u8BA4" : ""}` : "\u7B2C\u4E00\u53E3\u5BFF\u53F8\uFF0C\u8FD8\u5728\u7B49\u4F60\u5462\uFF01\u5165\u5EA7\u540E\u4F1A\u66FF\u4F60\u8BB0\u8FDB\u624B\u5E10\u3002";
+  $2("collection-summary").textContent = profile ? `${counts.size} / ${Object.values(CATALOG3).filter((f) => f.collectible).length} \u79CD${social.local ? "\u672C\u5730\u8054\u8C03\u5DF2\u786E\u8BA4" : "\u4E91\u7AEF\u5DF2\u6536\u85CF"} \xB7 \u7D2F\u8BA1 ${profile.totalSushi || 0} \u76D8${[...local].some((id) => !counts.has(id)) ? " \xB7 \u53E6\u6709 " + [...local].filter((id) => !counts.has(id) && CATALOG3[id]?.collectible).length + " \u79CD\u672C\u673A\u5F85\u786E\u8BA4" : ""}` : "\u7B2C\u4E00\u53E3\u5BFF\u53F8\uFF0C\u8FD8\u5728\u7B49\u4F60\u5462\uFF01\u5165\u5EA7\u540E\u4F1A\u66FF\u4F60\u8BB0\u8FDB\u624B\u5E10\u3002";
   $2("collection-grid").innerHTML = shown.length ? shown.map((f) => {
     const owned = counts.get(f.id), pending = local.has(f.id) && !owned, known = !!owned || pending, grade = RARITIES[rarityOf(f)];
-    return `<article class="collection-card ${known ? "unlocked" : "locked"} ${known && shop.book.unseen(f.id) ? "is-new" : ""}" data-sushi-id="${f.id}" data-rarity="${rarityOf(f)}">${known && shop.book.unseen(f.id) ? '<span class="new-tag">NEW</span>' : ""}<small>NO.${String(f.number).padStart(3, "0")} \xB7 <span style="color:${grade.color}">${grade.name}</span></small><canvas width="120" height="90" data-sushi="${f.id}" aria-label="${known ? escapeHtml(f.name) : "\u672A\u53D1\u73B0\u5BFF\u53F8\u526A\u5F71"}"></canvas><h3>${known ? escapeHtml(f.name) : "\uFF1F\uFF1F\uFF1F"}</h3><p>${known ? escapeHtml(flavorCopy(f)) : "\u4E3B\u53A8\u7559\u4E86\u4E00\u70B9\u5C0F\u60CA\u559C\u3002"}</p><b>${owned ? `\u5DF2\u54C1\u5C1D ${owned.tasteCount} \u6B21` : pending ? "\u65B0\u53D1\u73B0 \xB7 \u7B49\u5F85\u4E91\u7AEF\u786E\u8BA4" : "\u7B49\u4F60\u6765\u5C1D\u9C9C"}</b>${owned ? `<small>\u521D\u9047 ${bjTime(owned.firstDiscoveredAt)}</small>` : ""}</article>`;
+    return `<article class="collection-card ${known ? "unlocked" : "locked"} ${known && shop.book.unseen(f.id) ? "is-new" : ""}" data-sushi-id="${f.id}" ${f.friendId && known ? 'data-friend="' + f.friendId + '" tabindex="0" role="button" aria-label="\u67E5\u770B' + escapeHtml(f.name) + '\u7684\u6536\u85CF\u5361"' : ""} data-rarity="${rarityOf(f)}">${known && shop.book.unseen(f.id) ? '<span class="new-tag">NEW</span>' : ""}<small>NO.${String(f.number).padStart(3, "0")} \xB7 <span style="color:${grade.color}">${grade.name}</span></small><canvas width="120" height="90" data-sushi="${f.id}" aria-label="${known ? escapeHtml(f.name) : "\u672A\u53D1\u73B0\u5BFF\u53F8\u526A\u5F71"}"></canvas><h3>${known ? escapeHtml(f.name) : "\uFF1F\uFF1F\uFF1F"}</h3><p>${known ? escapeHtml(flavorCopy(f)) : "\u4E3B\u53A8\u7559\u4E86\u4E00\u70B9\u5C0F\u60CA\u559C\u3002"}</p><b>${owned ? `\u5DF2\u54C1\u5C1D ${owned.tasteCount} \u6B21` : pending ? "\u65B0\u53D1\u73B0 \xB7 \u7B49\u5F85\u4E91\u7AEF\u786E\u8BA4" : "\u7B49\u4F60\u6765\u5C1D\u9C9C"}</b>${owned ? `<small>\u521D\u9047 ${bjTime(owned.firstDiscoveredAt)}</small>` : ""}</article>`;
   }).join("") : '<p class="collection-empty">\u8FD8\u6CA1\u627E\u5230\u8FD9\u9053\u5BFF\u53F8\uFF0C\u6362\u4E2A\u5206\u7C7B\u6216\u5173\u952E\u8BCD\u8BD5\u8BD5\u3002<br>\u4E5F\u53EF\u4EE5\u70B9\u300C\u91CD\u7F6E\u7B5B\u9009\u300D\u91CD\u65B0\u7FFB\u770B\u3002</p>';
-  for (const c of $2("collection-grid").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.sushi, 60, 48, 0.9);
+  for (const c of $2("collection-grid").querySelectorAll("canvas")) drawSushi2(c.getContext("2d"), c.dataset.sushi, 60, 48, 0.9);
   $2("collection-page-info").textContent = `${list.length}\u6B3E \xB7 \u7B2C${collectionPage + 1}/${pages}\u9875`;
   $2("collection-prev").disabled = collectionPage === 0;
   $2("collection-next").disabled = collectionPage >= pages - 1;
   shop.observeCards();
-  $2("theme-progress").innerHTML = THEMES2.map((t) => {
-    const ids = (t.collectionFoods || t.foods).filter((k) => CATALOG2[k].collectible);
+  $2("theme-progress").innerHTML = THEMES3.map((t) => {
+    const ids = (t.collectionFoods || t.foods).filter((k) => CATALOG3[k].collectible);
     return `<span title="${escapeHtml(t.name)}">${escapeHtml(collectionMenuName(t))}<b>${ids.filter((k) => counts.has(k)).length}/${ids.length}</b></span>`;
   }).join("");
   for (const [key, id] of Object.entries({ theme: "collection-theme", rarity: "collection-rarity", sort: "collection-sort" })) for (const button of $2(id).querySelectorAll("button[data-value]")) button.setAttribute("aria-pressed", String(button.dataset.value === collectionFilters[key]));
@@ -7449,7 +8032,7 @@ $2("collection-dialog").addEventListener("close", () => {
   sounds.setAlbum(false);
   sounds.paper("close");
 });
-$2("collection-theme").innerHTML = '<button type="button" data-value="all" aria-pressed="true">\u5168\u90E8</button>' + THEMES2.map((t) => `<button type="button" data-value="${escapeHtml(t.id)}" aria-pressed="false" title="${escapeHtml(t.name)}">${escapeHtml(collectionMenuName(t))}</button>`).join("");
+$2("collection-theme").innerHTML = '<button type="button" data-value="all" aria-pressed="true">\u5168\u90E8</button>' + THEMES3.map((t) => `<button type="button" data-value="${escapeHtml(t.id)}" aria-pressed="false" title="${escapeHtml(t.name)}">${escapeHtml(collectionMenuName(t))}</button>`).join("");
 for (const [key, id] of Object.entries({ theme: "collection-theme", rarity: "collection-rarity", sort: "collection-sort" })) $2(id).addEventListener("click", (event) => {
   const button = event.target.closest("button[data-value]");
   if (!button) return;
@@ -7489,7 +8072,7 @@ $2("menu-next").onclick = () => {
 };
 function paintMenus() {
   const select = $2("theme-select");
-  select.innerHTML = THEMES2.map((t2) => {
+  select.innerHTML = THEMES3.map((t2) => {
     const state = menuState(t2, menuServerTime);
     return `<option value="${t2.id}">${t2.name}${state === "current" ? " \xB7 \u672C\u5468" : state === "archive" ? " \xB7 \u5F80\u671F" : state === "permanent" ? " \xB7 \u5E38\u9A7B" : " \xB7 \u65F6\u95F4\u5F85\u540C\u6B65"}</option>`;
   }).join("");
@@ -7524,7 +8107,7 @@ $2("theme-select").onchange = () => {
 social.request("/api/menus").then((data) => {
   menuServerTime = data.serverTime;
   if (!themeChosen && !game) {
-    selectedTheme = data.themes.find((t) => t.state === "current")?.id || "classic";
+    selectedTheme = data.themes.find((t) => t.id === "friends-special")?.id || data.themes.find((t) => t.state === "current")?.id || "classic";
   }
   paintMenus();
 }).catch(() => {
@@ -7534,7 +8117,7 @@ social.request("/api/menus").then((data) => {
 paintMenus();
 paintCollection();
 function themeCopy(t) {
-  return t.id === "first-taste" ? "188\u6B3E\u719F\u6089\u597D\u5473\uFF0C\u52A0\u4E0A28\u9053\u672C\u671F\u5C0F\u60CA\u559C\u3002\u6162\u6162\u627E\uFF0C\u4E0B\u4E00\u76D8\u8BF4\u4E0D\u5B9A\u5C31\u662F\u5FC3\u5934\u597D\u3002" : t.id === "classic" ? "\u719F\u6089\u7684188\u6B3E\u5E38\u9A7B\u597D\u5473\uFF0C\u968F\u65F6\u4E3A\u4F60\u5F00\u5E2D\u3002\u559D\u53E3\u8336\uFF0C\u6162\u6162\u6311\u3002" : "\u79CB\u5929\u7684\u597D\u5473\u9053\u7559\u7740\u5462\uFF0C\u518D\u6765\u5C1D\u4E00\u76D8\u3002";
+  return t.id === "friends-special" ? "\u4E03\u4F4D\u670B\u53CB\u7684\u5FC3\u5934\u597D\uFF0C\u4EBA\u4EBA\u90FD\u80FD\u6536\u85CF\u3002\u7528\u670B\u53CB\u6635\u79F0\u6765\u73A9\uFF0C\u8FD8\u4F1A\u66F4\u5E38\u9047\u5230\u81EA\u5DF1\u7684\u90A3\u4E00\u76D8\u3002" : t.id === "first-taste" ? "188\u6B3E\u719F\u6089\u597D\u5473\uFF0C\u52A0\u4E0A28\u9053\u672C\u671F\u5C0F\u60CA\u559C\u3002\u6162\u6162\u627E\uFF0C\u4E0B\u4E00\u76D8\u8BF4\u4E0D\u5B9A\u5C31\u662F\u5FC3\u5934\u597D\u3002" : t.id === "classic" ? "\u719F\u6089\u7684188\u6B3E\u5E38\u9A7B\u597D\u5473\uFF0C\u968F\u65F6\u4E3A\u4F60\u5F00\u5E2D\u3002\u559D\u53E3\u8336\uFF0C\u6162\u6162\u6311\u3002" : "\u79CB\u5929\u7684\u597D\u5473\u9053\u7559\u7740\u5462\uFF0C\u518D\u6765\u5C1D\u4E00\u76D8\u3002";
 }
 function selectNavigation(id) {
   for (const b of document.querySelectorAll(".nav-button[aria-controls]")) {
@@ -7551,17 +8134,17 @@ $2("today-menu").onclick = () => {
   if (game?.phase === "playing") pauseGame("\u4E3B\u53A8\u628A\u83DC\u5355\u9012\u8FC7\u6765\u5566\uFF0C\u770B\u5B8C\u7EE7\u7EED\u3002");
   paintMenus();
   const t = displayTheme();
-  $2("menu-preview").innerHTML = (t.featured || t.foods).slice(0, 6).map((id) => `<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(CATALOG2[id].name)}</span></div>`).join("");
-  for (const c of $2("menu-preview").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.preview, 50, 44, 0.9);
+  $2("menu-preview").innerHTML = (t.featured || t.foods).slice(0, t.id === "friends-special" ? 7 : 6).map((id) => `<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(CATALOG3[id].name)}</span></div>`).join("");
+  for (const c of $2("menu-preview").querySelectorAll("canvas")) drawSushi2(c.getContext("2d"), c.dataset.preview, 50, 44, 0.9);
   $2("menu-dialog").showModal();
   selectNavigation("today-menu");
 };
 $2("menu-picker").onchange = () => {
   $2("theme-select").value = $2("menu-picker").value;
   $2("theme-select").dispatchEvent(new Event("change"));
-  const t = themeById2(selectedTheme);
-  $2("menu-preview").innerHTML = (t.featured || t.foods).slice(0, 6).map((id) => `<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(CATALOG2[id].name)}</span></div>`).join("");
-  for (const c of $2("menu-preview").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.preview, 50, 44, 0.9);
+  const t = themeById3(selectedTheme);
+  $2("menu-preview").innerHTML = (t.featured || t.foods).slice(0, t.id === "friends-special" ? 7 : 6).map((id) => `<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(CATALOG3[id].name)}</span></div>`).join("");
+  for (const c of $2("menu-preview").querySelectorAll("canvas")) drawSushi2(c.getContext("2d"), c.dataset.preview, 50, 44, 0.9);
 };
 $2("close-menu").onclick = () => {
   sounds.confirm();
@@ -7573,9 +8156,10 @@ $2("account-retry").onclick = async () => {
   shop.paint();
 };
 function displayTheme() {
-  return game?.theme && ["playing", "paused", "card"].includes(game.phase) ? game.theme : themeById2(selectedTheme);
+  return game?.theme && ["playing", "paused", "card"].includes(game.phase) ? game.theme : themeById3(selectedTheme);
 }
 function flavorCopy(f) {
+  if (f.friendId) return f.description;
   if (f.rarity === "hidden" || ["lucky_tamago", "cat_tamago"].includes(f.id)) return "\u4E3B\u53A8\u5077\u5077\u7559\u7684\u4E00\u53E3\u798F\u6C14\uFF0C\u88AB\u4F60\u627E\u5230\u5566\u3002";
   if (f.topping === "caramel") return "\u4E00\u70B9\u7126\u9999\uFF0C\u7ED9\u8FD9\u4E00\u53E3\u6DFB\u4E00\u70B9\u751C\u3002";
   if (f.topping === "spicy") return "\u5FAE\u5FAE\u4E00\u53E3\u8FA3\uFF0C\u80C3\u53E3\u4E5F\u9192\u8FC7\u6765\u3002";
@@ -7586,13 +8170,39 @@ function flavorCopy(f) {
 }
 function paintCozyMenuCards(current, disabled) {
   const container = $2("cozy-theme-options");
-  container.innerHTML = THEMES2.map((t) => `<button type="button" class="theme-card ${t.id === current.id ? "is-selected" : ""}" data-theme="${t.id}" aria-pressed="${t.id === current.id}" ${disabled ? "disabled" : ""}><span class="theme-caption">${escapeHtml(collectionMenuName(t))}</span><b class="round-type">${escapeHtml(t.name)}</b><span class="theme-foods">${(t.featured || t.foods).filter((k) => k !== "tea").slice(0, 3).map((k) => `<canvas width="100" height="75" data-cozy-menu-food="${k}" aria-hidden="true"></canvas>`).join("")}</span><small>${escapeHtml(t.id === "autumn" ? "\u60F3\u5FF5\u7684\u5473\u9053\uFF0C\u968F\u65F6\u56DE\u6765\u5C1D\u3002" : t.id === "classic" ? "\u719F\u6089\u7684188\u6B3E\u5E38\u9A7B\u597D\u5473\u3002" : "188\u6B3E\u7ECF\u5178\uFF0C\u52A0\u4E0A28\u9053\u672C\u671F\u60CA\u559C\u3002")}</small><span class="theme-check"><svg class="icon" aria-hidden="true"><use href="#cozy-check"/></svg></span></button>`).join("");
-  for (const c of container.querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.cozyMenuFood, 50, 40, 0.76);
+  container.innerHTML = THEMES3.map((t) => `<button type="button" class="theme-card ${t.id === current.id ? "is-selected" : ""}" data-theme="${t.id}" aria-pressed="${t.id === current.id}" ${disabled ? "disabled" : ""}><span class="theme-caption">${escapeHtml(collectionMenuName(t))}</span><b class="round-type">${escapeHtml(t.name)}</b><span class="theme-foods">${(t.featured || t.foods).filter((k) => k !== "tea").slice(0, 3).map((k) => `<canvas width="100" height="75" data-cozy-menu-food="${k}" aria-hidden="true"></canvas>`).join("")}</span><small>${escapeHtml(t.id === "autumn" ? "\u60F3\u5FF5\u7684\u5473\u9053\uFF0C\u968F\u65F6\u56DE\u6765\u5C1D\u3002" : t.id === "classic" ? "\u719F\u6089\u7684188\u6B3E\u5E38\u9A7B\u597D\u5473\u3002" : t.id === "friends-special" ? "\u4E03\u4EFD\u4E13\u5C5E\u597D\u5473\uFF0C\u4E00\u76F4\u4E3A\u670B\u53CB\u4EEC\u7559\u7740\u3002" : "188\u6B3E\u7ECF\u5178\uFF0C\u52A0\u4E0A28\u9053\u672C\u671F\u60CA\u559C\u3002")}</small><span class="theme-check"><svg class="icon" aria-hidden="true"><use href="#cozy-check"/></svg></span></button>`).join("");
+  for (const c of container.querySelectorAll("canvas")) drawSushi2(c.getContext("2d"), c.dataset.cozyMenuFood, 50, 40, 0.76);
   for (const b of container.querySelectorAll("button")) b.onclick = () => {
     $2("menu-picker").value = b.dataset.theme;
     $2("menu-picker").dispatchEvent(new Event("change"));
   };
 }
+function openFoodDetail(id) {
+  const f = CATALOG3[id];
+  if (!f?.friendId) return;
+  const owned = social.profile?.collection?.find((c2) => c2.sushiId === id);
+  if (!owned && !shop.pendingIds().includes(id)) return;
+  $2("food-detail-title").textContent = f.name;
+  $2("food-detail-friend").textContent = f.friendName + "\u7684\u4E13\u5C5E\u6536\u85CF \xB7 NO." + f.number;
+  $2("food-detail-copy").textContent = f.description;
+  $2("food-detail-egg").textContent = friendForFood(id).easterEgg;
+  $2("food-detail-state").textContent = owned ? "\u4E91\u7AEF\u5DF2\u6536\u85CF \xB7 \u521D\u9047 " + bjTime(owned.firstDiscoveredAt) + " \xB7 \u5DF2\u54C1\u5C1D " + owned.tasteCount + " \u6B21" : "\u672C\u673A\u65B0\u53D1\u73B0 \xB7 \u7B49\u5F85\u4E91\u7AEF\u786E\u8BA4";
+  const c = $2("food-detail-art"), ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+  drawSushi2(ctx, id, c.width / 2, c.height * 0.52, 2.6);
+  $2("food-detail-dialog").showModal();
+}
+$2("collection-grid").addEventListener("click", (e) => {
+  const card = e.target.closest("[data-friend]");
+  if (card) openFoodDetail(card.dataset.sushiId);
+});
+$2("collection-grid").addEventListener("keydown", (e) => {
+  if (["Enter", " "].includes(e.key) && e.target.matches("[data-friend]")) {
+    e.preventDefault();
+    openFoodDetail(e.target.dataset.sushiId);
+  }
+});
+$2("close-food-detail").onclick = () => $2("food-detail-dialog").close();
 
 </script>
 </body>

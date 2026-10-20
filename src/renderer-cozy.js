@@ -1,8 +1,11 @@
 // Presentation adapter only. Positions, foods, roles and outcomes come from the existing engine.
-import {Renderer as BaseRenderer, drawSushi, drawPortrait, trackGeometry} from './renderer-v12.js';
-import {CATALOG, rarityOf, RARITIES} from './menus-v2.js';
+import {Renderer as BaseRenderer, drawSushi as drawOriginalSushi, drawPortrait, trackGeometry} from './renderer-v12.js';
+import {CATALOG, rarityOf, RARITIES} from './menus-v14.js';
+import {isCasualVersion} from './casual-engine.js';
 import {paintRoom} from './cozy-scene.js';
-export {drawSushi, drawPortrait, trackGeometry};
+import {drawFriendDish} from './friends-art.js';
+export {drawPortrait,trackGeometry};
+export function drawSushi(c,key,x,y,scale=1){if(!drawFriendDish(c,key,x,y,scale))drawOriginalSushi(c,key,x,y,scale);}
 
 // The plate SVG and proportions are copied from the accepted V1.3 demo.
 function dishSvg(i) {
@@ -29,13 +32,13 @@ export class Renderer extends BaseRenderer {
   }
   draw(game,clock,dt=0) {
     this.resize();
-    const g=paintRoom(this.canvas,game.beltTravel??0);
+    const g=paintRoom(this.canvas,(game.beltTravel??0)+(game.restTravel||0));
     if(!g)return;
     const small=this.w<800, liveIds=new Set(game.foods.map(f=>f.id));
     for(const[id,node]of this.nodes)if(!liveIds.has(id)){node.remove();this.nodes.delete(id);}
     this.targets=[];
     game.foods.forEach((food,index)=>{
-      const spec=CATALOG[food.key],point=g.point(food.p),allergic=spec.allergen===game.character.allergy;
+      const spec=CATALOG[food.key],point=g.point(food.p+(game.restTravel||0)),allergic=spec.allergen===game.character.allergy;
       let button=this.nodes.get(food.id);
       if(!button){
         button=document.createElement('button');button.type='button';button.className='plate';button.dataset.id=food.id;
@@ -43,15 +46,15 @@ export class Renderer extends BaseRenderer {
 
         this.nodes.set(food.id,button);this.plates.append(button);
       }
-      if(button.dataset.key!==food.key){const canvas=button.querySelector('canvas'),ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);drawSushi(ctx,food.key,63,53,.91);button.dataset.key=food.key;}
+      if(button.dataset.key!==food.key){const canvas=button.querySelector('canvas'),ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);drawSushi(ctx,food.key,63,53,.91);button.dataset.key=food.key;button.classList.toggle('friend-plate',!!spec.friendId);}
       const number=index<8?index+1:null,grade=rarityOf(spec);
       button.querySelector('.dish-number').textContent=number??'';button.querySelector('.dish-number').hidden=!number;
       button.querySelector('.dish-name').textContent=spec.name;
       button.querySelector('.allergen').hidden=!allergic;
       const rarity=button.querySelector('.plate-rarity');rarity.textContent=grade==='treasure'?'珍':grade==='select'?'选':'';rarity.hidden=allergic||grade==='common';rarity.dataset.rarity=grade;
-      const change=Math.round(spec.fullness*(spec.fullness>0?game.character.portion*(game.rulesVersion?.startsWith('1.2.')?.65:1):1));
+      const change=Math.round(spec.fullness*(spec.fullness>0?game.character.portion*(isCasualVersion(game.rulesVersion)?.65:1):1));
       button.setAttribute('aria-label',`品尝${spec.name}${allergic?'，本局忌口':''}，饱腹${change>0?'+':''}${change}${spec.collectible?'，'+RARITIES[grade].name:''}`);
-      button.title=button.getAttribute('aria-label');button.disabled=game.phase!=='playing';
+      button.title=button.getAttribute('aria-label');button.disabled=game.phase!=='playing'&&!(isCasualVersion(game.rulesVersion)&&game.phase==='paused'&&game.autoRest);
       button.style.left=point.x+'px';button.style.top=point.y+'px';button.style.zIndex=String(Math.round(point.y));
       this.targets.push({id:food.id,key:food.key,...point,radius:small?35:47,number,allergic});
     });

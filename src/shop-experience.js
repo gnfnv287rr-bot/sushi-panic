@@ -1,4 +1,4 @@
-import{CATALOG,rarityOf}from'./menus-v2.js';
+import{CATALOG,rarityOf}from'./menus-v14.js';
 import{Notebook,collectionProgress,archiveStatus,discoveryPresentation}from'./collection-feedback.js';
 import{currentIdentity}from'./identity.js';
 const $=id=>document.getElementById(id);
