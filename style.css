@@ -223,3 +223,12 @@ body.cozy-live .welcome-title span{display:inline}body.cozy-live .collection-hea
 @media(max-width:800px){body.cozy-live .collection-heading>.icon{width:30px;height:30px}}
 @media(max-width:380px){body.cozy-live .welcome-title span{display:block}}
 body.cozy-live :is(#menu-picker,#player-id-input,#account-email,#account-code,#collection-search){background:#fffaf0;color:var(--brown);border:1px solid #c8bfa7;border-radius:10px}body.cozy-live #cozy-menu-dismiss{margin:0;background:none;color:var(--brown)}
+
+/* V1.3.1: audio settings reuse the accepted paper/dialog language. */
+body.cozy-live #audio-dialog{max-width:480px}
+.audio-inner .audio-choice{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0 12px;border-bottom:1px dashed var(--line,#d7e1d3);cursor:pointer}
+.audio-choice b,.audio-choice small{display:block}.audio-choice small{font-size:13px;margin-top:6px;line-height:1.6}
+.audio-choice input{width:26px;height:26px;flex:0 0 auto;accent-color:#426b59}
+.audio-volume{display:flex;flex-wrap:wrap;justify-content:space-between;gap:9px;margin:16px 0 22px;font-size:14px}
+.audio-volume input{width:100%;min-height:32px;accent-color:#87bba2;cursor:pointer}
+.audio-inner #audio-mute{width:100%;min-height:48px;margin-top:6px}

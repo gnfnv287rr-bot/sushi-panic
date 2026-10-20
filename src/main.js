@@ -1,3 +1,4 @@
+import {AudioManager} from './audio-manager.js';
 import { Game as LegacyGame, ALLERGEN_NAMES, STEP, difficultyAt, fullnessZone, VERSION } from './core.js';
 import { Renderer, drawPortrait, drawSushi } from './renderer-cozy.js';
 import {shopExperience} from './shop-experience.js';
@@ -16,24 +17,29 @@ const collectionMenuName=t=>({classic:'常驻菜单','first-taste':'本期菜单
 let selectedTheme='classic',themeChosen=false,menuServerTime=null,checkpointTimer=null,checkpointBusy=false;
 try{selectedTheme=localStorage.getItem('sushi.theme.v12')||'classic';themeChosen=!!localStorage.getItem('sushi.theme.v12');themeById(selectedTheme);}catch{selectedTheme='classic';}
 const $=id=>document.getElementById(id), renderer=new Renderer($('game'));
-let game=null,preview=new Game({seed:414}),lastFrame=performance.now(),accumulator=0,toastTimer,ended=false,audio;
+let game=null,preview=new Game({seed:414}),lastFrame=performance.now(),accumulator=0,toastTimer,ended=false;
+const sounds=new AudioManager({onChange:()=>soundUI()});
 const social=new SocialClient();let playerId=social.playerId,onlineRun=null,activeTicks=0,actionLog=[],entryBusy=false,lastReceipt=null,boardBusy=false,clockAnchor=null,identityWarning='';
-const shop=shopExperience({social,getGame:()=>game,getRun:()=>onlineRun,getTheme:displayTheme,getLocalSaveFailure:()=>localSaveFailed,getUnarchived:()=>onlineRun&&['playing','paused'].includes(game?.phase)?Math.max(0,game.sushiEaten-(syncedEaten.get(onlineRun.runId)||0)):0,drawSushi,playSound:kind=>tone(kind)});
+const shop=shopExperience({social,getGame:()=>game,getRun:()=>onlineRun,getTheme:displayTheme,getLocalSaveFailure:()=>localSaveFailed,getUnarchived:()=>onlineRun&&['playing','paused'].includes(game?.phase)?Math.max(0,game.sushiEaten-(syncedEaten.get(onlineRun.runId)||0)):0,drawSushi,playSound:kind=>sounds.discovery(kind)});
 const physique=c=>c.id==='momo'?'杂食型':c.id==='taro'?'快消化型':c.id==='yuzu'?'慢消化型':'清爽型';
 preview.start();preview.character={...preview.character,allergy:'none'};
-const playingNotes=new Set();
-let high=0,sound=false;
-try{const n=Number(localStorage.getItem('sushi-panic.best.v1'));if(Number.isSafeInteger(n)&&n>=0)high=n;sound=localStorage.getItem('sushi-panic.sound')==='on';}catch{}
+let high=0;
+try{const n=Number(localStorage.getItem('sushi-panic.best.v1'));if(Number.isSafeInteger(n)&&n>=0)high=n;}catch{}
 const scoreText=n=>String(Math.floor(n)).padStart(5,'0'),timeText=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 function newSeed(){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0];}
-function tone(kind='eat'){
-  if(!sound)return;
-  if(['common','select','treasure','secret'].includes(kind)){try{audio??=new(window.AudioContext||window.webkitAudioContext)();audio.resume().catch(()=>{});const notes=kind==='common'?[620]:kind==='select'?[620,780]:kind==='treasure'?[620,780,940]:[700,880,1050];notes.forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),at=audio.currentTime+i*.11;o.type='sine';o.frequency.setValueAtTime(hz,at);g.gain.setValueAtTime(.035,at);g.gain.exponentialRampToValueAtTime(.001,at+.18);o.connect(g);g.connect(audio.destination);rememberSound(o);o.start(at);o.stop(at+.19);});}catch{}return;}
-  try{audio??=new(window.AudioContext||window.webkitAudioContext)();audio.resume().catch(()=>{});const o=audio.createOscillator(),gain=audio.createGain();o.type='sine';o.frequency.setValueAtTime(kind==='allergy'?180:kind==='perfect'?680:450,audio.currentTime);o.frequency.exponentialRampToValueAtTime(kind==='allergy'?80:950,audio.currentTime+.09);gain.gain.setValueAtTime(.065,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.15);o.connect(gain);gain.connect(audio.destination);rememberSound(o);o.start();o.stop(audio.currentTime+.16);}catch{}
+function tone(){sounds.confirm();}
+function soundUI(){
+ const s=sounds.settings,on=sounds.audible;
+ $('sound').querySelector('use').setAttribute('href','#cozy-'+(on?'sound':'muted'));
+ const label='音效：'+(on?'开':'关');if($('sound').querySelector('span').textContent!==label)$('sound').querySelector('span').textContent=label;
+ $('sound').setAttribute('aria-pressed',String(on));
+ for(const [id,key]of [['audio-music','music'],['audio-effects','effects']])$(id).checked=s[key];
+ for(const [id,key]of [['audio-music-volume','musicVolume'],['audio-effects-volume','effectsVolume']]){$(id).value=Math.round(s[key]*100);$(id+'-value').textContent=Math.round(s[key]*100)+'%';}
+ $('audio-mute').textContent=s.muted?'开启已选声音':'一键静音';$('audio-mute').setAttribute('aria-pressed',String(s.muted));
+ $('audio-status').textContent=sounds.status==='error'?'声音暂未准备好，游戏可以照常玩；可关掉声音继续玩，网络恢复后刷新再试。':sounds.status==='loading'?'正在轻轻调音，游戏可以照常玩…':s.muted?'现在安安静静的，选好声音后再开启。':'音量轻一点，慢慢吃；离开页面会暂停声音。';
 }
-function rememberSound(o){playingNotes.add(o);o.onended=()=>playingNotes.delete(o);}
-function stopSound(){for(const o of playingNotes){try{o.stop();o.disconnect?.();}catch{}}playingNotes.clear();}
-function soundUI(){$('sound').innerHTML=`<svg class="icon" aria-hidden="true"><use href="#cozy-${sound?'sound':'muted'}"/></svg><span>音效：${sound?'开':'关'}</span>`;$('sound').setAttribute('aria-pressed',String(sound));}
+// Capture real input before game handlers; persisted preferences alone never autoplay.
+for(const type of ['pointerdown','keydown'])document.addEventListener(type,e=>{if(e.isTrusted&&!e.repeat)sounds.unlock();},{capture:true});
 function menu(){
  const pool=game&&!isCasual(game)?['salmon','tuna','shrimp','tamago','cucumber','ikura','onigiri','tea']:displayTheme().foods;
  const keys=pool.includes('taste_caramel_salmon')?[...FEATURED,'tea',...pool.filter(k=>!FEATURED.includes(k)&&k!=='tea')]:pool;
@@ -141,7 +147,7 @@ function eatTarget(target){
   if(!target||!game)return;
   const e=game.eat(target.id);if(!e){if(isCasual(game))toast(game.fullness>100?'胃里满满的，先喝茶或休息':target.key==='tea'?'现在不需要喝茶，挑一盘寿司吧':'慢慢来，一次一口');return;}
   if(onlineRun)actionLog.push([activeTicks,target.id]);
-  renderer.bite(target,e);tone(e.type);toast(e.newDiscovery?'新发现！'+FOODS[e.item.key].name:e.text,e.type==='allergy');if(isCasual(game)){shop.discover(e);paintCollection();scheduleCollectionSync();}shop.paint();
+  renderer.bite(target,e);sounds.eat(FOODS[e.item.key]);toast(e.newDiscovery?'新发现！'+FOODS[e.item.key].name:e.text,e.type==='allergy');if(isCasual(game)){shop.discover(e);paintCollection();scheduleCollectionSync();}shop.paint();
   // Effects are handled once at input time; the engine keeps only a bounded event history.
   updateUI();saveProgress();if(game.phase==='gameover')finish();
 }
@@ -192,7 +198,11 @@ $('game').addEventListener('pointermove',e=>{const b=$('game').getBoundingClient
 $('game').addEventListener('pointerleave',()=>renderer.hover=null);
 $('pause').onclick=()=>game?.phase==='paused'?resumeGame():pauseGame();
 document.querySelector('.brand').onclick=e=>{e.preventDefault();home();};
-$('sound').onclick=()=>{sound=!sound;if(!sound)stopSound();soundUI();try{localStorage.setItem('sushi-panic.sound',sound?'on':'off');}catch{}tone();};
+$('sound').onclick=()=>{if(game?.phase==='playing')pauseGame('调好小店的声音，再继续。');soundUI();$('audio-dialog').showModal();selectNavigation('sound');};
+$('close-audio').onclick=()=>$('audio-dialog').close();
+for(const [id,key]of [['audio-music','music'],['audio-effects','effects']])$(id).onchange=()=>{sounds.unlock();sounds.configure({[key]:$(id).checked,...($(id).checked?{muted:false}:{})});if(key==='effects'&&sounds.settings.effects)sounds.confirm();};
+for(const [id,key]of [['audio-music-volume','musicVolume'],['audio-effects-volume','effectsVolume']])$(id).oninput=()=>{sounds.unlock();sounds.configure({[key]:Number($(id).value)/100});};
+$('audio-mute').onclick=()=>{sounds.unlock();sounds.configure({muted:!sounds.settings.muted});};
 $('help').onclick=()=>{if(game?.phase==='playing')pauseGame('菜单还在，看完玩法再继续。');$('help-dialog').showModal();selectNavigation('help');};
 $('leaderboard').onclick=showLeaderboard;$('sidebar-leaderboard').onclick=showLeaderboard;$('board-refresh').onclick=()=>refreshLeaderboard();$('close-board').onclick=()=>$('leaderboard-dialog').close();
 $('account').onclick=()=>{if(game?.phase==='playing')pauseGame('保存或恢复后，再继续开吃。');$('account-dialog').showModal();selectNavigation('account');shop.refreshAuth();$('account-status').textContent='';if(!social.local&&!social.emailAvailable){$('bind-email').disabled=true;$('recover-email').disabled=true;$('account-status').textContent='邮箱存档暂未开放。当前浏览器会记住游客身份；清除网站数据或更换设备后，可能无法恢复。';}paintArchive();social.initialize().then(paintArchive).catch(()=>{});if(!social.local&&social.emailAvailable)currentIdentity().then(u=>{if(u?.email_confirmed_at&&!u.is_anonymous)$('account-status').textContent='邮箱已验证 · 可以在其他设备通过邮件恢复此档案';}).catch(()=>{});};
@@ -205,16 +215,16 @@ $('verify-email').onclick=async()=>{if(!emailOperation)return;const button=$('ve
 $('close-help').onclick=()=>$('help-dialog').close();
 $('help-dialog').addEventListener('click',e=>{if(e.target===$('help-dialog')){const r=$('help-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('help-dialog').close();}});
 document.addEventListener('keydown',e=>{
-  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('help-dialog').open||$('leaderboard-dialog').open||$('account-dialog').open||$('collection-dialog').open||$('menu-dialog').open||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName))return;
+  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('help-dialog').open||$('leaderboard-dialog').open||$('account-dialog').open||$('collection-dialog').open||$('menu-dialog').open||$('audio-dialog').open||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName))return;
   if(e.code==='KeyP'||e.code==='Escape'){if(game?.phase==='playing'){e.preventDefault();pauseGame();}else if(game?.phase==='paused'){e.preventDefault();resumeGame();}}
   if(/^[1-8]$/.test(e.key)&&game?.phase==='playing'){e.preventDefault();eatTarget(renderer.targets.find(f=>f.number===Number(e.key)));}
 });
-document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGame('切换页面时，已替你暂停。');});
+document.addEventListener('visibilitychange',()=>{sounds.setVisible(!document.hidden);if(document.hidden)pauseGame('切换页面时，已替你暂停。');});
 window.addEventListener('blur',()=>{if(game?.phase==='playing')pauseGame('离开窗口时，已替你暂停。');});
 new ResizeObserver(()=>renderer.resize()).observe($('stage'));
 if(new URLSearchParams(location.search).get('test')==='1'){
   // Explicit test-only seam; normal builds expose no mutation hook.
-  window.__sushi={get game(){return game;},renderer,newGame(options={}){newGame({...options,legacy:options.casual!==true});},checkout,start:startGame,advance(seconds){for(let i=0;i<Math.ceil(seconds/STEP)&&game?.phase==='playing';i++){game.step(STEP);activeTicks++;}updateUI();if(game?.phase==='gameover')finish();else if(isCasual(game)&&game.autoRest)pauseGame('没有操作，已自动休息。');},snapshot:()=>game?.snapshot(),version:VERSION};
+  window.__sushi={audio:sounds,get game(){return game;},renderer,newGame(options={}){newGame({...options,legacy:options.casual!==true});},checkout,start:startGame,advance(seconds){for(let i=0;i<Math.ceil(seconds/STEP)&&game?.phase==='playing';i++){game.step(STEP);activeTicks++;}updateUI();if(game?.phase==='gameover')finish();else if(isCasual(game)&&game.autoRest)pauseGame('没有操作，已自动休息。');},snapshot:()=>game?.snapshot(),version:VERSION};
 }
 $('best-score').textContent=scoreText(high);soundUI();home();requestAnimationFrame(frame);
 social.initialize().then(()=>{playerId=social.playerId;if(document.documentElement.dataset.emailLinkIgnored)identityWarning='为保护已有存档，邮件链接不会自动切换身份。请点存档，用邮箱验证码恢复。';if(!game&&document.activeElement!==$('player-id-input'))home();}).catch(error=>{if(error.code==='identity_lost'){identityWarning=error.message;if(!game)home();}});
@@ -251,16 +261,17 @@ function paintCollection(){collectionPaintSignature=collectionSignature();const 
  for(const [key,id] of Object.entries({theme:'collection-theme',rarity:'collection-rarity',sort:'collection-sort'}))for(const button of $(id).querySelectorAll('button[data-value]'))button.setAttribute('aria-pressed',String(button.dataset.value===collectionFilters[key]));
  $('collection-reset').disabled=filter==='all'&&tier==='all'&&collectionFilters.sort==='recent'&&!query;
 }
-$('collection').onclick=()=>{if(game?.phase==='playing')pauseGame('图鉴替你留着每一次小发现。');paintCollection();$('collection-dialog').showModal();selectNavigation('collection');shop.observeCards();$('collection-status').textContent='正在翻开云端手帐…';social.initialize().then(()=>{if(collectionPaintSignature!==collectionSignature())paintCollection();$('collection-status').textContent=social.local?'本地联调手帐已读到，与正式云端分开保存。':'云端已读到，今天的收藏也在这里。每日换榜不清空手帐。';}).catch(()=>{$('collection-status').textContent='云端暂不可用，显示已读取收藏；未确认的发现不会冒充已保存。';});};
+$('collection').onclick=()=>{if(game?.phase==='playing')pauseGame('图鉴替你留着每一次小发现。');paintCollection();$('collection-dialog').showModal();sounds.setAlbum(true);sounds.paper('open');selectNavigation('collection');shop.observeCards();$('collection-status').textContent='正在翻开云端手帐…';social.initialize().then(()=>{if(collectionPaintSignature!==collectionSignature())paintCollection();$('collection-status').textContent=social.local?'本地联调手帐已读到，与正式云端分开保存。':'云端已读到，今天的收藏也在这里。每日换榜不清空手帐。';}).catch(()=>{$('collection-status').textContent='云端暂不可用，显示已读取收藏；未确认的发现不会冒充已保存。';});};
 $('close-collection').onclick=()=>$('collection-dialog').close();
+$('collection-dialog').addEventListener('close',()=>{sounds.setAlbum(false);sounds.paper('close');});
 $('collection-theme').innerHTML='<button type="button" data-value="all" aria-pressed="true">全部</button>'+THEMES.map(t=>`<button type="button" data-value="${escapeHtml(t.id)}" aria-pressed="false" title="${escapeHtml(t.name)}">${escapeHtml(collectionMenuName(t))}</button>`).join('');
 for(const [key,id] of Object.entries({theme:'collection-theme',rarity:'collection-rarity',sort:'collection-sort'}))$(id).addEventListener('click',event=>{const button=event.target.closest('button[data-value]');if(!button)return;collectionFilters[key]=button.dataset.value;collectionPage=0;paintCollection();});
 $('collection-search').addEventListener('input',()=>{collectionPage=0;paintCollection();});
 $('collection-reset').onclick=()=>{Object.assign(collectionFilters,{theme:'all',rarity:'all',sort:'recent'});$('collection-search').value='';collectionPage=0;paintCollection();};
-$('collection-prev').onclick=()=>{collectionPage--;paintCollection();$('collection-grid').scrollIntoView({block:'start'});};$('collection-next').onclick=()=>{collectionPage++;paintCollection();$('collection-grid').scrollIntoView({block:'start'});};
+$('collection-prev').onclick=()=>{sounds.paper('page');collectionPage--;paintCollection();$('collection-grid').scrollIntoView({block:'start'});};$('collection-next').onclick=()=>{sounds.paper('page');collectionPage++;paintCollection();$('collection-grid').scrollIntoView({block:'start'});};
 $('menu-prev').onclick=()=>{menuPage--;menu();};$('menu-next').onclick=()=>{menuPage++;menu();};
 function paintMenus(){const select=$('theme-select');select.innerHTML=THEMES.map(t=>{const state=menuState(t,menuServerTime);return `<option value="${t.id}">${t.name}${state==='current'?' · 本周':state==='archive'?' · 往期':state==='permanent'?' · 常驻':' · 时间待同步'}</option>`;}).join('');select.value=selectedTheme;select.disabled=!!game&&['playing','paused','card'].includes(game.phase);const t=displayTheme();$('cozy-theme-name').textContent=t.name;paintCozyMenuCards(t,select.disabled);$('theme-description').textContent=themeCopy(t);document.querySelector('.menu-panel').dataset.theme=t.id;shop.paint();if($('menu-picker')){$('menu-picker').innerHTML=select.innerHTML;$('menu-picker').value=selectedTheme;$('menu-picker').disabled=select.disabled;$('menu-picker-note').textContent=select.disabled?'这桌先慢慢吃，结账回门口后可以换菜单。':themeCopy(t);}$('theme-save-note').textContent='想念的味道会留在往期，随时回来尝。';menu();}
-$('theme-select').onchange=()=>{selectedTheme=$('theme-select').value;menuPage=0;themeChosen=true;try{localStorage.setItem('sushi.theme.v12',selectedTheme);}catch{}paintMenus();};
+$('theme-select').onchange=()=>{sounds.confirm();selectedTheme=$('theme-select').value;menuPage=0;themeChosen=true;try{localStorage.setItem('sushi.theme.v12',selectedTheme);}catch{}paintMenus();};
 social.request('/api/menus').then(data=>{menuServerTime=data.serverTime;if(!themeChosen&&!game){selectedTheme=data.themes.find(t=>t.state==='current')?.id||'classic';}paintMenus();}).catch(()=>{paintMenus();$('theme-save-note').textContent='菜单时间未连接；仍可品尝经典与已知主题，收藏在联网后同步。';});
 paintMenus();paintCollection();
 
@@ -270,7 +281,7 @@ for(const dialog of document.querySelectorAll('dialog'))dialog.addEventListener(
 $('open-progress').onclick=()=>$('collection').click();
 $('today-menu').onclick=()=>{if(game?.phase==='playing')pauseGame('主厨把菜单递过来啦，看完继续。');paintMenus();const t=displayTheme();$('menu-preview').innerHTML=(t.featured||t.foods).slice(0,6).map(id=>`<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(FOODS[id].name)}</span></div>`).join('');for(const c of $('menu-preview').querySelectorAll('canvas'))drawSushi(c.getContext('2d'),c.dataset.preview,50,44,.9);$('menu-dialog').showModal();selectNavigation('today-menu');};
 $('menu-picker').onchange=()=>{$('theme-select').value=$('menu-picker').value;$('theme-select').dispatchEvent(new Event('change'));const t=themeById(selectedTheme);$('menu-preview').innerHTML=(t.featured||t.foods).slice(0,6).map(id=>`<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(FOODS[id].name)}</span></div>`).join('');for(const c of $('menu-preview').querySelectorAll('canvas'))drawSushi(c.getContext('2d'),c.dataset.preview,50,44,.9);};
-$('close-menu').onclick=()=>$('menu-dialog').close();
+$('close-menu').onclick=()=>{sounds.confirm();$('menu-dialog').close();};
 $('cozy-menu-dismiss').onclick=()=>$('close-menu').click();
 
 $('account-retry').onclick=async()=>{await $('retry-network').onclick();shop.paint();};

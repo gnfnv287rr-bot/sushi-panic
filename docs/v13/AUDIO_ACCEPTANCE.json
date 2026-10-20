@@ -1,0 +1,38 @@
+{
+  "version": "1.3.1",
+  "rulesVersion": "1.2.1",
+  "releaseId": "2f1ab53571fe",
+  "local": {
+    "unitAndApi": {
+      "passed": 94,
+      "failed": 0,
+      "newAudioTests": 7
+    },
+    "chromeBrowser": {
+      "passed": 15,
+      "failed": 0,
+      "scope": "14 focused audio/game regressions plus one full native loop observation; 320/390/1440 CSS pixel widths"
+    },
+    "loop": {
+      "duration": 44.651156462585035,
+      "channels": 2,
+      "peak": 0.5199999809265137,
+      "rms": 0.06641142005564545,
+      "adjacentSeamDifference": 0.0005473830970004201,
+      "continuousObservedSeconds": 45.51466666666667,
+      "animationFrameCallbacks": 2720,
+      "sameNativeSourceAfterWrap": true
+    },
+    "security": "passed",
+    "protectedBusinessModules": 16,
+    "preservedOriginalControls": 126
+  },
+  "production": "pending",
+  "notVerified": [
+    "physical iPhone/Android speakers",
+    "Safari audio on physical device",
+    "subjective human listening quality",
+    "low-end phone sustained FPS",
+    "all networks and countries"
+  ]
+}

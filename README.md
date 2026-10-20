@@ -1,8 +1,10 @@
-# SUSHI PANIC《寿司别吃撑！》 · V1.3
+# SUSHI PANIC《寿司别吃撑！》 · V1.3.1
 
 [公开游戏 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/) · [源码仓库](https://github.com/gnfnv287rr-bot/sushi-panic)
 
 Canvas + DOM网页游戏，GitHub Pages + Supabase Free。输入昵称即可建立游客身份；自愿绑定邮箱验证码后可换浏览器恢复。温和饱腹、20秒空闲自动休息、主动结账、自愿参榜、长期寿司图鉴、188常驻＋28本期特色＋往期秋日菜单、每日北京时间00:00换榜。旧角色与视觉保留，旧0.2.0对局仍按旧规则结算。
+
+V1.3.1 音频：点击现有「音效」入口，自愿开启原创咖啡馆循环曲或游戏音效；首次默认静音，设置保存在本机。详细来源、交互与验证边界见 [音频说明](docs/v13/AUDIO.md)。
 
 ## 开发
 

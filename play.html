@@ -231,6 +231,15 @@ body.cozy-live .welcome-title span{display:inline}body.cozy-live .collection-hea
 @media(max-width:800px){body.cozy-live .collection-heading>.icon{width:30px;height:30px}}
 @media(max-width:380px){body.cozy-live .welcome-title span{display:block}}
 body.cozy-live :is(#menu-picker,#player-id-input,#account-email,#account-code,#collection-search){background:#fffaf0;color:var(--brown);border:1px solid #c8bfa7;border-radius:10px}body.cozy-live #cozy-menu-dismiss{margin:0;background:none;color:var(--brown)}
+
+/* V1.3.1: audio settings reuse the accepted paper/dialog language. */
+body.cozy-live #audio-dialog{max-width:480px}
+.audio-inner .audio-choice{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0 12px;border-bottom:1px dashed var(--line,#d7e1d3);cursor:pointer}
+.audio-choice b,.audio-choice small{display:block}.audio-choice small{font-size:13px;margin-top:6px;line-height:1.6}
+.audio-choice input{width:26px;height:26px;flex:0 0 auto;accent-color:#426b59}
+.audio-volume{display:flex;flex-wrap:wrap;justify-content:space-between;gap:9px;margin:16px 0 22px;font-size:14px}
+.audio-volume input{width:100%;min-height:32px;accent-color:#87bba2;cursor:pointer}
+.audio-inner #audio-mute{width:100%;min-height:48px;margin-top:6px}
 </style>
   <title>寿司别吃撑！ · SUSHI PANIC</title>
 </head>
@@ -256,7 +265,7 @@ body.cozy-live :is(#menu-picker,#player-id-input,#account-email,#account-code,#c
 </defs></svg>
 
 <div class="app cozy-app">
-<header class="topbar shop-header"><a class="brand" href="./" aria-label="寿司别吃撑 首页"><span class="brand-dish"><canvas width="100" height="80" data-cozy-food="salmon" aria-hidden="true"></canvas></span><span><b>SUSHI PANIC</b><strong class="round-type">寿司别吃撑！</strong></span></a><nav class="top-actions menu-rail" aria-label="寿司店导航"><button id="today-menu" class="nav-button nav-tag is-active is-current" aria-controls="menu-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-menu"/></svg><span>今日菜单</span></button><button id="collection" class="nav-button nav-tag " aria-controls="collection-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-book"/></svg><span>寿司图鉴</span><i id="collection-new-count" aria-hidden="true" hidden>NEW</i></button><button id="leaderboard" class="nav-button nav-tag " aria-controls="leaderboard-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-rank"/></svg><span>排行榜</span></button><button id="account" class="nav-button nav-tag " aria-controls="account-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-cloud"/></svg><span>云端存档</span><span id="nav-save-dot" class="save-dot" aria-hidden="true"></span></button><button id="help" class="nav-button nav-tag " aria-controls="help-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-help"/></svg><span>怎么玩</span></button><button id="sound" class="nav-button nav-tag " aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#cozy-muted"/></svg><span>音效：关</span></button></nav></header>
+<header class="topbar shop-header"><a class="brand" href="./" aria-label="寿司别吃撑 首页"><span class="brand-dish"><canvas width="100" height="80" data-cozy-food="salmon" aria-hidden="true"></canvas></span><span><b>SUSHI PANIC</b><strong class="round-type">寿司别吃撑！</strong></span></a><nav class="top-actions menu-rail" aria-label="寿司店导航"><button id="today-menu" class="nav-button nav-tag is-active is-current" aria-controls="menu-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-menu"/></svg><span>今日菜单</span></button><button id="collection" class="nav-button nav-tag " aria-controls="collection-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-book"/></svg><span>寿司图鉴</span><i id="collection-new-count" aria-hidden="true" hidden>NEW</i></button><button id="leaderboard" class="nav-button nav-tag " aria-controls="leaderboard-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-rank"/></svg><span>排行榜</span></button><button id="account" class="nav-button nav-tag " aria-controls="account-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-cloud"/></svg><span>云端存档</span><span id="nav-save-dot" class="save-dot" aria-hidden="true"></span></button><button id="help" class="nav-button nav-tag " aria-controls="help-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-help"/></svg><span>怎么玩</span></button><button id="sound" class="nav-button nav-tag " aria-pressed="false" aria-controls="audio-dialog" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-muted"/></svg><span>音效：关</span></button></nav></header>
 <main><section class="intro welcome" aria-label="游戏介绍"><div><h1 class="round-type welcome-title">欢迎光临，<span>今天想吃点什么？</span></h1><p class="subtitle">一口喜欢的寿司，一点慢下来的时间。</p></div><div class="best-record open-note"><span><i class="open-dot"></i>小店营业中</span><small>本机最高 <strong id="best-score">00000</strong> · 随时入座，随时再来。</small></div></section>
 <div class="game-layout"><section class="game-panel sushi-shop" aria-label="游戏区域">
 <div class="table-heading"><button id="cozy-menu-open" class="today-ticket" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-menu"/></svg><span><small>今日放题</small><b id="cozy-theme-name">经典寿司放题</b></span><svg class="icon" aria-hidden="true"><use href="#cozy-arrow"/></svg></button>
@@ -280,8 +289,427 @@ body.cozy-live :is(#menu-picker,#player-id-input,#account-email,#account-code,#c
     <p id="collection-status" role="status" class="tiny-note">云端确认后永久保留；每日换榜不会清空收藏。</p>
     <details class="collection-rules"><summary>收藏与珍稀说明</summary><p class="rarity-note">食物随机抽档：日常72% · 精选23% · 珍藏5%。8次食物出盘内保证精选或珍藏，40次内保证珍藏；实际含保底与安全盘调整。乌龙茶另备，不计入收藏。每日换榜不会清空收藏。</p></details>
     <div id="collection-grid" class="collection-grid"></div><div class="menu-pager"><button id="collection-prev" class="quiet-button">上一页</button><span id="collection-page-info"></span><button id="collection-next" class="quiet-button">下一页</button></div></div></dialog>
+  <dialog id="audio-dialog" aria-labelledby="audio-title"><div class="dialog-inner audio-inner"><p class="eyebrow">给小店添一点温柔的声音</p><div class="section-heading"><h2 id="audio-title" class="hand-title">小店的声音</h2><button id="close-audio" class="close-dialog" aria-label="收好声音设置"><svg class="icon" aria-hidden="true"><use href="#cozy-close"/></svg></button></div>
+    <label class="audio-choice"><span><b>背景音乐</b><small>一首轻轻循环的咖啡馆小曲</small></span><input id="audio-music" type="checkbox" role="switch"></label>
+    <label class="audio-volume" for="audio-music-volume">音乐音量 <output id="audio-music-volume-value" for="audio-music-volume">25%</output><input id="audio-music-volume" type="range" min="0" max="60" value="25"></label>
+    <label class="audio-choice"><span><b>游戏音效</b><small>吃寿司、翻手帐，还有新品的小惊喜</small></span><input id="audio-effects" type="checkbox" role="switch"></label>
+    <label class="audio-volume" for="audio-effects-volume">音效音量 <output id="audio-effects-volume-value" for="audio-effects-volume">36%</output><input id="audio-effects-volume" type="range" min="0" max="60" value="36"></label>
+    <button id="audio-mute" class="secondary-button" aria-pressed="true">开启已选声音</button><p id="audio-status" class="identity-note" role="status"></p><p class="tiny-note">设置只记在这台设备。打开手帐会轻轻调低音乐；首次进入保持静音。</p>
+  </div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
   <script type="module">
+var __defProp = Object.defineProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __esm = (fn, res, err) => function __init() {
+  if (err) throw err[0];
+  try {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  } catch (e) {
+    throw err = [e], e;
+  }
+};
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+
+// src/audio-score.js
+var audio_score_exports = {};
+__export(audio_score_exports, {
+  effectBuffer: () => effectBuffer,
+  renderCafeLoop: () => renderCafeLoop
+});
+function rng(seed) {
+  return () => {
+    seed = Math.imul(seed, 1664525) + 1013904223 >>> 0;
+    return seed / 4294967296;
+  };
+}
+function pluck(c, dest, midi, at, duration, level, voice = "guitar", pan = 0) {
+  const g = c.createGain(), p = c.createStereoPanner(), f = c.createBiquadFilter();
+  p.pan.value = pan;
+  f.type = "lowpass";
+  f.frequency.value = voice === "bass" ? 650 : voice === "ep" ? 2400 : 3200;
+  const partials = voice === "ep" ? [1, 0.26, 0.06] : voice === "bass" ? [1, 0.2] : [1, 0.38, 0.13, 0.045];
+  g.gain.setValueAtTime(0, at);
+  g.gain.linearRampToValueAtTime(level, at + 0.012);
+  g.gain.exponentialRampToValueAtTime(1e-4, at + duration);
+  g.connect(f);
+  f.connect(p);
+  p.connect(dest);
+  partials.forEach((amount, i) => {
+    const o = c.createOscillator(), v = c.createGain();
+    o.frequency.value = hz(midi) * (i + 1);
+    v.gain.value = amount;
+    o.connect(v);
+    v.connect(g);
+    o.start(at);
+    o.stop(at + duration + 0.015);
+  });
+}
+async function renderCafeLoop() {
+  const Offline = globalThis.OfflineAudioContext || globalThis.webkitOfflineAudioContext;
+  const c = new Offline(2, Math.ceil((LENGTH + 2) * RATE), RATE), bus = c.createGain();
+  bus.gain.value = 0.72;
+  bus.connect(c.destination);
+  const delay = c.createDelay(0.3), echo = c.createGain();
+  delay.delayTime.value = 0.145;
+  echo.gain.value = 0.12;
+  bus.connect(delay);
+  delay.connect(echo);
+  echo.connect(c.destination);
+  const chords = [
+    [48, 55, 59, 64],
+    [45, 52, 55, 60],
+    [50, 57, 60, 64],
+    [43, 53, 59, 62],
+    [48, 55, 59, 64],
+    [45, 52, 55, 60],
+    [53, 57, 60, 64],
+    [43, 53, 57, 62],
+    [48, 55, 59, 64],
+    [45, 52, 55, 60],
+    [50, 57, 60, 64],
+    [43, 53, 59, 62],
+    [53, 57, 60, 64],
+    [52, 55, 59, 62],
+    [50, 57, 60, 64],
+    [43, 53, 59, 62]
+  ];
+  const melody = [76, null, 79, 74, 72, null, 71, 74, 76, null, 79, 81, 76, 74, 71, null];
+  const random = rng(13031), noise = c.createBuffer(1, RATE * 0.12, RATE);
+  let smooth = 0;
+  for (let i = 0; i < noise.length; i++) {
+    smooth += 0.2 * (random() * 2 - 1 - smooth);
+    noise.getChannelData(0)[i] = smooth * Math.exp(-i / (RATE * 0.027));
+  }
+  for (let bar = 0; bar < BARS; bar++) {
+    const at = bar * 4 * BEAT, chord = chords[bar];
+    for (const [b, n] of [[0, chord[0] - 12], [1.5, chord[0] - 5], [2.5, chord[0] - 12]]) pluck(c, bus, n, at + b * BEAT, 0.65, 0.13, "bass", -0.08);
+    for (const b of [0.5, 1.75, 2.5, 3.5]) chord.slice(1).forEach((n, i) => pluck(c, bus, n, at + b * BEAT + i * 0.012, 0.7, 0.034, "guitar", -0.22));
+    for (const b of [0, 2]) chord.slice(1).forEach((n) => pluck(c, bus, n, at + b * BEAT, 1.35, 0.023, "ep", 0.22));
+    if (melody[bar] != null) {
+      pluck(c, bus, melody[bar], at + 0.25 * BEAT, 1.05, 0.039, "ep", 0.12);
+      if (bar % 4 === 2) pluck(c, bus, melody[bar] - 2, at + 2.75 * BEAT, 0.6, 0.026, "ep", 0.12);
+    }
+    if (bar === 3 || bar === 11) for (const [i, n] of [chord[2] + 12, chord[1] + 12].entries()) pluck(c, bus, n, at + (2.5 + i * 0.5) * BEAT, 0.45, 0.018, "guitar", 0.35);
+    for (const b of [0.5, 1.5, 2.5, 3.5]) {
+      const s = c.createBufferSource(), g = c.createGain();
+      s.buffer = noise;
+      g.gain.value = 0.065;
+      s.connect(g);
+      g.connect(bus);
+      s.start(at + b * BEAT);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  }
+  const rendered = await c.startRendering(), frames = Math.round(LENGTH * RATE), loop = c.createBuffer(2, frames, RATE);
+  let peak = 0;
+  for (let ch = 0; ch < 2; ch++) {
+    const src = rendered.getChannelData(ch), dst = loop.getChannelData(ch);
+    for (let i = 0; i < src.length; i++) dst[i % frames] += src[i];
+    for (const n of dst) peak = Math.max(peak, Math.abs(n));
+  }
+  const scale = peak > 0 ? 0.52 / peak : 1;
+  for (let ch = 0; ch < 2; ch++) {
+    const d = loop.getChannelData(ch);
+    for (let i = 0; i < d.length; i++) d[i] *= scale;
+  }
+  return loop;
+}
+function effectBuffer(c, kind) {
+  const paper = kind.startsWith("paper-"), discovery = kind.startsWith("discovery-");
+  const duration = paper ? kind === "paper-open" ? 0.4 : kind === "paper-close" ? 0.26 : 0.3 : discovery ? 0.66 : kind === "tea" ? 0.44 : kind === "seared" ? 0.31 : 0.22;
+  const b = c.createBuffer(1, Math.ceil(duration * RATE), RATE), data = b.getChannelData(0), random = rng([...kind].reduce((s, v) => s + v.charCodeAt(0), 13));
+  let smooth = 0, low = 0;
+  for (let i = 0; i < data.length; i++) {
+    const t = i / RATE, x = t / duration, n = random() * 2 - 1;
+    smooth += 0.16 * (n - smooth);
+    low += 0.055 * (n - low);
+    const env = Math.sin(Math.PI * x) ** 1.4;
+    if (paper) {
+      const fold = 0.45 + 0.55 * Math.sin(x * Math.PI * 2.6) ** 2;
+      data[i] = smooth * env * fold * 0.55 + low * env * 0.13;
+    } else if (discovery) {
+      const notes = [523.25, 659.25, 783.99];
+      let sum = 0;
+      notes.forEach((f, j) => {
+        const dt = t - j * 0.095;
+        if (dt >= 0) sum += Math.sin(2 * Math.PI * f * dt) * Math.exp(-dt * 12) * Math.min(1, dt / 8e-3);
+      });
+      data[i] = sum * 0.14;
+    } else if (kind === "stamp") data[i] = (low * 1.7 + Math.sin(2 * Math.PI * 145 * t) * 0.2) * Math.exp(-t * 34) * Math.min(1, t / 8e-3);
+    else if (kind === "tea") data[i] = (0.16 * Math.sin(2 * Math.PI * 740 * t) * Math.exp(-t * 22) + low * 0.35 * Math.sin(Math.PI * x) ** 2) * Math.min(1, t / 9e-3);
+    else if (kind === "fried" || kind === "vegetable") {
+      const crunch = kind === "fried" ? 0.36 : 0.22;
+      data[i] = (smooth * crunch + n * 0.025) * env * (0.4 + 0.6 * Math.sin(t * 95) ** 2);
+    } else if (kind === "seared") data[i] = smooth * 0.3 * env + Math.sin(2 * Math.PI * 210 * t) * 0.12 * Math.exp(-t * 23) * Math.min(1, t / 8e-3);
+    else {
+      const f = kind === "soft" ? 230 : kind === "dessert" ? 320 : kind === "confirm" ? 430 : 265;
+      data[i] = (Math.sin(2 * Math.PI * (f * t - 60 * t * t)) * 0.24 + low * 0.12) * Math.exp(-t * 20) * Math.min(1, t / 9e-3);
+    }
+    data[i] *= Math.min(1, (duration - t) / 0.025);
+  }
+  return b;
+}
+var RATE, BEAT, BARS, LENGTH, hz;
+var init_audio_score = __esm({
+  "src/audio-score.js"() {
+    RATE = 22050;
+    BEAT = 60 / 86;
+    BARS = 16;
+    LENGTH = BARS * 4 * BEAT;
+    hz = (n) => 440 * 2 ** ((n - 69) / 12);
+  }
+});
+
+// src/audio-manager.js
+var AUDIO_KEY = "sushi-panic.audio.v1";
+var AUDIO_DEFAULTS = Object.freeze({ music: false, effects: false, muted: true, musicVolume: 0.25, effectsVolume: 0.36 });
+function audioPreferences(value) {
+  const out = { ...AUDIO_DEFAULTS };
+  for (const k of ["music", "effects", "muted"]) if (typeof value?.[k] === "boolean") out[k] = value[k];
+  for (const k of ["musicVolume", "effectsVolume"]) if (typeof value?.[k] === "number" && Number.isFinite(value[k])) out[k] = Math.max(0, Math.min(0.6, value[k]));
+  return out;
+}
+function foodSound(food = {}) {
+  const text2 = [food.id, food.name, food.categoryId, food.topping, food.visualKey].join(" ");
+  if (food.id === "tea" || food.fullness < 0) return "tea";
+  if (/sweet|pudding|dessert|布丁|蛋糕|冰淇淋|甜品|大福/.test(text2)) return "dessert";
+  if (/tempura|fried|karaage|天妇罗|炸|可乐饼/.test(text2)) return "fried";
+  if (/sear|aburi|caramel|炙|焦糖|蒲烧|烤/.test(text2)) return "seared";
+  if (/vegetable|veggie|cucumber|avocado|黄瓜|牛油果|蔬|笋|秋葵|玉米|纳豆/.test(text2)) return "vegetable";
+  if (/tamago|egg|玉子|蛋|豆腐/.test(text2)) return "soft";
+  return "normal";
+}
+var AudioManager = class {
+  constructor({ storage, contextFactory = () => new (globalThis.AudioContext || globalThis.webkitAudioContext)(), loader = () => Promise.resolve().then(() => (init_audio_score(), audio_score_exports)), onChange = () => {
+  }, now = () => performance.now(), random = Math.random } = {}) {
+    if (storage === void 0) try {
+      storage = globalThis.localStorage;
+    } catch {
+    }
+    this.storage = storage;
+    this.contextFactory = contextFactory;
+    this.loader = loader;
+    this.onChange = onChange;
+    this.now = now;
+    this.random = random;
+    let saved;
+    try {
+      saved = JSON.parse(storage?.getItem(AUDIO_KEY));
+    } catch {
+    }
+    this.settings = audioPreferences(saved);
+    this.unlocked = false;
+    this.visible = true;
+    this.ducked = false;
+    this.voices = /* @__PURE__ */ new Set();
+    this.buffers = /* @__PURE__ */ new Map();
+    this.recent = /* @__PURE__ */ new Map();
+    this.pending = 0;
+    this.epoch = 0;
+    this.status = "idle";
+  }
+  get audible() {
+    return !this.settings.muted && (this.settings.music || this.settings.effects);
+  }
+  snapshot() {
+    return { settings: { ...this.settings }, unlocked: this.unlocked, contextState: this.context?.state || "absent", voices: this.voices.size, pending: this.pending, bgm: !!this.bgm, ducked: this.ducked, visible: this.visible, status: this.status, cachedEffects: this.buffers.size };
+  }
+  notify() {
+    this.onChange(this.snapshot());
+  }
+  configure(patch) {
+    this.settings = audioPreferences({ ...this.settings, ...patch });
+    try {
+      this.storage?.setItem(AUDIO_KEY, JSON.stringify(this.settings));
+    } catch {
+    }
+    this.epoch++;
+    if (this.settings.muted || !this.settings.effects) this.stopEffects();
+    this.sync();
+    this.notify();
+  }
+  // Call from a real pointer/key event. Restored preferences never imply autoplay.
+  unlock() {
+    this.unlocked = true;
+    this.sync();
+  }
+  ensureContext() {
+    if (this.context) return this.context;
+    const c = this.contextFactory();
+    this.context = c;
+    this.musicGain = c.createGain();
+    this.musicGain.gain.value = 0;
+    this.effectGain = c.createGain();
+    this.effectGain.gain.value = this.settings.effectsVolume;
+    const limiter = c.createDynamicsCompressor();
+    limiter.threshold.value = -18;
+    limiter.knee.value = 16;
+    limiter.ratio.value = 3;
+    limiter.attack.value = 0.01;
+    limiter.release.value = 0.18;
+    this.musicGain.connect(limiter);
+    this.effectGain.connect(limiter);
+    limiter.connect(c.destination);
+    return c;
+  }
+  sync() {
+    clearTimeout(this.backgroundTimer);
+    if (!this.unlocked || !this.audible || !this.visible) {
+      this.fadeMusic(false);
+      return;
+    }
+    try {
+      const c = this.ensureContext();
+      c.resume().catch(() => {
+        this.status = "error";
+        this.notify();
+      });
+      this.effectGain.gain.setTargetAtTime(this.settings.effectsVolume, c.currentTime, 0.025);
+      if (this.settings.music) this.startMusic();
+      else this.fadeMusic(false);
+    } catch {
+      this.status = "error";
+      this.notify();
+    }
+  }
+  async score() {
+    if (!this.scorePromise) this.scorePromise = this.loader().catch((e) => {
+      this.scorePromise = null;
+      throw e;
+    });
+    return this.scorePromise;
+  }
+  async startMusic() {
+    if (this.bgm) {
+      this.fadeMusic(true);
+      return;
+    }
+    if (this.musicLoading) return;
+    this.musicLoading = true;
+    this.status = "loading";
+    this.notify();
+    try {
+      const score = await this.score();
+      this.musicBuffer ?? (this.musicBuffer = await score.renderCafeLoop());
+      if (this.settings.music && this.audible && this.visible && this.unlocked) {
+        const source = this.context.createBufferSource();
+        source.buffer = this.musicBuffer;
+        source.loop = true;
+        source.connect(this.musicGain);
+        this.bgm = source;
+        source.onended = () => {
+          source.disconnect();
+          if (this.bgm === source) this.bgm = null;
+        };
+        this.musicGain.gain.cancelScheduledValues(this.context.currentTime);
+        this.musicGain.gain.setValueAtTime(0, this.context.currentTime);
+        source.start();
+        this.fadeMusic(true);
+      }
+      this.status = "ready";
+    } catch {
+      this.status = "error";
+    } finally {
+      this.musicLoading = false;
+      this.notify();
+    }
+  }
+  fadeMusic(on) {
+    if (!this.context || !this.musicGain) return;
+    const at = this.context.currentTime, g = this.musicGain.gain;
+    g.cancelScheduledValues(at);
+    g.setTargetAtTime(on ? this.settings.musicVolume * (this.ducked ? 0.38 : 1) : 0, at, on ? 0.18 : 0.035);
+    if (!on && this.bgm) {
+      const source = this.bgm;
+      this.bgm = null;
+      try {
+        source.stop(at + 0.17);
+      } catch {
+      }
+    }
+  }
+  setAlbum(open) {
+    this.ducked = open;
+    if (this.bgm) this.fadeMusic(true);
+    this.notify();
+  }
+  setVisible(visible) {
+    this.visible = visible;
+    this.epoch++;
+    if (!visible) {
+      this.stopEffects();
+      this.fadeMusic(false);
+      clearTimeout(this.backgroundTimer);
+      this.backgroundTimer = setTimeout(() => this.context?.suspend().catch(() => {
+      }), 190);
+    } else this.sync();
+    this.notify();
+  }
+  stopEffects() {
+    for (const voice of this.voices) {
+      try {
+        voice.stop();
+        voice.disconnect();
+      } catch {
+      }
+    }
+    this.voices.clear();
+  }
+  async play(kind, { gap = 110, level = 1 } = {}) {
+    if (!this.unlocked || !this.visible || !this.audible || !this.settings.effects || !this.context || this.pending >= 4) return false;
+    const at = this.now(), previous = this.recent.get(kind) ?? -Infinity;
+    if (at - previous < gap) return false;
+    this.recent.set(kind, at);
+    const epoch = this.epoch;
+    this.pending++;
+    try {
+      const score = await this.score();
+      if (epoch !== this.epoch || !this.visible || !this.audible || !this.settings.effects) return false;
+      if (!this.buffers.has(kind)) this.buffers.set(kind, score.effectBuffer(this.context, kind));
+      if (this.voices.size >= 4) return false;
+      const voice = this.context.createBufferSource(), gain = this.context.createGain();
+      voice.buffer = this.buffers.get(kind);
+      voice.playbackRate.value = 0.97 + this.random() * 0.06;
+      gain.gain.value = level;
+      voice.connect(gain);
+      gain.connect(this.effectGain);
+      this.voices.add(voice);
+      voice.onended = () => {
+        this.voices.delete(voice);
+        voice.disconnect();
+        gain.disconnect();
+      };
+      voice.start();
+      return true;
+    } catch {
+      this.status = "error";
+      this.notify();
+      return false;
+    } finally {
+      this.pending--;
+    }
+  }
+  eat(food) {
+    return this.play(foodSound(food), { gap: 90 });
+  }
+  paper(action) {
+    return this.play("paper-" + action, { gap: 240, level: 0.65 });
+  }
+  confirm() {
+    return this.play("confirm", { gap: 180, level: 0.65 });
+  }
+  discovery(kind = "common") {
+    const epoch = this.epoch;
+    this.play("discovery-" + kind, { gap: 1e3, level: 0.9 });
+    if (this.unlocked && this.settings.effects && this.audible && this.visible) setTimeout(() => {
+      if (epoch === this.epoch) this.play("stamp", { gap: 500, level: 0.7 });
+    }, 230);
+  }
+};
+
 // src/core.js
 var VERSION = "0.2.0";
 var STEP = 1 / 60;
@@ -315,8 +743,8 @@ function seededRandom(seed) {
   };
 }
 var FoodDeck = class {
-  constructor(rng) {
-    this.rng = rng;
+  constructor(rng2) {
+    this.rng = rng2;
     this.bag = [];
     this.unsafeStreak = 0;
     this.draws = 0;
@@ -5804,8 +6232,8 @@ var SocialClient = class {
 // src/casual-v12.js
 var CASUAL_VERSION = "1.2.0";
 var MenuDeck = class {
-  constructor(rng, theme) {
-    this.rng = rng;
+  constructor(rng2, theme) {
+    this.rng = rng2;
     this.theme = theme;
     this.sinceSafe = 0;
     this.sinceHidden = 0;
@@ -5954,8 +6382,8 @@ var CasualGame = class extends Game {
 // src/casual-v121.js
 var CASUAL_VERSION2 = "1.2.1";
 var MenuDeck2 = class {
-  constructor(rng, theme, knownFoods = []) {
-    this.rng = rng;
+  constructor(rng2, theme, knownFoods = []) {
+    this.rng = rng2;
     this.theme = theme;
     this.known = new Set(knownFoods);
     this.sinceSafe = 0;
@@ -6185,7 +6613,7 @@ var lastFrame = performance.now();
 var accumulator = 0;
 var toastTimer;
 var ended = false;
-var audio;
+var sounds = new AudioManager({ onChange: () => soundUI() });
 var social = new SocialClient();
 var playerId = social.playerId;
 var onlineRun = null;
@@ -6196,17 +6624,14 @@ var lastReceipt = null;
 var boardBusy = false;
 var clockAnchor = null;
 var identityWarning = "";
-var shop = shopExperience({ social, getGame: () => game, getRun: () => onlineRun, getTheme: displayTheme, getLocalSaveFailure: () => localSaveFailed, getUnarchived: () => onlineRun && ["playing", "paused"].includes(game?.phase) ? Math.max(0, game.sushiEaten - (syncedEaten.get(onlineRun.runId) || 0)) : 0, drawSushi, playSound: (kind) => tone(kind) });
+var shop = shopExperience({ social, getGame: () => game, getRun: () => onlineRun, getTheme: displayTheme, getLocalSaveFailure: () => localSaveFailed, getUnarchived: () => onlineRun && ["playing", "paused"].includes(game?.phase) ? Math.max(0, game.sushiEaten - (syncedEaten.get(onlineRun.runId) || 0)) : 0, drawSushi, playSound: (kind) => sounds.discovery(kind) });
 var physique = (c) => c.id === "momo" ? "\u6742\u98DF\u578B" : c.id === "taro" ? "\u5FEB\u6D88\u5316\u578B" : c.id === "yuzu" ? "\u6162\u6D88\u5316\u578B" : "\u6E05\u723D\u578B";
 preview.start();
 preview.character = { ...preview.character, allergy: "none" };
-var playingNotes = /* @__PURE__ */ new Set();
 var high = 0;
-var sound = false;
 try {
   const n = Number(localStorage.getItem("sushi-panic.best.v1"));
   if (Number.isSafeInteger(n) && n >= 0) high = n;
-  sound = localStorage.getItem("sushi-panic.sound") === "on";
 } catch {
 }
 var scoreText = (n) => String(Math.floor(n)).padStart(5, "0");
@@ -6216,66 +6641,27 @@ function newSeed() {
   crypto.getRandomValues(a);
   return a[0];
 }
-function tone(kind = "eat") {
-  if (!sound) return;
-  if (["common", "select", "treasure", "secret"].includes(kind)) {
-    try {
-      audio ?? (audio = new (window.AudioContext || window.webkitAudioContext)());
-      audio.resume().catch(() => {
-      });
-      const notes = kind === "common" ? [620] : kind === "select" ? [620, 780] : kind === "treasure" ? [620, 780, 940] : [700, 880, 1050];
-      notes.forEach((hz, i) => {
-        const o = audio.createOscillator(), g = audio.createGain(), at = audio.currentTime + i * 0.11;
-        o.type = "sine";
-        o.frequency.setValueAtTime(hz, at);
-        g.gain.setValueAtTime(0.035, at);
-        g.gain.exponentialRampToValueAtTime(1e-3, at + 0.18);
-        o.connect(g);
-        g.connect(audio.destination);
-        rememberSound(o);
-        o.start(at);
-        o.stop(at + 0.19);
-      });
-    } catch {
-    }
-    return;
-  }
-  try {
-    audio ?? (audio = new (window.AudioContext || window.webkitAudioContext)());
-    audio.resume().catch(() => {
-    });
-    const o = audio.createOscillator(), gain = audio.createGain();
-    o.type = "sine";
-    o.frequency.setValueAtTime(kind === "allergy" ? 180 : kind === "perfect" ? 680 : 450, audio.currentTime);
-    o.frequency.exponentialRampToValueAtTime(kind === "allergy" ? 80 : 950, audio.currentTime + 0.09);
-    gain.gain.setValueAtTime(0.065, audio.currentTime);
-    gain.gain.exponentialRampToValueAtTime(1e-3, audio.currentTime + 0.15);
-    o.connect(gain);
-    gain.connect(audio.destination);
-    rememberSound(o);
-    o.start();
-    o.stop(audio.currentTime + 0.16);
-  } catch {
-  }
-}
-function rememberSound(o) {
-  playingNotes.add(o);
-  o.onended = () => playingNotes.delete(o);
-}
-function stopSound() {
-  for (const o of playingNotes) {
-    try {
-      o.stop();
-      o.disconnect?.();
-    } catch {
-    }
-  }
-  playingNotes.clear();
+function tone() {
+  sounds.confirm();
 }
 function soundUI() {
-  $2("sound").innerHTML = `<svg class="icon" aria-hidden="true"><use href="#cozy-${sound ? "sound" : "muted"}"/></svg><span>\u97F3\u6548\uFF1A${sound ? "\u5F00" : "\u5173"}</span>`;
-  $2("sound").setAttribute("aria-pressed", String(sound));
+  const s = sounds.settings, on = sounds.audible;
+  $2("sound").querySelector("use").setAttribute("href", "#cozy-" + (on ? "sound" : "muted"));
+  const label = "\u97F3\u6548\uFF1A" + (on ? "\u5F00" : "\u5173");
+  if ($2("sound").querySelector("span").textContent !== label) $2("sound").querySelector("span").textContent = label;
+  $2("sound").setAttribute("aria-pressed", String(on));
+  for (const [id, key] of [["audio-music", "music"], ["audio-effects", "effects"]]) $2(id).checked = s[key];
+  for (const [id, key] of [["audio-music-volume", "musicVolume"], ["audio-effects-volume", "effectsVolume"]]) {
+    $2(id).value = Math.round(s[key] * 100);
+    $2(id + "-value").textContent = Math.round(s[key] * 100) + "%";
+  }
+  $2("audio-mute").textContent = s.muted ? "\u5F00\u542F\u5DF2\u9009\u58F0\u97F3" : "\u4E00\u952E\u9759\u97F3";
+  $2("audio-mute").setAttribute("aria-pressed", String(s.muted));
+  $2("audio-status").textContent = sounds.status === "error" ? "\u58F0\u97F3\u6682\u672A\u51C6\u5907\u597D\uFF0C\u6E38\u620F\u53EF\u4EE5\u7167\u5E38\u73A9\uFF1B\u53EF\u5173\u6389\u58F0\u97F3\u7EE7\u7EED\u73A9\uFF0C\u7F51\u7EDC\u6062\u590D\u540E\u5237\u65B0\u518D\u8BD5\u3002" : sounds.status === "loading" ? "\u6B63\u5728\u8F7B\u8F7B\u8C03\u97F3\uFF0C\u6E38\u620F\u53EF\u4EE5\u7167\u5E38\u73A9\u2026" : s.muted ? "\u73B0\u5728\u5B89\u5B89\u9759\u9759\u7684\uFF0C\u9009\u597D\u58F0\u97F3\u540E\u518D\u5F00\u542F\u3002" : "\u97F3\u91CF\u8F7B\u4E00\u70B9\uFF0C\u6162\u6162\u5403\uFF1B\u79BB\u5F00\u9875\u9762\u4F1A\u6682\u505C\u58F0\u97F3\u3002";
 }
+for (const type of ["pointerdown", "keydown"]) document.addEventListener(type, (e) => {
+  if (e.isTrusted && !e.repeat) sounds.unlock();
+}, { capture: true });
 function menu() {
   const pool = game && !isCasual(game) ? ["salmon", "tuna", "shrimp", "tamago", "cucumber", "ikura", "onigiri", "tea"] : displayTheme().foods;
   const keys = pool.includes("taste_caramel_salmon") ? [...FEATURED, "tea", ...pool.filter((k) => !FEATURED.includes(k) && k !== "tea")] : pool;
@@ -6619,7 +7005,7 @@ function eatTarget(target) {
   }
   if (onlineRun) actionLog.push([activeTicks, target.id]);
   renderer.bite(target, e);
-  tone(e.type);
+  sounds.eat(CATALOG2[e.item.key]);
   toast(e.newDiscovery ? "\u65B0\u53D1\u73B0\uFF01" + CATALOG2[e.item.key].name : e.text, e.type === "allergy");
   if (isCasual(game)) {
     shop.discover(e);
@@ -6723,14 +7109,24 @@ document.querySelector(".brand").onclick = (e) => {
   home();
 };
 $2("sound").onclick = () => {
-  sound = !sound;
-  if (!sound) stopSound();
+  if (game?.phase === "playing") pauseGame("\u8C03\u597D\u5C0F\u5E97\u7684\u58F0\u97F3\uFF0C\u518D\u7EE7\u7EED\u3002");
   soundUI();
-  try {
-    localStorage.setItem("sushi-panic.sound", sound ? "on" : "off");
-  } catch {
-  }
-  tone();
+  $2("audio-dialog").showModal();
+  selectNavigation("sound");
+};
+$2("close-audio").onclick = () => $2("audio-dialog").close();
+for (const [id, key] of [["audio-music", "music"], ["audio-effects", "effects"]]) $2(id).onchange = () => {
+  sounds.unlock();
+  sounds.configure({ [key]: $2(id).checked, ...$2(id).checked ? { muted: false } : {} });
+  if (key === "effects" && sounds.settings.effects) sounds.confirm();
+};
+for (const [id, key] of [["audio-music-volume", "musicVolume"], ["audio-effects-volume", "effectsVolume"]]) $2(id).oninput = () => {
+  sounds.unlock();
+  sounds.configure({ [key]: Number($2(id).value) / 100 });
+};
+$2("audio-mute").onclick = () => {
+  sounds.unlock();
+  sounds.configure({ muted: !sounds.settings.muted });
 };
 $2("help").onclick = () => {
   if (game?.phase === "playing") pauseGame("\u83DC\u5355\u8FD8\u5728\uFF0C\u770B\u5B8C\u73A9\u6CD5\u518D\u7EE7\u7EED\u3002");
@@ -6819,7 +7215,7 @@ $2("help-dialog").addEventListener("click", (e) => {
   }
 });
 document.addEventListener("keydown", (e) => {
-  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $2("help-dialog").open || $2("leaderboard-dialog").open || $2("account-dialog").open || $2("collection-dialog").open || $2("menu-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $2("help-dialog").open || $2("leaderboard-dialog").open || $2("account-dialog").open || $2("collection-dialog").open || $2("menu-dialog").open || $2("audio-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
   if (e.code === "KeyP" || e.code === "Escape") {
     if (game?.phase === "playing") {
       e.preventDefault();
@@ -6835,6 +7231,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 document.addEventListener("visibilitychange", () => {
+  sounds.setVisible(!document.hidden);
   if (document.hidden) pauseGame("\u5207\u6362\u9875\u9762\u65F6\uFF0C\u5DF2\u66FF\u4F60\u6682\u505C\u3002");
 });
 window.addEventListener("blur", () => {
@@ -6842,7 +7239,7 @@ window.addEventListener("blur", () => {
 });
 new ResizeObserver(() => renderer.resize()).observe($2("stage"));
 if (new URLSearchParams(location.search).get("test") === "1") {
-  window.__sushi = { get game() {
+  window.__sushi = { audio: sounds, get game() {
     return game;
   }, renderer, newGame(options = {}) {
     newGame({ ...options, legacy: options.casual !== true });
@@ -7035,6 +7432,8 @@ $2("collection").onclick = () => {
   if (game?.phase === "playing") pauseGame("\u56FE\u9274\u66FF\u4F60\u7559\u7740\u6BCF\u4E00\u6B21\u5C0F\u53D1\u73B0\u3002");
   paintCollection();
   $2("collection-dialog").showModal();
+  sounds.setAlbum(true);
+  sounds.paper("open");
   selectNavigation("collection");
   shop.observeCards();
   $2("collection-status").textContent = "\u6B63\u5728\u7FFB\u5F00\u4E91\u7AEF\u624B\u5E10\u2026";
@@ -7046,6 +7445,10 @@ $2("collection").onclick = () => {
   });
 };
 $2("close-collection").onclick = () => $2("collection-dialog").close();
+$2("collection-dialog").addEventListener("close", () => {
+  sounds.setAlbum(false);
+  sounds.paper("close");
+});
 $2("collection-theme").innerHTML = '<button type="button" data-value="all" aria-pressed="true">\u5168\u90E8</button>' + THEMES2.map((t) => `<button type="button" data-value="${escapeHtml(t.id)}" aria-pressed="false" title="${escapeHtml(t.name)}">${escapeHtml(collectionMenuName(t))}</button>`).join("");
 for (const [key, id] of Object.entries({ theme: "collection-theme", rarity: "collection-rarity", sort: "collection-sort" })) $2(id).addEventListener("click", (event) => {
   const button = event.target.closest("button[data-value]");
@@ -7065,11 +7468,13 @@ $2("collection-reset").onclick = () => {
   paintCollection();
 };
 $2("collection-prev").onclick = () => {
+  sounds.paper("page");
   collectionPage--;
   paintCollection();
   $2("collection-grid").scrollIntoView({ block: "start" });
 };
 $2("collection-next").onclick = () => {
+  sounds.paper("page");
   collectionPage++;
   paintCollection();
   $2("collection-grid").scrollIntoView({ block: "start" });
@@ -7106,6 +7511,7 @@ function paintMenus() {
   menu();
 }
 $2("theme-select").onchange = () => {
+  sounds.confirm();
   selectedTheme = $2("theme-select").value;
   menuPage = 0;
   themeChosen = true;
@@ -7157,7 +7563,10 @@ $2("menu-picker").onchange = () => {
   $2("menu-preview").innerHTML = (t.featured || t.foods).slice(0, 6).map((id) => `<div><canvas width="100" height="90" data-preview="${id}" aria-hidden="true"></canvas><span>${escapeHtml(CATALOG2[id].name)}</span></div>`).join("");
   for (const c of $2("menu-preview").querySelectorAll("canvas")) drawSushi(c.getContext("2d"), c.dataset.preview, 50, 44, 0.9);
 };
-$2("close-menu").onclick = () => $2("menu-dialog").close();
+$2("close-menu").onclick = () => {
+  sounds.confirm();
+  $2("menu-dialog").close();
+};
 $2("cozy-menu-dismiss").onclick = () => $2("close-menu").click();
 $2("account-retry").onclick = async () => {
   await $2("retry-network").onclick();
