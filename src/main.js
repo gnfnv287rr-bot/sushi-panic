@@ -1,3 +1,7 @@
+import {TasteStore} from './taste-store.js';
+import {tasteUI} from './taste-ui.js';
+import {tasteOf,TasteFeedback} from './taste-model.js';
+import {enableTaste,TASTE_MARKER} from './casual-v141.js';
 import {RunLease} from './run-lease.js';
 import {friendForFood,friendSnapshot} from './friends-special.js';
 import {AudioManager} from './audio-manager.js';
@@ -7,7 +11,7 @@ import {shopExperience} from './shop-experience.js';
 import {SocialClient,escapeHtml} from './social.js';
 import {rebuildActiveRun} from './run-state-v14.js';
 import {watchIdentity,currentIdentity} from './identity.js';
-import {CasualGame} from './casual-v14.js';
+import {CasualGame} from './casual-v141.js';
 import {createCasual,isCasualVersion} from './casual-engine.js';
 import {CATALOG as FOODS,THEMES,themeById,menuState,RARITIES,rarityOf,FEATURED} from './menus-v14.js';
 const Game=CasualGame,isCasual=g=>isCasualVersion(g?.rulesVersion);
@@ -27,6 +31,12 @@ const loopRun=()=>isCasual(game);
 const sounds=new AudioManager({onChange:()=>soundUI()});
 const social=new SocialClient();let playerId=social.playerId,onlineRun=null,activeTicks=0,actionLog=[],entryBusy=false,lastReceipt=null,boardBusy=false,clockAnchor=null,identityWarning='';
 const shop=shopExperience({social,getGame:()=>game,getRun:()=>onlineRun,getTheme:displayTheme,getLocalSaveFailure:()=>localSaveFailed,getUnarchived:()=>onlineRun&&['playing','paused'].includes(game?.phase)?Math.max(0,game.sushiEaten-(syncedEaten.get(onlineRun.runId)||0)):0,drawSushi,playSound:kind=>sounds.discovery(kind)});
+const taste=new TasteStore({request:(...args)=>social.request(...args),onChange:()=>tasteView.paint()});
+const tasteView=tasteUI({store:taste,drawSushi,onChange:()=>{renderer.getTaste=()=>taste.value;characterUI();}});
+const tasteFeedback=new TasteFeedback();let tasteBubble='',tasteUntil=0,tasteTimer;
+function openTaste(){if(loopRun()&&['playing','paused'].includes(game.phase))enterRest();tasteView.open();}
+function tasteOwner(){const id=social.profile?.id;if(!id&&taste.owner&&taste.owner!=='practice'){taste.select('practice');return;}if(id&&taste.owner!==id){tasteBubble='';tasteFeedback.streak=0;taste.select(id);}}
+const abilityText=c=>game?.tasteMode&&c.id==='yuzu'?'慢食观察家：温和消化，饱腹增量 ×1.15':c.ability;
 const physique=c=>c.id==='momo'?'杂食型':c.id==='taro'?'快消化型':c.id==='yuzu'?'慢消化型':'清爽型';
 preview.start();preview.character={...preview.character,allergy:'none'};
 let high=0;
@@ -50,7 +60,7 @@ function menu(){
  const pool=game&&!isCasual(game)?['salmon','tuna','shrimp','tamago','cucumber','ikura','onigiri','tea']:displayTheme().foods;
  const keys=pool.includes('taste_caramel_salmon')?[...FEATURED,'tea',...pool.filter(k=>!FEATURED.includes(k)&&k!=='tea')]:pool;
  const pages=Math.ceil(keys.length/12);menuPage=Math.min(menuPage,pages-1);const shown=keys.slice(menuPage*12,menuPage*12+12);
- $('menu').innerHTML=shown.map(key=>{const f=FOODS[key],grade=RARITIES[rarityOf(f)];return `<div class="menu-item ${game&&f.allergen===game.character.allergy?'allergic':''}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}<b>${f.fullness>0?'+':''}${Math.round(f.fullness*(f.fullness>0?(game?.character.portion||1)*(game&&!isCasual(game)?1:.65):1))} <small style="color:${grade?.color||'#66886d'}">${f.collectible?grade?.name||'日常':'茶饮'}</small></b></span></div>`;}).join('');
+ $('menu').innerHTML=shown.map(key=>{const f=FOODS[key],grade=RARITIES[rarityOf(f)];return `<div class="menu-item ${game&&!game.tasteMode&&f.allergen===game.character.allergy?'allergic':''}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}<b>${f.fullness>0?'+':''}${Math.round(f.fullness*(f.fullness>0?(game?.character.portion||1)*(game&&!isCasual(game)?1:.65):1))} <small style="color:${grade?.color||'#66886d'}">${f.collectible?grade?.name||'日常':'茶饮'}</small></b></span></div>`;}).join('');
  for(const el of $('menu').children)drawSushi(el.querySelector('canvas').getContext('2d'),el.dataset.food,50,48,1.2);
  $('menu-page-info').textContent=`${keys.length}款餐品 · ${menuPage+1}/${pages}页`;$('menu-prev').disabled=menuPage===0;$('menu-next').disabled=menuPage>=pages-1;
 }
@@ -58,8 +68,8 @@ function characterUI(){
   if($('theme-select'))$('theme-select').disabled=!!game&&['playing','paused','card'].includes(game.phase);
   const c=game?.character;drawPortrait($('portrait'),c);
   $('character-tag').textContent=c?'已入座':'等待入座';$('character-name').textContent=playerId||'输入你的ID';$('character-title').textContent=c?`${physique(c)} · ${onlineRun?(onlineRun.mode==='local'?'本地联调榜':onlineRun.ranked===false?'云端收藏':'联网计分'):'练习局'}`:'慢慢吃，也慢慢收藏';
-  $('character-ability').textContent=c?c.ability:'入座后抽取一张角色卡，看看今天要忌口什么。';
-  $('allergy-name').textContent=c?ALLERGEN_NAMES[c.allergy]:'开局揭晓';$('allergy-detail').textContent=c?(isCasual(game)?'忌口会有一点不舒服，换一盘就好':'标「忌」的盘子会造成过敏伤害'):'看清再吃，别太心急';menu();
+  $('character-ability').textContent=c?abilityText(c):'入座抽一张体质卡，想吃什么由你决定。';
+  $('allergy-name').textContent=game&&!isCasual(game)?ALLERGEN_NAMES[c.allergy]:taste.value.configured?'按你的喜好':'自由品尝';$('allergy-detail').textContent=game&&!isCasual(game)?'旧生存模式保留原规则':'心头好会开心，挑食会吐槽。都能吃，不扣分。';menu();
 }
 function showOverlay(html){$('overlay').classList.remove('hidden');$('overlay-content').classList.remove('record-celebration');$('overlay-content').innerHTML=html;const button=$('overlay-content').querySelector('button');if(button)button.focus({preventScroll:true});}
 function home(){
@@ -71,7 +81,7 @@ function home(){
 }
 async function beginRun(id){
   if(entryBusy)return;if($('ranked-choice'))rankedChoice=$('ranked-choice').checked;entryBusy=true;const button=$('new-game')||$('retry');if(button){button.disabled=true;button.textContent='正在入座…';}
-  try{const legacyTest=new URLSearchParams(location.search).get('test')==='1'&&new URLSearchParams(location.search).get('casual')!=='1';const run=await social.start(id,legacyTest?{}:{rulesVersion:'1.4.0',themeId:selectedTheme,ranked:rankedChoice});if(run.runId&&!await lease.acquire(run.runId))throw new Error('这一桌在另一个窗口开着，请回到原窗口。');playerId=social.playerId;identityWarning='';newGame(run.runId?{seed:run.seed,characterId:run.characterId,onlineRun:run,legacy:!isCasualVersion(run.rulesVersion)}:{});}
+  try{const legacyTest=new URLSearchParams(location.search).get('test')==='1'&&new URLSearchParams(location.search).get('casual')!=='1';const run=await social.start(id,legacyTest?{}:{rulesVersion:'1.4.1',themeId:selectedTheme,ranked:rankedChoice});if(run.runId&&!await lease.acquire(run.runId))throw new Error('这一桌在另一个窗口开着，请回到原窗口。');playerId=social.playerId;identityWarning='';tasteOwner();newGame(run.runId?{seed:run.seed,characterId:run.characterId,onlineRun:run,legacy:!isCasualVersion(run.rulesVersion)}:{});}
   catch(error){if(error.code==='identity_lost'){identityWarning=error.message;home();}if($('entry-error'))$('entry-error').textContent=error.message;else toast(error.message,true);if(button){button.disabled=false;button.textContent=button.id==='retry'?'再来一局！':'入座，开吃！ →';}}
   finally{entryBusy=false;}
 }
@@ -79,13 +89,13 @@ function newGame(options={}){
   autoRestoreOnLoad=false;
   saveProgress();
   if(!playerId&&new URLSearchParams(location.search).get('test')==='1')playerId='测试食客';
-  const run=options.onlineRun;game=options.legacy?new LegacyGame({seed:options.seed??newSeed(),characterId:options.characterId}):createCasual({rulesVersion:run?.rulesVersion||'1.4.0',seed:options.seed??newSeed(),characterId:options.characterId,themeId:run?.themeId||selectedTheme,knownFoods:run?.knownFoods||social.profile?.collection?.map(c=>c.sushiId)||[],menuEdition:run?.menuEdition,friendProfile:run?.friendProfile||friendSnapshot({id:social.profile?.id,nickname:playerId})});onlineRun=options.onlineRun||null;practiceRun=onlineRun?null:{runId:'practice-'+crypto.randomUUID(),online:false,seed:game.seed,rulesVersion:game.rulesVersion,themeId:game.theme?.id,menuEdition:game.menuEdition,knownFoods:[...game.knownFoods||[]],friendProfile:game.friendProfile};if(practiceRun)lease.acquire(practiceRun.runId).then(ok=>{if(ok)saveProgress();});activeTicks=0;actionLog=[];ended=false;accumulator=0;renderer.effects=[];clearTimeout(toastTimer);$('toast').classList.remove('visible');characterUI();updateUI();
+  const run=options.onlineRun;game=options.legacy?new LegacyGame({seed:options.seed??newSeed(),characterId:options.characterId}):createCasual({rulesVersion:run?.rulesVersion||'1.4.1',seed:options.seed??newSeed(),characterId:options.characterId,themeId:run?.themeId||selectedTheme,knownFoods:run?.knownFoods||social.profile?.collection?.map(c=>c.sushiId)||[],menuEdition:run?.menuEdition,friendProfile:run?.friendProfile||friendSnapshot({id:social.profile?.id,nickname:playerId})});onlineRun=options.onlineRun||null;practiceRun=onlineRun?null:{runId:'practice-'+crypto.randomUUID(),online:false,seed:game.seed,rulesVersion:game.rulesVersion,themeId:game.theme?.id,menuEdition:game.menuEdition,knownFoods:[...game.knownFoods||[]],friendProfile:game.friendProfile};if(practiceRun)lease.acquire(practiceRun.runId).then(ok=>{if(ok)saveProgress();});activeTicks=0;actionLog=[];ended=false;accumulator=0;renderer.effects=[];clearTimeout(toastTimer);$('toast').classList.remove('visible');characterUI();updateUI();
   const c=game.character;
-  showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">本局体质：${physique(c)}</p><div class="card-traits"><span>${isCasual(game)?'精神':'生命'} ${c.hp}</span><span>温和消化 ${(c.drain*(isCasual(game)?.18:1)).toFixed(2)}/秒</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">本局忌口：<strong>${ALLERGEN_NAMES[c.allergy]}</strong> · ${isCasual(game)?'误食精神 −4，不会死亡':'误食扣 24 生命'}</div><button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">${onlineRun?(onlineRun.mode==='local'?'本地联调局 · 与公网榜单独立':(onlineRun.ranked===false?'云端收藏局 · 结账保存，不参与今日榜':'联网计分局 · 结束后参与今日全球榜')):'练习局 · 未连接今日榜，本局不上榜'}</p>`);
-  drawPortrait($('card-portrait'),c);$('start-game').onclick=startGame;paintNetwork();
+  showOverlay(`<p class="eyebrow">你的本局角色卡</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">本局体质：${physique(c)}</p><div class="card-traits"><span>${isCasual(game)?'精神':'生命'} ${c.hp}</span><span>温和消化 ${(c.drain*(isCasual(game)?.18:1)).toFixed(2)}/秒</span></div><p style="margin-bottom:10px">${abilityText(c)}</p><div class="allergy-pill">${isCasual(game)?'每道都能吃，口味只影响小表情。':'旧生存局忌口：'+ALLERGEN_NAMES[c.allergy]}</div>${isCasual(game)?'<button id="card-taste" type="button" class="text-button">今天想吃点什么呀？选选我的口味 →</button><p class="tiny-note">可跳过，之后在设置里随时修改。</p>':''}<button class="primary-button" id="start-game">记住了，开始！</button><p class="tiny-note">${onlineRun?(onlineRun.mode==='local'?'本地联调局 · 与公网榜单独立':(onlineRun.ranked===false?'云端收藏局 · 结账保存，不参与今日榜':'联网计分局 · 结束后参与今日全球榜')):'练习局 · 未连接今日榜，本局不上榜'}</p>`);
+  drawPortrait($('card-portrait'),c);if($('card-taste'))$('card-taste').onclick=openTaste;$('start-game').onclick=startGame;paintNetwork();
 }
 function enterRest(){if(!loopRun()||!['playing','paused'].includes(game.phase))return;if(!game.autoRest||game.phase==='playing'){if(game.rest)game.rest();else{game.pause();game.autoRest=true;}accumulator=0;saveProgress();}if(!document.querySelector('dialog[open]'))$('overlay').classList.add('hidden');updateUI();}
-function startGame(){if(!game?.start())return;shop.paint();$('overlay').classList.add('hidden');$('pause').disabled=false;accumulator=0;lastFrame=performance.now();updateUI();renderer.draw(game,lastFrame/1000);saveProgress();paintNetwork();tone();}
+function startGame(){if(!game?.start())return;if(isCasual(game)&&taste.loaded&&!taste.value.configured)taste.save(taste.value);shop.paint();$('overlay').classList.add('hidden');$('pause').disabled=false;accumulator=0;lastFrame=performance.now();updateUI();renderer.draw(game,lastFrame/1000);saveProgress();paintNetwork();tone();}
 function pauseGame(reason='寿司会等你。'){
   if(!game||!(game.pause()||isCasual(game)&&game.phase==='paused'&&game.autoRest))return;
   accumulator=0;saveProgress();
@@ -160,7 +170,7 @@ function eatTarget(target){
   if(onlineRun||practiceRun)actionLog.push([activeTicks,target.id]);
   renderer.bite(target,e);sounds.eat(FOODS[e.item.key]);toast(e.newDiscovery?'新发现！'+FOODS[e.item.key].name:e.text,e.type==='allergy');if(isCasual(game)){shop.discover(e);paintCollection();scheduleCollectionSync();}shop.paint();
   // Effects are handled once at input time; the engine keeps only a bounded event history.
-  const friend=loopRun()&&game.theme.id==='friends-special'&&game.friendProfile?.foodId===e.item.key?friendForFood(e.item.key):null;if(friend){toast(friend.easterEgg);sounds.confirm();}
+  const friend=loopRun()&&game.theme.id==='friends-special'&&game.friendProfile?.foodId===e.item.key?friendForFood(e.item.key):null;if(friend)sounds.confirm();if(game.tasteMode){const kind=tasteOf(e.item.key,taste.value),line=tasteFeedback.bite(kind);tasteBubble=[line,friend?.easterEgg].filter(Boolean).join(' · ');tasteUntil=performance.now()+3000;$('chef').dataset.taste=kind;clearTimeout(tasteTimer);tasteTimer=setTimeout(()=>{tasteBubble='';$('chef').dataset.taste='neutral';updateUI();},3000);}else if(friend)toast(friend.easterEgg);
   updateUI();saveProgress();if(game.phase==='gameover')finish();
 }
 function updateUI(){
@@ -182,7 +192,7 @@ function updateUI(){
   if($('scene-warning-title').textContent!==cueTitle)$('scene-warning-title').textContent=cueTitle;
   $('scene-warning-detail').textContent=danger?(g?.hazardTime>=2?'正在掉血！':`${Math.max(0,2-(g?.hazardTime??0)).toFixed(1)} 秒后开始掉血`):lowHealth?'避开红色「忌」，稳住胃口':nearlyHungry?'先挑一盘不过敏的寿司':nearlyFull?'先等消化，乌龙茶也能减饱腹':'';
   $('combo').textContent=g?.combo>=2?`${g.combo} 连击 · 吃得刚刚好`:' ';
-  $('game-hint').innerHTML=`<span class="hint-dot"></span>${g?`本局忌口：${ALLERGEN_NAMES[g.character.allergy]} · 红色「忌」别乱吃`:'点击盘子开吃 · 看清红色过敏标记'}`;
+  $('game-hint').innerHTML=`<span class="hint-dot"></span>${g&&!isCasual(g)?`本局忌口：${ALLERGEN_NAMES[g.character.allergy]}`:'点击盘子慢慢吃 · 口味只影响小表情'}`;
   if(isCasual(g)){ $('health-status').textContent=hp<40?'歇一会儿也很好':'慢慢享用';$('zone-text').textContent=full>100?'肚子满满 · 抿口茶':full<25?'肚子咕咕 · 吃一口':'吃得刚刚好';$('scene-warning-detail').textContent=full>85?'先歇一口，乌龙茶能帮忙消化':'挑一盘喜欢的寿司，不用着急';$('scene-warning-title').textContent=full>85?'猫师傅：先抿口茶吧':full<25?'肚子咕咕，来一口？':'';cue.dataset.severity='caution';$('checkout').disabled=!['playing','paused'].includes(g.phase);}else $('checkout').disabled=true;
   $('pause').disabled=!g||!['playing','paused'].includes(g.phase);
   $('pause').setAttribute('aria-pressed',String(g?.phase==='paused'));
@@ -190,7 +200,8 @@ function updateUI(){
   $('pause').querySelector('span').textContent=g?.phase==='paused'?'继续慢慢吃':'歇一歇';
   $('cozy-tea-action').disabled=!(g?.phase==='playing'||loopRun()&&g.autoRest)||!g.foods.some(f=>f.key==='tea');
   $('idle-rest').hidden=!(loopRun()&&g?.autoRest&&g.phase==='paused');
-  $('chef-copy').textContent=g?.phase==='paused'?'这一桌，替你留着。':full>85?'先抿口茶，好味道会等你。':full<25?'肚子咕咕，来吃一口吧。':'慢慢来，好味道会等你。';
+  if(performance.now()>=tasteUntil){tasteBubble='';$('chef').dataset.taste='neutral';}
+  $('chef-copy').textContent=tasteBubble|| (g?.phase==='paused'?'这一桌，替你留着。':full>85?'先抿口茶，好味道会等你。':full<25?'肚子咕咕，来吃一口吧。':'慢慢来，好味道会等你。');
 }
 function frame(now){
  if(loopRun()&&game.autoRest&&game.phase==='paused'&&now-lastFrame<1000/30){animationFrame=requestAnimationFrame(frame);return;}
@@ -215,6 +226,7 @@ $('pause').onclick=()=>game?.phase==='paused'?resumeGame():pauseGame();
 document.querySelector('.brand').onclick=e=>{e.preventDefault();home();};
 $('sound').onclick=()=>{if(game?.phase==='playing')pauseGame('调好小店的声音，再继续。');soundUI();$('audio-dialog').showModal();selectNavigation('sound');};
 $('close-audio').onclick=()=>$('audio-dialog').close();
+$('audio-taste').onclick=()=>{$('audio-dialog').close();openTaste();};$('taste-open').onclick=openTaste;$('taste-nudge-open').onclick=openTaste;
 for(const [id,key]of [['audio-music','music'],['audio-effects','effects']])$(id).onchange=()=>{sounds.unlock();sounds.configure({[key]:$(id).checked,...($(id).checked?{muted:false}:{})});if(key==='effects'&&sounds.settings.effects)sounds.confirm();};
 for(const [id,key]of [['audio-music-volume','musicVolume'],['audio-effects-volume','effectsVolume']])$(id).oninput=()=>{sounds.unlock();sounds.configure({[key]:Number($(id).value)/100});};
 $('audio-mute').onclick=()=>{sounds.unlock();sounds.configure({muted:!sounds.settings.muted});};
@@ -230,7 +242,7 @@ $('verify-email').onclick=async()=>{if(!emailOperation)return;const button=$('ve
 $('close-help').onclick=()=>$('help-dialog').close();
 $('help-dialog').addEventListener('click',e=>{if(e.target===$('help-dialog')){const r=$('help-dialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('help-dialog').close();}});
 document.addEventListener('keydown',e=>{
-  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('food-detail-dialog').open||$('help-dialog').open||$('leaderboard-dialog').open||$('account-dialog').open||$('collection-dialog').open||$('menu-dialog').open||$('audio-dialog').open||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName))return;
+  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('food-detail-dialog').open||$('help-dialog').open||$('leaderboard-dialog').open||$('account-dialog').open||$('collection-dialog').open||$('menu-dialog').open||$('audio-dialog').open||$('taste-dialog').open||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName))return;
   if(e.code==='KeyP'||e.code==='Escape'){if(game?.phase==='playing'){e.preventDefault();pauseGame();}else if(game?.phase==='paused'){e.preventDefault();resumeGame();}}
   if(/^[1-8]$/.test(e.key)&&(game?.phase==='playing'||loopRun()&&game.autoRest)){e.preventDefault();eatTarget(renderer.targets.find(f=>f.number===Number(e.key)));}
 });
@@ -247,7 +259,7 @@ social.initialize().then(()=>{playerId=social.playerId;if(document.documentEleme
 refreshLeaderboard({quiet:true});
 setInterval(tickCountdown,1000);
 setInterval(()=>{if(!document.hidden&&($('leaderboard-dialog').open||$('daily-board-panel').getBoundingClientRect().width>0))refreshLeaderboard({quiet:true});},60000);
-window.addEventListener('online',()=>social.initialize().catch(()=>{}).finally(()=>refreshLeaderboard({quiet:true}))); 
+window.addEventListener('online',()=>{taste.refresh();return social.initialize().catch(()=>{}).finally(()=>refreshLeaderboard({quiet:true}));});
 
 function paintNetwork(){shop.paint();const el=$('network-status');if(!el)return;const count=social.pending.filter(e=>!e.owner||e.owner===social.profile?.id).length;
  el.dataset.state=count?'pending':game&&!onlineRun?'practice':social.profile?'online':'connecting';
@@ -260,11 +272,11 @@ function saveProgress(force=false){
  const saved=social.journal.write({saveVersion:2,kind:'active',owner:social.profile?.id||'practice',runId:run.runId,run,body:{ticks:activeTicks,actions:[...actionLog]},presentation:{restTravel:game.restTravel||0,phase:game.phase,autoRest:game.autoRest},updatedAt:Date.now()});
  localSaveFailed=!saved;if(saved)lastSavedSignature=signature;shop.paint();if(!saved)$('network-status').textContent='浏览器未能保存对局，请保持页面开启，结束后确认成绩已提交';
 }
-async function restoreProgress(entry){try{if(!await lease.acquire(entry.runId)){toast('这一桌还在另一个窗口开着，回原窗口继续就好。',true);return;}game=rebuildActiveRun(entry);onlineRun=entry.run.online===false?null:entry.run;practiceRun=entry.run.online===false?entry.run:null;activeTicks=entry.body.ticks;actionLog=[...entry.body.actions];ended=false;accumulator=0;lastFrame=performance.now();renderer.effects=[];characterUI();updateUI();if(game.phase==='gameover')finish();else if(loopRun()){$('overlay').classList.add('hidden');enterRest();toast('这桌替你留好了，点一盘继续。');}else pauseGame('已恢复上次对局；未操作期间没有消耗饱腹。');paintNetwork();}catch(error){lease.release();toast(error.message,true);}}
-social.onState=()=>{paintNetwork();if($('collection-dialog').open&&collectionPaintSignature!==collectionSignature())paintCollection();};paintNetwork();setInterval(saveProgress,5000);window.addEventListener('pagehide',()=>{saveProgress(true);lease.release();});
+async function restoreProgress(entry){try{if(!await lease.acquire(entry.runId)){toast('这一桌还在另一个窗口开着，回原窗口继续就好。',true);return;}game=rebuildActiveRun(entry);onlineRun=entry.run.online===false?null:entry.run;practiceRun=entry.run.online===false?entry.run:null;activeTicks=entry.body.ticks;actionLog=[...entry.body.actions];if(isCasual(game)&&!game.tasteMode){enableTaste(game);actionLog.push([activeTicks,TASTE_MARKER]);}ended=false;accumulator=0;lastFrame=performance.now();renderer.effects=[];characterUI();updateUI();if(game.phase==='gameover')finish();else if(loopRun()){$('overlay').classList.add('hidden');enterRest();toast('这桌替你留好了，点一盘继续。');}else pauseGame('已恢复上次对局；未操作期间没有消耗饱腹。');paintNetwork();}catch(error){lease.release();toast(error.message,true);}}
+social.onState=()=>{tasteOwner();paintNetwork();if($('collection-dialog').open&&collectionPaintSignature!==collectionSignature())paintCollection();};paintNetwork();setInterval(saveProgress,5000);window.addEventListener('pagehide',()=>{saveProgress(true);lease.release();});
 window.addEventListener('pageshow',async e=>{if(e.persisted&&onlineRun&&!await lease.acquire(onlineRun.runId)){enterRest();toast('这一桌已在另一个窗口继续。',true);}});
 $('retry-network').onclick=async()=>{const b=$('retry-network');b.disabled=true;try{await social.initialize();if(!game){playerId=social.playerId;home();}await refreshLeaderboard();paintNetwork();}catch(error){social.lastError=error.message;paintNetwork();toast(error.message,true);await refreshLeaderboard();}finally{b.disabled=false;}};
-$('copy-diagnostics').onclick=async()=>{const text=JSON.stringify({version:'1.4.0',url:location.origin+location.pathname,apiHost:social.api?new URL(social.api).host:null,identity:social.profile?.id?.slice(-8)||null,mode:social.mode,run:onlineRun?'online':game?'practice':'home',pending:social.pending.length,day:social.lastBoard?.day,error:social.lastError||null},null,2);try{await navigator.clipboard.writeText(text);toast('诊断已复制，不包含密码或登录凭据');}catch{toast('浏览器不允许复制，请记录联网状态提示',true);}};
+$('copy-diagnostics').onclick=async()=>{const text=JSON.stringify({version:'1.4.1',url:location.origin+location.pathname,apiHost:social.api?new URL(social.api).host:null,identity:social.profile?.id?.slice(-8)||null,mode:social.mode,run:onlineRun?'online':game?'practice':'home',pending:social.pending.length,day:social.lastBoard?.day,error:social.lastError||null},null,2);try{await navigator.clipboard.writeText(text);toast('诊断已复制，不包含密码或登录凭据');}catch{toast('浏览器不允许复制，请记录联网状态提示',true);}};
 if(social.api&&!social.local)watchIdentity((event,id)=>{if(!['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event)||id===social.profile?.id&&event!=='USER_UPDATED')return;saveProgress();if(game&&id!==social.profile?.id){game=null;onlineRun=null;}social.initialize().then(()=>{playerId=social.playerId;if(document.documentElement.dataset.emailLinkIgnored)identityWarning='为保护已有存档，邮件链接不会自动切换身份。请点存档，用邮箱验证码恢复。';if(!game)home();shop.refreshAuth();paintArchive();refreshLeaderboard({quiet:true});}).catch(error=>{social.lastError=error.message;paintNetwork();});}).catch(()=>{});
 
 function checkout(){if(!isCasual(game)||!game.checkout())return;clearTimeout(checkpointTimer);finish();}
@@ -330,3 +342,6 @@ function openFoodDetail(id){const f=FOODS[id];if(!f?.friendId)return;const owned
 $('collection-grid').addEventListener('click',e=>{const card=e.target.closest('[data-friend]');if(card)openFoodDetail(card.dataset.sushiId);});
 $('collection-grid').addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)&&e.target.matches('[data-friend]')){e.preventDefault();openFoodDetail(e.target.dataset.sushiId);}});
 $('close-food-detail').onclick=()=>$('food-detail-dialog').close();
+
+setInterval(()=>{if(!document.hidden&&taste.pending&&!taste.pending.conflict&&!taste.busy)taste.flush();},30000);
+window.addEventListener('storage',e=>{if(taste.owner&&e.key===taste.key()&&!taste.pending)taste.refresh();});

@@ -1,0 +1,22 @@
+{
+  "version": "1.4.1",
+  "ownerAuthorization": "V1.4.1 personalized taste request: cosmetic taste feedback, ordinary-food scoring for every dish, explicit old-table transition; no menu probability or history rewrite",
+  "approvedAdapterChanges": {
+    "src/casual-engine.js": "f665cc715f67fecddea9881ce6b45d25815b0d49c3d2db1500f5a414c75104c2",
+    "src/social.js": "7945d7bdab57a8574086de2548d4b64206f2edb40883304e1668089401e9f2c6"
+  },
+  "frozenHashes": {
+    "src/core.js": "80482db4f48e3d323898842ef0513311549a768673d09d36217dcf53f4e5af9d",
+    "src/renderer.js": "b38a42e868489c113a8df5e68ba448c051253d38599935c3829a973f1addf4fc",
+    "src/renderer-v12.js": "df4b6cce3deb89938619d2930308d56396179fc528af833aba4f7f71401598a8",
+    "src/casual-v12.js": "ae72a5be94e44f08bb703b5ac9829f36cdd246323d614cd40e382db424d81fda",
+    "src/casual-v121.js": "fc2ef23a4a037778fdf7d4c4e9661d5155863d33fca8c8edad91e0d9c86df4e5",
+    "src/casual-v14.js": "acff72996e707dbe107016b6232883c45754c8bdd2b40a381aea73b13185c1ae",
+    "src/menus-v1.js": "a07a3db4c0c764a29c67b81589a7fc604369060b68a49d75914c7027bee8c05e",
+    "src/menus-v2.js": "b923b7e702e0b10fe6e53f2db422764bd21fcfb587ee9a9c20395680921da1a7",
+    "src/menus-v14.js": "b34afdf62358defb0299fb4d3555ac426f5f2dec66f03d819c58d78bf5ab8894",
+    "src/menu-catalog-v2.js": "eea22c7555d12df153721ef92eedb1e9e451cc78f6707b5efd741a35ebf6da7a",
+    "src/friends-special.js": "c3e88a827cfbfb3e1fea0c81c06b9e486ea326bc257cb7a000f7c1cf1d366514",
+    "src/friends-art.js": "13d72c32894110d6bf5e75c73995d256ed4e8922c8c56070242a070689b41d7a"
+  }
+}

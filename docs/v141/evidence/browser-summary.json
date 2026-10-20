@@ -1,0 +1,19 @@
+{
+  "full": {
+    "startTime": "2026-10-20T09:45:20.803Z",
+    "duration": 232154.842,
+    "expected": 72,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "focusedAfterFix": {
+    "startTime": "2026-10-20T09:49:43.926Z",
+    "duration": 24885.21,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "notes": "Full suite: 72/73; initial BGM generation had a 5-second wait timeout. Existing audio suite uses 20-second startup allowance; aligned that test and all eight focused cases passed. See TEST_REPORT.md."
+}

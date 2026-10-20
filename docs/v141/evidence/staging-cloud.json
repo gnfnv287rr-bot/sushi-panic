@@ -1,0 +1,18 @@
+{
+  "environment": "real isolated Supabase staging",
+  "checks": [
+    "player 1: independent anonymous UUID, real cloud save/read/idempotency and stale-device conflict",
+    "player 1: clean SDK client with restored authenticated session reads same UUID/preferences (credential restore test, not a new real email OTP test)",
+    "player 1: server-generated friend menu, actual legal bite, replay score, checkpoint/finish exactly once, collection and tastes independent",
+    "player 1: RLS and direct privileged RPC blocked",
+    "player 2: independent anonymous UUID, real cloud save/read/idempotency and stale-device conflict",
+    "player 2: clean SDK client with restored authenticated session reads same UUID/preferences (credential restore test, not a new real email OTP test)",
+    "player 2: server-generated friend menu, actual legal bite, replay score, checkpoint/finish exactly once, collection and tastes independent",
+    "player 2: RLS and direct privileged RPC blocked",
+    "two users share identical cloud board while tastes stay private; forged owner rejected",
+    "old active table taste transition replays and archives with its original session ID"
+  ],
+  "startedAt": "2026-10-20T09:44:23.469Z",
+  "status": "passed",
+  "finishedAt": "2026-10-20T09:44:47.784Z"
+}

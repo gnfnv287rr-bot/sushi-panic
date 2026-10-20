@@ -253,6 +253,17 @@ body.cozy-live #food-detail-dialog{max-width:480px}
 body.cozy-live #food-detail-title{font-size:24px;line-height:1.55}
 #food-detail-art{display:block;max-width:100%;height:auto;margin:10px auto}
 body.cozy-live #audio-title{font-size:26px;line-height:1.4}
+
+/* V1.4.1: reuse accepted paper, ink, chips and food drawings. No new page theme. */
+#taste-dialog{width:min(760px,calc(100vw - 24px));max-height:90dvh;overflow:auto;overscroll-behavior:contain}
+.taste-inner{padding:clamp(20px,4vw,36px)}.taste-inner h2{font-size:clamp(24px,5vw,34px)}.taste-inner h3{font-size:18px;margin:20px 0 12px;color:#426b59}.taste-inner h3 small{font:500 12px sans-serif;color:#806856;margin-left:8px}
+.taste-note{font-size:13px;line-height:1.7;color:#665948}.taste-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.taste-chip{min-height:44px;padding:8px 13px;border:1px solid #d7d9c5;border-radius:18px;background:#fffdf3;color:#426b59;font:inherit;font-size:14px;cursor:pointer}.taste-chip[aria-pressed=true]{background:#f8e5df;border-color:#d39c89;color:#795644}.taste-chip:active,.taste-favorite:active{transform:scale(.97)}
+.taste-tools{display:flex;gap:12px;margin:14px 0}.taste-tools label{flex:1;min-width:0;font-size:12px;color:#806856}.taste-tools input,.taste-tools select{display:block;width:100%;box-sizing:border-box;min-height:44px;font:inherit;margin-top:5px}.taste-foods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.taste-dish{min-width:0;text-align:center;border-bottom:1px dashed #ded6c2;padding-bottom:8px}.taste-favorite{width:100%;padding:0 5px 8px;border:1px solid transparent;border-radius:18px;background:transparent;color:#426b59;cursor:pointer;font:inherit}.taste-favorite canvas{display:block;max-width:100%;height:auto;margin:auto}.taste-favorite span{display:block;min-height:36px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}.taste-favorite small{font-size:11px;color:#806856}.taste-favorite[aria-pressed=true]{border-color:#87bba2;background:#edf5e8}.taste-favorite[aria-pressed=true] small:before{content:'♡ '}.taste-dislike{min-height:44px;border:0;background:transparent;color:#806856;font:inherit;font-size:12px;cursor:pointer}.taste-dislike[aria-pressed=true]{color:#9a4936;text-decoration:underline}.taste-pagination{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px}.taste-pagination button{min-height:44px}.taste-footer{position:sticky;bottom:-1px;padding:12px 0 4px;background:#fffdf3;display:flex;gap:10px;flex-wrap:wrap;align-items:center}.taste-footer .primary-button{flex:1;font-size:16px;min-height:48px}.taste-nudge{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:1400;max-width:calc(100vw - 28px);width:max-content;padding:10px 18px;background:#fff9ee;border:1px solid #b8dcc7;border-radius:20px;box-shadow:0 4px 12px #80685618;font-size:13px;color:#426b59;display:flex;align-items:center;gap:12px}.taste-nudge[hidden]{display:none}.taste-nudge button{min-height:44px;white-space:nowrap}.taste-face{display:none;position:absolute;top:0;left:50%;transform:translateX(-50%);width:192px;height:auto;pointer-events:none}.chef-island[data-taste=favorite] .taste-face,.chef-island[data-taste=dislike] .taste-face{display:block}.taste-face-happy,.taste-face-picky{display:none}.chef-island[data-taste=favorite] .taste-face-happy,.chef-island[data-taste=dislike] .taste-face-picky{display:block}.chef-island[data-taste=dislike] img{animation:taste-wiggle .3s ease-out}.chef-island #chef-copy{max-width:240px;white-space:normal}.plate .allergen[data-taste=favorite]{background:#729d7b}.plate .allergen[data-taste=dislike]{background:#c28d78}
+@keyframes taste-wiggle{0%,100%{transform:rotate(0)}33%{transform:rotate(-3deg)}66%{transform:rotate(3deg)}}
+@media(max-width:560px){.taste-foods{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.taste-tools{flex-direction:column}.taste-nudge{gap:4px;flex-wrap:wrap;width:calc(100vw - 54px)}.taste-nudge span{flex:1 1 100%}.taste-face{width:128px;top:0}}
+@media(prefers-reduced-motion:reduce){.chef-island[data-taste=dislike] img{animation:none}.taste-chip:active,.taste-favorite:active{transform:none}}
+
+@media(min-width:561px) and (max-width:800px){.taste-face{width:128px;top:0}}
 </style>
   <title>寿司转转！ · SUSHI LOOP</title>
 </head>
@@ -283,13 +294,13 @@ body.cozy-live #audio-title{font-size:26px;line-height:1.4}
 <div class="game-layout"><section class="game-panel sushi-shop" aria-label="游戏区域">
 <div class="table-heading"><button id="cozy-menu-open" class="today-ticket" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#cozy-menu"/></svg><span><small>今日放题</small><b id="cozy-theme-name">经典寿司放题</b></span><svg class="icon" aria-hidden="true"><use href="#cozy-arrow"/></svg></button>
 <div class="appetite"><svg class="icon" aria-hidden="true"><use href="#cozy-bowl"/></svg><div><strong id="zone-text">还有胃口！</strong><span class="belly-track" id="fullness-bar" role="progressbar" aria-label="饱腹值" aria-valuemin="0" aria-valuemax="120" aria-valuenow="55"><i id="fullness-fill"></i><i id="fullness-pointer" hidden></i></span></div><details class="belly-details"><summary><span id="fullness">55</span> / 120 ↓</summary><div class="vitals"><div class="health-row"><span>精神 <b id="hp">100</b><small id="hp-max"> / 100</small></span><div class="health-track" id="health-bar" role="progressbar" aria-label="生命值" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><i id="health-fill"></i></div><span id="health-status">精神满满</span></div><p>舒适区 25–85 · 饥饿 &lt;15 · 过饱 &gt;100</p><p>用餐时间 <strong id="time">00:00</strong><br>回转速度 <strong id="level">慢慢转</strong></p></div></details></div><div class="little-score"><small>本桌积分</small><b id="score">00000</b></div></div>
-<div class="stage shop-scene" id="stage"><canvas id="game" role="img" aria-label="回转寿司传送带。点击盘子吃寿司，或按 1 到 8 吃对应编号的盘子。"></canvas><div class="noren" aria-hidden="true"><span>慢</span><span>慢</span><span>吃</span><span>好</span><span>呀</span></div><div class="chef-island" id="chef"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20220%20220%22%20fill%3D%22none%22%3E%0A%3C!--%20Original%20Sushi%20Panic%20cat-chef%20extension%3B%20no%20third-party%20character%20assets.%20--%3E%0A%3Cellipse%20cx%3D%22110%22%20cy%3D%22204%22%20rx%3D%2278%22%20ry%3D%229%22%20fill%3D%22%23806856%22%20opacity%3D%22.09%22%2F%3E%0A%3Cpath%20d%3D%22M51%20151Q44%20184%2065%20198H157Q177%20182%20167%20150%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22M77%20156H145L153%20202H69Z%22%20fill%3D%22%23B8DCC7%22%2F%3E%3Cpath%20d%3D%22M92%20161H130V196H92Z%22%20fill%3D%22%23FFF9EE%22%2F%3E%0A%3Cellipse%20cx%3D%22111%22%20cy%3D%22178%22%20rx%3D%227%22%20ry%3D%2210%22%20fill%3D%22%23D9BC79%22%20transform%3D%22rotate(-15%20111%20178)%22%2F%3E%3Cpath%20d%3D%22M111%20171q-3%207%201%2014%22%20stroke%3D%22%23FFFCF3%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22M53%2094%2048%2048Q50%2043%2057%2047L83%2069M167%2094l5-46q-2-5-8-1l-26%2022%22%20fill%3D%22%23FFFCF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m56%2055%204%2022%2016-7M163%2055l-4%2022-16-7%22%20fill%3D%22%23F5B9AE%22%2F%3E%0A%3Cpath%20d%3D%22M49%20107Q42%2066%20110%2064q68%202%2061%2043-1%2049-61%2051-60-2-61-51%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m72%20109%206-4%206%204m52%200%206-4%206%204%22%20stroke%3D%22%2368513F%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cellipse%20cx%3D%2268%22%20cy%3D%22124%22%20rx%3D%2211%22%20ry%3D%225%22%20fill%3D%22%23F5B9AE%22%20opacity%3D%22.8%22%2F%3E%3Cellipse%20cx%3D%22152%22%20cy%3D%22124%22%20rx%3D%2211%22%20ry%3D%225%22%20fill%3D%22%23F5B9AE%22%20opacity%3D%22.8%22%2F%3E%0A%3Cpath%20d%3D%22m106%20117%204%203%204-3m-4%203v7m-9%200q4%208%209%200%205%208%209%200%22%20stroke%3D%22%23806856%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22m51%20116-13-3m14%2011-14%202m130-10%2014-3m-14%2011%2014%202%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22M74%2068Q53%2058%2063%2043q7-10%2018-5%202-19%2020-18%2013-1%2017%2012%2011-9%2023%200%2013%208%208%2021l-3%2015%22%20fill%3D%22%23FFFEF8%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22M71%2066h77v16H71z%22%20fill%3D%22%23F5B9AE%22%2F%3E%3Cpath%20d%3D%22M76%2073h66%22%20stroke%3D%22%23FFFCF6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cellipse%20cx%3D%2249%22%20cy%3D%22165%22%20rx%3D%2215%22%20ry%3D%2211%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22164%22%20rx%3D%2215%22%20ry%3D%2211%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m176%20163%2023-39m-16%2042%2023-39%22%20stroke%3D%22%23806856%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E%0A" width="200" height="200" alt="小米主厨，一只戴粉色厨帽的原创猫咪"><p id="chef-copy">慢慢来，好味道会等你。</p></div><div id="live-plates" class="plates" role="group" aria-label="回转餐盘，点击品尝"></div>
+<div class="stage shop-scene" id="stage"><canvas id="game" role="img" aria-label="回转寿司传送带。点击盘子吃寿司，或按 1 到 8 吃对应编号的盘子。"></canvas><div class="noren" aria-hidden="true"><span>慢</span><span>慢</span><span>吃</span><span>好</span><span>呀</span></div><div class="chef-island" id="chef"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20220%20220%22%20fill%3D%22none%22%3E%0A%3C!--%20Original%20Sushi%20Panic%20cat-chef%20extension%3B%20no%20third-party%20character%20assets.%20--%3E%0A%3Cellipse%20cx%3D%22110%22%20cy%3D%22204%22%20rx%3D%2278%22%20ry%3D%229%22%20fill%3D%22%23806856%22%20opacity%3D%22.09%22%2F%3E%0A%3Cpath%20d%3D%22M51%20151Q44%20184%2065%20198H157Q177%20182%20167%20150%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22M77%20156H145L153%20202H69Z%22%20fill%3D%22%23B8DCC7%22%2F%3E%3Cpath%20d%3D%22M92%20161H130V196H92Z%22%20fill%3D%22%23FFF9EE%22%2F%3E%0A%3Cellipse%20cx%3D%22111%22%20cy%3D%22178%22%20rx%3D%227%22%20ry%3D%2210%22%20fill%3D%22%23D9BC79%22%20transform%3D%22rotate(-15%20111%20178)%22%2F%3E%3Cpath%20d%3D%22M111%20171q-3%207%201%2014%22%20stroke%3D%22%23FFFCF3%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22M53%2094%2048%2048Q50%2043%2057%2047L83%2069M167%2094l5-46q-2-5-8-1l-26%2022%22%20fill%3D%22%23FFFCF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m56%2055%204%2022%2016-7M163%2055l-4%2022-16-7%22%20fill%3D%22%23F5B9AE%22%2F%3E%0A%3Cpath%20d%3D%22M49%20107Q42%2066%20110%2064q68%202%2061%2043-1%2049-61%2051-60-2-61-51%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m72%20109%206-4%206%204m52%200%206-4%206%204%22%20stroke%3D%22%2368513F%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cellipse%20cx%3D%2268%22%20cy%3D%22124%22%20rx%3D%2211%22%20ry%3D%225%22%20fill%3D%22%23F5B9AE%22%20opacity%3D%22.8%22%2F%3E%3Cellipse%20cx%3D%22152%22%20cy%3D%22124%22%20rx%3D%2211%22%20ry%3D%225%22%20fill%3D%22%23F5B9AE%22%20opacity%3D%22.8%22%2F%3E%0A%3Cpath%20d%3D%22m106%20117%204%203%204-3m-4%203v7m-9%200q4%208%209%200%205%208%209%200%22%20stroke%3D%22%23806856%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22m51%20116-13-3m14%2011-14%202m130-10%2014-3m-14%2011%2014%202%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cpath%20d%3D%22M74%2068Q53%2058%2063%2043q7-10%2018-5%202-19%2020-18%2013-1%2017%2012%2011-9%2023%200%2013%208%208%2021l-3%2015%22%20fill%3D%22%23FFFEF8%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22M71%2066h77v16H71z%22%20fill%3D%22%23F5B9AE%22%2F%3E%3Cpath%20d%3D%22M76%2073h66%22%20stroke%3D%22%23FFFCF6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3Cellipse%20cx%3D%2249%22%20cy%3D%22165%22%20rx%3D%2215%22%20ry%3D%2211%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22164%22%20rx%3D%2215%22%20ry%3D%2211%22%20fill%3D%22%23FFFDF3%22%20stroke%3D%22%23A99C80%22%20stroke-width%3D%222.2%22%2F%3E%0A%3Cpath%20d%3D%22m176%20163%2023-39m-16%2042%2023-39%22%20stroke%3D%22%23806856%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E%0A" width="200" height="200" alt="小米主厨，一只戴粉色厨帽的原创猫咪"><p id="chef-copy">慢慢来，好味道会等你。</p><svg class="taste-face" viewBox="0 0 220 220" aria-hidden="true"><rect x="66" y="101" width="88" height="34" rx="10" fill="#FFFDF3"/><g class="taste-face-happy" fill="none" stroke="#68513F" stroke-width="3" stroke-linecap="round"><path d="m72 109 6-4 6 4m52 0 6-4 6 4M102 121q9 13 18 0"/><path d="M70 121h10m60 0h10" stroke="#F5B9AE"/></g><g class="taste-face-picky" fill="none" stroke="#68513F" stroke-width="3" stroke-linecap="round"><path d="m73 105 11 4-11 4m74-8-11 4 11 4M103 129q8-10 16 0"/></g></svg></div><div id="live-plates" class="plates" role="group" aria-label="回转餐盘，点击品尝"></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div><aside id="discovery-card" class="discovery-card discovery" role="status" aria-live="polite" hidden><span id="discovery-title" class="discovery-caption"></span><div><canvas id="discovery-art" width="110" height="90" aria-hidden="true"></canvas><p><strong id="discovery-name"></strong><small id="discovery-line"></small></p></div><small id="discovery-save"></small><span class="discovery-stars discovery-stamp" aria-hidden="true">初次品尝</span></aside><div class="combo" id="combo" aria-hidden="true"></div><div id="scene-warning" class="scene-warning" hidden><strong id="scene-warning-title" role="status" aria-live="polite"></strong><span id="scene-warning-detail" aria-hidden="true"></span></div><div id="overlay" class="overlay"><div id="overlay-content" class="overlay-card"></div></div></div>
-<div class="seat-bar"><details class="character-panel guest-details"><summary class="guest-place"><canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas><span><small>你的座位 · <span id="character-tag">等待入座</span></small><b id="character-name">谁来吃寿司？</b></span><span class="allergy" id="allergy-notice"><svg class="icon" aria-hidden="true"><use href="#cozy-heart"/></svg><span>本局忌口 <b id="allergy-name">开局揭晓</b></span></span></summary><div class="guest-paper"><h2 id="character-title">每局都有不一样的胃口</h2><p id="character-ability" class="ability">入座后抽取一张角色卡，看看今天要忌口什么。</p><small id="allergy-detail">看清再吃，别太心急</small></div></details><div class="table-actions"><button class="tea-button" id="cozy-tea-action" disabled><svg class="icon" aria-hidden="true"><use href="#cozy-tea"/></svg>喝口茶</button><button id="pause" class="pause-button rest-button" aria-label="暂停游戏" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#cozy-rest"/></svg><span>歇一歇</span></button></div></div></section>
+<div class="seat-bar"><details class="character-panel guest-details"><summary class="guest-place"><canvas id="portrait" width="160" height="160" aria-hidden="true"></canvas><span><small>你的座位 · <span id="character-tag">等待入座</span></small><b id="character-name">谁来吃寿司？</b></span><span class="allergy" id="allergy-notice"><svg class="icon" aria-hidden="true"><use href="#cozy-heart"/></svg><span>我的口味 <b id="allergy-name">自由品尝</b></span></span></summary><div class="guest-paper"><h2 id="character-title">每局都有不一样的胃口</h2><p id="character-ability" class="ability">入座抽一张体质卡，想吃什么由你决定。</p><small id="allergy-detail">每道都能吃，口味只影响小表情。</small><button id="taste-open" type="button" class="text-button" aria-haspopup="dialog" aria-controls="taste-dialog">我的口味 →</button></div></details><div class="table-actions"><button class="tea-button" id="cozy-tea-action" disabled><svg class="icon" aria-hidden="true"><use href="#cozy-tea"/></svg>喝口茶</button><button id="pause" class="pause-button rest-button" aria-label="暂停游戏" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#cozy-rest"/></svg><span>歇一歇</span></button></div></div></section>
 <section class="collection-sheet" aria-label="我的寿司收藏"><div class="binding" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="collection-heading"><svg class="icon" aria-hidden="true"><use href="#cozy-book"/></svg><div><h2 class="round-type">我的寿司收藏</h2><p><b id="progress-count">正在翻开收藏手帐</b>，都是小小的喜欢。</p></div></div><div class="collection-memory"><div class="memory-dishes" aria-hidden="true"><canvas width="70" height="55" data-cozy-food="salmon"></canvas><canvas width="70" height="55" data-cozy-food="tamago"></canvas><canvas width="70" height="55" data-cozy-food="cucumber"></canvas></div><div class="collection-progress progress-meter"><span id="progress-fill"></span></div><small><span id="progress-theme"></span> <b id="progress-percent">0%</b></small></div><button id="open-progress" class="album-button" aria-label="打开寿司图鉴">翻开寿司图鉴<svg class="icon" aria-hidden="true"><use href="#cozy-arrow"/></svg></button><p id="progress-sync" role="status"></p></section>
-<div class="game-utilities"><section class="save-strip" aria-label="云端存档状态"><span id="save-state" role="status">等你入座</span><span id="save-detail">游客也能留下云端收藏。</span></section><div class="network-bar"><span id="network-status" role="status">正在连接云端档案…</span><button id="retry-network" class="text-button">重新连接</button></div><aside id="archive-nudge" class="archive-nudge" hidden><div><strong>给你的寿司手帐安个家吧～</strong><span>绑定邮箱，换台设备也能继续收集！</span></div><button id="nudge-bind" class="text-button">绑定邮箱</button><button id="nudge-dismiss" class="quiet-button" aria-label="暂时收起邮箱提醒">×</button></aside><div class="table-footer"><p id="game-hint">点击盘子开吃 · 看清红色过敏标记</p><span class="keyboard-hint">键盘 <kbd>1</kbd>–<kbd>8</kbd> 品尝 · <kbd>P</kbd> 休息</span><button id="checkout" class="quiet-button checkout-ticket" disabled>结账离席</button></div></div></div></main><footer class="page-footer preview-footer"><span>SUSHI LOOP 寿司转转！</span><span>V1.4 · Cozy Sushi Bar · 随时入座，随时再来。</span></footer></div>
+<div class="game-utilities"><section class="save-strip" aria-label="云端存档状态"><span id="save-state" role="status">等你入座</span><span id="save-detail">游客也能留下云端收藏。</span></section><div class="network-bar"><span id="network-status" role="status">正在连接云端档案…</span><button id="retry-network" class="text-button">重新连接</button></div><aside id="archive-nudge" class="archive-nudge" hidden><div><strong>给你的寿司手帐安个家吧～</strong><span>绑定邮箱，换台设备也能继续收集！</span></div><button id="nudge-bind" class="text-button">绑定邮箱</button><button id="nudge-dismiss" class="quiet-button" aria-label="暂时收起邮箱提醒">×</button></aside><div class="table-footer"><p id="game-hint">点击盘子开吃 · 看清红色过敏标记</p><span class="keyboard-hint">键盘 <kbd>1</kbd>–<kbd>8</kbd> 品尝 · <kbd>P</kbd> 休息</span><button id="checkout" class="quiet-button checkout-ticket" disabled>结账离席</button></div></div></div></main><footer class="page-footer preview-footer"><span>SUSHI LOOP 寿司转转！</span><span>V1.4.1 · Cozy Sushi Bar · 随时入座，随时再来。</span></footer></div>
   <dialog id="menu-dialog" aria-labelledby="menu-title"><div class="dialog-inner"><p class="eyebrow">欢迎光临！今天想吃点什么？</p><div class="section-heading"><h2 id="menu-title" class="hand-title">今日放题</h2><button id="cozy-menu-dismiss" class="close-dialog" aria-label="收好菜单"><svg class="icon" aria-hidden="true"><use href="#cozy-close"/></svg></button></div><label for="menu-picker" class="player-id-label">换一份放题菜单</label><select id="menu-picker" class="player-id-input"></select><p id="menu-picker-note" class="identity-note"></p><div id="cozy-theme-options" class="theme-options"></div><div id="menu-preview" class="menu-preview"></div><p class="identity-note">点击传送带上的盘子开吃，第一次尝鲜就能认识新寿司。往期菜单也一直留着，不用赶时间。</p><section class="menu-panel" id="today-menu-panel"><div class="section-heading"><h2 class="hand-title">今日放题</h2><span class="menu-seal">主厨推荐</span></div><p class="menu-welcome">欢迎光临！今天想吃点什么？</p><label class="player-id-label" for="theme-select">换一份放题菜单</label><select hidden id="theme-select" class="player-id-input"></select><p id="theme-description" class="tiny-note"></p><p id="theme-save-note" class="tiny-note"></p><div id="menu" class="menu-grid"></div><div class="menu-pager"><button id="menu-prev" class="quiet-button">上一页</button><span id="menu-page-info"></span><button id="menu-next" class="quiet-button">下一页</button></div><p class="menu-note">红色「忌」= 本局过敏源<br>喝口茶，歇一歇～<br>茶能调节饱腹，不计入寿司收藏。</p></section><button id="close-menu" class="primary-button">就吃这期，回到座位</button></div></dialog>
-  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">欢迎光临，先吃一口。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹温和下降，保持 25–85 有舒适奖励。太饱时先喝茶或歇一会儿，精神降低也不会导致死亡。</span></li><li><b>红色「忌」，这桌少碰它。</b><span>每局角色不同，过敏源也不同。误食精神 −4，盘子会提前标记；角色和各自的小能力仍保留。</span></li><li><b>吃得舒服，连击也开心。</b><span>安全寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">偷偷打个盹儿～20秒没动就替你休息，寿司继续慢慢转；点一盘就能继续，不消耗也不加分。第一次吃到新品会记进手帐；「结账离席」保存这一桌，云端存档可查看同步状态。绑定邮箱完全自愿。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title"><div class="dialog-inner"><p class="eyebrow">开饭前，记住这几件事</p><h2 id="help-title">欢迎光临，先吃一口。</h2><ol class="help-list"><li><b>点击盘子，寿司入口。</b><span>鼠标、手指都可以。电脑也可按盘旁的数字 1–8。</span></li><li><b>胃口要保持刚刚好。</b><span>饱腹温和下降，保持 25–85 有舒适奖励。太饱时先喝茶或歇一会儿，精神降低也不会导致死亡。</span></li><li><b>口味决定表情，每道都能吃。</b><span>在「我的口味」选最多3道心头好和挑食分类。爱吃就开心，挑食会吐槽，积分与饱腹照常增加。</span></li><li><b>吃得舒服，连击也开心。</b><span>寿司吃完后还在舒适区，即可积累连击。乌龙茶减 18 饱腹，吃撑时能帮忙。</span></li></ol><p class="help-note">偷偷打个盹儿～20秒没动就替你休息，寿司继续慢慢转；点一盘就能继续，不消耗也不加分。第一次吃到新品会记进手帐；「结账离席」保存这一桌，云端存档可查看同步状态。绑定邮箱完全自愿。</p><button id="close-help" class="primary-button">记住了，开饭！</button></div></dialog>
   <dialog id="leaderboard-dialog" aria-labelledby="board-title"><div class="dialog-inner"><p class="eyebrow">今天吃得最开心的客人</p><div class="section-heading"><h2 id="board-title" class="hand-title">今日大胃王</h2><span id="board-day"></span></div><p class="board-clock">北京时间 00:00 换榜 · 距刷新 <strong class="reset-countdown">--:--:--</strong></p><p id="board-champion" class="board-champion">正在寻找今日大胃王…</p><p id="board-status" class="board-status" role="status">每人每日最高积分 · 全球 TOP 100</p><details class="board-quick"><summary>今日前五与我的名次</summary><section id="daily-board-panel" class="daily-board-panel" aria-label="今日大胃王"><div class="section-heading"><h2 class="hand-title">今日大胃王</h2><span>全球积分榜</span></div><div class="daily-date"><span id="mini-board-day">北京时间</span><span>距换榜 <b class="reset-countdown">--:--:--</b></span></div><p id="mini-board-status" class="tiny-note" role="status">正在读取今日榜…</p><ol id="mini-board-list" class="mini-board-list"></ol><p id="mini-board-me" class="mini-board-me">完成联网计分局后查看我的排名</p><button id="sidebar-leaderboard" class="secondary-button">查看全球 TOP 100</button></section></details><ol id="board-list" class="board-list"></ol><p id="board-me" class="board-me"></p><p id="board-updated" class="tiny-note"></p><div class="board-actions"><button id="board-refresh" class="secondary-button">刷新 / 重试上传</button><button id="close-board" class="primary-button">继续开吃</button></div><p class="tiny-note">匿名身份保存在此浏览器。未绑定邮箱时，清除 Cookie、无痕关闭或换设备后，历史成绩可能无法找回。</p></div></dialog>
   <dialog id="account-dialog" aria-labelledby="account-title"><div class="dialog-inner"><p class="eyebrow">游客也能留下自己的纪录</p><h2 id="account-title">云端存档</h2><p id="account-save-state" class="account-save-state" role="status"></p><p class="identity-note">请在已有成绩的原浏览器绑定邮箱。绑定完全自愿，不影响直接开玩。绑定并验证后，可在其他设备用邮件取回同一身份。恢复其他账号会切换身份，当前游客成绩不会自动合并。</p><label class="player-id-label" for="account-email">邮箱地址</label><input id="account-email" class="player-id-input" type="email" autocomplete="email" placeholder="you@example.com"><p id="account-status" class="entry-error" role="status"></p><button id="bind-email" class="primary-button">绑定当前游客邮箱</button><button id="recover-email" class="secondary-button">用邮箱恢复已有账号</button><section id="email-code-section" hidden><label class="player-id-label" for="account-code">邮件验证码</label><input id="account-code" class="player-id-input" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="6–8位验证码"><button id="verify-email" class="primary-button">验证并恢复云端档案</button></section><button id="close-account" class="text-button">暂时不用，继续开吃</button><details class="connection-details"><summary>连接遇到问题？</summary><button id="copy-diagnostics" class="text-button">复制诊断</button></details><button id="account-retry" class="secondary-button">重新连接 / 重试存档</button><section id="account-archive" class="account-archive" aria-label="个人历史成绩"></section><p class="identity-note">请到邮箱完成确认。若邮件服务未配置或限流，会明确提示失败，不会声称已绑定。</p></div></dialog>
   <dialog id="collection-dialog" aria-labelledby="collection-title"><div class="dialog-inner collection-inner"><p class="eyebrow">一盘一盘，收藏小幸福</p><div class="section-heading"><h2 id="collection-title" class="hand-title">我的寿司手帐</h2><button id="close-collection" class="quiet-button">收好图鉴</button></div><p id="collection-summary"></p><div id="theme-progress" class="collection-theme-progress" aria-label="各菜单收藏进度"></div>
@@ -308,11 +319,14 @@ body.cozy-live #audio-title{font-size:26px;line-height:1.4}
     <label class="audio-volume" for="audio-music-volume">音乐音量 <output id="audio-music-volume-value" for="audio-music-volume">25%</output><input id="audio-music-volume" type="range" min="0" max="60" value="25"></label>
     <label class="audio-choice"><span><b>游戏音效</b><small>吃寿司、翻手帐，还有新品的小惊喜</small></span><input id="audio-effects" type="checkbox" role="switch"></label>
     <label class="audio-volume" for="audio-effects-volume">音效音量 <output id="audio-effects-volume-value" for="audio-effects-volume">36%</output><input id="audio-effects-volume" type="range" min="0" max="60" value="36"></label>
-    <button id="audio-mute" class="secondary-button" aria-pressed="true">开启已选声音</button><p id="audio-status" class="identity-note" role="status"></p><p class="tiny-note">设置只记在这台设备。打开手帐会轻轻调低音乐；音乐默认开启，首次轻触后播放。</p>
+    <button id="audio-mute" class="secondary-button" aria-pressed="true">开启已选声音</button><button type="button" class="secondary-button" id="audio-taste">我的口味 →</button><p id="audio-status" class="identity-note" role="status"></p><p class="tiny-note">设置只记在这台设备。打开手帐会轻轻调低音乐；音乐默认开启，首次轻触后播放。</p>
   </div></dialog>
   <dialog id="food-detail-dialog" aria-labelledby="food-detail-title"><div class="dialog-inner"><p id="food-detail-friend" class="eyebrow"></p><h2 id="food-detail-title" class="round-type"></h2><canvas id="food-detail-art" width="360" height="280" aria-hidden="true"></canvas><p id="food-detail-copy"></p><p id="food-detail-egg" class="identity-note"></p><p id="food-detail-state" class="tiny-note"></p><button id="close-food-detail" class="primary-button">收好收藏卡</button></div></dialog>
   <noscript>这家寿司店需要 JavaScript 才能营业。请在浏览器设置中启用 JavaScript。</noscript>
-  <script type="module">
+
+<div id="taste-nudge" class="taste-nudge" hidden><span>今天想吃点什么呀？可以选选自己的口味。</span><button type="button" id="taste-nudge-open" class="text-button">选一选</button><button type="button" id="taste-nudge-skip" class="text-button">以后再说</button></div>
+<dialog id="taste-dialog" aria-labelledby="taste-title"><div class="dialog-inner taste-inner"><p class="eyebrow">我的口味 · 随时都能改</p><div class="section-heading"><h2 id="taste-title" class="hand-title">今天想吃点什么呀？</h2><button type="button" class="close-dialog" id="taste-skip" aria-label="跳过并收好口味"><svg class="icon" aria-hidden="true"><use href="#cozy-close"/></svg></button></div><p class="taste-note">喜欢就开心，挑食会吐槽。每道依然能吃，积分和饱腹照常增加。</p><section aria-labelledby="taste-picky-title"><h3 id="taste-picky-title">我的挑食清单 <small>可多选，也可以不选</small></h3><div class="taste-tags" id="taste-tags"></div><div class="taste-tags" id="taste-exact"></div><button type="button" id="taste-all" class="text-button">我什么都爱吃！</button></section><section aria-labelledby="taste-favorites-title"><h3 id="taste-favorites-title">我的心头好 <small id="taste-count">0 / 3 道</small></h3><p class="taste-note" id="taste-selected"></p><div class="taste-tools"><label>翻看菜单<select id="taste-theme"></select></label><label>找一道菜<input type="search" id="taste-search" placeholder="菜名或图鉴编号" maxlength="40"></label></div><div class="taste-foods" id="taste-foods"></div><p id="taste-empty" hidden>还没找到，换个词试试吧。</p><div class="taste-pagination"><button type="button" id="taste-prev" class="text-button">上一页</button><span id="taste-page"></span><button type="button" id="taste-next" class="text-button">下一页</button></div></section><p id="taste-hint" class="taste-note" role="status"></p><p id="taste-sync" class="taste-note" role="status"></p><div class="taste-footer"><button id="taste-retry" type="button" class="text-button" hidden>重试同步</button><button id="taste-cloud" type="button" class="text-button" hidden>采用云端口味</button><button id="taste-save" type="button" class="primary-button">收好口味，慢慢吃</button></div></div></dialog>
+<script type="module">
 var __defProp = Object.defineProperty;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __esm = (fn, res, err) => function __init() {
@@ -477,348 +491,6 @@ var init_audio_score = __esm({
     hz = (n) => 440 * 2 ** ((n - 69) / 12);
   }
 });
-
-// src/run-lease.js
-var RunLease = class {
-  constructor({ locks = globalThis.navigator?.locks, storage, owner = globalThis.crypto.randomUUID(), now = Date.now } = {}) {
-    this.locks = locks;
-    this.owner = owner;
-    this.now = now;
-    try {
-      this.storage = storage || globalThis.localStorage;
-    } catch {
-    }
-    this.id = null;
-  }
-  async acquire(id) {
-    if (this.id === id && this.valid()) return true;
-    this.release();
-    if (!id) return true;
-    if (this.locks) return new Promise((resolve) => {
-      this.locks.request("sushi.active." + id, { ifAvailable: true }, async (lock) => {
-        if (!lock) {
-          resolve(false);
-          return;
-        }
-        this.id = id;
-        resolve(true);
-        await new Promise((done) => this.releaseLock = done);
-      }).catch(() => resolve(false));
-    });
-    try {
-      const key = "sushi.lease." + id, old = JSON.parse(this.storage.getItem(key) || "null");
-      if (old && old.owner !== this.owner && old.until > this.now()) return false;
-      this.id = id;
-      this.renew();
-      this.timer = setInterval(() => this.renew(), 3e4);
-      return true;
-    } catch {
-      this.id = null;
-      return false;
-    }
-  }
-  renew() {
-    if (!this.id) return;
-    try {
-      const current = JSON.parse(this.storage.getItem("sushi.lease." + this.id) || "null");
-      if (current && current.owner !== this.owner && current.until > this.now()) {
-        clearInterval(this.timer);
-        return;
-      }
-      this.storage.setItem("sushi.lease." + this.id, JSON.stringify({ owner: this.owner, until: this.now() + 9e4 }));
-    } catch {
-    }
-  }
-  valid() {
-    if (!this.id) return false;
-    if (this.locks) return true;
-    try {
-      return JSON.parse(this.storage.getItem("sushi.lease." + this.id))?.owner === this.owner;
-    } catch {
-      return false;
-    }
-  }
-  release() {
-    clearInterval(this.timer);
-    if (this.releaseLock) {
-      this.releaseLock();
-      this.releaseLock = null;
-    } else if (this.id) try {
-      if (this.valid()) this.storage.removeItem("sushi.lease." + this.id);
-    } catch {
-    }
-    this.id = null;
-  }
-};
-
-// src/friends-special.js
-var entries = [
-  ["nian", "\u5E74\u5D3D", ["\u5E74\u5D3D", "\u5E74\u5E74", "\u5E74\u4ED4"], "matcha-latte", "\u5E74\u5D3D\u4E0D\u5403\u7684\u62B9\u8336\u62FF\u94C1", "matcha-dot", "\u5E74\u5D3D\uFF1A\u90FD\u8BF4\u4E86\u4E0D\u5403\u8FD9\u4E2A\u5566\uFF01", "common", 10, 70, "\u5976\u6CE1\u8F7B\u8F7B\u76D6\u4F4F\u6D53\u62B9\u8336\uFF0C\u5C0F\u676F\u5B50\u6B63\u5077\u5077\u505A\u9B3C\u8138\u3002"],
-  ["orange", "\u6A58\u5B50", ["\u6A58\u5B50", "\u6A58\u6A58"], "energy-bar", "\u6A58\u5B50\u5F92\u6B65\u6765\u70B9\u58EB\u529B\u67B6\u5427", "orange-hike", "\u5F92\u6B65\u80FD\u91CF\u5DF2\u8865\u5145\uFF01", "common", 20, 100, "\u5DE7\u514B\u529B\u3001\u7126\u7CD6\u548C\u5C0F\u82B1\u751F\uFF0C\u88C5\u8FDB\u4E00\u4EFD\u539F\u521B\u7684\u5C71\u91CE\u80FD\u91CF\u5305\u88C5\u3002"],
-  ["rabbit", "\u5154\u5154\u54AA", ["\u5154\u5154\u54AA", "\u5154\u5154"], "kohada", "\u5154\u5154\u54AA\u6700\u7231\u7684\u5C0F\u808C\u9C7C", "pink-bunny", "\u5154\u5154\u54AA\u7684\u5FEB\u4E50\u5C0F\u9C7C\u5230\u8D27\uFF01", "select", 16, 90, "\u94F6\u767D\u5C0F\u9C7C\u8DB4\u5728\u5706\u996D\u56E2\u4E0A\uFF0C\u7C89\u76D8\u5B50\u4E5F\u7AD6\u8D77\u4E86\u5154\u8033\u6735\u3002"],
-  ["red", "\u7EA2\u679C\u679C", ["\u7EA2\u679C\u679C", "\u679C\u679C"], "matcha-cake", "\u7EA2\u679C\u679C\u6700\u7231\u7684\u82E6\u62B9\u86CB\u7CD5", "green-berry", "\u4ECA\u5929\u4E5F\u662F\u82E6\u62B9\u8111\u888B\uFF01", "select", 18, 70, "\u6DF1\u7EFF\u82E6\u62B9\u4E0E\u7EC6\u7EC6\u86CB\u7CD5\u5C42\uFF0C\u4E00\u5C0F\u6735\u5976\u6CB9\u521A\u597D\u3002"],
-  ["uu", "UU", ["UU", "uu", "\uFF35\uFF35"], "iced-americano", "UU\u6700\u7231\u7684\u51B0\u7F8E\u5F0F", "blue-star", "UU\u7684\u5FEB\u4E50\u7EED\u676F\u6210\u529F\uFF01", "common", 8, 70, "\u51B0\u5757\u78B0\u5230\u5C0F\u5438\u7BA1\uFF0C\u5DE5\u4F5C\u65E5\u4E5F\u6709\u4E00\u53E3\u6E05\u6E05\u723D\u723D\u3002"],
-  ["mum", "UU\u5988\u54AA", ["UU\u5988\u54AA", "uu\u5988\u54AA", "UU\u5988\u5988", "UU\u5988"], "foie", "UU\u5988\u54AA\u6700\u7231\u7684\u9E45\u809D\u5BFF\u53F8", "gold-lace", "\u5988\u54AA\u7684\u7CBE\u81F4\u4E0B\u5348\u8336\u65F6\u95F4\uFF01", "treasure", 24, 120, "\u9999\u69DF\u91D1\u76D8\u5B50\u6258\u4F4F\u7126\u9999\u9E45\u809D\uFF0C\u7CBE\u81F4\u4F46\u4E0D\u7528\u8D76\u65F6\u95F4\u3002"],
-  ["fitness", "\u5065\u8EAB\u4EBA\u58EB", ["\u5065\u8EAB\u4EBA\u58EB", "\u5065\u8EAB\u4EBA"], "beef", "\u5065\u8EAB\u4EBA\u58EB\u5FC5\u5403\u7684\u9AD8\u86CB\u767D\u7099\u70E4\u725B\u8089", "red-power", "\u86CB\u767D\u8D28\u8865\u5145\u6210\u529F\uFF01", "common", 26, 120, "\u539A\u5207\u725B\u8089\u5E26\u7740\u8F7B\u8F7B\u7126\u9999\uFF0C\u4ECA\u5929\u4E5F\u597D\u597D\u5403\u996D\u3002"]
-];
-var friendsSpecialConfig = Object.freeze(entries.map(([id, nickname, aliases, art, name, plateId, easterEgg, rarity, fullness, points, description], i) => Object.freeze({ id, userIds: [], nickname, aliases, foodId: "friends_" + id, plateId, weight: 3, pity: 8, easterEgg, art, name, rarity, fullness, points, description, number: 224 + i })));
-var normalize = (value) => String(value || "").normalize("NFKC").trim().toLocaleLowerCase("en-US");
-function matchFriend(player, config = friendsSpecialConfig) {
-  return config.find((f) => f.userIds.includes(player?.id)) || config.find((f) => f.aliases.some((n) => normalize(n) === normalize(player?.nickname))) || null;
-}
-function friendSnapshot(player) {
-  const f = matchFriend(player);
-  return f ? { friendId: f.id, foodId: f.foodId, weight: f.weight, pity: f.pity } : null;
-}
-var friendForFood = (id) => friendsSpecialConfig.find((f) => f.foodId === id);
-var FRIEND_FOODS = Object.freeze(Object.fromEntries(friendsSpecialConfig.map((f) => [f.foodId, Object.freeze({ id: f.foodId, number: f.number, name: f.name, themeId: "friends-special", category: "\u597D\u53CB\u4E13\u5C5E", categoryId: ["matcha-latte", "energy-bar", "matcha-cake"].includes(f.art) ? "sweet" : "special", rarity: f.rarity, visualKey: "friend-" + f.art, fullness: f.fullness, points: f.points, allergen: f.id === "rabbit" ? "fish" : f.id === "red" ? "egg" : null, collectible: true, topping: ["mum", "fitness"].includes(f.id) ? "seared" : "", description: f.description, friendId: f.id, friendName: f.nickname, plateId: f.plateId, origin: "game-original" })])));
-
-// src/audio-manager.js
-var AUDIO_KEY = "sushi-panic.audio.v1";
-var AUDIO_DEFAULTS = Object.freeze({ music: true, effects: false, muted: false, musicVolume: 0.25, effectsVolume: 0.36 });
-function audioPreferences(value) {
-  const out = { ...AUDIO_DEFAULTS };
-  for (const k of ["music", "effects", "muted"]) if (typeof value?.[k] === "boolean") out[k] = value[k];
-  for (const k of ["musicVolume", "effectsVolume"]) if (typeof value?.[k] === "number" && Number.isFinite(value[k])) out[k] = Math.max(0, Math.min(0.6, value[k]));
-  return out;
-}
-function foodSound(food = {}) {
-  const text2 = [food.id, food.name, food.categoryId, food.topping, food.visualKey].join(" ");
-  if (food.id === "tea" || food.fullness < 0) return "tea";
-  if (/sweet|pudding|dessert|布丁|蛋糕|冰淇淋|甜品|大福/.test(text2)) return "dessert";
-  if (/tempura|fried|karaage|天妇罗|炸|可乐饼/.test(text2)) return "fried";
-  if (/sear|aburi|caramel|炙|焦糖|蒲烧|烤/.test(text2)) return "seared";
-  if (/vegetable|veggie|cucumber|avocado|黄瓜|牛油果|蔬|笋|秋葵|玉米|纳豆/.test(text2)) return "vegetable";
-  if (/tamago|egg|玉子|蛋|豆腐/.test(text2)) return "soft";
-  return "normal";
-}
-var AudioManager = class {
-  constructor({ storage, contextFactory = () => new (globalThis.AudioContext || globalThis.webkitAudioContext)(), loader = () => Promise.resolve().then(() => (init_audio_score(), audio_score_exports)), onChange = () => {
-  }, now = () => performance.now(), random = Math.random } = {}) {
-    if (storage === void 0) try {
-      storage = globalThis.localStorage;
-    } catch {
-    }
-    this.storage = storage;
-    this.contextFactory = contextFactory;
-    this.loader = loader;
-    this.onChange = onChange;
-    this.now = now;
-    this.random = random;
-    let saved;
-    try {
-      saved = JSON.parse(storage?.getItem(AUDIO_KEY));
-    } catch {
-    }
-    this.settings = audioPreferences(saved);
-    this.unlocked = false;
-    this.visible = true;
-    this.ducked = false;
-    this.voices = /* @__PURE__ */ new Set();
-    this.buffers = /* @__PURE__ */ new Map();
-    this.recent = /* @__PURE__ */ new Map();
-    this.pending = 0;
-    this.epoch = 0;
-    this.status = "idle";
-  }
-  get audible() {
-    return !this.settings.muted && (this.settings.music || this.settings.effects);
-  }
-  snapshot() {
-    return { settings: { ...this.settings }, unlocked: this.unlocked, contextState: this.context?.state || "absent", voices: this.voices.size, pending: this.pending, bgm: !!this.bgm, ducked: this.ducked, visible: this.visible, status: this.status, cachedEffects: this.buffers.size };
-  }
-  notify() {
-    this.onChange(this.snapshot());
-  }
-  configure(patch) {
-    this.settings = audioPreferences({ ...this.settings, ...patch });
-    try {
-      this.storage?.setItem(AUDIO_KEY, JSON.stringify(this.settings));
-    } catch {
-    }
-    this.epoch++;
-    if (this.settings.muted || !this.settings.effects) this.stopEffects();
-    this.sync();
-    this.notify();
-  }
-  // Call from a real pointer/key event. Restored preferences never imply autoplay.
-  unlock() {
-    this.unlocked = true;
-    this.sync();
-  }
-  ensureContext() {
-    if (this.context) return this.context;
-    const c = this.contextFactory();
-    this.context = c;
-    this.musicGain = c.createGain();
-    this.musicGain.gain.value = 0;
-    this.effectGain = c.createGain();
-    this.effectGain.gain.value = this.settings.effectsVolume;
-    const limiter = c.createDynamicsCompressor();
-    limiter.threshold.value = -18;
-    limiter.knee.value = 16;
-    limiter.ratio.value = 3;
-    limiter.attack.value = 0.01;
-    limiter.release.value = 0.18;
-    this.musicGain.connect(limiter);
-    this.effectGain.connect(limiter);
-    limiter.connect(c.destination);
-    return c;
-  }
-  sync() {
-    clearTimeout(this.backgroundTimer);
-    if (!this.unlocked || !this.audible || !this.visible) {
-      this.fadeMusic(false);
-      return;
-    }
-    try {
-      const c = this.ensureContext();
-      c.resume().catch(() => {
-        this.status = "error";
-        this.notify();
-      });
-      this.effectGain.gain.setTargetAtTime(this.settings.effectsVolume, c.currentTime, 0.025);
-      if (this.settings.music) this.startMusic();
-      else this.fadeMusic(false);
-    } catch {
-      this.status = "error";
-      this.notify();
-    }
-  }
-  async score() {
-    if (!this.scorePromise) this.scorePromise = this.loader().catch((e) => {
-      this.scorePromise = null;
-      throw e;
-    });
-    return this.scorePromise;
-  }
-  async startMusic() {
-    if (this.bgm) {
-      this.fadeMusic(true);
-      return;
-    }
-    if (this.musicLoading) return;
-    this.musicLoading = true;
-    this.status = "loading";
-    this.notify();
-    try {
-      const score = await this.score();
-      this.musicBuffer ?? (this.musicBuffer = await score.renderCafeLoop());
-      if (this.settings.music && this.audible && this.visible && this.unlocked) {
-        const source = this.context.createBufferSource();
-        source.buffer = this.musicBuffer;
-        source.loop = true;
-        source.connect(this.musicGain);
-        this.bgm = source;
-        source.onended = () => {
-          source.disconnect();
-          if (this.bgm === source) this.bgm = null;
-        };
-        this.musicGain.gain.cancelScheduledValues(this.context.currentTime);
-        this.musicGain.gain.setValueAtTime(0, this.context.currentTime);
-        source.start();
-        this.fadeMusic(true);
-      }
-      this.status = "ready";
-    } catch {
-      this.status = "error";
-    } finally {
-      this.musicLoading = false;
-      this.notify();
-    }
-  }
-  fadeMusic(on) {
-    if (!this.context || !this.musicGain) return;
-    const at = this.context.currentTime, g = this.musicGain.gain;
-    g.cancelScheduledValues(at);
-    g.setTargetAtTime(on ? this.settings.musicVolume * (this.ducked ? 0.38 : 1) : 0, at, on ? 0.18 : 0.035);
-    if (!on && this.bgm) {
-      const source = this.bgm;
-      this.bgm = null;
-      try {
-        source.stop(at + 0.17);
-      } catch {
-      }
-    }
-  }
-  setAlbum(open) {
-    this.ducked = open;
-    if (this.bgm) this.fadeMusic(true);
-    this.notify();
-  }
-  setVisible(visible) {
-    this.visible = visible;
-    this.epoch++;
-    if (!visible) {
-      this.stopEffects();
-      this.fadeMusic(false);
-      clearTimeout(this.backgroundTimer);
-      this.backgroundTimer = setTimeout(() => this.context?.suspend().catch(() => {
-      }), 190);
-    } else this.sync();
-    this.notify();
-  }
-  stopEffects() {
-    for (const voice of this.voices) {
-      try {
-        voice.stop();
-        voice.disconnect();
-      } catch {
-      }
-    }
-    this.voices.clear();
-  }
-  async play(kind, { gap = 110, level = 1 } = {}) {
-    if (!this.unlocked || !this.visible || !this.audible || !this.settings.effects || !this.context || this.pending >= 4) return false;
-    const at = this.now(), previous = this.recent.get(kind) ?? -Infinity;
-    if (at - previous < gap) return false;
-    this.recent.set(kind, at);
-    const epoch = this.epoch;
-    this.pending++;
-    try {
-      const score = await this.score();
-      if (epoch !== this.epoch || !this.visible || !this.audible || !this.settings.effects) return false;
-      if (!this.buffers.has(kind)) this.buffers.set(kind, score.effectBuffer(this.context, kind));
-      if (this.voices.size >= 4) return false;
-      const voice = this.context.createBufferSource(), gain = this.context.createGain();
-      voice.buffer = this.buffers.get(kind);
-      voice.playbackRate.value = 0.97 + this.random() * 0.06;
-      gain.gain.value = level;
-      voice.connect(gain);
-      gain.connect(this.effectGain);
-      this.voices.add(voice);
-      voice.onended = () => {
-        this.voices.delete(voice);
-        voice.disconnect();
-        gain.disconnect();
-      };
-      voice.start();
-      return true;
-    } catch {
-      this.status = "error";
-      this.notify();
-      return false;
-    } finally {
-      this.pending--;
-    }
-  }
-  eat(food) {
-    return this.play(foodSound(food), { gap: 90 });
-  }
-  paper(action) {
-    return this.play("paper-" + action, { gap: 240, level: 0.65 });
-  }
-  confirm() {
-    return this.play("confirm", { gap: 180, level: 0.65 });
-  }
-  discovery(kind = "common") {
-    const epoch = this.epoch;
-    this.play("discovery-" + kind, { gap: 1e3, level: 0.9 });
-    if (this.unlocked && this.settings.effects && this.audible && this.visible) setTimeout(() => {
-      if (epoch === this.epoch) this.play("stamp", { gap: 500, level: 0.7 });
-    }, 230);
-  }
-};
 
 // src/core.js
 var VERSION = "0.2.0";
@@ -4992,6 +4664,2620 @@ function menuState(t, serverTime) {
   return n < Date.parse(t.opensAt) ? "upcoming" : t.closesAt && n >= Date.parse(t.closesAt) ? "archive" : "current";
 }
 
+// src/friends-special.js
+var entries = [
+  ["nian", "\u5E74\u5D3D", ["\u5E74\u5D3D", "\u5E74\u5E74", "\u5E74\u4ED4"], "matcha-latte", "\u5E74\u5D3D\u4E0D\u5403\u7684\u62B9\u8336\u62FF\u94C1", "matcha-dot", "\u5E74\u5D3D\uFF1A\u90FD\u8BF4\u4E86\u4E0D\u5403\u8FD9\u4E2A\u5566\uFF01", "common", 10, 70, "\u5976\u6CE1\u8F7B\u8F7B\u76D6\u4F4F\u6D53\u62B9\u8336\uFF0C\u5C0F\u676F\u5B50\u6B63\u5077\u5077\u505A\u9B3C\u8138\u3002"],
+  ["orange", "\u6A58\u5B50", ["\u6A58\u5B50", "\u6A58\u6A58"], "energy-bar", "\u6A58\u5B50\u5F92\u6B65\u6765\u70B9\u58EB\u529B\u67B6\u5427", "orange-hike", "\u5F92\u6B65\u80FD\u91CF\u5DF2\u8865\u5145\uFF01", "common", 20, 100, "\u5DE7\u514B\u529B\u3001\u7126\u7CD6\u548C\u5C0F\u82B1\u751F\uFF0C\u88C5\u8FDB\u4E00\u4EFD\u539F\u521B\u7684\u5C71\u91CE\u80FD\u91CF\u5305\u88C5\u3002"],
+  ["rabbit", "\u5154\u5154\u54AA", ["\u5154\u5154\u54AA", "\u5154\u5154"], "kohada", "\u5154\u5154\u54AA\u6700\u7231\u7684\u5C0F\u808C\u9C7C", "pink-bunny", "\u5154\u5154\u54AA\u7684\u5FEB\u4E50\u5C0F\u9C7C\u5230\u8D27\uFF01", "select", 16, 90, "\u94F6\u767D\u5C0F\u9C7C\u8DB4\u5728\u5706\u996D\u56E2\u4E0A\uFF0C\u7C89\u76D8\u5B50\u4E5F\u7AD6\u8D77\u4E86\u5154\u8033\u6735\u3002"],
+  ["red", "\u7EA2\u679C\u679C", ["\u7EA2\u679C\u679C", "\u679C\u679C"], "matcha-cake", "\u7EA2\u679C\u679C\u6700\u7231\u7684\u82E6\u62B9\u86CB\u7CD5", "green-berry", "\u4ECA\u5929\u4E5F\u662F\u82E6\u62B9\u8111\u888B\uFF01", "select", 18, 70, "\u6DF1\u7EFF\u82E6\u62B9\u4E0E\u7EC6\u7EC6\u86CB\u7CD5\u5C42\uFF0C\u4E00\u5C0F\u6735\u5976\u6CB9\u521A\u597D\u3002"],
+  ["uu", "UU", ["UU", "uu", "\uFF35\uFF35"], "iced-americano", "UU\u6700\u7231\u7684\u51B0\u7F8E\u5F0F", "blue-star", "UU\u7684\u5FEB\u4E50\u7EED\u676F\u6210\u529F\uFF01", "common", 8, 70, "\u51B0\u5757\u78B0\u5230\u5C0F\u5438\u7BA1\uFF0C\u5DE5\u4F5C\u65E5\u4E5F\u6709\u4E00\u53E3\u6E05\u6E05\u723D\u723D\u3002"],
+  ["mum", "UU\u5988\u54AA", ["UU\u5988\u54AA", "uu\u5988\u54AA", "UU\u5988\u5988", "UU\u5988"], "foie", "UU\u5988\u54AA\u6700\u7231\u7684\u9E45\u809D\u5BFF\u53F8", "gold-lace", "\u5988\u54AA\u7684\u7CBE\u81F4\u4E0B\u5348\u8336\u65F6\u95F4\uFF01", "treasure", 24, 120, "\u9999\u69DF\u91D1\u76D8\u5B50\u6258\u4F4F\u7126\u9999\u9E45\u809D\uFF0C\u7CBE\u81F4\u4F46\u4E0D\u7528\u8D76\u65F6\u95F4\u3002"],
+  ["fitness", "\u5065\u8EAB\u4EBA\u58EB", ["\u5065\u8EAB\u4EBA\u58EB", "\u5065\u8EAB\u4EBA"], "beef", "\u5065\u8EAB\u4EBA\u58EB\u5FC5\u5403\u7684\u9AD8\u86CB\u767D\u7099\u70E4\u725B\u8089", "red-power", "\u86CB\u767D\u8D28\u8865\u5145\u6210\u529F\uFF01", "common", 26, 120, "\u539A\u5207\u725B\u8089\u5E26\u7740\u8F7B\u8F7B\u7126\u9999\uFF0C\u4ECA\u5929\u4E5F\u597D\u597D\u5403\u996D\u3002"]
+];
+var friendsSpecialConfig = Object.freeze(entries.map(([id, nickname, aliases, art, name, plateId, easterEgg, rarity, fullness, points, description], i) => Object.freeze({ id, userIds: [], nickname, aliases, foodId: "friends_" + id, plateId, weight: 3, pity: 8, easterEgg, art, name, rarity, fullness, points, description, number: 224 + i })));
+var normalize = (value) => String(value || "").normalize("NFKC").trim().toLocaleLowerCase("en-US");
+function matchFriend(player, config = friendsSpecialConfig) {
+  return config.find((f) => f.userIds.includes(player?.id)) || config.find((f) => f.aliases.some((n) => normalize(n) === normalize(player?.nickname))) || null;
+}
+function friendSnapshot(player) {
+  const f = matchFriend(player);
+  return f ? { friendId: f.id, foodId: f.foodId, weight: f.weight, pity: f.pity } : null;
+}
+var friendForFood = (id) => friendsSpecialConfig.find((f) => f.foodId === id);
+var FRIEND_FOODS = Object.freeze(Object.fromEntries(friendsSpecialConfig.map((f) => [f.foodId, Object.freeze({ id: f.foodId, number: f.number, name: f.name, themeId: "friends-special", category: "\u597D\u53CB\u4E13\u5C5E", categoryId: ["matcha-latte", "energy-bar", "matcha-cake"].includes(f.art) ? "sweet" : "special", rarity: f.rarity, visualKey: "friend-" + f.art, fullness: f.fullness, points: f.points, allergen: f.id === "rabbit" ? "fish" : f.id === "red" ? "egg" : null, collectible: true, topping: ["mum", "fitness"].includes(f.id) ? "seared" : "", description: f.description, friendId: f.id, friendName: f.nickname, plateId: f.plateId, origin: "game-original" })])));
+
+// src/menus-v14.js
+var MENU_EDITION3 = "2026-10-friends1";
+var CATALOG3 = Object.freeze({ ...CATALOG2, ...FRIEND_FOODS });
+var FRIEND_THEME = Object.freeze({ id: "friends-special", name: "UU\u548C\u5979\u7684\u670B\u53CB\u4EEC", description: "\u4E03\u4F4D\u670B\u53CB\uFF0C\u4E03\u4EFD\u5FC3\u5934\u597D\u3002\u6BCF\u4E2A\u4EBA\u90FD\u80FD\u54C1\u5C1D\u3001\u6536\u85CF\uFF0C\u60F3\u5FF5\u65F6\u968F\u65F6\u56DE\u6765\u3002", permanent: true, opensAt: null, closesAt: null, color: "#86bba1", foods: [...Object.keys(FRIEND_FOODS), "tea"], collectionFoods: Object.keys(FRIEND_FOODS), featured: Object.keys(FRIEND_FOODS) });
+var THEMES3 = Object.freeze([FRIEND_THEME, ...THEMES2]);
+function themeById3(id) {
+  const t = THEMES3.find((t2) => t2.id === id);
+  if (!t) throw new Error("\u672A\u77E5\u4E3B\u9898\u83DC\u5355");
+  return t;
+}
+
+// src/food-tags-v141.js
+var FOOD_TAGS = Object.freeze({
+  "salmon": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "shrimp": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "tamago": [
+    "cooked",
+    "egg",
+    "staple"
+  ],
+  "cucumber": [
+    "staple",
+    "vegetable"
+  ],
+  "ikura": [
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "onigiri": [
+    "staple"
+  ],
+  "tea": [
+    "drink",
+    "tea"
+  ],
+  "lucky_tamago": [
+    "cooked",
+    "egg",
+    "staple"
+  ],
+  "maple_salmon": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "harvest_tamago": [
+    "egg",
+    "staple"
+  ],
+  "garden_roll": [
+    "staple",
+    "vegetable"
+  ],
+  "moon_onigiri": [
+    "staple"
+  ],
+  "pearl_ikura": [
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "cat_tamago": [
+    "egg",
+    "staple"
+  ],
+  "salmon_02": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_03": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "salmon_04": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_05": [
+    "raw-fish",
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "salmon_06": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_07": [
+    "raw-fish",
+    "seafood",
+    "staple",
+    "vegetable"
+  ],
+  "salmon_08": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_09": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_10": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_11": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_12": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_13": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_14": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_15": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_16": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "salmon_17": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "salmon_18": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_02": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_03": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_04": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_05": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_06": [
+    "raw-fish",
+    "seafood",
+    "spicy",
+    "staple"
+  ],
+  "tuna_07": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_08": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_09": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "tuna_10": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_11": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_12": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_13": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_14": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "tuna_15": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "tuna_16": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_01": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_02": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_03": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "white_04": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_05": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_06": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_07": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "white_08": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_09": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_10": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_11": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "white_12": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "silver_01": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "silver_02": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "silver_03": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "silver_04": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "silver_05": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "silver_06": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "silver_07": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "silver_08": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "silver_09": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "silver_10": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "prawn_02": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_03": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_04": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_05": [
+    "cooked",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_06": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_07": [
+    "roe",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_08": [
+    "seafood",
+    "shellfish",
+    "staple",
+    "vegetable"
+  ],
+  "prawn_09": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_10": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_11": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_12": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_13": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "prawn_14": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_01": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_02": [
+    "cooked",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_03": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_04": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_05": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_06": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_07": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_08": [
+    "cooked",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_09": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_10": [
+    "cooked",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_11": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "shell_12": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_01": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_02": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_03": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_04": [
+    "seafood",
+    "shellfish",
+    "spicy",
+    "staple"
+  ],
+  "ceph_05": [
+    "cooked",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_06": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_07": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_08": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_09": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "ceph_10": [
+    "seafood",
+    "shellfish",
+    "spicy",
+    "staple"
+  ],
+  "eel_01": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "eel_02": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "eel_03": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "eel_04": [
+    "cooked",
+    "seafood",
+    "spicy",
+    "staple"
+  ],
+  "eel_05": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "eel_06": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "eel_07": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "eel_08": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "gunkan_02": [
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "gunkan_03": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "gunkan_04": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "gunkan_05": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "gunkan_06": [
+    "seafood",
+    "staple"
+  ],
+  "gunkan_07": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "gunkan_08": [
+    "staple",
+    "vegetable"
+  ],
+  "gunkan_09": [
+    "staple",
+    "vegetable"
+  ],
+  "gunkan_10": [
+    "staple",
+    "vegetable"
+  ],
+  "gunkan_11": [
+    "staple",
+    "vegetable"
+  ],
+  "gunkan_12": [
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "gunkan_13": [
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "gunkan_14": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "gunkan_15": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "gunkan_16": [
+    "egg",
+    "staple"
+  ],
+  "gunkan_17": [
+    "staple",
+    "vegetable"
+  ],
+  "gunkan_18": [
+    "seafood",
+    "staple"
+  ],
+  "roll_02": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "roll_03": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "roll_04": [
+    "staple",
+    "vegetable"
+  ],
+  "roll_05": [
+    "egg",
+    "staple"
+  ],
+  "roll_06": [
+    "staple",
+    "vegetable"
+  ],
+  "roll_07": [
+    "staple",
+    "vegetable"
+  ],
+  "roll_08": [
+    "staple",
+    "vegetable"
+  ],
+  "roll_09": [
+    "fried",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "roll_10": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "roll_11": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "roll_12": [
+    "seafood",
+    "shellfish",
+    "staple",
+    "vegetable"
+  ],
+  "roll_13": [
+    "raw-fish",
+    "seafood",
+    "staple",
+    "vegetable"
+  ],
+  "roll_14": [
+    "seafood",
+    "staple",
+    "vegetable"
+  ],
+  "roll_15": [
+    "staple",
+    "vegetable"
+  ],
+  "roll_16": [
+    "raw-fish",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "egg_02": [
+    "cooked",
+    "egg",
+    "staple"
+  ],
+  "egg_03": [
+    "cooked",
+    "egg",
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "egg_04": [
+    "cooked",
+    "egg",
+    "staple"
+  ],
+  "egg_05": [
+    "cooked",
+    "egg",
+    "staple"
+  ],
+  "egg_06": [
+    "cooked",
+    "egg",
+    "staple"
+  ],
+  "egg_08": [
+    "cooked",
+    "staple"
+  ],
+  "egg_09": [
+    "cooked",
+    "staple"
+  ],
+  "egg_10": [
+    "cooked",
+    "staple"
+  ],
+  "egg_11": [
+    "cooked",
+    "staple"
+  ],
+  "egg_12": [
+    "cooked",
+    "spicy",
+    "staple"
+  ],
+  "meat_01": [
+    "beef",
+    "cooked",
+    "staple"
+  ],
+  "meat_02": [
+    "beef",
+    "cooked",
+    "staple"
+  ],
+  "meat_03": [
+    "beef",
+    "cooked",
+    "spicy",
+    "staple"
+  ],
+  "meat_04": [
+    "beef",
+    "cooked",
+    "staple"
+  ],
+  "meat_05": [
+    "beef",
+    "cooked",
+    "staple"
+  ],
+  "meat_06": [
+    "cooked",
+    "staple"
+  ],
+  "meat_07": [
+    "cooked",
+    "staple"
+  ],
+  "meat_08": [
+    "cooked",
+    "staple"
+  ],
+  "meat_09": [
+    "cooked",
+    "staple"
+  ],
+  "meat_10": [
+    "cooked",
+    "spicy",
+    "staple"
+  ],
+  "meat_11": [
+    "cooked",
+    "staple"
+  ],
+  "meat_12": [
+    "beef",
+    "cooked",
+    "staple"
+  ],
+  "veggie_02": [
+    "staple"
+  ],
+  "veggie_03": [
+    "staple"
+  ],
+  "veggie_04": [
+    "staple"
+  ],
+  "veggie_05": [
+    "cooked",
+    "staple"
+  ],
+  "veggie_06": [
+    "cooked",
+    "staple",
+    "vegetable"
+  ],
+  "veggie_07": [
+    "staple",
+    "vegetable"
+  ],
+  "veggie_08": [
+    "staple",
+    "vegetable"
+  ],
+  "veggie_09": [
+    "mushroom",
+    "staple",
+    "vegetable"
+  ],
+  "veggie_10": [
+    "mushroom",
+    "staple",
+    "vegetable"
+  ],
+  "tempura_01": [
+    "cooked",
+    "fried",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "tempura_02": [
+    "cooked",
+    "fried",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "tempura_03": [
+    "cooked",
+    "fried",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "tempura_04": [
+    "cooked",
+    "egg",
+    "fried",
+    "staple"
+  ],
+  "tempura_05": [
+    "cooked",
+    "fried",
+    "mushroom",
+    "staple",
+    "vegetable"
+  ],
+  "tempura_06": [
+    "cooked",
+    "fried",
+    "staple",
+    "vegetable"
+  ],
+  "tempura_07": [
+    "cooked",
+    "fried",
+    "staple",
+    "vegetable"
+  ],
+  "tempura_08": [
+    "cooked",
+    "fried",
+    "staple",
+    "vegetable"
+  ],
+  "sweet_01": [
+    "cooked",
+    "dessert",
+    "egg",
+    "staple"
+  ],
+  "sweet_02": [
+    "cooked",
+    "dessert",
+    "egg",
+    "staple"
+  ],
+  "sweet_03": [
+    "cooked",
+    "dessert",
+    "egg",
+    "staple"
+  ],
+  "sweet_04": [
+    "cooked",
+    "dessert",
+    "egg",
+    "staple"
+  ],
+  "sweet_05": [
+    "cooked",
+    "dessert",
+    "nuts",
+    "staple"
+  ],
+  "sweet_06": [
+    "cooked",
+    "dessert",
+    "staple"
+  ],
+  "sweet_07": [
+    "cooked",
+    "dessert",
+    "staple"
+  ],
+  "sweet_08": [
+    "cooked",
+    "dessert",
+    "staple"
+  ],
+  "sweet_09": [
+    "cooked",
+    "dessert",
+    "staple"
+  ],
+  "sweet_10": [
+    "cooked",
+    "dessert",
+    "staple"
+  ],
+  "sweet_11": [
+    "cooked",
+    "dessert",
+    "egg",
+    "staple"
+  ],
+  "sweet_12": [
+    "cooked",
+    "dessert",
+    "egg",
+    "staple"
+  ],
+  "taste_caramel_salmon": [
+    "cooked",
+    "seafood",
+    "staple"
+  ],
+  "taste_foie_gras": [
+    "cooked",
+    "foie",
+    "staple"
+  ],
+  "taste_red_prawn": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "taste_matcha_pudding": [
+    "cooked",
+    "dessert",
+    "egg",
+    "matcha",
+    "staple"
+  ],
+  "taste_cold_rabbit": [
+    "cooked",
+    "spicy",
+    "staple"
+  ],
+  "taste_kohada": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "taste_cold_beef": [
+    "beef",
+    "cooked",
+    "spicy",
+    "staple"
+  ],
+  "taste_caramel_foie": [
+    "cooked",
+    "foie",
+    "staple"
+  ],
+  "taste_yuzu_red_prawn": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "taste_truffle_wagyu": [
+    "beef",
+    "cooked",
+    "mushroom",
+    "staple"
+  ],
+  "taste_uni_scallop": [
+    "roe",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "taste_otoro_uni": [
+    "raw-fish",
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "taste_roe_mountain": [
+    "roe",
+    "seafood",
+    "staple"
+  ],
+  "taste_eel_duet": [
+    "seafood",
+    "staple"
+  ],
+  "taste_sweet_prawn_uni": [
+    "roe",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "taste_pepper_amberjack": [
+    "raw-fish",
+    "seafood",
+    "spicy",
+    "staple"
+  ],
+  "taste_lime_scallop": [
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "taste_wasabi_octopus": [
+    "seafood",
+    "shellfish",
+    "spicy",
+    "staple"
+  ],
+  "taste_sukiyaki_roll": [
+    "beef",
+    "staple"
+  ],
+  "taste_crab_croquette": [
+    "cooked",
+    "fried",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "taste_mentai_prawn_roll": [
+    "fried",
+    "roe",
+    "seafood",
+    "shellfish",
+    "staple"
+  ],
+  "taste_shiso_plum_roll": [
+    "staple",
+    "vegetable"
+  ],
+  "taste_smoked_duck": [
+    "cooked",
+    "staple"
+  ],
+  "taste_pepper_chicken": [
+    "cooked",
+    "spicy",
+    "staple"
+  ],
+  "taste_sesame_panna": [
+    "cooked",
+    "dessert",
+    "staple"
+  ],
+  "taste_hojicha_cake": [
+    "cooked",
+    "dessert",
+    "egg",
+    "staple"
+  ],
+  "taste_peach_mochi": [
+    "cooked",
+    "dessert",
+    "staple"
+  ],
+  "taste_cat_matcha_tamago": [
+    "egg",
+    "matcha",
+    "staple"
+  ],
+  "friends_nian": [
+    "drink",
+    "matcha"
+  ],
+  "friends_orange": [
+    "cooked",
+    "dessert",
+    "nuts"
+  ],
+  "friends_rabbit": [
+    "raw-fish",
+    "seafood",
+    "staple"
+  ],
+  "friends_red": [
+    "cooked",
+    "dessert",
+    "egg",
+    "matcha",
+    "staple"
+  ],
+  "friends_uu": [
+    "coffee",
+    "drink"
+  ],
+  "friends_mum": [
+    "cooked",
+    "foie",
+    "staple"
+  ],
+  "friends_fitness": [
+    "beef",
+    "cooked",
+    "staple"
+  ]
+});
+
+// src/taste-model.js
+var TASTE_TAGS = Object.freeze([["matcha", "\u62B9\u8336"], ["raw-fish", "\u751F\u9C7C\u4E0E\u814C\u6E0D\u9C7C"], ["shellfish", "\u867E\u87F9\u8D1D\u7C7B"], ["beef", "\u725B\u8089"], ["spicy", "\u8FA3\u5473\u4E0E\u5C71\u8475"], ["vegetable", "\u852C\u83DC"], ["foie", "\u9E45\u809D"], ["coffee", "\u5496\u5561"], ["dessert", "\u751C\u54C1"], ["roe", "\u9C7C\u7C7D"], ["egg", "\u9E21\u86CB"], ["fried", "\u70B8\u7269"], ["mushroom", "\u8611\u83C7"], ["nuts", "\u575A\u679C"]].filter(([id]) => Object.values(FOOD_TAGS).some((tags) => tags.includes(id))).map(([id, name]) => Object.freeze({ id, name })));
+var tagIds = new Set(TASTE_TAGS.map((t) => t.id));
+function normalizeTaste(value, { strict = false } = {}) {
+  const fail = () => {
+    throw new Error("\u53E3\u5473\u9009\u9879\u6709\u8BEF\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\uFF08\u5FC3\u5934\u597D\u6700\u591A3\u9053\uFF09");
+  };
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    if (strict) fail();
+    value = {};
+  }
+  const list = (key, valid, max) => {
+    const items = value[key] ?? [];
+    if (!Array.isArray(items) || items.length > max) {
+      if (strict) fail();
+      return [];
+    }
+    if (strict && items.some((id) => typeof id !== "string" || !valid(id))) fail();
+    return [...new Set(items.filter((id) => typeof id === "string" && valid(id)))].slice(0, max);
+  };
+  const dislikedFoods = list("dislikedFoods", (id) => Object.hasOwn(CATALOG3, id), 230), dislikedTags = list("dislikedTags", (id) => tagIds.has(id), TASTE_TAGS.length);
+  const favorites = list("favorites", (id) => Object.hasOwn(CATALOG3, id), 3).filter((id) => !dislikedFoods.includes(id));
+  return { version: 1, favorites, dislikedFoods, dislikedTags, configured: value.configured === true };
+}
+var emptyTaste = () => normalizeTaste({});
+function tasteOf(foodId, preferences) {
+  const p = preferences || emptyTaste();
+  if (p.dislikedFoods.includes(foodId) || p.dislikedTags.some((t) => FOOD_TAGS[foodId]?.includes(t))) return "dislike";
+  return p.favorites.includes(foodId) ? "favorite" : "neutral";
+}
+function chooseTaste(value, kind, id) {
+  const p = normalizeTaste(value);
+  let message = "";
+  if (kind === "favorite") {
+    if (p.favorites.includes(id)) p.favorites = p.favorites.filter((x) => x !== id);
+    else {
+      if (p.favorites.length >= 3) return { value: p, message: "\u5FC3\u5934\u597D\u6700\u591A3\u9053\uFF0C\u5148\u653E\u4E0B\u4E00\u9053\u518D\u9009\u5427\u3002" };
+      if (p.dislikedFoods.includes(id)) {
+        p.dislikedFoods = p.dislikedFoods.filter((x) => x !== id);
+        message = "\u5DF2\u4ECE\u6311\u98DF\u6E05\u5355\u79FB\u51FA\u8FD9\u9053\u83DC\u3002";
+      }
+      p.favorites.push(id);
+      if (tasteOf(id, p) === "dislike") message = "\u8FD9\u9053\u4E5F\u547D\u4E2D\u6311\u98DF\u5206\u7C7B\uFF0C\u4F1A\u4F18\u5148\u6309\u4E0D\u559C\u6B22\u53CD\u9988\u3002";
+    }
+  } else if (kind === "food") {
+    if (p.dislikedFoods.includes(id)) p.dislikedFoods = p.dislikedFoods.filter((x) => x !== id);
+    else {
+      p.dislikedFoods.push(id);
+      if (p.favorites.includes(id)) {
+        p.favorites = p.favorites.filter((x) => x !== id);
+        message = "\u5DF2\u4ECE\u5FC3\u5934\u597D\u79FB\u51FA\u8FD9\u9053\u83DC\u3002";
+      }
+    }
+  } else if (kind === "tag") {
+    p.dislikedTags = p.dislikedTags.includes(id) ? p.dislikedTags.filter((x) => x !== id) : [...p.dislikedTags, id];
+    if (p.favorites.some((f) => tasteOf(f, p) === "dislike")) message = "\u540C\u65F6\u547D\u4E2D\u5FC3\u5934\u597D\u4E0E\u6311\u98DF\u5206\u7C7B\u65F6\uFF0C\u4F18\u5148\u6309\u4E0D\u559C\u6B22\u53CD\u9988\u3002";
+  }
+  return { value: normalizeTaste(p), message };
+}
+var HAPPY = ["\u563F\u563F\uFF0C\u662F\u6211\u6700\u7231\u7684\uFF01", "\u8FD9\u53E3\u5E78\u798F\u611F\u62C9\u6EE1\uFF01", "\u518D\u6765\u4E00\u76D8\u4E5F\u4E0D\u662F\u4E0D\u884C\uFF5E"];
+var PICKY = ["\u545C\u545C\uFF0C\u8FD9\u4E2A\u771F\u7684\u4E0D\u7231\u5403\uFF01", "\u662F\u8C01\u628A\u8FD9\u4E2A\u653E\u4E0A\u6765\u7684\uFF01", "\u867D\u7136\u4E0D\u559C\u6B22\u2026\u2026\u4F46\u4E5F\u4E0D\u662F\u4E0D\u80FD\u5403\u3002", "\u6211\u5C31\u52C9\u5F3A\u5403\u4E00\u53E3\uFF01", "\u4E0B\u4E00\u76D8\u53EF\u4EE5\u6765\u70B9\u597D\u5403\u7684\u5417\uFF1F"];
+var AGAIN = ["\u600E\u4E48\u53C8\u662F\u8FD9\u4E2A\u554A\uFF01", "\u4ECA\u5929\u7684\u83DC\u5355\u662F\u4E0D\u662F\u9488\u5BF9\u6211\uFF01", "\u6551\u547D\uFF0C\u6211\u771F\u7684\u6311\u98DF\uFF01"];
+var TasteFeedback = class {
+  constructor(random = Math.random) {
+    this.random = random;
+    this.streak = 0;
+  }
+  bite(kind) {
+    this.streak = kind === "dislike" ? this.streak + 1 : 0;
+    const lines = kind === "favorite" ? HAPPY : kind === "dislike" ? this.streak >= 2 ? AGAIN : PICKY : null;
+    return lines ? lines[Math.min(lines.length - 1, Math.floor(this.random() * lines.length))] : "";
+  }
+};
+
+// src/taste-store.js
+var TasteStore = class {
+  constructor({ request, storage, onChange = () => {
+  }, uuid = () => crypto.randomUUID() } = {}) {
+    if (!storage) try {
+      storage = globalThis.localStorage;
+    } catch {
+    }
+    Object.assign(this, { request, storage, onChange, uuid });
+    this.owner = null;
+    this.value = emptyTaste();
+    this.revision = 0;
+    this.pending = null;
+    this.error = "";
+    this.busy = false;
+    this.loaded = false;
+    this.generation = 0;
+  }
+  key() {
+    return "sushi.tastes.v141." + this.owner;
+  }
+  read() {
+    try {
+      return JSON.parse(this.storage.getItem(this.key()) || "null");
+    } catch {
+      return null;
+    }
+  }
+  persist() {
+    try {
+      this.storage.setItem(this.key(), JSON.stringify({ value: this.value, revision: this.revision, pending: this.pending, loaded: this.loaded }));
+      return true;
+    } catch {
+      this.error = "\u6D4F\u89C8\u5668\u672A\u80FD\u4FDD\u5B58\u53E3\u5473\uFF0C\u8BF7\u4FDD\u6301\u9875\u9762\u5F00\u542F\u5E76\u91CD\u8BD5\u4E91\u7AEF\u4FDD\u5B58\u3002";
+      return false;
+    }
+  }
+  notify() {
+    this.onChange();
+  }
+  async select(owner) {
+    if (!owner || this.owner === owner) return;
+    this.owner = owner;
+    this.generation++;
+    this.pending = null;
+    this.error = "";
+    this.busy = false;
+    this.loaded = false;
+    const cache = this.read();
+    this.value = normalizeTaste(cache?.value);
+    this.revision = Number.isSafeInteger(cache?.revision) ? cache.revision : 0;
+    this.pending = cache?.pending || null;
+    this.loaded = cache?.loaded === true;
+    this.notify();
+    if (owner === "practice") {
+      this.loaded = true;
+      this.notify();
+      return;
+    }
+    await this.refresh();
+  }
+  async refresh() {
+    if (!this.owner || this.owner === "practice") return;
+    const owner = this.owner, generation = this.generation;
+    this.busy = true;
+    this.notify();
+    try {
+      const data = await this.request("/api/tastes");
+      if (owner !== this.owner || generation !== this.generation || data.playerId && data.playerId !== owner) return;
+      this.loaded = true;
+      if (!this.pending) {
+        this.value = normalizeTaste(data.preferences);
+        this.revision = data.revision;
+        this.error = "";
+        this.persist();
+      } else if (!this.pending.conflict) {
+        await this.flush();
+      }
+    } catch {
+      if (owner === this.owner) this.error = "\u53E3\u5473\u6682\u672A\u4ECE\u4E91\u7AEF\u8BFB\u5230\uFF0C\u5DF2\u4FDD\u7559\u672C\u673A\u9009\u62E9\uFF1B\u8054\u7F51\u540E\u53EF\u4EE5\u91CD\u8BD5\u3002";
+    } finally {
+      if (owner === this.owner && generation === this.generation) {
+        this.busy = false;
+        this.notify();
+      }
+    }
+  }
+  save(value) {
+    this.value = normalizeTaste({ ...value, configured: true });
+    this.error = "";
+    this.pending = { preferences: this.value, revision: this.revision, mutation: this.uuid() };
+    this.persist();
+    this.notify();
+    return this.flush();
+  }
+  async flush() {
+    if (!this.pending || this.pending.conflict || this.owner === "practice") {
+      if (this.owner === "practice") {
+        this.pending = null;
+        this.loaded = true;
+        this.persist();
+        this.notify();
+      }
+      return;
+    }
+    if (this.flight) {
+      await this.flight;
+      return this.pending && !this.pending.conflict ? this.flush() : void 0;
+    }
+    const owner = this.owner, generation = this.generation, pending = this.pending;
+    this.busy = true;
+    this.notify();
+    const promise = (async () => {
+      try {
+        const data = await this.request("/api/tastes", { ...pending, owner });
+        if (owner !== this.owner || generation !== this.generation || data.playerId && data.playerId !== owner) return;
+        if (data.conflict) {
+          this.revision = data.revision;
+          this.remote = normalizeTaste(data.preferences);
+          this.pending = { ...this.pending, conflict: true };
+          this.error = "\u53E6\u4E00\u7A97\u53E3\u6216\u8BBE\u5907\u66F4\u65B0\u4E86\u53E3\u5473\u3002\u8BF7\u91C7\u7528\u4E91\u7AEF\u9009\u62E9\uFF0C\u6216\u91CD\u65B0\u70B9\u4FDD\u5B58\u4EE5\u4FDD\u7559\u5F53\u524D\u9009\u62E9\u3002";
+        } else {
+          this.revision = data.revision;
+          this.loaded = true;
+          if (this.pending?.mutation === pending.mutation) {
+            this.pending = null;
+            this.value = normalizeTaste(data.preferences);
+            this.error = "";
+          } else if (this.pending) {
+            this.pending = { ...this.pending, revision: data.revision };
+          }
+        }
+        this.persist();
+      } catch {
+        if (owner === this.owner && generation === this.generation) {
+          this.error = "\u5DF2\u5728\u672C\u673A\u751F\u6548\uFF0C\u5C1A\u672A\u540C\u6B65\u4E91\u7AEF\uFF1B\u8054\u7F51\u540E\u4F1A\u91CD\u8BD5\u3002";
+          this.persist();
+        }
+      } finally {
+        if (owner === this.owner && generation === this.generation) {
+          this.busy = false;
+          this.notify();
+        }
+      }
+    })();
+    this.flight = promise;
+    await promise;
+    if (this.flight === promise) this.flight = null;
+    if (owner === this.owner && this.pending && !this.pending.conflict && this.pending.mutation !== pending.mutation) await this.flush();
+  }
+  async useCloud() {
+    this.pending = null;
+    this.error = "";
+    this.persist();
+    await this.refresh();
+  }
+};
+
+// src/config.js
+var PUBLIC_CONFIG = Object.freeze({
+  "supabaseUrl": "https://hyqgkenarjgxdbqiwpxl.supabase.co",
+  "publishableKey": "sb_publishable_DfZrP9IEZ00WH08M32_sUA_KGIeXvXN",
+  "edgeFunction": "sushi-api",
+  "emailEnabled": true
+});
+
+// src/identity.js
+var clientPromise;
+async function authClient() {
+  if (typeof location !== "undefined" && new URLSearchParams(location.hash.slice(1)).has("access_token")) {
+    history.replaceState(null, "", location.pathname + location.search);
+    document.documentElement.dataset.emailLinkIgnored = "true";
+  }
+  if (!PUBLIC_CONFIG.supabaseUrl || !PUBLIC_CONFIG.publishableKey) throw new Error("\u5728\u7EBF\u8EAB\u4EFD\u670D\u52A1\u5C1A\u672A\u914D\u7F6E\uFF0C\u53EF\u5148\u8FDB\u884C\u7EC3\u4E60");
+  clientPromise ?? (clientPromise = import(new URL((PUBLIC_CONFIG.assetBase || "./") + "vendor/supabase.js", document.baseURI).href).then(({ createClient }) => createClient(PUBLIC_CONFIG.supabaseUrl, PUBLIC_CONFIG.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, flowType: "implicit" } })).catch((error) => {
+    clientPromise = null;
+    throw error;
+  }));
+  return clientPromise;
+}
+async function sessionToken({ create = false } = {}) {
+  const client = await authClient();
+  let { data, error } = await client.auth.getSession();
+  if (error) throw error;
+  if (!data.session && create) {
+    ({ data, error } = await client.auth.signInAnonymously());
+    if (error) throw Object.assign(new Error("\u6E38\u5BA2\u8EAB\u4EFD\u521B\u5EFA\u5931\u8D25\uFF1A" + error.message), { status: error.status });
+  }
+  return data.session?.access_token || null;
+}
+async function currentIdentity() {
+  const c = await authClient();
+  const { data, error } = await c.auth.getSession();
+  if (error) throw error;
+  return data.session?.user || null;
+}
+async function emailWithClient(client, email, recover, redirectTo) {
+  const value = String(email).trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) throw new Error("\u8BF7\u8F93\u5165\u6709\u6548\u90AE\u7BB1\u5730\u5740");
+  const { error } = recover ? await client.auth.signInWithOtp({ email: value, options: { emailRedirectTo: redirectTo, shouldCreateUser: false } }) : await client.auth.updateUser({ email: value }, { emailRedirectTo: redirectTo });
+  if (error) throw new Error("\u90AE\u4EF6\u672A\u80FD\u53D1\u9001\uFF1A" + error.message);
+  return true;
+}
+async function emailAction(email, recover = false, { enabled = PUBLIC_CONFIG.emailEnabled } = {}) {
+  if (!enabled) throw new Error("\u90AE\u7BB1\u5B58\u6863\u6682\u672A\u5F00\u653E\uFF1B\u5F53\u524D\u6D4F\u89C8\u5668\u4ECD\u4F1A\u81EA\u52A8\u4FDD\u5B58\u6E38\u5BA2\u8EAB\u4EFD\uFF0C\u8BF7\u52FF\u6E05\u9664\u7F51\u7AD9\u6570\u636E\u3002");
+  return emailWithClient(await authClient(), email, recover, new URL("./", document.baseURI).href);
+}
+async function verifyEmailWithClient(client, email, token, recover = false) {
+  const value = String(email).trim(), code = String(token).trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || !/^\d{6,8}$/.test(code)) throw new Error("\u8BF7\u8F93\u5165\u90AE\u7BB1\u548C\u90AE\u4EF6\u4E2D\u76846\u20138\u4F4D\u9A8C\u8BC1\u7801");
+  const before = recover ? null : (await client.auth.getSession()).data.session?.user?.id;
+  if (!recover && !before) throw new Error("\u5F53\u524D\u6E38\u5BA2\u8EAB\u4EFD\u5DF2\u5931\u6548\uFF0C\u8BF7\u5148\u91CD\u65B0\u8FDE\u63A5");
+  const { data, error } = await client.auth.verifyOtp({ email: value, token: code, type: recover ? "email" : "email_change" });
+  if (error) throw new Error("\u9A8C\u8BC1\u672A\u5B8C\u6210\uFF1A" + error.message);
+  if (!data.user || !recover && data.user.id !== before) throw new Error("\u8EAB\u4EFD\u9A8C\u8BC1\u7ED3\u679C\u4E0D\u4E00\u81F4\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5\uFF1B\u672A\u5408\u5E76\u6216\u8986\u76D6\u6863\u6848");
+  return data.user;
+}
+async function verifyEmailAction(email, token, recover = false) {
+  if (!PUBLIC_CONFIG.emailEnabled) throw new Error("\u90AE\u7BB1\u5B58\u6863\u6682\u672A\u5F00\u653E");
+  return verifyEmailWithClient(await authClient(), email, token, recover);
+}
+async function watchIdentity(listener) {
+  const c = await authClient();
+  return c.auth.onAuthStateChange((event, session) => {
+    setTimeout(() => listener(event, session?.user?.id || null), 0);
+  }).data.subscription;
+}
+
+// src/storage.js
+var RunJournal = class {
+  constructor(storage) {
+    try {
+      this.storage = storage || globalThis.localStorage;
+    } catch {
+      this.storage = null;
+    }
+    this.memory = /* @__PURE__ */ new Map();
+  }
+  key(id) {
+    return "sushi.run.v12." + id;
+  }
+  write(entry) {
+    this.memory.set(entry.runId, entry);
+    try {
+      this.storage.setItem(this.key(entry.runId), JSON.stringify(entry));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  remove(id) {
+    this.memory.delete(id);
+    try {
+      this.storage.removeItem(this.key(id));
+    } catch {
+    }
+  }
+  list(kind) {
+    const entries2 = /* @__PURE__ */ new Map();
+    try {
+      for (let i = 0; i < this.storage.length; i++) {
+        const key = this.storage.key(i);
+        if (!key?.startsWith("sushi.run.v12.")) continue;
+        try {
+          const e = JSON.parse(this.storage.getItem(key));
+          if (e && typeof e.runId === "string" && Array.isArray(e.body?.actions)) entries2.set(e.runId, e);
+        } catch {
+        }
+      }
+    } catch {
+    }
+    for (const [id, e] of this.memory) entries2.set(id, e);
+    return [...entries2.values()].filter((e) => !kind || e.kind === kind);
+  }
+};
+function retryableStatus(status) {
+  return !status || status === 401 || status === 408 || status === 425 || status === 429 || status >= 500;
+}
+function deadline(promise, ms = 8e3) {
+  let timer;
+  return Promise.race([promise, new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error("\u8EAB\u4EFD\u670D\u52A1\u8FDE\u63A5\u8D85\u65F6")), ms);
+  })]).finally(() => clearTimeout(timer));
+}
+
+// src/social.js
+var escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+function playerIdValue(value) {
+  const id = String(value ?? "").normalize("NFKC").trim();
+  return /^[A-Za-z0-9\u3400-\u9fff]{2,12}$/u.test(id) ? id : null;
+}
+var SocialClient = class {
+  constructor() {
+    this.local = ["localhost", "127.0.0.1"].includes(location.hostname);
+    this.api = location.protocol === "file:" ? null : this.local ? location.origin : PUBLIC_CONFIG.supabaseUrl ? PUBLIC_CONFIG.supabaseUrl + "/functions/v1/" + PUBLIC_CONFIG.edgeFunction : null;
+    this.emailAvailable = PUBLIC_CONFIG.emailEnabled === true;
+    this.playerId = "";
+    this.profile = null;
+    this.profileRevision = 0;
+    this.mode = "offline";
+    this.lastBoard = null;
+    this.inflight = /* @__PURE__ */ new Map();
+    this.journal = new RunJournal();
+    this.syncing = null;
+    this.lastError = "";
+    this.archiveBusy = 0;
+    this.archiveError = "";
+    this.archiveReadError = "";
+    this.archiveReadBusy = 0;
+    this.onState = () => {
+    };
+    try {
+      this.playerId = playerIdValue(localStorage.getItem("sushi.nickname.v1")) || "";
+      const old = JSON.parse(localStorage.getItem("sushi.pending.v1") || "[]");
+      if (Array.isArray(old)) for (const e of old) {
+        if (e && typeof e.runId === "string" && Array.isArray(e.body?.actions) && !this.journal.list().some((x) => x.runId === e.runId)) this.journal.write({ ...e, kind: "pending" });
+      }
+    } catch {
+    }
+  }
+  get pending() {
+    return this.journal.list("pending");
+  }
+  persist() {
+    try {
+      localStorage.setItem("sushi.nickname.v1", this.playerId);
+      localStorage.setItem("sushi.pending.v1", JSON.stringify(this.pending));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  changed() {
+    this.onState();
+  }
+  async request(path2, body) {
+    if (!this.api) throw Object.assign(new Error("\u79BB\u7EBF\u6587\u4EF6\u4EC5\u4F9B\u7EC3\u4E60\uFF0C\u8BF7\u6253\u5F00\u5728\u7EBF\u6E38\u620F\u53C2\u4E0E\u4ECA\u65E5\u699C"), { code: "offline" });
+    const publicBoard = path2 === "/api/leaderboard" && body === void 0;
+    let token = null;
+    if (!this.local) {
+      try {
+        token = await deadline(sessionToken(), publicBoard ? 2e3 : 8e3);
+      } catch (error) {
+        if (!publicBoard) throw error;
+      }
+    }
+    const authHeaders = token ? { Authorization: "Bearer " + token } : {};
+    if (!this.local) authHeaders.apikey = PUBLIC_CONFIG.publishableKey;
+    const response = await fetch(this.api + path2, { method: body !== void 0 ? "POST" : "GET", headers: { ...authHeaders, ...body !== void 0 ? { "Content-Type": "application/json" } : {} }, body: body !== void 0 ? JSON.stringify(body) : void 0, credentials: this.local ? "same-origin" : "omit", signal: AbortSignal.timeout(path2.endsWith("/finish") ? 2e4 : 12e3) });
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      throw Object.assign(new Error("\u8054\u7F51\u670D\u52A1\u8FD4\u56DE\u5F02\u5E38\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5"), { status: response.status >= 500 ? response.status : 503 });
+    }
+    if (!response.ok || data.quarantined) throw Object.assign(new Error(data.error || "\u8054\u7F51\u670D\u52A1\u6682\u4E0D\u53EF\u7528"), { status: response.status, code: data.code });
+    return data;
+  }
+  async initialize() {
+    this.archiveReadBusy++;
+    this.changed();
+    try {
+      const revision = this.profileRevision;
+      const data = await this.request("/api/identity");
+      if (revision !== this.profileRevision || !this.local && data.profile && (await currentIdentity())?.id !== data.profile.id) return data;
+      this.profile = data.profile;
+      this.mode = data.mode;
+      if (this.profile) {
+        this.playerId = this.profile.nickname;
+        this.persist();
+      }
+      this.lastError = "";
+      this.archiveReadError = "";
+      this.changed();
+      return data;
+    } catch (error) {
+      this.archiveReadError = error.message;
+      this.changed();
+      throw error;
+    } finally {
+      this.archiveReadBusy--;
+      this.changed();
+    }
+  }
+  async rename(value) {
+    const nickname = playerIdValue(value);
+    if (!nickname) throw Object.assign(new Error("\u6635\u79F0\u9700\u4E3A2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u5B57\u6BCD\u6216\u6570\u5B57"), { status: 400 });
+    if (!this.local) await deadline(sessionToken({ create: true }));
+    const data = await this.request("/api/identity", { nickname });
+    if (!this.local && (await currentIdentity())?.id !== data.profile.id) throw new Error("\u8EAB\u4EFD\u521A\u521A\u5207\u6362\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
+    this.profileRevision++;
+    this.profile = data.profile;
+    this.playerId = data.profile.nickname;
+    this.mode = data.mode;
+    this.persist();
+    this.changed();
+    return data;
+  }
+  async start(id, options = {}) {
+    const nickname = playerIdValue(id);
+    if (!nickname) throw Object.assign(new Error("\u6635\u79F0\u9700\u4E3A2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u5B57\u6BCD\u6216\u6570\u5B57"), { status: 400 });
+    try {
+      if (!this.profile || this.profile.nickname !== nickname) await this.rename(nickname);
+      const run = await this.request("/api/runs", options);
+      this.mode = run.mode;
+      this.lastError = "";
+      this.changed();
+      return run;
+    } catch (error) {
+      this.lastError = error.message;
+      this.changed();
+      if ([400, 401, 409, 429].includes(error.status)) throw error;
+      this.playerId = nickname;
+      this.persist();
+      return { online: false, error: error.message };
+    }
+  }
+  async reset() {
+    if (!this.local) {
+      const c = await authClient();
+      await c.auth.signOut({ scope: "local" });
+    } else await this.request("/api/identity/reset", {});
+    this.profileRevision++;
+    this.profile = null;
+    this.playerId = "";
+    this.persist();
+    this.changed();
+  }
+  async board() {
+    const data = await this.request("/api/leaderboard");
+    this.lastBoard = data;
+    if (data.profile) this.profile = data.profile;
+    this.changed();
+    return data;
+  }
+  submit(run, ticks, actions, extra = {}) {
+    if (this.inflight.has(run.runId)) return this.inflight.get(run.runId);
+    const entry = { runId: run.runId, owner: this.profile?.id, kind: "pending", body: { ticks, actions, ...extra } };
+    const saved = this.journal.write(entry);
+    this.persist();
+    this.changed();
+    return this.sendEntry(entry, saved);
+  }
+  sendEntry(entry, saved = true) {
+    if (this.inflight.has(entry.runId)) return this.inflight.get(entry.runId);
+    const promise = this.deliver(entry, saved).finally(() => this.inflight.delete(entry.runId));
+    this.inflight.set(entry.runId, promise);
+    return promise;
+  }
+  async deliver(entry, saved) {
+    this.archiveBusy++;
+    this.changed();
+    try {
+      const data = await this.request(`/api/runs/${entry.runId}/finish`, entry.body);
+      this.journal.remove(entry.runId);
+      this.persist();
+      this.lastBoard = data.board;
+      if (data.board?.profile?.id === this.profile?.id) this.profile = data.board.profile;
+      this.lastError = "";
+      this.archiveError = "";
+      this.changed();
+      return data;
+    } catch (error) {
+      this.archiveError = error.message;
+      if (!retryableStatus(error.status)) this.journal.write({ ...entry, kind: "rejected", error: error.message });
+      this.persist();
+      this.lastError = error.message;
+      error.saved = saved && this.pending.some((e) => e.runId === entry.runId);
+      this.changed();
+      throw error;
+    } finally {
+      this.archiveBusy--;
+      this.changed();
+    }
+  }
+  async checkpoint(run, body) {
+    if (!["1.2.0", "1.2.1", "1.4.0", "1.4.1"].includes(run.rulesVersion)) return;
+    const owner = this.profile?.id;
+    this.archiveBusy++;
+    this.changed();
+    try {
+      const data = await this.request(`/api/runs/${run.runId}/checkpoint`, body);
+      if (this.profile?.id === owner) this.profile = data.profile;
+      this.archiveError = "";
+      return data;
+    } catch (error) {
+      this.archiveError = error.message;
+      throw error;
+    } finally {
+      this.archiveBusy--;
+      this.changed();
+    }
+  }
+  async email(email, recover = false) {
+    if (this.local) throw new Error("\u672C\u5730\u8054\u8C03\u73AF\u5883\u4E0D\u53D1\u9001\u90AE\u4EF6\uFF0C\u8BF7\u4F7F\u7528\u516C\u7F51\u7248");
+    if (!recover && !this.profile) throw new Error("\u8BF7\u5148\u8F93\u5165\u6635\u79F0\u5EFA\u7ACB\u6E38\u5BA2\u8EAB\u4EFD\uFF0C\u518D\u7ED1\u5B9A\u90AE\u7BB1");
+    const user = await currentIdentity();
+    const hasArchive = this.profile && (this.profile.playCount > 0 || this.profile.collection?.length || this.journal.list().some((e) => e.owner === this.profile.id && e.kind !== "rejected"));
+    if (recover && hasArchive && user?.is_anonymous) throw new Error("\u5F53\u524D\u6E38\u5BA2\u5DF2\u6709\u6210\u7EE9\u6216\u672A\u7ED3\u8D26\u5BF9\u5C40\u3002\u8BF7\u5148\u7ED9\u5F53\u524D\u6E38\u5BA2\u7ED1\u5B9A\u90AE\u7BB1\uFF0C\u518D\u5207\u6362\u8D26\u53F7\uFF1B\u4E5F\u53EF\u4EE5\u5728\u65B0\u7684\u6D4F\u89C8\u5668\u7A97\u53E3\u6062\u590D\u65E7\u8D26\u53F7\u3002\u4E0D\u4F1A\u8986\u76D6\u6216\u5408\u5E76\u73B0\u6709\u6536\u85CF\u3002");
+    return emailAction(email, recover);
+  }
+  async verifyEmail(email, token, recover) {
+    if (this.local) throw new Error("\u672C\u5730\u73AF\u5883\u4E0D\u80FD\u9A8C\u8BC1\u771F\u5B9E\u90AE\u7BB1");
+    const user = await verifyEmailAction(email, token, recover);
+    this.profileRevision++;
+    const data = await this.initialize();
+    if (!data.profile) throw new Error("\u90AE\u7BB1\u5DF2\u9A8C\u8BC1\uFF0C\u4F46\u6863\u6848\u6682\u672A\u8BFB\u5230\uFF0C\u8BF7\u7A0D\u540E\u91CD\u65B0\u8FDE\u63A5\uFF1B\u73B0\u6709\u6570\u636E\u4E0D\u4F1A\u88AB\u8986\u76D6");
+    return { user, profile: data.profile };
+  }
+  retry() {
+    if (this.syncing) return this.syncing;
+    this.syncing = this.retryOwned().finally(() => {
+      this.syncing = null;
+    });
+    return this.syncing;
+  }
+  async retryOwned() {
+    const outcomes = [];
+    for (const entry of this.pending) {
+      if (entry.owner && entry.owner !== this.profile?.id) continue;
+      try {
+        outcomes.push(await this.sendEntry(entry));
+      } catch (error) {
+        outcomes.push({ error: error.message, runId: entry.runId, retryable: retryableStatus(error.status) });
+        if (retryableStatus(error.status)) break;
+      }
+    }
+    return outcomes;
+  }
+};
+
+// src/taste-ui.js
+function tasteUI({ store, drawSushi: drawSushi3, onChange = () => {
+} }) {
+  const $3 = (id) => document.getElementById(id), dialog = $3("taste-dialog");
+  let page = 0, theme = "all", search = "", timer;
+  const foods = Object.values(CATALOG3).sort((a, b) => a.number - b.number);
+  function state() {
+    const count = store.value.favorites.length;
+    $3("taste-count").textContent = `${count} / 3 \u9053`;
+    for (const el of $3("taste-tags").children) el.setAttribute("aria-pressed", String(store.value.dislikedTags.includes(el.dataset.tag)));
+    $3("taste-selected").textContent = "\u5FC3\u5934\u597D\uFF1A" + (store.value.favorites.map((id) => CATALOG3[id].name).join("\u3001") || "\u6682\u65F6\u6CA1\u6709\uFF0C\u6162\u6162\u9047\u89C1");
+    $3("taste-exact").replaceChildren(...store.value.dislikedFoods.map((id) => {
+      const b = document.createElement("button");
+      b.className = "taste-chip";
+      b.textContent = CATALOG3[id].name + " \xD7";
+      b.type = "button";
+      b.title = "\u4ECE\u6311\u98DF\u6E05\u5355\u79FB\u51FA";
+      b.onclick = () => change("food", id);
+      return b;
+    }));
+    $3("taste-sync").textContent = store.error || (!store.owner || store.owner === "practice" ? "\u7EC3\u4E60\u53E3\u5473\u4FDD\u5B58\u5728\u672C\u673A\uFF1B\u5EFA\u7ACB\u4E91\u7AEF\u6863\u6848\u540E\u53EF\u8BBE\u7F6E\u4E91\u7AEF\u53E3\u5473\u3002" : store.busy ? "\u6B63\u5728\u540C\u6B65\u53E3\u5473\u2026" : store.pending ? "\u672C\u673A\u5DF2\u751F\u6548\uFF0C\u7B49\u5F85\u4E91\u7AEF\u540C\u6B65" : !store.loaded ? "\u6B63\u5728\u8BFB\u53D6\u4E91\u7AEF\u53E3\u5473\u2026" : !store.value.configured ? "\u8FD8\u6CA1\u8BBE\u7F6E\u53E3\u5473\uFF0C\u968F\u5FC3\u5403\u4E5F\u5F88\u597D\u3002" : "\u53E3\u5473\u5DF2\u4FDD\u5B58\u5230\u4E91\u7AEF \xB7 \u7ED1\u5B9A\u90AE\u7BB1\u540E\u53EF\u8DE8\u8BBE\u5907\u6062\u590D");
+    $3("taste-cloud").hidden = !store.pending?.conflict;
+    $3("taste-retry").hidden = !store.error || !!store.pending?.conflict;
+    $3("taste-nudge").hidden = !store.owner || !store.loaded || store.value.configured;
+    for (const b of $3("taste-foods").querySelectorAll("[data-favorite]")) b.setAttribute("aria-pressed", String(store.value.favorites.includes(b.dataset.favorite)));
+    for (const b of $3("taste-foods").querySelectorAll("[data-dislike]")) b.setAttribute("aria-pressed", String(store.value.dislikedFoods.includes(b.dataset.dislike)));
+    onChange();
+  }
+  function stage(value) {
+    store.value = normalizeTaste({ ...value, configured: true });
+    store.pending = { preferences: store.value, revision: store.revision, mutation: store.uuid() };
+    store.error = "";
+    store.persist();
+    store.notify();
+    clearTimeout(timer);
+    timer = setTimeout(() => store.flush(), 900);
+  }
+  function change(kind, id) {
+    const chosen = chooseTaste(store.value, kind, id);
+    $3("taste-hint").textContent = chosen.message || "\u9009\u597D\u5C31\u4F1A\u7ACB\u5373\u751F\u6548\uFF0C\u6240\u6709\u83DC\u4F9D\u7136\u90FD\u53EF\u4EE5\u5403\u3002";
+    stage(chosen.value);
+    state();
+  }
+  function render() {
+    const pool = foods.filter((f) => (theme === "all" || f.themeId === theme) && (!search || f.name.includes(search) || String(f.number).includes(search))), pages = Math.max(1, Math.ceil(pool.length / 12));
+    page = Math.min(page, pages - 1);
+    $3("taste-foods").innerHTML = pool.slice(page * 12, page * 12 + 12).map((f) => `<div class="taste-dish"><button type="button" class="taste-favorite" data-favorite="${f.id}" aria-pressed="false" title="\u9009\u4E3A\u5FC3\u5934\u597D\uFF1A${escapeHtml(f.name)}"><canvas width="100" height="80" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}</span><small>\u5FC3\u5934\u597D</small></button><button type="button" class="taste-dislike" data-dislike="${f.id}" aria-pressed="false" title="\u8FD9\u9053\u4E0D\u7231\u5403\uFF0C\u4F46\u4ECD\u53EF\u4EE5\u54C1\u5C1D">\u4E0D\u7231\u8FD9\u9053</button></div>`).join("");
+    for (const el of $3("taste-foods").children) {
+      const key = el.querySelector("[data-favorite]").dataset.favorite;
+      drawSushi3(el.querySelector("canvas").getContext("2d"), key, 50, 43, 0.75);
+    }
+    for (const b of $3("taste-foods").querySelectorAll("[data-favorite]")) b.onclick = () => change("favorite", b.dataset.favorite);
+    for (const b of $3("taste-foods").querySelectorAll("[data-dislike]")) b.onclick = () => change("food", b.dataset.dislike);
+    $3("taste-page").textContent = `${page + 1} / ${pages} \xB7 ${pool.length} \u9053`;
+    $3("taste-prev").disabled = page === 0;
+    $3("taste-next").disabled = page >= pages - 1;
+    $3("taste-empty").hidden = pool.length > 0;
+    state();
+  }
+  $3("taste-tags").innerHTML = TASTE_TAGS.map((t) => `<button type="button" class="taste-chip" data-tag="${t.id}" aria-pressed="false">${t.name}</button>`).join("");
+  for (const el of $3("taste-tags").children) el.onclick = () => change("tag", el.dataset.tag);
+  $3("taste-theme").innerHTML = '<option value="all">\u5168\u90E8\u83DC\u5355</option>' + THEMES3.map((t) => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+  $3("taste-theme").onchange = (e) => {
+    theme = e.target.value;
+    page = 0;
+    render();
+  };
+  $3("taste-search").oninput = (e) => {
+    search = e.target.value.trim();
+    page = 0;
+    render();
+  };
+  $3("taste-prev").onclick = () => {
+    page--;
+    render();
+  };
+  $3("taste-next").onclick = () => {
+    page++;
+    render();
+  };
+  function settle(force = false) {
+    clearTimeout(timer);
+    if (force && store.pending?.conflict) {
+      store.save(store.value);
+      return;
+    }
+    if (!store.value.configured) stage(store.value);
+    clearTimeout(timer);
+    store.flush();
+  }
+  $3("taste-save").onclick = () => {
+    settle(true);
+    dialog.close();
+  };
+  $3("taste-skip").onclick = () => {
+    settle();
+    dialog.close();
+  };
+  $3("taste-all").onclick = () => {
+    stage({ ...store.value, dislikedTags: [], dislikedFoods: [] });
+    $3("taste-hint").textContent = "\u6311\u98DF\u6E05\u5355\u6E05\u7A7A\u5566\uFF0C\u539F\u6765\u7684\u5FC3\u5934\u597D\u8FD8\u5728\u3002";
+    render();
+  };
+  $3("taste-nudge-skip").onclick = () => {
+    stage(store.value);
+    settle();
+  };
+  $3("taste-retry").onclick = () => store.pending ? store.flush() : store.refresh();
+  $3("taste-cloud").onclick = async () => {
+    await store.useCloud();
+    render();
+  };
+  dialog.addEventListener("cancel", () => settle());
+  dialog.addEventListener("close", () => {
+    settle();
+    onChange();
+  });
+  return { open() {
+    if (!store.owner) store.select("practice");
+    else if (store.owner !== "practice" && !store.pending) store.refresh();
+    render();
+    $3("taste-hint").textContent = "\u559C\u6B22\u548C\u6311\u98DF\u90FD\u53EA\u5F71\u54CD\u5C0F\u8868\u60C5\uFF0C\u4E0D\u6263\u5206\uFF0C\u4E5F\u4E0D\u6321\u4F60\u5403\u3002";
+    dialog.showModal();
+  }, paint: state };
+}
+
+// src/casual-v121.js
+var CASUAL_VERSION = "1.2.1";
+var MenuDeck = class {
+  constructor(rng2, theme, knownFoods = []) {
+    this.rng = rng2;
+    this.theme = theme;
+    this.known = new Set(knownFoods);
+    this.sinceSafe = 0;
+    this.sinceTea = 0;
+    this.sinceSelect = 0;
+    this.sinceTreasure = 0;
+    this.bags = /* @__PURE__ */ new Map();
+    this.lastDraw = null;
+  }
+  drawTier() {
+    if (this.sinceTreasure >= 39) return "treasure";
+    if (this.sinceSelect >= 7) return "select";
+    const p = this.rng();
+    return p < 0.72 ? "common" : p < 0.95 ? "select" : "treasure";
+  }
+  next() {
+    if (this.sinceTea >= 7) {
+      this.sinceTea = 0;
+      this.lastDraw = { kind: "tea" };
+      return "tea";
+    }
+    const tier = this.drawTier(), safe = this.sinceSafe >= 2;
+    const positive = this.theme.foods.filter((k) => CATALOG2[k].fullness > 0), feature = this.theme.featured || [], scope = feature.length && this.rng() < 0.35 ? "featured" : "permanent";
+    let candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (scope === "featured" ? feature.includes(k) : !feature.includes(k)) && (!safe || !CATALOG2[k].allergen));
+    if (!candidates.length) candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (!safe || !CATALOG2[k].allergen));
+    if (!candidates.length) candidates = positive.filter((k) => !safe || !CATALOG2[k].allergen);
+    const bagKey = tier + ":" + scope + ":" + safe;
+    let bag = this.bags.get(bagKey);
+    if (!bag?.length) {
+      bag = [...candidates];
+      for (let i = bag.length - 1; i > 0; i--) {
+        const j = Math.floor(this.rng() * (i + 1));
+        [bag[i], bag[j]] = [bag[j], bag[i]];
+      }
+      bag.sort((a, b) => Number(!this.known.has(a)) - Number(!this.known.has(b)));
+      this.bags.set(bagKey, bag);
+    }
+    const key = bag.pop(), actual = rarityOf(CATALOG2[key]);
+    this.sinceTea++;
+    this.sinceSafe = CATALOG2[key].allergen ? this.sinceSafe + 1 : 0;
+    this.sinceTreasure = actual === "treasure" ? 0 : this.sinceTreasure + 1;
+    this.sinceSelect = actual !== "common" ? 0 : this.sinceSelect + 1;
+    this.lastDraw = { kind: "food", tier: actual, requestedTier: tier, safe, scope };
+    return key;
+  }
+};
+var CasualGame = class extends Game {
+  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION2 } = {}) {
+    super({ seed, characterId });
+    if (menuEdition !== MENU_EDITION2) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
+    this.rulesVersion = CASUAL_VERSION;
+    this.menuEdition = menuEdition;
+    this.theme = themeById2(themeId);
+    this.deck = new MenuDeck(seededRandom(this.seed), this.theme, knownFoods);
+    this.knownFoods = new Set(knownFoods);
+    this.discoveries = /* @__PURE__ */ new Set();
+    this.lastActivity = 0;
+    this.autoRest = false;
+    this.checkoutRequested = false;
+  }
+  start() {
+    if (this.phase !== "card") return false;
+    this.phase = "playing";
+    const safe = this.theme.foods.find((k) => CATALOG2[k].fullness > 0 && !CATALOG2[k].allergen);
+    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
+    this.nextSpawn = 2;
+    return true;
+  }
+  tick(dt) {
+    this.time += dt;
+    if (this.time - this.lastActivity >= 20) {
+      this.autoRest = true;
+      this.phase = "paused";
+      return;
+    }
+    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
+    const unsafe = this.fullness < 15 || this.fullness > 100;
+    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
+    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
+    this.beltTravel += 0.035 * dt;
+    for (const f of this.foods) {
+      f.p = (f.p + 0.035 * dt) % 1;
+      f.distance += 0.035 * dt;
+    }
+    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
+    this.nextSpawn -= dt;
+    if (this.nextSpawn <= 0) {
+      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
+        this.addFood(this.deck.next());
+        this.nextSpawn = 2;
+      } else this.nextSpawn = 0;
+    }
+    this.refreshScore();
+  }
+  resume() {
+    if (!super.resume()) return false;
+    this.lastActivity = this.time;
+    this.autoRest = false;
+    return true;
+  }
+  eat(id) {
+    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
+    const index = this.foods.findIndex((f) => f.id === id);
+    if (index < 0) return null;
+    const item = this.foods[index], food = CATALOG2[item.key];
+    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
+    this.foods.splice(index, 1);
+    this.lastBite = this.time;
+    this.lastActivity = this.time;
+    this.eaten++;
+    if (food.collectible) this.sushiEaten++;
+    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
+    this.fullness = clamp(this.fullness + change, 0, 120);
+    const allergy = food.allergen === this.character.allergy;
+    let text2, type, newDiscovery = false;
+    if (allergy) {
+      const shielded = this.shield > 0;
+      if (shielded) this.shield--;
+      else this.hp = Math.max(1, this.hp - 4);
+      this.allergies++;
+      this.combo = 0;
+      type = "allergy";
+      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
+    } else if (food.collectible) {
+      const comfy = this.fullness >= 25 && this.fullness <= 85;
+      this.combo = comfy ? this.combo + 1 : 0;
+      this.bestCombo = Math.max(this.bestCombo, this.combo);
+      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
+      if (comfy) {
+        this.perfects++;
+        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
+      }
+      type = comfy ? "perfect" : "eat";
+      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
+      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
+      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
+      this.lastFood = item.key;
+    } else {
+      type = "tea";
+      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
+    }
+    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
+      this.discoveries.add(item.key);
+      this.bonusScore += 25;
+      newDiscovery = true;
+      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
+    }
+    this.refreshScore();
+    const event = { type, text: text2, item, change, newDiscovery };
+    this.events.push(event);
+    if (this.events.length > 32) this.events.shift();
+    return event;
+  }
+  checkout() {
+    if (!["playing", "paused"].includes(this.phase)) return false;
+    this.checkoutRequested = true;
+    this.phase = "gameover";
+    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
+    return true;
+  }
+  snapshot() {
+    return { ...super.snapshot(), version: CASUAL_VERSION, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest };
+  }
+};
+
+// src/casual-v14.js
+var CASUAL_VERSION2 = "1.4.0";
+var FriendsDeck = class {
+  constructor(rng2, theme, friendProfile) {
+    this.rng = rng2;
+    this.theme = theme;
+    this.friend = friendProfile;
+    this.sinceOwn = 0;
+    this.sinceTea = 0;
+    this.lastKey = null;
+    this.sameCount = 0;
+    this.lastDraw = null;
+  }
+  next() {
+    if (this.sinceTea >= 7) {
+      this.sinceTea = 0;
+      this.lastDraw = { kind: "tea" };
+      return "tea";
+    }
+    const own = this.friend?.foodId, forced = own && this.sinceOwn >= (this.friend.pity || 8) - 1;
+    let pool = this.theme.collectionFoods.filter((k) => this.sameCount < 2 || k !== this.lastKey), key;
+    if (forced) key = own;
+    else {
+      const weights = pool.map((k) => k === own ? this.friend.weight || 3 : 1), total = weights.reduce((a, b) => a + b, 0);
+      let n = this.rng() * total;
+      key = pool.at(-1);
+      for (let i = 0; i < pool.length; i++) {
+        n -= weights[i];
+        if (n < 0) {
+          key = pool[i];
+          break;
+        }
+      }
+    }
+    this.sinceOwn = key === own ? 0 : this.sinceOwn + 1;
+    this.sinceTea++;
+    this.sameCount = key === this.lastKey ? this.sameCount + 1 : 1;
+    this.lastKey = key;
+    this.lastDraw = { kind: "food", forced, own: key === own };
+    return key;
+  }
+};
+var CasualGame2 = class extends Game {
+  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION3, friendProfile = null } = {}) {
+    super({ seed, characterId });
+    if (menuEdition !== MENU_EDITION3) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
+    this.rulesVersion = CASUAL_VERSION2;
+    this.menuEdition = menuEdition;
+    this.theme = themeById3(themeId);
+    this.friendProfile = friendProfile;
+    this.deck = this.theme.id === "friends-special" ? new FriendsDeck(seededRandom(this.seed), this.theme, friendProfile) : new MenuDeck(seededRandom(this.seed), this.theme, knownFoods);
+    this.knownFoods = new Set(knownFoods);
+    this.discoveries = /* @__PURE__ */ new Set();
+    this.lastActivity = 0;
+    this.autoRest = false;
+    this.checkoutRequested = false;
+  }
+  start() {
+    if (this.phase !== "card") return false;
+    this.phase = "playing";
+    const safe = this.theme.id === "friends-special" ? this.deck.next() : this.theme.foods.find((k) => CATALOG3[k].fullness > 0 && !CATALOG3[k].allergen);
+    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
+    this.nextSpawn = 2;
+    return true;
+  }
+  tick(dt) {
+    this.time += dt;
+    if (this.time - this.lastActivity >= 20 - 1e-8) {
+      this.autoRest = true;
+      this.phase = "paused";
+      return;
+    }
+    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
+    const unsafe = this.fullness < 15 || this.fullness > 100;
+    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
+    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
+    this.beltTravel += 0.035 * dt;
+    for (const f of this.foods) {
+      f.p = (f.p + 0.035 * dt) % 1;
+      f.distance += 0.035 * dt;
+    }
+    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
+    this.nextSpawn -= dt;
+    if (this.nextSpawn <= 0) {
+      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
+        this.addFood(this.deck.next());
+        this.nextSpawn = 2;
+      } else this.nextSpawn = 0;
+    }
+    this.refreshScore();
+  }
+  rest() {
+    if (this.phase === "playing") this.pause();
+    if (this.phase === "paused") {
+      this.autoRest = true;
+      return true;
+    }
+    return false;
+  }
+  resume() {
+    if (!super.resume()) return false;
+    this.lastActivity = this.time;
+    this.autoRest = false;
+    return true;
+  }
+  eat(id) {
+    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
+    const index = this.foods.findIndex((f) => f.id === id);
+    if (index < 0) return null;
+    const item = this.foods[index], food = CATALOG3[item.key];
+    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
+    this.foods.splice(index, 1);
+    this.lastBite = this.time;
+    this.lastActivity = this.time;
+    this.eaten++;
+    if (food.collectible) this.sushiEaten++;
+    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
+    this.fullness = clamp(this.fullness + change, 0, 120);
+    const allergy = food.allergen === this.character.allergy;
+    let text2, type, newDiscovery = false;
+    if (allergy) {
+      const shielded = this.shield > 0;
+      if (shielded) this.shield--;
+      else this.hp = Math.max(1, this.hp - 4);
+      this.allergies++;
+      this.combo = 0;
+      type = "allergy";
+      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
+    } else if (food.collectible) {
+      const comfy = this.fullness >= 25 && this.fullness <= 85;
+      this.combo = comfy ? this.combo + 1 : 0;
+      this.bestCombo = Math.max(this.bestCombo, this.combo);
+      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
+      if (comfy) {
+        this.perfects++;
+        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
+      }
+      type = comfy ? "perfect" : "eat";
+      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
+      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
+      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
+      this.lastFood = item.key;
+    } else {
+      type = "tea";
+      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
+    }
+    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
+      this.discoveries.add(item.key);
+      this.bonusScore += 25;
+      newDiscovery = true;
+      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
+    }
+    this.refreshScore();
+    const event = { type, text: text2, item, change, newDiscovery };
+    this.events.push(event);
+    if (this.events.length > 32) this.events.shift();
+    return event;
+  }
+  checkout() {
+    if (!["playing", "paused"].includes(this.phase)) return false;
+    this.checkoutRequested = true;
+    this.phase = "gameover";
+    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
+    return true;
+  }
+  snapshot() {
+    return { ...super.snapshot(), version: CASUAL_VERSION2, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest, friendProfile: this.friendProfile };
+  }
+};
+
+// src/casual-v141.js
+var TASTE_MARKER = -1;
+function enableTaste(game2) {
+  if (game2.tasteMode) return game2;
+  const original = game2.eat;
+  game2.eat = function(id) {
+    const allergy = this.character.allergy;
+    this.character = { ...this.character, allergy: /* @__PURE__ */ Symbol("no-random-taboo") };
+    try {
+      return original.call(this, id);
+    } finally {
+      this.character = { ...this.character, allergy };
+    }
+  };
+  game2.tasteMode = true;
+  return game2;
+}
+var CasualGame3 = class extends CasualGame2 {
+  constructor(options) {
+    super(options);
+    this.rulesVersion = "1.4.1";
+    enableTaste(this);
+  }
+  snapshot() {
+    return { ...super.snapshot(), version: this.rulesVersion, tasteMode: true };
+  }
+};
+
+// src/run-lease.js
+var RunLease = class {
+  constructor({ locks = globalThis.navigator?.locks, storage, owner = globalThis.crypto.randomUUID(), now = Date.now } = {}) {
+    this.locks = locks;
+    this.owner = owner;
+    this.now = now;
+    try {
+      this.storage = storage || globalThis.localStorage;
+    } catch {
+    }
+    this.id = null;
+  }
+  async acquire(id) {
+    if (this.id === id && this.valid()) return true;
+    this.release();
+    if (!id) return true;
+    if (this.locks) return new Promise((resolve) => {
+      this.locks.request("sushi.active." + id, { ifAvailable: true }, async (lock) => {
+        if (!lock) {
+          resolve(false);
+          return;
+        }
+        this.id = id;
+        resolve(true);
+        await new Promise((done) => this.releaseLock = done);
+      }).catch(() => resolve(false));
+    });
+    try {
+      const key = "sushi.lease." + id, old = JSON.parse(this.storage.getItem(key) || "null");
+      if (old && old.owner !== this.owner && old.until > this.now()) return false;
+      this.id = id;
+      this.renew();
+      this.timer = setInterval(() => this.renew(), 3e4);
+      return true;
+    } catch {
+      this.id = null;
+      return false;
+    }
+  }
+  renew() {
+    if (!this.id) return;
+    try {
+      const current = JSON.parse(this.storage.getItem("sushi.lease." + this.id) || "null");
+      if (current && current.owner !== this.owner && current.until > this.now()) {
+        clearInterval(this.timer);
+        return;
+      }
+      this.storage.setItem("sushi.lease." + this.id, JSON.stringify({ owner: this.owner, until: this.now() + 9e4 }));
+    } catch {
+    }
+  }
+  valid() {
+    if (!this.id) return false;
+    if (this.locks) return true;
+    try {
+      return JSON.parse(this.storage.getItem("sushi.lease." + this.id))?.owner === this.owner;
+    } catch {
+      return false;
+    }
+  }
+  release() {
+    clearInterval(this.timer);
+    if (this.releaseLock) {
+      this.releaseLock();
+      this.releaseLock = null;
+    } else if (this.id) try {
+      if (this.valid()) this.storage.removeItem("sushi.lease." + this.id);
+    } catch {
+    }
+    this.id = null;
+  }
+};
+
+// src/audio-manager.js
+var AUDIO_KEY = "sushi-panic.audio.v1";
+var AUDIO_DEFAULTS = Object.freeze({ music: true, effects: false, muted: false, musicVolume: 0.25, effectsVolume: 0.36 });
+function audioPreferences(value) {
+  const out = { ...AUDIO_DEFAULTS };
+  for (const k of ["music", "effects", "muted"]) if (typeof value?.[k] === "boolean") out[k] = value[k];
+  for (const k of ["musicVolume", "effectsVolume"]) if (typeof value?.[k] === "number" && Number.isFinite(value[k])) out[k] = Math.max(0, Math.min(0.6, value[k]));
+  return out;
+}
+function foodSound(food = {}) {
+  const text2 = [food.id, food.name, food.categoryId, food.topping, food.visualKey].join(" ");
+  if (food.id === "tea" || food.fullness < 0) return "tea";
+  if (/sweet|pudding|dessert|布丁|蛋糕|冰淇淋|甜品|大福/.test(text2)) return "dessert";
+  if (/tempura|fried|karaage|天妇罗|炸|可乐饼/.test(text2)) return "fried";
+  if (/sear|aburi|caramel|炙|焦糖|蒲烧|烤/.test(text2)) return "seared";
+  if (/vegetable|veggie|cucumber|avocado|黄瓜|牛油果|蔬|笋|秋葵|玉米|纳豆/.test(text2)) return "vegetable";
+  if (/tamago|egg|玉子|蛋|豆腐/.test(text2)) return "soft";
+  return "normal";
+}
+var AudioManager = class {
+  constructor({ storage, contextFactory = () => new (globalThis.AudioContext || globalThis.webkitAudioContext)(), loader = () => Promise.resolve().then(() => (init_audio_score(), audio_score_exports)), onChange = () => {
+  }, now = () => performance.now(), random = Math.random } = {}) {
+    if (storage === void 0) try {
+      storage = globalThis.localStorage;
+    } catch {
+    }
+    this.storage = storage;
+    this.contextFactory = contextFactory;
+    this.loader = loader;
+    this.onChange = onChange;
+    this.now = now;
+    this.random = random;
+    let saved;
+    try {
+      saved = JSON.parse(storage?.getItem(AUDIO_KEY));
+    } catch {
+    }
+    this.settings = audioPreferences(saved);
+    this.unlocked = false;
+    this.visible = true;
+    this.ducked = false;
+    this.voices = /* @__PURE__ */ new Set();
+    this.buffers = /* @__PURE__ */ new Map();
+    this.recent = /* @__PURE__ */ new Map();
+    this.pending = 0;
+    this.epoch = 0;
+    this.status = "idle";
+  }
+  get audible() {
+    return !this.settings.muted && (this.settings.music || this.settings.effects);
+  }
+  snapshot() {
+    return { settings: { ...this.settings }, unlocked: this.unlocked, contextState: this.context?.state || "absent", voices: this.voices.size, pending: this.pending, bgm: !!this.bgm, ducked: this.ducked, visible: this.visible, status: this.status, cachedEffects: this.buffers.size };
+  }
+  notify() {
+    this.onChange(this.snapshot());
+  }
+  configure(patch) {
+    this.settings = audioPreferences({ ...this.settings, ...patch });
+    try {
+      this.storage?.setItem(AUDIO_KEY, JSON.stringify(this.settings));
+    } catch {
+    }
+    this.epoch++;
+    if (this.settings.muted || !this.settings.effects) this.stopEffects();
+    this.sync();
+    this.notify();
+  }
+  // Call from a real pointer/key event. Restored preferences never imply autoplay.
+  unlock() {
+    this.unlocked = true;
+    this.sync();
+  }
+  ensureContext() {
+    if (this.context) return this.context;
+    const c = this.contextFactory();
+    this.context = c;
+    this.musicGain = c.createGain();
+    this.musicGain.gain.value = 0;
+    this.effectGain = c.createGain();
+    this.effectGain.gain.value = this.settings.effectsVolume;
+    const limiter = c.createDynamicsCompressor();
+    limiter.threshold.value = -18;
+    limiter.knee.value = 16;
+    limiter.ratio.value = 3;
+    limiter.attack.value = 0.01;
+    limiter.release.value = 0.18;
+    this.musicGain.connect(limiter);
+    this.effectGain.connect(limiter);
+    limiter.connect(c.destination);
+    return c;
+  }
+  sync() {
+    clearTimeout(this.backgroundTimer);
+    if (!this.unlocked || !this.audible || !this.visible) {
+      this.fadeMusic(false);
+      return;
+    }
+    try {
+      const c = this.ensureContext();
+      c.resume().catch(() => {
+        this.status = "error";
+        this.notify();
+      });
+      this.effectGain.gain.setTargetAtTime(this.settings.effectsVolume, c.currentTime, 0.025);
+      if (this.settings.music) this.startMusic();
+      else this.fadeMusic(false);
+    } catch {
+      this.status = "error";
+      this.notify();
+    }
+  }
+  async score() {
+    if (!this.scorePromise) this.scorePromise = this.loader().catch((e) => {
+      this.scorePromise = null;
+      throw e;
+    });
+    return this.scorePromise;
+  }
+  async startMusic() {
+    if (this.bgm) {
+      this.fadeMusic(true);
+      return;
+    }
+    if (this.musicLoading) return;
+    this.musicLoading = true;
+    this.status = "loading";
+    this.notify();
+    try {
+      const score = await this.score();
+      this.musicBuffer ?? (this.musicBuffer = await score.renderCafeLoop());
+      if (this.settings.music && this.audible && this.visible && this.unlocked) {
+        const source = this.context.createBufferSource();
+        source.buffer = this.musicBuffer;
+        source.loop = true;
+        source.connect(this.musicGain);
+        this.bgm = source;
+        source.onended = () => {
+          source.disconnect();
+          if (this.bgm === source) this.bgm = null;
+        };
+        this.musicGain.gain.cancelScheduledValues(this.context.currentTime);
+        this.musicGain.gain.setValueAtTime(0, this.context.currentTime);
+        source.start();
+        this.fadeMusic(true);
+      }
+      this.status = "ready";
+    } catch {
+      this.status = "error";
+    } finally {
+      this.musicLoading = false;
+      this.notify();
+    }
+  }
+  fadeMusic(on) {
+    if (!this.context || !this.musicGain) return;
+    const at = this.context.currentTime, g = this.musicGain.gain;
+    g.cancelScheduledValues(at);
+    g.setTargetAtTime(on ? this.settings.musicVolume * (this.ducked ? 0.38 : 1) : 0, at, on ? 0.18 : 0.035);
+    if (!on && this.bgm) {
+      const source = this.bgm;
+      this.bgm = null;
+      try {
+        source.stop(at + 0.17);
+      } catch {
+      }
+    }
+  }
+  setAlbum(open) {
+    this.ducked = open;
+    if (this.bgm) this.fadeMusic(true);
+    this.notify();
+  }
+  setVisible(visible) {
+    this.visible = visible;
+    this.epoch++;
+    if (!visible) {
+      this.stopEffects();
+      this.fadeMusic(false);
+      clearTimeout(this.backgroundTimer);
+      this.backgroundTimer = setTimeout(() => this.context?.suspend().catch(() => {
+      }), 190);
+    } else this.sync();
+    this.notify();
+  }
+  stopEffects() {
+    for (const voice of this.voices) {
+      try {
+        voice.stop();
+        voice.disconnect();
+      } catch {
+      }
+    }
+    this.voices.clear();
+  }
+  async play(kind, { gap = 110, level = 1 } = {}) {
+    if (!this.unlocked || !this.visible || !this.audible || !this.settings.effects || !this.context || this.pending >= 4) return false;
+    const at = this.now(), previous = this.recent.get(kind) ?? -Infinity;
+    if (at - previous < gap) return false;
+    this.recent.set(kind, at);
+    const epoch = this.epoch;
+    this.pending++;
+    try {
+      const score = await this.score();
+      if (epoch !== this.epoch || !this.visible || !this.audible || !this.settings.effects) return false;
+      if (!this.buffers.has(kind)) this.buffers.set(kind, score.effectBuffer(this.context, kind));
+      if (this.voices.size >= 4) return false;
+      const voice = this.context.createBufferSource(), gain = this.context.createGain();
+      voice.buffer = this.buffers.get(kind);
+      voice.playbackRate.value = 0.97 + this.random() * 0.06;
+      gain.gain.value = level;
+      voice.connect(gain);
+      gain.connect(this.effectGain);
+      this.voices.add(voice);
+      voice.onended = () => {
+        this.voices.delete(voice);
+        voice.disconnect();
+        gain.disconnect();
+      };
+      voice.start();
+      return true;
+    } catch {
+      this.status = "error";
+      this.notify();
+      return false;
+    } finally {
+      this.pending--;
+    }
+  }
+  eat(food) {
+    return this.play(foodSound(food), { gap: 90 });
+  }
+  paper(action) {
+    return this.play("paper-" + action, { gap: 240, level: 0.65 });
+  }
+  confirm() {
+    return this.play("confirm", { gap: 180, level: 0.65 });
+  }
+  discovery(kind = "common") {
+    const epoch = this.epoch;
+    this.play("discovery-" + kind, { gap: 1e3, level: 0.9 });
+    if (this.unlocked && this.settings.effects && this.audible && this.visible) setTimeout(() => {
+      if (epoch === this.epoch) this.play("stamp", { gap: 500, level: 0.7 });
+    }, 230);
+  }
+};
+
 // src/renderer-v12.js
 var isAllergic2 = (character, key) => CATALOG2[key]?.allergen === character.allergy;
 var INK = "#293f40";
@@ -5543,357 +7829,6 @@ function drawCatalogDish(c, s, x, y, scale) {
   c.restore();
 }
 
-// src/menus-v14.js
-var MENU_EDITION3 = "2026-10-friends1";
-var CATALOG3 = Object.freeze({ ...CATALOG2, ...FRIEND_FOODS });
-var FRIEND_THEME = Object.freeze({ id: "friends-special", name: "UU\u548C\u5979\u7684\u670B\u53CB\u4EEC", description: "\u4E03\u4F4D\u670B\u53CB\uFF0C\u4E03\u4EFD\u5FC3\u5934\u597D\u3002\u6BCF\u4E2A\u4EBA\u90FD\u80FD\u54C1\u5C1D\u3001\u6536\u85CF\uFF0C\u60F3\u5FF5\u65F6\u968F\u65F6\u56DE\u6765\u3002", permanent: true, opensAt: null, closesAt: null, color: "#86bba1", foods: [...Object.keys(FRIEND_FOODS), "tea"], collectionFoods: Object.keys(FRIEND_FOODS), featured: Object.keys(FRIEND_FOODS) });
-var THEMES3 = Object.freeze([FRIEND_THEME, ...THEMES2]);
-function themeById3(id) {
-  const t = THEMES3.find((t2) => t2.id === id);
-  if (!t) throw new Error("\u672A\u77E5\u4E3B\u9898\u83DC\u5355");
-  return t;
-}
-
-// src/casual-v121.js
-var CASUAL_VERSION = "1.2.1";
-var MenuDeck = class {
-  constructor(rng2, theme, knownFoods = []) {
-    this.rng = rng2;
-    this.theme = theme;
-    this.known = new Set(knownFoods);
-    this.sinceSafe = 0;
-    this.sinceTea = 0;
-    this.sinceSelect = 0;
-    this.sinceTreasure = 0;
-    this.bags = /* @__PURE__ */ new Map();
-    this.lastDraw = null;
-  }
-  drawTier() {
-    if (this.sinceTreasure >= 39) return "treasure";
-    if (this.sinceSelect >= 7) return "select";
-    const p = this.rng();
-    return p < 0.72 ? "common" : p < 0.95 ? "select" : "treasure";
-  }
-  next() {
-    if (this.sinceTea >= 7) {
-      this.sinceTea = 0;
-      this.lastDraw = { kind: "tea" };
-      return "tea";
-    }
-    const tier = this.drawTier(), safe = this.sinceSafe >= 2;
-    const positive = this.theme.foods.filter((k) => CATALOG2[k].fullness > 0), feature = this.theme.featured || [], scope = feature.length && this.rng() < 0.35 ? "featured" : "permanent";
-    let candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (scope === "featured" ? feature.includes(k) : !feature.includes(k)) && (!safe || !CATALOG2[k].allergen));
-    if (!candidates.length) candidates = positive.filter((k) => rarityOf(CATALOG2[k]) === tier && (!safe || !CATALOG2[k].allergen));
-    if (!candidates.length) candidates = positive.filter((k) => !safe || !CATALOG2[k].allergen);
-    const bagKey = tier + ":" + scope + ":" + safe;
-    let bag = this.bags.get(bagKey);
-    if (!bag?.length) {
-      bag = [...candidates];
-      for (let i = bag.length - 1; i > 0; i--) {
-        const j = Math.floor(this.rng() * (i + 1));
-        [bag[i], bag[j]] = [bag[j], bag[i]];
-      }
-      bag.sort((a, b) => Number(!this.known.has(a)) - Number(!this.known.has(b)));
-      this.bags.set(bagKey, bag);
-    }
-    const key = bag.pop(), actual = rarityOf(CATALOG2[key]);
-    this.sinceTea++;
-    this.sinceSafe = CATALOG2[key].allergen ? this.sinceSafe + 1 : 0;
-    this.sinceTreasure = actual === "treasure" ? 0 : this.sinceTreasure + 1;
-    this.sinceSelect = actual !== "common" ? 0 : this.sinceSelect + 1;
-    this.lastDraw = { kind: "food", tier: actual, requestedTier: tier, safe, scope };
-    return key;
-  }
-};
-var CasualGame = class extends Game {
-  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION2 } = {}) {
-    super({ seed, characterId });
-    if (menuEdition !== MENU_EDITION2) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
-    this.rulesVersion = CASUAL_VERSION;
-    this.menuEdition = menuEdition;
-    this.theme = themeById2(themeId);
-    this.deck = new MenuDeck(seededRandom(this.seed), this.theme, knownFoods);
-    this.knownFoods = new Set(knownFoods);
-    this.discoveries = /* @__PURE__ */ new Set();
-    this.lastActivity = 0;
-    this.autoRest = false;
-    this.checkoutRequested = false;
-  }
-  start() {
-    if (this.phase !== "card") return false;
-    this.phase = "playing";
-    const safe = this.theme.foods.find((k) => CATALOG2[k].fullness > 0 && !CATALOG2[k].allergen);
-    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
-    this.nextSpawn = 2;
-    return true;
-  }
-  tick(dt) {
-    this.time += dt;
-    if (this.time - this.lastActivity >= 20) {
-      this.autoRest = true;
-      this.phase = "paused";
-      return;
-    }
-    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
-    const unsafe = this.fullness < 15 || this.fullness > 100;
-    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
-    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
-    this.beltTravel += 0.035 * dt;
-    for (const f of this.foods) {
-      f.p = (f.p + 0.035 * dt) % 1;
-      f.distance += 0.035 * dt;
-    }
-    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
-    this.nextSpawn -= dt;
-    if (this.nextSpawn <= 0) {
-      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
-        this.addFood(this.deck.next());
-        this.nextSpawn = 2;
-      } else this.nextSpawn = 0;
-    }
-    this.refreshScore();
-  }
-  resume() {
-    if (!super.resume()) return false;
-    this.lastActivity = this.time;
-    this.autoRest = false;
-    return true;
-  }
-  eat(id) {
-    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
-    const index = this.foods.findIndex((f) => f.id === id);
-    if (index < 0) return null;
-    const item = this.foods[index], food = CATALOG2[item.key];
-    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
-    this.foods.splice(index, 1);
-    this.lastBite = this.time;
-    this.lastActivity = this.time;
-    this.eaten++;
-    if (food.collectible) this.sushiEaten++;
-    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
-    this.fullness = clamp(this.fullness + change, 0, 120);
-    const allergy = food.allergen === this.character.allergy;
-    let text2, type, newDiscovery = false;
-    if (allergy) {
-      const shielded = this.shield > 0;
-      if (shielded) this.shield--;
-      else this.hp = Math.max(1, this.hp - 4);
-      this.allergies++;
-      this.combo = 0;
-      type = "allergy";
-      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
-    } else if (food.collectible) {
-      const comfy = this.fullness >= 25 && this.fullness <= 85;
-      this.combo = comfy ? this.combo + 1 : 0;
-      this.bestCombo = Math.max(this.bestCombo, this.combo);
-      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
-      if (comfy) {
-        this.perfects++;
-        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
-      }
-      type = comfy ? "perfect" : "eat";
-      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
-      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
-      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
-      this.lastFood = item.key;
-    } else {
-      type = "tea";
-      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
-    }
-    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
-      this.discoveries.add(item.key);
-      this.bonusScore += 25;
-      newDiscovery = true;
-      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
-    }
-    this.refreshScore();
-    const event = { type, text: text2, item, change, newDiscovery };
-    this.events.push(event);
-    if (this.events.length > 32) this.events.shift();
-    return event;
-  }
-  checkout() {
-    if (!["playing", "paused"].includes(this.phase)) return false;
-    this.checkoutRequested = true;
-    this.phase = "gameover";
-    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
-    return true;
-  }
-  snapshot() {
-    return { ...super.snapshot(), version: CASUAL_VERSION, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest };
-  }
-};
-
-// src/casual-v14.js
-var CASUAL_VERSION2 = "1.4.0";
-var FriendsDeck = class {
-  constructor(rng2, theme, friendProfile) {
-    this.rng = rng2;
-    this.theme = theme;
-    this.friend = friendProfile;
-    this.sinceOwn = 0;
-    this.sinceTea = 0;
-    this.lastKey = null;
-    this.sameCount = 0;
-    this.lastDraw = null;
-  }
-  next() {
-    if (this.sinceTea >= 7) {
-      this.sinceTea = 0;
-      this.lastDraw = { kind: "tea" };
-      return "tea";
-    }
-    const own = this.friend?.foodId, forced = own && this.sinceOwn >= (this.friend.pity || 8) - 1;
-    let pool = this.theme.collectionFoods.filter((k) => this.sameCount < 2 || k !== this.lastKey), key;
-    if (forced) key = own;
-    else {
-      const weights = pool.map((k) => k === own ? this.friend.weight || 3 : 1), total = weights.reduce((a, b) => a + b, 0);
-      let n = this.rng() * total;
-      key = pool.at(-1);
-      for (let i = 0; i < pool.length; i++) {
-        n -= weights[i];
-        if (n < 0) {
-          key = pool[i];
-          break;
-        }
-      }
-    }
-    this.sinceOwn = key === own ? 0 : this.sinceOwn + 1;
-    this.sinceTea++;
-    this.sameCount = key === this.lastKey ? this.sameCount + 1 : 1;
-    this.lastKey = key;
-    this.lastDraw = { kind: "food", forced, own: key === own };
-    return key;
-  }
-};
-var CasualGame2 = class extends Game {
-  constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION3, friendProfile = null } = {}) {
-    super({ seed, characterId });
-    if (menuEdition !== MENU_EDITION3) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
-    this.rulesVersion = CASUAL_VERSION2;
-    this.menuEdition = menuEdition;
-    this.theme = themeById3(themeId);
-    this.friendProfile = friendProfile;
-    this.deck = this.theme.id === "friends-special" ? new FriendsDeck(seededRandom(this.seed), this.theme, friendProfile) : new MenuDeck(seededRandom(this.seed), this.theme, knownFoods);
-    this.knownFoods = new Set(knownFoods);
-    this.discoveries = /* @__PURE__ */ new Set();
-    this.lastActivity = 0;
-    this.autoRest = false;
-    this.checkoutRequested = false;
-  }
-  start() {
-    if (this.phase !== "card") return false;
-    this.phase = "playing";
-    const safe = this.theme.id === "friends-special" ? this.deck.next() : this.theme.foods.find((k) => CATALOG3[k].fullness > 0 && !CATALOG3[k].allergen);
-    for (const [key, p] of [[safe, 0.12], [this.deck.next(), 0.34], ["tea", 0.56], [this.deck.next(), 0.78]]) this.addFood(key, p);
-    this.nextSpawn = 2;
-    return true;
-  }
-  tick(dt) {
-    this.time += dt;
-    if (this.time - this.lastActivity >= 20 - 1e-8) {
-      this.autoRest = true;
-      this.phase = "paused";
-      return;
-    }
-    this.fullness = clamp(this.fullness - this.character.drain * 0.18 * dt, 0, 120);
-    const unsafe = this.fullness < 15 || this.fullness > 100;
-    this.hazardTime = unsafe ? this.hazardTime + dt : 0;
-    if (this.hazardTime > 8) this.hp = Math.max(1, this.hp - 0.5 * dt);
-    this.beltTravel += 0.035 * dt;
-    for (const f of this.foods) {
-      f.p = (f.p + 0.035 * dt) % 1;
-      f.distance += 0.035 * dt;
-    }
-    this.foods = this.foods.filter((f) => f.distance < 1 && f.p < 0.98);
-    this.nextSpawn -= dt;
-    if (this.nextSpawn <= 0) {
-      if (this.foods.length < 12 && this.foods.every((f) => Math.min(f.p, 1 - f.p) >= 0.08)) {
-        this.addFood(this.deck.next());
-        this.nextSpawn = 2;
-      } else this.nextSpawn = 0;
-    }
-    this.refreshScore();
-  }
-  rest() {
-    if (this.phase === "playing") this.pause();
-    if (this.phase === "paused") {
-      this.autoRest = true;
-      return true;
-    }
-    return false;
-  }
-  resume() {
-    if (!super.resume()) return false;
-    this.lastActivity = this.time;
-    this.autoRest = false;
-    return true;
-  }
-  eat(id) {
-    if (this.phase !== "playing" || this.time - this.lastBite < 0.7) return null;
-    const index = this.foods.findIndex((f) => f.id === id);
-    if (index < 0) return null;
-    const item = this.foods[index], food = CATALOG3[item.key];
-    if (food.fullness > 0 && this.fullness > 100 || food.fullness < 0 && this.fullness <= 65) return null;
-    this.foods.splice(index, 1);
-    this.lastBite = this.time;
-    this.lastActivity = this.time;
-    this.eaten++;
-    if (food.collectible) this.sushiEaten++;
-    const change = food.fullness > 0 ? food.fullness * this.character.portion * 0.65 : -Math.min(18, this.fullness - 55);
-    this.fullness = clamp(this.fullness + change, 0, 120);
-    const allergy = food.allergen === this.character.allergy;
-    let text2, type, newDiscovery = false;
-    if (allergy) {
-      const shielded = this.shield > 0;
-      if (shielded) this.shield--;
-      else this.hp = Math.max(1, this.hp - 4);
-      this.allergies++;
-      this.combo = 0;
-      type = "allergy";
-      text2 = shielded ? "\u62A4\u8EAB\u7B26\u63A5\u4F4F\u4E86\u8FD9\u6B21\u5FCC\u53E3" : "\u6709\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5427 \xB7 \u7CBE\u795E \u22124";
-    } else if (food.collectible) {
-      const comfy = this.fullness >= 25 && this.fullness <= 85;
-      this.combo = comfy ? this.combo + 1 : 0;
-      this.bestCombo = Math.max(this.bestCombo, this.combo);
-      this.foodScore += Math.round(food.points * 0.5 * (this.character.id === "taro" ? 1.15 : 1));
-      if (comfy) {
-        this.perfects++;
-        this.bonusScore += 10 + Math.min(this.combo, 5) * 2;
-      }
-      type = comfy ? "perfect" : "eat";
-      text2 = comfy ? "\u4E00\u53E3\u521A\u521A\u597D" : "\u6162\u6162\u6D88\u5316\uFF0C\u5148\u62BF\u53E3\u8336";
-      if (this.character.id === "momo" && this.lastFood !== item.key) this.hp = Math.min(this.character.hp, this.hp + 1);
-      if (this.character.id === "nori" && food.visualKey === "cucumber") this.hp = Math.min(this.character.hp, this.hp + 3);
-      this.lastFood = item.key;
-    } else {
-      type = "tea";
-      text2 = "\u62BF\u4E00\u53E3\u8336\uFF0C\u8212\u670D\u591A\u4E86";
-    }
-    if (food.collectible && !this.knownFoods.has(item.key) && !this.discoveries.has(item.key)) {
-      this.discoveries.add(item.key);
-      this.bonusScore += 25;
-      newDiscovery = true;
-      text2 = "\u65B0\u53D1\u73B0\uFF01" + food.name + " \xB7 \u7ED3\u8D26\u540E\u4FDD\u5B58\u56FE\u9274";
-    }
-    this.refreshScore();
-    const event = { type, text: text2, item, change, newDiscovery };
-    this.events.push(event);
-    if (this.events.length > 32) this.events.shift();
-    return event;
-  }
-  checkout() {
-    if (!["playing", "paused"].includes(this.phase)) return false;
-    this.checkoutRequested = true;
-    this.phase = "gameover";
-    this.deathReason = "\u5403\u5F97\u521A\u521A\u597D\uFF0C\u4E0B\u6B21\u518D\u6765\u3002";
-    return true;
-  }
-  snapshot() {
-    return { ...super.snapshot(), version: CASUAL_VERSION2, themeId: this.theme.id, menuEdition: this.menuEdition, autoRest: this.autoRest, friendProfile: this.friendProfile };
-  }
-};
-
 // src/casual-v12.js
 var CASUAL_VERSION3 = "1.2.0";
 var MenuDeck2 = class {
@@ -5925,7 +7860,7 @@ var MenuDeck2 = class {
     return key;
   }
 };
-var CasualGame3 = class extends Game {
+var CasualGame4 = class extends Game {
   constructor({ seed, characterId, themeId = "classic", knownFoods = [], menuEdition = MENU_EDITION } = {}) {
     super({ seed, characterId });
     if (menuEdition !== MENU_EDITION) throw new Error("\u83DC\u5355\u7248\u672C\u4E0D\u5339\u914D\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
@@ -6045,9 +7980,43 @@ var CasualGame3 = class extends Game {
 };
 
 // src/casual-engine.js
-var isCasualVersion = (v) => ["1.2.0", "1.2.1", "1.4.0"].includes(v);
+var isCasualVersion = (v) => ["1.2.0", "1.2.1", "1.4.0", "1.4.1"].includes(v);
 function createCasual(options = {}) {
-  return new (options.rulesVersion === "1.4.0" ? CasualGame2 : options.rulesVersion === "1.2.0" ? CasualGame3 : CasualGame)(options);
+  return new (options.rulesVersion === "1.4.1" ? CasualGame3 : options.rulesVersion === "1.4.0" ? CasualGame2 : options.rulesVersion === "1.2.0" ? CasualGame4 : CasualGame)(options);
+}
+function reconstructCasual(version, seed, ticks, actions, options = {}) {
+  if (!isCasualVersion(version) || !Number.isSafeInteger(ticks) || ticks < 0 || ticks > 6 * 3600 * 60 || !Array.isArray(actions) || actions.length > 25e3) throw new Error("invalid_checkout");
+  let prev = -1, markers = 0;
+  for (const a of actions) {
+    if (!Array.isArray(a) || a.length !== 2 || !Number.isSafeInteger(a[0]) || a[0] < prev || a[0] > ticks || !Number.isSafeInteger(a[1]) || a[1] < -1) throw new Error("invalid_action");
+    prev = a[0];
+    if (a[1] === TASTE_MARKER && ++markers > 1) throw new Error("duplicate_taste_transition");
+  }
+  const game2 = createCasual({ ...options, rulesVersion: version, seed });
+  game2.start();
+  let i = 0;
+  const foodCounts = {};
+  for (let tick = 0; tick <= ticks; tick++) {
+    while (i < actions.length && actions[i][0] === tick) {
+      const id = actions[i++][1];
+      if (id === TASTE_MARKER) {
+        if (version === "1.4.1" || !["playing", "paused"].includes(game2.phase)) throw new Error("invalid_taste_transition");
+        enableTaste(game2);
+      } else if (id === 0) {
+        if (game2.phase === "paused") game2.resume();
+        else if (game2.phase === "playing") game2.lastActivity = game2.time;
+        else throw new Error("invalid_resume");
+      } else {
+        const e = game2.eat(id);
+        if (!e) throw new Error("invalid_bite");
+        if (CATALOG3[e.item.key].collectible) foodCounts[e.item.key] = (foodCounts[e.item.key] || 0) + 1;
+      }
+    }
+    if (tick === ticks) break;
+    if (game2.phase !== "playing") throw new Error("rest_ticks");
+    game2.step(STEP);
+  }
+  return { game: game2, foodCounts };
 }
 
 // src/cozy-scene.js
@@ -6349,7 +8318,7 @@ var Renderer2 = class extends Renderer {
     }
     this.targets = [];
     game2.foods.forEach((food, index) => {
-      const spec = CATALOG3[food.key], point = g.point(food.p + (game2.restTravel || 0)), allergic = spec.allergen === game2.character.allergy;
+      const spec = CATALOG3[food.key], point = g.point(food.p + (game2.restTravel || 0)), allergic = !game2.tasteMode && spec.allergen === game2.character.allergy, taste2 = game2.tasteMode ? tasteOf(food.key, this.getTaste?.()) : "neutral";
       let button = this.nodes.get(food.id);
       if (!button) {
         button = document.createElement("button");
@@ -6371,13 +8340,16 @@ var Renderer2 = class extends Renderer {
       button.querySelector(".dish-number").textContent = number ?? "";
       button.querySelector(".dish-number").hidden = !number;
       button.querySelector(".dish-name").textContent = spec.name;
-      button.querySelector(".allergen").hidden = !allergic;
+      const badge = button.querySelector(".allergen");
+      badge.hidden = !allergic && taste2 === "neutral";
+      badge.textContent = allergic ? "\u5FCC" : taste2 === "favorite" ? "\u7231" : "\u6311";
+      badge.dataset.taste = taste2;
       const rarity = button.querySelector(".plate-rarity");
       rarity.textContent = grade === "treasure" ? "\u73CD" : grade === "select" ? "\u9009" : "";
       rarity.hidden = allergic || grade === "common";
       rarity.dataset.rarity = grade;
       const change = Math.round(spec.fullness * (spec.fullness > 0 ? game2.character.portion * (isCasualVersion(game2.rulesVersion) ? 0.65 : 1) : 1));
-      button.setAttribute("aria-label", `\u54C1\u5C1D${spec.name}${allergic ? "\uFF0C\u672C\u5C40\u5FCC\u53E3" : ""}\uFF0C\u9971\u8179${change > 0 ? "+" : ""}${change}${spec.collectible ? "\uFF0C" + RARITIES[grade].name : ""}`);
+      button.setAttribute("aria-label", `\u54C1\u5C1D${spec.name}${allergic ? "\uFF0C\u672C\u5C40\u5FCC\u53E3" : taste2 === "favorite" ? "\uFF0C\u6211\u7684\u5FC3\u5934\u597D" : taste2 === "dislike" ? "\uFF0C\u4E0D\u7231\u5403\u4E5F\u53EF\u4EE5\u54C1\u5C1D" : ""}\uFF0C\u9971\u8179${change > 0 ? "+" : ""}${change}${spec.collectible ? "\uFF0C" + RARITIES[grade].name : ""}`);
       button.title = button.getAttribute("aria-label");
       button.disabled = game2.phase !== "playing" && !(isCasualVersion(game2.rulesVersion) && game2.phase === "paused" && game2.autoRest);
       button.style.left = point.x + "px";
@@ -6480,76 +8452,6 @@ var Notebook = class {
 function discoveryPresentation(food, rarity) {
   const secret = food.rarity === "hidden" || ["lucky_tamago", "cat_tamago"].includes(food.id);
   return { kind: secret ? "secret" : rarity, title: secret ? "\u2728 \u79D8\u5BC6\u83DC\u5355\u53D1\u73B0\uFF01" : rarity === "treasure" ? "\u2728 \u4E00\u53E3\u73CD\u85CF\uFF0C\u9047\u89C1\u5566\uFF01" : rarity === "select" ? "\u2726 \u7CBE\u9009\u597D\u5473\uFF0C\u7B2C\u4E00\u6B21\u89C1\uFF01" : "\u2727 \u65B0\u5BFF\u53F8\u53D1\u73B0\uFF01", line: food.name.includes("\u8336") || food.categoryId === "sweet" ? "\u751C\u751C\u7684\u4E00\u53E3\uFF0C\u624B\u5E10\u4E5F\u5F00\u5FC3\u3002" : food.name.includes("\u7099") || food.name.includes("\u7126\u7CD6") ? "\u8FD9\u53E3\u9999\u5F97\u6709\u70B9\u72AF\u89C4\uFF01" : "\u53C8\u8BA4\u8BC6\u4E86\u4E00\u79CD\u65B0\u5BFF\u53F8\uFF01" };
-}
-
-// src/config.js
-var PUBLIC_CONFIG = Object.freeze({
-  "supabaseUrl": "https://hyqgkenarjgxdbqiwpxl.supabase.co",
-  "publishableKey": "sb_publishable_DfZrP9IEZ00WH08M32_sUA_KGIeXvXN",
-  "edgeFunction": "sushi-api",
-  "emailEnabled": true
-});
-
-// src/identity.js
-var clientPromise;
-async function authClient() {
-  if (typeof location !== "undefined" && new URLSearchParams(location.hash.slice(1)).has("access_token")) {
-    history.replaceState(null, "", location.pathname + location.search);
-    document.documentElement.dataset.emailLinkIgnored = "true";
-  }
-  if (!PUBLIC_CONFIG.supabaseUrl || !PUBLIC_CONFIG.publishableKey) throw new Error("\u5728\u7EBF\u8EAB\u4EFD\u670D\u52A1\u5C1A\u672A\u914D\u7F6E\uFF0C\u53EF\u5148\u8FDB\u884C\u7EC3\u4E60");
-  clientPromise ?? (clientPromise = import(new URL((PUBLIC_CONFIG.assetBase || "./") + "vendor/supabase.js", document.baseURI).href).then(({ createClient }) => createClient(PUBLIC_CONFIG.supabaseUrl, PUBLIC_CONFIG.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, flowType: "implicit" } })).catch((error) => {
-    clientPromise = null;
-    throw error;
-  }));
-  return clientPromise;
-}
-async function sessionToken({ create = false } = {}) {
-  const client = await authClient();
-  let { data, error } = await client.auth.getSession();
-  if (error) throw error;
-  if (!data.session && create) {
-    ({ data, error } = await client.auth.signInAnonymously());
-    if (error) throw Object.assign(new Error("\u6E38\u5BA2\u8EAB\u4EFD\u521B\u5EFA\u5931\u8D25\uFF1A" + error.message), { status: error.status });
-  }
-  return data.session?.access_token || null;
-}
-async function currentIdentity() {
-  const c = await authClient();
-  const { data, error } = await c.auth.getSession();
-  if (error) throw error;
-  return data.session?.user || null;
-}
-async function emailWithClient(client, email, recover, redirectTo) {
-  const value = String(email).trim();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) throw new Error("\u8BF7\u8F93\u5165\u6709\u6548\u90AE\u7BB1\u5730\u5740");
-  const { error } = recover ? await client.auth.signInWithOtp({ email: value, options: { emailRedirectTo: redirectTo, shouldCreateUser: false } }) : await client.auth.updateUser({ email: value }, { emailRedirectTo: redirectTo });
-  if (error) throw new Error("\u90AE\u4EF6\u672A\u80FD\u53D1\u9001\uFF1A" + error.message);
-  return true;
-}
-async function emailAction(email, recover = false, { enabled = PUBLIC_CONFIG.emailEnabled } = {}) {
-  if (!enabled) throw new Error("\u90AE\u7BB1\u5B58\u6863\u6682\u672A\u5F00\u653E\uFF1B\u5F53\u524D\u6D4F\u89C8\u5668\u4ECD\u4F1A\u81EA\u52A8\u4FDD\u5B58\u6E38\u5BA2\u8EAB\u4EFD\uFF0C\u8BF7\u52FF\u6E05\u9664\u7F51\u7AD9\u6570\u636E\u3002");
-  return emailWithClient(await authClient(), email, recover, new URL("./", document.baseURI).href);
-}
-async function verifyEmailWithClient(client, email, token, recover = false) {
-  const value = String(email).trim(), code = String(token).trim();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || !/^\d{6,8}$/.test(code)) throw new Error("\u8BF7\u8F93\u5165\u90AE\u7BB1\u548C\u90AE\u4EF6\u4E2D\u76846\u20138\u4F4D\u9A8C\u8BC1\u7801");
-  const before = recover ? null : (await client.auth.getSession()).data.session?.user?.id;
-  if (!recover && !before) throw new Error("\u5F53\u524D\u6E38\u5BA2\u8EAB\u4EFD\u5DF2\u5931\u6548\uFF0C\u8BF7\u5148\u91CD\u65B0\u8FDE\u63A5");
-  const { data, error } = await client.auth.verifyOtp({ email: value, token: code, type: recover ? "email" : "email_change" });
-  if (error) throw new Error("\u9A8C\u8BC1\u672A\u5B8C\u6210\uFF1A" + error.message);
-  if (!data.user || !recover && data.user.id !== before) throw new Error("\u8EAB\u4EFD\u9A8C\u8BC1\u7ED3\u679C\u4E0D\u4E00\u81F4\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5\uFF1B\u672A\u5408\u5E76\u6216\u8986\u76D6\u6863\u6848");
-  return data.user;
-}
-async function verifyEmailAction(email, token, recover = false) {
-  if (!PUBLIC_CONFIG.emailEnabled) throw new Error("\u90AE\u7BB1\u5B58\u6863\u6682\u672A\u5F00\u653E");
-  return verifyEmailWithClient(await authClient(), email, token, recover);
-}
-async function watchIdentity(listener) {
-  const c = await authClient();
-  return c.auth.onAuthStateChange((event, session) => {
-    setTimeout(() => listener(event, session?.user?.id || null), 0);
-  }).data.subscription;
 }
 
 // src/shop-experience.js
@@ -6713,312 +8615,17 @@ function shopExperience({ social: social2, getGame, getRun, getTheme, getUnarchi
   } };
 }
 
-// src/storage.js
-var RunJournal = class {
-  constructor(storage) {
-    try {
-      this.storage = storage || globalThis.localStorage;
-    } catch {
-      this.storage = null;
-    }
-    this.memory = /* @__PURE__ */ new Map();
-  }
-  key(id) {
-    return "sushi.run.v12." + id;
-  }
-  write(entry) {
-    this.memory.set(entry.runId, entry);
-    try {
-      this.storage.setItem(this.key(entry.runId), JSON.stringify(entry));
-      return true;
-    } catch {
-      return false;
-    }
-  }
-  remove(id) {
-    this.memory.delete(id);
-    try {
-      this.storage.removeItem(this.key(id));
-    } catch {
-    }
-  }
-  list(kind) {
-    const entries2 = /* @__PURE__ */ new Map();
-    try {
-      for (let i = 0; i < this.storage.length; i++) {
-        const key = this.storage.key(i);
-        if (!key?.startsWith("sushi.run.v12.")) continue;
-        try {
-          const e = JSON.parse(this.storage.getItem(key));
-          if (e && typeof e.runId === "string" && Array.isArray(e.body?.actions)) entries2.set(e.runId, e);
-        } catch {
-        }
-      }
-    } catch {
-    }
-    for (const [id, e] of this.memory) entries2.set(id, e);
-    return [...entries2.values()].filter((e) => !kind || e.kind === kind);
-  }
-};
-function retryableStatus(status) {
-  return !status || status === 401 || status === 408 || status === 425 || status === 429 || status >= 500;
-}
-function deadline(promise, ms = 8e3) {
-  let timer;
-  return Promise.race([promise, new Promise((_, reject) => {
-    timer = setTimeout(() => reject(new Error("\u8EAB\u4EFD\u670D\u52A1\u8FDE\u63A5\u8D85\u65F6")), ms);
-  })]).finally(() => clearTimeout(timer));
-}
-
-// src/social.js
-var escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-function playerIdValue(value) {
-  const id = String(value ?? "").normalize("NFKC").trim();
-  return /^[A-Za-z0-9\u3400-\u9fff]{2,12}$/u.test(id) ? id : null;
-}
-var SocialClient = class {
-  constructor() {
-    this.local = ["localhost", "127.0.0.1"].includes(location.hostname);
-    this.api = location.protocol === "file:" ? null : this.local ? location.origin : PUBLIC_CONFIG.supabaseUrl ? PUBLIC_CONFIG.supabaseUrl + "/functions/v1/" + PUBLIC_CONFIG.edgeFunction : null;
-    this.emailAvailable = PUBLIC_CONFIG.emailEnabled === true;
-    this.playerId = "";
-    this.profile = null;
-    this.profileRevision = 0;
-    this.mode = "offline";
-    this.lastBoard = null;
-    this.inflight = /* @__PURE__ */ new Map();
-    this.journal = new RunJournal();
-    this.syncing = null;
-    this.lastError = "";
-    this.archiveBusy = 0;
-    this.archiveError = "";
-    this.archiveReadError = "";
-    this.archiveReadBusy = 0;
-    this.onState = () => {
-    };
-    try {
-      this.playerId = playerIdValue(localStorage.getItem("sushi.nickname.v1")) || "";
-      const old = JSON.parse(localStorage.getItem("sushi.pending.v1") || "[]");
-      if (Array.isArray(old)) for (const e of old) {
-        if (e && typeof e.runId === "string" && Array.isArray(e.body?.actions) && !this.journal.list().some((x) => x.runId === e.runId)) this.journal.write({ ...e, kind: "pending" });
-      }
-    } catch {
-    }
-  }
-  get pending() {
-    return this.journal.list("pending");
-  }
-  persist() {
-    try {
-      localStorage.setItem("sushi.nickname.v1", this.playerId);
-      localStorage.setItem("sushi.pending.v1", JSON.stringify(this.pending));
-      return true;
-    } catch {
-      return false;
-    }
-  }
-  changed() {
-    this.onState();
-  }
-  async request(path2, body) {
-    if (!this.api) throw Object.assign(new Error("\u79BB\u7EBF\u6587\u4EF6\u4EC5\u4F9B\u7EC3\u4E60\uFF0C\u8BF7\u6253\u5F00\u5728\u7EBF\u6E38\u620F\u53C2\u4E0E\u4ECA\u65E5\u699C"), { code: "offline" });
-    const publicBoard = path2 === "/api/leaderboard" && body === void 0;
-    let token = null;
-    if (!this.local) {
-      try {
-        token = await deadline(sessionToken(), publicBoard ? 2e3 : 8e3);
-      } catch (error) {
-        if (!publicBoard) throw error;
-      }
-    }
-    const authHeaders = token ? { Authorization: "Bearer " + token } : {};
-    if (!this.local) authHeaders.apikey = PUBLIC_CONFIG.publishableKey;
-    const response = await fetch(this.api + path2, { method: body !== void 0 ? "POST" : "GET", headers: { ...authHeaders, ...body !== void 0 ? { "Content-Type": "application/json" } : {} }, body: body !== void 0 ? JSON.stringify(body) : void 0, credentials: this.local ? "same-origin" : "omit", signal: AbortSignal.timeout(path2.endsWith("/finish") ? 2e4 : 12e3) });
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw Object.assign(new Error("\u8054\u7F51\u670D\u52A1\u8FD4\u56DE\u5F02\u5E38\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5"), { status: response.status >= 500 ? response.status : 503 });
-    }
-    if (!response.ok || data.quarantined) throw Object.assign(new Error(data.error || "\u8054\u7F51\u670D\u52A1\u6682\u4E0D\u53EF\u7528"), { status: response.status, code: data.code });
-    return data;
-  }
-  async initialize() {
-    this.archiveReadBusy++;
-    this.changed();
-    try {
-      const revision = this.profileRevision;
-      const data = await this.request("/api/identity");
-      if (revision !== this.profileRevision || !this.local && data.profile && (await currentIdentity())?.id !== data.profile.id) return data;
-      this.profile = data.profile;
-      this.mode = data.mode;
-      if (this.profile) {
-        this.playerId = this.profile.nickname;
-        this.persist();
-      }
-      this.lastError = "";
-      this.archiveReadError = "";
-      this.changed();
-      return data;
-    } catch (error) {
-      this.archiveReadError = error.message;
-      this.changed();
-      throw error;
-    } finally {
-      this.archiveReadBusy--;
-      this.changed();
-    }
-  }
-  async rename(value) {
-    const nickname = playerIdValue(value);
-    if (!nickname) throw Object.assign(new Error("\u6635\u79F0\u9700\u4E3A2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u5B57\u6BCD\u6216\u6570\u5B57"), { status: 400 });
-    if (!this.local) await deadline(sessionToken({ create: true }));
-    const data = await this.request("/api/identity", { nickname });
-    if (!this.local && (await currentIdentity())?.id !== data.profile.id) throw new Error("\u8EAB\u4EFD\u521A\u521A\u5207\u6362\uFF0C\u8BF7\u91CD\u65B0\u8FDE\u63A5");
-    this.profileRevision++;
-    this.profile = data.profile;
-    this.playerId = data.profile.nickname;
-    this.mode = data.mode;
-    this.persist();
-    this.changed();
-    return data;
-  }
-  async start(id, options = {}) {
-    const nickname = playerIdValue(id);
-    if (!nickname) throw Object.assign(new Error("\u6635\u79F0\u9700\u4E3A2\u201312\u4E2A\u4E2D\u6587\u3001\u82F1\u6587\u5B57\u6BCD\u6216\u6570\u5B57"), { status: 400 });
-    try {
-      if (!this.profile || this.profile.nickname !== nickname) await this.rename(nickname);
-      const run = await this.request("/api/runs", options);
-      this.mode = run.mode;
-      this.lastError = "";
-      this.changed();
-      return run;
-    } catch (error) {
-      this.lastError = error.message;
-      this.changed();
-      if ([400, 401, 409, 429].includes(error.status)) throw error;
-      this.playerId = nickname;
-      this.persist();
-      return { online: false, error: error.message };
-    }
-  }
-  async reset() {
-    if (!this.local) {
-      const c = await authClient();
-      await c.auth.signOut({ scope: "local" });
-    } else await this.request("/api/identity/reset", {});
-    this.profileRevision++;
-    this.profile = null;
-    this.playerId = "";
-    this.persist();
-    this.changed();
-  }
-  async board() {
-    const data = await this.request("/api/leaderboard");
-    this.lastBoard = data;
-    if (data.profile) this.profile = data.profile;
-    this.changed();
-    return data;
-  }
-  submit(run, ticks, actions, extra = {}) {
-    if (this.inflight.has(run.runId)) return this.inflight.get(run.runId);
-    const entry = { runId: run.runId, owner: this.profile?.id, kind: "pending", body: { ticks, actions, ...extra } };
-    const saved = this.journal.write(entry);
-    this.persist();
-    this.changed();
-    return this.sendEntry(entry, saved);
-  }
-  sendEntry(entry, saved = true) {
-    if (this.inflight.has(entry.runId)) return this.inflight.get(entry.runId);
-    const promise = this.deliver(entry, saved).finally(() => this.inflight.delete(entry.runId));
-    this.inflight.set(entry.runId, promise);
-    return promise;
-  }
-  async deliver(entry, saved) {
-    this.archiveBusy++;
-    this.changed();
-    try {
-      const data = await this.request(`/api/runs/${entry.runId}/finish`, entry.body);
-      this.journal.remove(entry.runId);
-      this.persist();
-      this.lastBoard = data.board;
-      if (data.board?.profile?.id === this.profile?.id) this.profile = data.board.profile;
-      this.lastError = "";
-      this.archiveError = "";
-      this.changed();
-      return data;
-    } catch (error) {
-      this.archiveError = error.message;
-      if (!retryableStatus(error.status)) this.journal.write({ ...entry, kind: "rejected", error: error.message });
-      this.persist();
-      this.lastError = error.message;
-      error.saved = saved && this.pending.some((e) => e.runId === entry.runId);
-      this.changed();
-      throw error;
-    } finally {
-      this.archiveBusy--;
-      this.changed();
-    }
-  }
-  async checkpoint(run, body) {
-    if (!["1.2.0", "1.2.1", "1.4.0"].includes(run.rulesVersion)) return;
-    const owner = this.profile?.id;
-    this.archiveBusy++;
-    this.changed();
-    try {
-      const data = await this.request(`/api/runs/${run.runId}/checkpoint`, body);
-      if (this.profile?.id === owner) this.profile = data.profile;
-      this.archiveError = "";
-      return data;
-    } catch (error) {
-      this.archiveError = error.message;
-      throw error;
-    } finally {
-      this.archiveBusy--;
-      this.changed();
-    }
-  }
-  async email(email, recover = false) {
-    if (this.local) throw new Error("\u672C\u5730\u8054\u8C03\u73AF\u5883\u4E0D\u53D1\u9001\u90AE\u4EF6\uFF0C\u8BF7\u4F7F\u7528\u516C\u7F51\u7248");
-    if (!recover && !this.profile) throw new Error("\u8BF7\u5148\u8F93\u5165\u6635\u79F0\u5EFA\u7ACB\u6E38\u5BA2\u8EAB\u4EFD\uFF0C\u518D\u7ED1\u5B9A\u90AE\u7BB1");
-    const user = await currentIdentity();
-    const hasArchive = this.profile && (this.profile.playCount > 0 || this.profile.collection?.length || this.journal.list().some((e) => e.owner === this.profile.id && e.kind !== "rejected"));
-    if (recover && hasArchive && user?.is_anonymous) throw new Error("\u5F53\u524D\u6E38\u5BA2\u5DF2\u6709\u6210\u7EE9\u6216\u672A\u7ED3\u8D26\u5BF9\u5C40\u3002\u8BF7\u5148\u7ED9\u5F53\u524D\u6E38\u5BA2\u7ED1\u5B9A\u90AE\u7BB1\uFF0C\u518D\u5207\u6362\u8D26\u53F7\uFF1B\u4E5F\u53EF\u4EE5\u5728\u65B0\u7684\u6D4F\u89C8\u5668\u7A97\u53E3\u6062\u590D\u65E7\u8D26\u53F7\u3002\u4E0D\u4F1A\u8986\u76D6\u6216\u5408\u5E76\u73B0\u6709\u6536\u85CF\u3002");
-    return emailAction(email, recover);
-  }
-  async verifyEmail(email, token, recover) {
-    if (this.local) throw new Error("\u672C\u5730\u73AF\u5883\u4E0D\u80FD\u9A8C\u8BC1\u771F\u5B9E\u90AE\u7BB1");
-    const user = await verifyEmailAction(email, token, recover);
-    this.profileRevision++;
-    const data = await this.initialize();
-    if (!data.profile) throw new Error("\u90AE\u7BB1\u5DF2\u9A8C\u8BC1\uFF0C\u4F46\u6863\u6848\u6682\u672A\u8BFB\u5230\uFF0C\u8BF7\u7A0D\u540E\u91CD\u65B0\u8FDE\u63A5\uFF1B\u73B0\u6709\u6570\u636E\u4E0D\u4F1A\u88AB\u8986\u76D6");
-    return { user, profile: data.profile };
-  }
-  retry() {
-    if (this.syncing) return this.syncing;
-    this.syncing = this.retryOwned().finally(() => {
-      this.syncing = null;
-    });
-    return this.syncing;
-  }
-  async retryOwned() {
-    const outcomes = [];
-    for (const entry of this.pending) {
-      if (entry.owner && entry.owner !== this.profile?.id) continue;
-      try {
-        outcomes.push(await this.sendEntry(entry));
-      } catch (error) {
-        outcomes.push({ error: error.message, runId: entry.runId, retryable: retryableStatus(error.status) });
-        if (retryableStatus(error.status)) break;
-      }
-    }
-    return outcomes;
-  }
-};
-
 // src/run-state-v14.js
 function rebuildActiveRun(entry) {
   const ticks = entry?.body?.ticks, actions = entry?.body?.actions;
+  if (isCasualVersion(entry?.run?.rulesVersion)) {
+    const { game: g2 } = reconstructCasual(entry.run.rulesVersion, entry.run.seed, ticks, actions, entry.run);
+    if (["1.4.0", "1.4.1"].includes(g2.rulesVersion)) {
+      g2.rest();
+      g2.restTravel = Number.isFinite(entry.presentation?.restTravel) ? entry.presentation.restTravel % 1 : 0;
+    }
+    return g2;
+  }
   if (!entry?.run || !Number.isSafeInteger(ticks) || ticks < 0 || ticks > 6 * 3600 * 60 || !Array.isArray(actions) || actions.length > 25e3) throw new Error("\u4E0A\u6B21\u5BF9\u5C40\u8BB0\u5F55\u4E0D\u5B8C\u6574");
   let previous = -1;
   for (const a of actions) {
@@ -7048,7 +8655,7 @@ function rebuildActiveRun(entry) {
 }
 
 // src/main.js
-var Game2 = CasualGame2;
+var Game2 = CasualGame3;
 var isCasual = (g) => isCasualVersion(g?.rulesVersion);
 var syncedEaten = /* @__PURE__ */ new Map();
 var localSaveFailed = false;
@@ -7097,6 +8704,32 @@ var boardBusy = false;
 var clockAnchor = null;
 var identityWarning = "";
 var shop = shopExperience({ social, getGame: () => game, getRun: () => onlineRun, getTheme: displayTheme, getLocalSaveFailure: () => localSaveFailed, getUnarchived: () => onlineRun && ["playing", "paused"].includes(game?.phase) ? Math.max(0, game.sushiEaten - (syncedEaten.get(onlineRun.runId) || 0)) : 0, drawSushi: drawSushi2, playSound: (kind) => sounds.discovery(kind) });
+var taste = new TasteStore({ request: (...args) => social.request(...args), onChange: () => tasteView.paint() });
+var tasteView = tasteUI({ store: taste, drawSushi: drawSushi2, onChange: () => {
+  renderer.getTaste = () => taste.value;
+  characterUI();
+} });
+var tasteFeedback = new TasteFeedback();
+var tasteBubble = "";
+var tasteUntil = 0;
+var tasteTimer;
+function openTaste() {
+  if (loopRun() && ["playing", "paused"].includes(game.phase)) enterRest();
+  tasteView.open();
+}
+function tasteOwner() {
+  const id = social.profile?.id;
+  if (!id && taste.owner && taste.owner !== "practice") {
+    taste.select("practice");
+    return;
+  }
+  if (id && taste.owner !== id) {
+    tasteBubble = "";
+    tasteFeedback.streak = 0;
+    taste.select(id);
+  }
+}
+var abilityText = (c) => game?.tasteMode && c.id === "yuzu" ? "\u6162\u98DF\u89C2\u5BDF\u5BB6\uFF1A\u6E29\u548C\u6D88\u5316\uFF0C\u9971\u8179\u589E\u91CF \xD71.15" : c.ability;
 var physique = (c) => c.id === "momo" ? "\u6742\u98DF\u578B" : c.id === "taro" ? "\u5FEB\u6D88\u5316\u578B" : c.id === "yuzu" ? "\u6162\u6D88\u5316\u578B" : "\u6E05\u723D\u578B";
 preview.start();
 preview.character = { ...preview.character, allergy: "none" };
@@ -7142,7 +8775,7 @@ function menu() {
   const shown = keys.slice(menuPage * 12, menuPage * 12 + 12);
   $2("menu").innerHTML = shown.map((key) => {
     const f = CATALOG3[key], grade = RARITIES[rarityOf(f)];
-    return `<div class="menu-item ${game && f.allergen === game.character.allergy ? "allergic" : ""}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}<b>${f.fullness > 0 ? "+" : ""}${Math.round(f.fullness * (f.fullness > 0 ? (game?.character.portion || 1) * (game && !isCasual(game) ? 1 : 0.65) : 1))} <small style="color:${grade?.color || "#66886d"}">${f.collectible ? grade?.name || "\u65E5\u5E38" : "\u8336\u996E"}</small></b></span></div>`;
+    return `<div class="menu-item ${game && !game.tasteMode && f.allergen === game.character.allergy ? "allergic" : ""}" data-food="${key}"><canvas width="100" height="90" aria-hidden="true"></canvas><span>${escapeHtml(f.name)}<b>${f.fullness > 0 ? "+" : ""}${Math.round(f.fullness * (f.fullness > 0 ? (game?.character.portion || 1) * (game && !isCasual(game) ? 1 : 0.65) : 1))} <small style="color:${grade?.color || "#66886d"}">${f.collectible ? grade?.name || "\u65E5\u5E38" : "\u8336\u996E"}</small></b></span></div>`;
   }).join("");
   for (const el of $2("menu").children) drawSushi2(el.querySelector("canvas").getContext("2d"), el.dataset.food, 50, 48, 1.2);
   $2("menu-page-info").textContent = `${keys.length}\u6B3E\u9910\u54C1 \xB7 ${menuPage + 1}/${pages}\u9875`;
@@ -7156,9 +8789,9 @@ function characterUI() {
   $2("character-tag").textContent = c ? "\u5DF2\u5165\u5EA7" : "\u7B49\u5F85\u5165\u5EA7";
   $2("character-name").textContent = playerId || "\u8F93\u5165\u4F60\u7684ID";
   $2("character-title").textContent = c ? `${physique(c)} \xB7 ${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u699C" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF" : "\u8054\u7F51\u8BA1\u5206" : "\u7EC3\u4E60\u5C40"}` : "\u6162\u6162\u5403\uFF0C\u4E5F\u6162\u6162\u6536\u85CF";
-  $2("character-ability").textContent = c ? c.ability : "\u5165\u5EA7\u540E\u62BD\u53D6\u4E00\u5F20\u89D2\u8272\u5361\uFF0C\u770B\u770B\u4ECA\u5929\u8981\u5FCC\u53E3\u4EC0\u4E48\u3002";
-  $2("allergy-name").textContent = c ? ALLERGEN_NAMES[c.allergy] : "\u5F00\u5C40\u63ED\u6653";
-  $2("allergy-detail").textContent = c ? isCasual(game) ? "\u5FCC\u53E3\u4F1A\u6709\u4E00\u70B9\u4E0D\u8212\u670D\uFF0C\u6362\u4E00\u76D8\u5C31\u597D" : "\u6807\u300C\u5FCC\u300D\u7684\u76D8\u5B50\u4F1A\u9020\u6210\u8FC7\u654F\u4F24\u5BB3" : "\u770B\u6E05\u518D\u5403\uFF0C\u522B\u592A\u5FC3\u6025";
+  $2("character-ability").textContent = c ? abilityText(c) : "\u5165\u5EA7\u62BD\u4E00\u5F20\u4F53\u8D28\u5361\uFF0C\u60F3\u5403\u4EC0\u4E48\u7531\u4F60\u51B3\u5B9A\u3002";
+  $2("allergy-name").textContent = game && !isCasual(game) ? ALLERGEN_NAMES[c.allergy] : taste.value.configured ? "\u6309\u4F60\u7684\u559C\u597D" : "\u81EA\u7531\u54C1\u5C1D";
+  $2("allergy-detail").textContent = game && !isCasual(game) ? "\u65E7\u751F\u5B58\u6A21\u5F0F\u4FDD\u7559\u539F\u89C4\u5219" : "\u5FC3\u5934\u597D\u4F1A\u5F00\u5FC3\uFF0C\u6311\u98DF\u4F1A\u5410\u69FD\u3002\u90FD\u80FD\u5403\uFF0C\u4E0D\u6263\u5206\u3002";
   menu();
 }
 function showOverlay(html) {
@@ -7220,10 +8853,11 @@ async function beginRun(id) {
   }
   try {
     const legacyTest = new URLSearchParams(location.search).get("test") === "1" && new URLSearchParams(location.search).get("casual") !== "1";
-    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.4.0", themeId: selectedTheme, ranked: rankedChoice });
+    const run = await social.start(id, legacyTest ? {} : { rulesVersion: "1.4.1", themeId: selectedTheme, ranked: rankedChoice });
     if (run.runId && !await lease.acquire(run.runId)) throw new Error("\u8FD9\u4E00\u684C\u5728\u53E6\u4E00\u4E2A\u7A97\u53E3\u5F00\u7740\uFF0C\u8BF7\u56DE\u5230\u539F\u7A97\u53E3\u3002");
     playerId = social.playerId;
     identityWarning = "";
+    tasteOwner();
     newGame(run.runId ? { seed: run.seed, characterId: run.characterId, onlineRun: run, legacy: !isCasualVersion(run.rulesVersion) } : {});
   } catch (error) {
     if (error.code === "identity_lost") {
@@ -7245,7 +8879,7 @@ function newGame(options = {}) {
   saveProgress();
   if (!playerId && new URLSearchParams(location.search).get("test") === "1") playerId = "\u6D4B\u8BD5\u98DF\u5BA2";
   const run = options.onlineRun;
-  game = options.legacy ? new Game({ seed: options.seed ?? newSeed(), characterId: options.characterId }) : createCasual({ rulesVersion: run?.rulesVersion || "1.4.0", seed: options.seed ?? newSeed(), characterId: options.characterId, themeId: run?.themeId || selectedTheme, knownFoods: run?.knownFoods || social.profile?.collection?.map((c2) => c2.sushiId) || [], menuEdition: run?.menuEdition, friendProfile: run?.friendProfile || friendSnapshot({ id: social.profile?.id, nickname: playerId }) });
+  game = options.legacy ? new Game({ seed: options.seed ?? newSeed(), characterId: options.characterId }) : createCasual({ rulesVersion: run?.rulesVersion || "1.4.1", seed: options.seed ?? newSeed(), characterId: options.characterId, themeId: run?.themeId || selectedTheme, knownFoods: run?.knownFoods || social.profile?.collection?.map((c2) => c2.sushiId) || [], menuEdition: run?.menuEdition, friendProfile: run?.friendProfile || friendSnapshot({ id: social.profile?.id, nickname: playerId }) });
   onlineRun = options.onlineRun || null;
   practiceRun = onlineRun ? null : { runId: "practice-" + crypto.randomUUID(), online: false, seed: game.seed, rulesVersion: game.rulesVersion, themeId: game.theme?.id, menuEdition: game.menuEdition, knownFoods: [...game.knownFoods || []], friendProfile: game.friendProfile };
   if (practiceRun) lease.acquire(practiceRun.runId).then((ok) => {
@@ -7261,8 +8895,9 @@ function newGame(options = {}) {
   characterUI();
   updateUI();
   const c = game.character;
-  showOverlay(`<p class="eyebrow">\u4F60\u7684\u672C\u5C40\u89D2\u8272\u5361</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">\u672C\u5C40\u4F53\u8D28\uFF1A${physique(c)}</p><div class="card-traits"><span>${isCasual(game) ? "\u7CBE\u795E" : "\u751F\u547D"} ${c.hp}</span><span>\u6E29\u548C\u6D88\u5316 ${(c.drain * (isCasual(game) ? 0.18 : 1)).toFixed(2)}/\u79D2</span></div><p style="margin-bottom:10px">${c.ability}</p><div class="allergy-pill">\u672C\u5C40\u5FCC\u53E3\uFF1A<strong>${ALLERGEN_NAMES[c.allergy]}</strong> \xB7 ${isCasual(game) ? "\u8BEF\u98DF\u7CBE\u795E \u22124\uFF0C\u4E0D\u4F1A\u6B7B\u4EA1" : "\u8BEF\u98DF\u6263 24 \u751F\u547D"}</div><button class="primary-button" id="start-game">\u8BB0\u4F4F\u4E86\uFF0C\u5F00\u59CB\uFF01</button><p class="tiny-note">${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u5C40 \xB7 \u4E0E\u516C\u7F51\u699C\u5355\u72EC\u7ACB" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF\u5C40 \xB7 \u7ED3\u8D26\u4FDD\u5B58\uFF0C\u4E0D\u53C2\u4E0E\u4ECA\u65E5\u699C" : "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u7ED3\u675F\u540E\u53C2\u4E0E\u4ECA\u65E5\u5168\u7403\u699C" : "\u7EC3\u4E60\u5C40 \xB7 \u672A\u8FDE\u63A5\u4ECA\u65E5\u699C\uFF0C\u672C\u5C40\u4E0D\u4E0A\u699C"}</p>`);
+  showOverlay(`<p class="eyebrow">\u4F60\u7684\u672C\u5C40\u89D2\u8272\u5361</p><canvas class="card-portrait" id="card-portrait" width="200" height="200" aria-hidden="true"></canvas><h2 class="card-name">${escapeHtml(playerId)}</h2><p style="margin:3px 0 10px">\u672C\u5C40\u4F53\u8D28\uFF1A${physique(c)}</p><div class="card-traits"><span>${isCasual(game) ? "\u7CBE\u795E" : "\u751F\u547D"} ${c.hp}</span><span>\u6E29\u548C\u6D88\u5316 ${(c.drain * (isCasual(game) ? 0.18 : 1)).toFixed(2)}/\u79D2</span></div><p style="margin-bottom:10px">${abilityText(c)}</p><div class="allergy-pill">${isCasual(game) ? "\u6BCF\u9053\u90FD\u80FD\u5403\uFF0C\u53E3\u5473\u53EA\u5F71\u54CD\u5C0F\u8868\u60C5\u3002" : "\u65E7\u751F\u5B58\u5C40\u5FCC\u53E3\uFF1A" + ALLERGEN_NAMES[c.allergy]}</div>${isCasual(game) ? '<button id="card-taste" type="button" class="text-button">\u4ECA\u5929\u60F3\u5403\u70B9\u4EC0\u4E48\u5440\uFF1F\u9009\u9009\u6211\u7684\u53E3\u5473 \u2192</button><p class="tiny-note">\u53EF\u8DF3\u8FC7\uFF0C\u4E4B\u540E\u5728\u8BBE\u7F6E\u91CC\u968F\u65F6\u4FEE\u6539\u3002</p>' : ""}<button class="primary-button" id="start-game">\u8BB0\u4F4F\u4E86\uFF0C\u5F00\u59CB\uFF01</button><p class="tiny-note">${onlineRun ? onlineRun.mode === "local" ? "\u672C\u5730\u8054\u8C03\u5C40 \xB7 \u4E0E\u516C\u7F51\u699C\u5355\u72EC\u7ACB" : onlineRun.ranked === false ? "\u4E91\u7AEF\u6536\u85CF\u5C40 \xB7 \u7ED3\u8D26\u4FDD\u5B58\uFF0C\u4E0D\u53C2\u4E0E\u4ECA\u65E5\u699C" : "\u8054\u7F51\u8BA1\u5206\u5C40 \xB7 \u7ED3\u675F\u540E\u53C2\u4E0E\u4ECA\u65E5\u5168\u7403\u699C" : "\u7EC3\u4E60\u5C40 \xB7 \u672A\u8FDE\u63A5\u4ECA\u65E5\u699C\uFF0C\u672C\u5C40\u4E0D\u4E0A\u699C"}</p>`);
   drawPortrait($2("card-portrait"), c);
+  if ($2("card-taste")) $2("card-taste").onclick = openTaste;
   $2("start-game").onclick = startGame;
   paintNetwork();
 }
@@ -7282,6 +8917,7 @@ function enterRest() {
 }
 function startGame() {
   if (!game?.start()) return;
+  if (isCasual(game) && taste.loaded && !taste.value.configured) taste.save(taste.value);
   shop.paint();
   $2("overlay").classList.add("hidden");
   $2("pause").disabled = false;
@@ -7527,10 +9163,19 @@ function eatTarget(target) {
   }
   shop.paint();
   const friend = loopRun() && game.theme.id === "friends-special" && game.friendProfile?.foodId === e.item.key ? friendForFood(e.item.key) : null;
-  if (friend) {
-    toast(friend.easterEgg);
-    sounds.confirm();
-  }
+  if (friend) sounds.confirm();
+  if (game.tasteMode) {
+    const kind = tasteOf(e.item.key, taste.value), line3 = tasteFeedback.bite(kind);
+    tasteBubble = [line3, friend?.easterEgg].filter(Boolean).join(" \xB7 ");
+    tasteUntil = performance.now() + 3e3;
+    $2("chef").dataset.taste = kind;
+    clearTimeout(tasteTimer);
+    tasteTimer = setTimeout(() => {
+      tasteBubble = "";
+      $2("chef").dataset.taste = "neutral";
+      updateUI();
+    }, 3e3);
+  } else if (friend) toast(friend.easterEgg);
   updateUI();
   saveProgress();
   if (game.phase === "gameover") finish();
@@ -7564,7 +9209,7 @@ function updateUI() {
   if ($2("scene-warning-title").textContent !== cueTitle) $2("scene-warning-title").textContent = cueTitle;
   $2("scene-warning-detail").textContent = danger ? g?.hazardTime >= 2 ? "\u6B63\u5728\u6389\u8840\uFF01" : `${Math.max(0, 2 - (g?.hazardTime ?? 0)).toFixed(1)} \u79D2\u540E\u5F00\u59CB\u6389\u8840` : lowHealth ? "\u907F\u5F00\u7EA2\u8272\u300C\u5FCC\u300D\uFF0C\u7A33\u4F4F\u80C3\u53E3" : nearlyHungry ? "\u5148\u6311\u4E00\u76D8\u4E0D\u8FC7\u654F\u7684\u5BFF\u53F8" : nearlyFull ? "\u5148\u7B49\u6D88\u5316\uFF0C\u4E4C\u9F99\u8336\u4E5F\u80FD\u51CF\u9971\u8179" : "";
   $2("combo").textContent = g?.combo >= 2 ? `${g.combo} \u8FDE\u51FB \xB7 \u5403\u5F97\u521A\u521A\u597D` : " ";
-  $2("game-hint").innerHTML = `<span class="hint-dot"></span>${g ? `\u672C\u5C40\u5FCC\u53E3\uFF1A${ALLERGEN_NAMES[g.character.allergy]} \xB7 \u7EA2\u8272\u300C\u5FCC\u300D\u522B\u4E71\u5403` : "\u70B9\u51FB\u76D8\u5B50\u5F00\u5403 \xB7 \u770B\u6E05\u7EA2\u8272\u8FC7\u654F\u6807\u8BB0"}`;
+  $2("game-hint").innerHTML = `<span class="hint-dot"></span>${g && !isCasual(g) ? `\u672C\u5C40\u5FCC\u53E3\uFF1A${ALLERGEN_NAMES[g.character.allergy]}` : "\u70B9\u51FB\u76D8\u5B50\u6162\u6162\u5403 \xB7 \u53E3\u5473\u53EA\u5F71\u54CD\u5C0F\u8868\u60C5"}`;
   if (isCasual(g)) {
     $2("health-status").textContent = hp < 40 ? "\u6B47\u4E00\u4F1A\u513F\u4E5F\u5F88\u597D" : "\u6162\u6162\u4EAB\u7528";
     $2("zone-text").textContent = full > 100 ? "\u809A\u5B50\u6EE1\u6EE1 \xB7 \u62BF\u53E3\u8336" : full < 25 ? "\u809A\u5B50\u5495\u5495 \xB7 \u5403\u4E00\u53E3" : "\u5403\u5F97\u521A\u521A\u597D";
@@ -7579,7 +9224,11 @@ function updateUI() {
   $2("pause").querySelector("span").textContent = g?.phase === "paused" ? "\u7EE7\u7EED\u6162\u6162\u5403" : "\u6B47\u4E00\u6B47";
   $2("cozy-tea-action").disabled = !(g?.phase === "playing" || loopRun() && g.autoRest) || !g.foods.some((f) => f.key === "tea");
   $2("idle-rest").hidden = !(loopRun() && g?.autoRest && g.phase === "paused");
-  $2("chef-copy").textContent = g?.phase === "paused" ? "\u8FD9\u4E00\u684C\uFF0C\u66FF\u4F60\u7559\u7740\u3002" : full > 85 ? "\u5148\u62BF\u53E3\u8336\uFF0C\u597D\u5473\u9053\u4F1A\u7B49\u4F60\u3002" : full < 25 ? "\u809A\u5B50\u5495\u5495\uFF0C\u6765\u5403\u4E00\u53E3\u5427\u3002" : "\u6162\u6162\u6765\uFF0C\u597D\u5473\u9053\u4F1A\u7B49\u4F60\u3002";
+  if (performance.now() >= tasteUntil) {
+    tasteBubble = "";
+    $2("chef").dataset.taste = "neutral";
+  }
+  $2("chef-copy").textContent = tasteBubble || (g?.phase === "paused" ? "\u8FD9\u4E00\u684C\uFF0C\u66FF\u4F60\u7559\u7740\u3002" : full > 85 ? "\u5148\u62BF\u53E3\u8336\uFF0C\u597D\u5473\u9053\u4F1A\u7B49\u4F60\u3002" : full < 25 ? "\u809A\u5B50\u5495\u5495\uFF0C\u6765\u5403\u4E00\u53E3\u5427\u3002" : "\u6162\u6162\u6765\uFF0C\u597D\u5473\u9053\u4F1A\u7B49\u4F60\u3002");
 }
 function frame(now) {
   if (loopRun() && game.autoRest && game.phase === "paused" && now - lastFrame < 1e3 / 30) {
@@ -7653,6 +9302,12 @@ $2("sound").onclick = () => {
   selectNavigation("sound");
 };
 $2("close-audio").onclick = () => $2("audio-dialog").close();
+$2("audio-taste").onclick = () => {
+  $2("audio-dialog").close();
+  openTaste();
+};
+$2("taste-open").onclick = openTaste;
+$2("taste-nudge-open").onclick = openTaste;
 for (const [id, key] of [["audio-music", "music"], ["audio-effects", "effects"]]) $2(id).onchange = () => {
   sounds.unlock();
   sounds.configure({ [key]: $2(id).checked, ...$2(id).checked ? { muted: false } : {} });
@@ -7753,7 +9408,7 @@ $2("help-dialog").addEventListener("click", (e) => {
   }
 });
 document.addEventListener("keydown", (e) => {
-  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $2("food-detail-dialog").open || $2("help-dialog").open || $2("leaderboard-dialog").open || $2("account-dialog").open || $2("collection-dialog").open || $2("menu-dialog").open || $2("audio-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || $2("food-detail-dialog").open || $2("help-dialog").open || $2("leaderboard-dialog").open || $2("account-dialog").open || $2("collection-dialog").open || $2("menu-dialog").open || $2("audio-dialog").open || $2("taste-dialog").open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
   if (e.code === "KeyP" || e.code === "Escape") {
     if (game?.phase === "playing") {
       e.preventDefault();
@@ -7830,8 +9485,11 @@ setInterval(tickCountdown, 1e3);
 setInterval(() => {
   if (!document.hidden && ($2("leaderboard-dialog").open || $2("daily-board-panel").getBoundingClientRect().width > 0)) refreshLeaderboard({ quiet: true });
 }, 6e4);
-window.addEventListener("online", () => social.initialize().catch(() => {
-}).finally(() => refreshLeaderboard({ quiet: true })));
+window.addEventListener("online", () => {
+  taste.refresh();
+  return social.initialize().catch(() => {
+  }).finally(() => refreshLeaderboard({ quiet: true }));
+});
 function paintNetwork() {
   shop.paint();
   const el = $2("network-status");
@@ -7863,6 +9521,10 @@ async function restoreProgress(entry) {
     practiceRun = entry.run.online === false ? entry.run : null;
     activeTicks = entry.body.ticks;
     actionLog = [...entry.body.actions];
+    if (isCasual(game) && !game.tasteMode) {
+      enableTaste(game);
+      actionLog.push([activeTicks, TASTE_MARKER]);
+    }
     ended = false;
     accumulator = 0;
     lastFrame = performance.now();
@@ -7882,6 +9544,7 @@ async function restoreProgress(entry) {
   }
 }
 social.onState = () => {
+  tasteOwner();
   paintNetwork();
   if ($2("collection-dialog").open && collectionPaintSignature !== collectionSignature()) paintCollection();
 };
@@ -7918,7 +9581,7 @@ $2("retry-network").onclick = async () => {
   }
 };
 $2("copy-diagnostics").onclick = async () => {
-  const text2 = JSON.stringify({ version: "1.4.0", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
+  const text2 = JSON.stringify({ version: "1.4.1", url: location.origin + location.pathname, apiHost: social.api ? new URL(social.api).host : null, identity: social.profile?.id?.slice(-8) || null, mode: social.mode, run: onlineRun ? "online" : game ? "practice" : "home", pending: social.pending.length, day: social.lastBoard?.day, error: social.lastError || null }, null, 2);
   try {
     await navigator.clipboard.writeText(text2);
     toast("\u8BCA\u65AD\u5DF2\u590D\u5236\uFF0C\u4E0D\u5305\u542B\u5BC6\u7801\u6216\u767B\u5F55\u51ED\u636E");
@@ -8203,6 +9866,12 @@ $2("collection-grid").addEventListener("keydown", (e) => {
   }
 });
 $2("close-food-detail").onclick = () => $2("food-detail-dialog").close();
+setInterval(() => {
+  if (!document.hidden && taste.pending && !taste.pending.conflict && !taste.busy) taste.flush();
+}, 3e4);
+window.addEventListener("storage", (e) => {
+  if (taste.owner && e.key === taste.key() && !taste.pending) taste.refresh();
+});
 
 </script>
 </body>

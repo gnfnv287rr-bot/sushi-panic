@@ -1,3 +1,4 @@
+import {normalizeTaste} from '../../src/taste-model.js';
 import {MENU_EDITION as LOOP_EDITION,themeById as loopTheme,menuPayload as loopPayload} from '../../src/menus-v14.js';
 import {friendSnapshot} from '../../src/friends-special.js';
 async function digest(value){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');}
@@ -24,12 +25,12 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
    if(origin&&origin!==url.origin&&!allowedOrigins.includes(origin))throw new HttpError(403,'请从游戏页面发起请求','origin');
    if(!allowedOrigins.length&&request.headers.get('sec-fetch-site')==='cross-site')throw new HttpError(403,'请求来源无效','origin');
    if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
-   if(path==='/api/health')return json({app:'SUSHI LOOP',version:'1.4.0',mode,clock:await rpc('sushi_clock')});
+   if(path==='/api/health')return json({app:'SUSHI LOOP',version:'1.4.1',mode,clock:await rpc('sushi_clock')});
    if(path==='/api/finalize'){
     if(!cronSecret||request.headers.get('authorization')!==`Bearer ${cronSecret}`)throw new HttpError(401,'此操作需要服务端授权');
     return json({finalized:await rpc('sushi_finalize')});
    }
-   const scope=path==='/api/identity'?'identity':path.endsWith('/finish')?'finish':path==='/api/runs'?'start':'read';
+   const scope=path==='/api/tastes'&&request.method==='POST'?'tastes':path==='/api/identity'?'identity':path.endsWith('/finish')?'finish':path==='/api/runs'?'start':'read';
    const ipHash=await ipDigest(ipSecret,ip);
    if(!await rpc('sushi_limit',{p_key:`ip:${scope}:${ipHash}`,p_limit:scope==='identity'?120:scope==='read'?180:60,p_seconds:60}))throw new HttpError(429,'操作有点频繁，请稍后再试','rate_limit');
    if(path==='/api/menus'&&request.method==='GET'){const clock=await rpc('sushi_clock');return json({...loopPayload(clock.serverTime),...clock});}
@@ -59,11 +60,17 @@ export function createApp({store,auth,ipSecret,mode='production',cronSecret,allo
    if(path==='/api/identity'&&request.method==='GET')return json({profile:user?await rpc('sushi_profile',{p_player:user}):null,clock:await rpc('sushi_clock'),mode});
    if(path==='/api/leaderboard'&&request.method==='GET')return json({...await rpc('sushi_board',{p_player:user}),mode,identityUnavailable});
    if(!user)throw new HttpError(401,'匿名身份已失效，请重新填写昵称；旧身份成绩可能无法恢复','identity_lost');
-   if(!await rpc('sushi_limit',{p_key:`user:${scope}:${user}`,p_limit:scope==='start'?12:scope==='finish'?20:120,p_seconds:60})){await audit('rate_limited');throw new HttpError(429,'操作有点频繁，请稍后再试','rate_limit');}
+   if(!await rpc('sushi_limit',{p_key:`user:${scope}:${user}`,p_limit:scope==='tastes'?10:scope==='start'?12:scope==='finish'?20:120,p_seconds:60})){await audit('rate_limited');throw new HttpError(429,'操作有点频繁，请稍后再试','rate_limit');}
+   if(path==='/api/tastes'&&request.method==='GET')return json({...await rpc('sushi_tastes',{p_player:user}),playerId:user});
+   if(path==='/api/tastes'&&request.method==='POST'){
+    if(body?.owner&&body.owner!==user)throw new HttpError(409,'身份已切换，口味仍为原食客保留');
+    let preferences;try{preferences=normalizeTaste(body?.preferences,{strict:true});if(!Number.isSafeInteger(body?.revision)||body.revision<0||!(/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/.test(body?.mutation||'')))throw new Error('invalid tastes');}catch{await audit('invalid_taste_preferences');throw new HttpError(400,'口味选项有误，请重新选择（心头好最多3道）');}
+    const result=await rpc('sushi_tastes',{p_player:user,p_preferences:preferences,p_revision:body.revision,p_mutation:body.mutation});return json({...result,playerId:user});
+   }
    if(path==='/api/runs'&&request.method==='POST'){
     if(!await rpc('sushi_profile',{p_player:user}))throw new HttpError(409,'请先填写昵称');
     if(body?.rulesVersion&&!isCasualVersion(body.rulesVersion))throw new HttpError(400,'此规则版本暂不支持');
-    if(body?.rulesVersion==='1.4.0'){let theme;try{theme=loopTheme(body.themeId||'friends-special');}catch{throw new HttpError(400,'未找到此主题菜单');}const profile=await rpc('sushi_profile',{p_player:user}),friend=theme.id==='friends-special'?friendSnapshot(profile):null;const run=await rpc('sushi_start_loop',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:LOOP_EDITION,p_ranked:body.ranked!==false,p_friend:friend});return json({...run,characterId:createCasual(run).character.id,mode},201);}
+    if(['1.4.0','1.4.1'].includes(body?.rulesVersion)){let theme;try{theme=loopTheme(body.themeId||'friends-special');}catch{throw new HttpError(400,'未找到此主题菜单');}const profile=await rpc('sushi_profile',{p_player:user}),friend=theme.id==='friends-special'?friendSnapshot(profile):null;const run=await rpc(body.rulesVersion==='1.4.1'?'sushi_start_taste':'sushi_start_loop',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:LOOP_EDITION,p_ranked:body.ranked!==false,p_friend:friend});return json({...run,characterId:createCasual(run).character.id,mode},201);}
     if(body?.rulesVersion==='1.2.1'){let theme;try{theme=themeById(body.themeId||'first-taste');}catch{throw new HttpError(400,'未找到此主题菜单');}const run=await rpc('sushi_start_catalog',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:MENU_EDITION,p_ranked:body.ranked!==false});return json({...run,characterId:createCasual({...run,seed:run.seed}).character.id,mode},201);}
     if(body?.rulesVersion==='1.2.0'){let theme;try{theme=oldTheme(body.themeId||'classic');}catch{throw new HttpError(400,'未找到此主题菜单');}const run=await rpc(body.ranked===false?'sushi_start_private':'sushi_start_casual',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0],p_theme:theme.id,p_edition:OLD_EDITION});return json({...run,ranked:body.ranked!==false,characterId:new CasualGame({seed:run.seed,themeId:run.themeId}).character.id,mode},201);}
     const run=await rpc('sushi_start',{p_player:user,p_id:crypto.randomUUID(),p_seed:crypto.getRandomValues(new Uint32Array(1))[0]});

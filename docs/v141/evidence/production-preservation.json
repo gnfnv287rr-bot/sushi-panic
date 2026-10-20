@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "scope": "all pre-migration fields of every original row compared exactly; new taste columns additive",
+  "checks": {
+    "players": {
+      "existingRows": 40,
+      "allExistingFieldsUnchanged": true
+    },
+    "sessions": {
+      "existingRows": 57,
+      "allExistingFieldsUnchanged": true
+    },
+    "scores": {
+      "existingRows": 4,
+      "allExistingFieldsUnchanged": true
+    },
+    "champions": {
+      "existingRows": 1,
+      "allExistingFieldsUnchanged": true
+    },
+    "collection": {
+      "existingRows": 281,
+      "allExistingFieldsUnchanged": true
+    },
+    "catalog": {
+      "existingRows": 229,
+      "allExistingFieldsUnchanged": true
+    },
+    "themes": {
+      "existingRows": 4,
+      "allExistingFieldsUnchanged": true
+    }
+  },
+  "checkedAt": "2026-10-20T09:53:03.286Z"
+}

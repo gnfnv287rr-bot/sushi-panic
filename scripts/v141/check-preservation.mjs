@@ -1,0 +1,6 @@
+// Reports aggregate evidence only; never writes/prints private row contents.
+import{readFile,writeFile}from'node:fs/promises';import assert from'node:assert/strict';
+const[beforePath,afterPath,out]=process.argv.slice(2),before=JSON.parse(await readFile(beforePath)).rows[0].snapshot,after=JSON.parse(await readFile(afterPath)).rows[0].snapshot,checks={};
+const key=(table,r)=>table==='collection'?r.player_id+':'+r.sushi_id:table==='scores'?r.day+':'+r.player_id:r.id||r.day;
+for(const table of['players','sessions','scores','champions','collection','catalog','themes']){const rows=new Map(after[table].map(r=>[key(table,r),r]));for(const old of before[table]){const current=rows.get(key(table,old));assert.ok(current,table+': old row missing');for(const field of Object.keys(old))assert.ok(JSON.stringify(current[field])===JSON.stringify(old[field]),table+': existing field changed during migration');}checks[table]={existingRows:before[table].length,allExistingFieldsUnchanged:true};}
+const report={status:'passed',scope:'all pre-migration fields of every original row compared exactly; new taste columns additive',checks,checkedAt:new Date().toISOString()};await writeFile(out,JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));

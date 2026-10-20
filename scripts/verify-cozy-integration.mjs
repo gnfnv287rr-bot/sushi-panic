@@ -2,8 +2,9 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 const baseline=JSON.parse(await readFile('docs/v13/BASELINE.json','utf8'));
+const v141=JSON.parse(await readFile('docs/v141/COMPATIBILITY.json','utf8'));
 const v14=JSON.parse(await readFile('docs/v14/COMPATIBILITY.json','utf8'));
-for(const[path,expected]of Object.entries({...baseline.protectedHashes,...v14.approvedAdapterChanges}))assert.equal(createHash('sha256').update(await readFile(path)).digest('hex'),expected,`${path}: business logic changed`);
+for(const[path,expected]of Object.entries({...baseline.protectedHashes,...v14.approvedAdapterChanges,...v141.approvedAdapterChanges,...v141.frozenHashes}))assert.equal(createHash('sha256').update(await readFile(path)).digest('hex'),expected,`${path}: business logic changed`);
 const html=await readFile('index.html','utf8'),ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 assert.equal(ids.length,new Set(ids).size,'duplicate DOM IDs');
 for(const id of baseline.businessIds)assert.ok(ids.includes(id),`missing original business element ${id}`);
@@ -16,4 +17,4 @@ const approved=(await readFile('design-preview/v1.3/cozy.css','utf8')).replace("
 assert.ok((await readFile('style.css','utf8')).includes(approved),'approved component stylesheet changed');
 assert.ok(!html.includes('demo.js'),'simulation must never be a live entry');
 assert.ok(html.includes('./src/main.js'));
-console.log(`Verified ${Object.keys(baseline.protectedHashes).length-Object.keys(v14.approvedAdapterChanges).length} frozen modules + ${Object.keys(v14.approvedAdapterChanges).length} V1.4 authorized adapters, ${baseline.businessIds.length} original controls and accepted artwork/components.`);
+console.log(`Verified ${Object.keys(baseline.protectedHashes).length-Object.keys(v14.approvedAdapterChanges).length} frozen modules + ${Object.keys(v14.approvedAdapterChanges).length} V1.4/V1.4.1 authorized adapters + frozen prior rule/menu hashes, ${baseline.businessIds.length} original controls and accepted artwork/components.`);

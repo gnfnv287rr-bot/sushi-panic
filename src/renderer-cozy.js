@@ -1,3 +1,4 @@
+import {tasteOf} from './taste-model.js';
 // Presentation adapter only. Positions, foods, roles and outcomes come from the existing engine.
 import {Renderer as BaseRenderer, drawSushi as drawOriginalSushi, drawPortrait, trackGeometry} from './renderer-v12.js';
 import {CATALOG, rarityOf, RARITIES} from './menus-v14.js';
@@ -38,7 +39,7 @@ export class Renderer extends BaseRenderer {
     for(const[id,node]of this.nodes)if(!liveIds.has(id)){node.remove();this.nodes.delete(id);}
     this.targets=[];
     game.foods.forEach((food,index)=>{
-      const spec=CATALOG[food.key],point=g.point(food.p+(game.restTravel||0)),allergic=spec.allergen===game.character.allergy;
+      const spec=CATALOG[food.key],point=g.point(food.p+(game.restTravel||0)),allergic=!game.tasteMode&&spec.allergen===game.character.allergy,taste=game.tasteMode?tasteOf(food.key,this.getTaste?.()):'neutral';
       let button=this.nodes.get(food.id);
       if(!button){
         button=document.createElement('button');button.type='button';button.className='plate';button.dataset.id=food.id;
@@ -50,10 +51,10 @@ export class Renderer extends BaseRenderer {
       const number=index<8?index+1:null,grade=rarityOf(spec);
       button.querySelector('.dish-number').textContent=number??'';button.querySelector('.dish-number').hidden=!number;
       button.querySelector('.dish-name').textContent=spec.name;
-      button.querySelector('.allergen').hidden=!allergic;
+      const badge=button.querySelector('.allergen');badge.hidden=!allergic&&taste==='neutral';badge.textContent=allergic?'忌':taste==='favorite'?'爱':'挑';badge.dataset.taste=taste;
       const rarity=button.querySelector('.plate-rarity');rarity.textContent=grade==='treasure'?'珍':grade==='select'?'选':'';rarity.hidden=allergic||grade==='common';rarity.dataset.rarity=grade;
       const change=Math.round(spec.fullness*(spec.fullness>0?game.character.portion*(isCasualVersion(game.rulesVersion)?.65:1):1));
-      button.setAttribute('aria-label',`品尝${spec.name}${allergic?'，本局忌口':''}，饱腹${change>0?'+':''}${change}${spec.collectible?'，'+RARITIES[grade].name:''}`);
+      button.setAttribute('aria-label',`品尝${spec.name}${allergic?'，本局忌口':taste==='favorite'?'，我的心头好':taste==='dislike'?'，不爱吃也可以品尝':''}，饱腹${change>0?'+':''}${change}${spec.collectible?'，'+RARITIES[grade].name:''}`);
       button.title=button.getAttribute('aria-label');button.disabled=game.phase!=='playing'&&!(isCasualVersion(game.rulesVersion)&&game.phase==='paused'&&game.autoRest);
       button.style.left=point.x+'px';button.style.top=point.y+'px';button.style.zIndex=String(Math.round(point.y));
       this.targets.push({id:food.id,key:food.key,...point,radius:small?35:47,number,allergic});

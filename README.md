@@ -1,4 +1,4 @@
-# SUSHI LOOP《寿司转转！》 · V1.4
+# SUSHI LOOP《寿司转转！》 · V1.4.1
 
 [公开游戏 / 分享给朋友](https://gnfnv287rr-bot.github.io/sushi-panic/) · [源码仓库](https://github.com/gnfnv287rr-bot/sushi-panic)
 
@@ -7,6 +7,12 @@ Cozy回转寿司收藏小游戏，GitHub Pages + Supabase Free；保留原网址
 BGM首次默认开启，浏览器限制时在首次有效交互启动；已保存的关闭/静音偏好保留。独立音乐/音效音量及一键静音。休息不加分、不消耗；后台不补帧、不结算挂机时长。
 
 [V1.4变更与配置](docs/v14/RELEASE.md) · [测试报告](docs/v14/TEST_REPORT.md) · [7款真实渲染预览](docs/v14/previews/friends-album-1440.png)。
+
+## V1.4.1 我的口味
+
+最多3道心头好＋挑食分类/单菜，猫咪轻反馈；都能吃，积分照常。昵称创建后可跳过，座位详情或声音设置随时改，原UUID下独立云端同步与离线重试。旧桌原进度保留并从当前时刻转换规则。
+
+[功能/数据结构/接口/迁移与回滚](docs/v141/RELEASE.md) · [实际测试与部署](docs/v141/TEST_REPORT.md)。
 
 ## 开发
 
