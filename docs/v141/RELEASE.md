@@ -67,3 +67,6 @@ npm start  # 仅本机 http://localhost:5173
 [立即体验](https://gnfnv287rr-bot.github.io/sushi-panic/?release=141-tastes)
 
 首遇反馈补丁：新品收藏卡收好后，再完整展示口味表情3秒；泡泡保持在猫咪小岛宽度内，320小屏表情尺寸也对齐原猫咪。
+
+最终可见性补丁源码9628d56／Actions39404949559成功，正式资源fe1ef3c467e9；两独立公开会话重新验证实际可见的猫咪反馈、云端偏好和刷新恢复通过。
+[最终正式版本](https://gnfnv287rr-bot.github.io/sushi-panic/?release=141-tastes-final)
