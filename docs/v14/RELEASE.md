@@ -1,5 +1,7 @@
 # V1.4｜摸鱼常驻 × 好友专属菜单
 
+已正式上线：[寿司转转！](https://gnfnv287rr-bot.github.io/sushi-panic/?release=140-friends) · [成功发布](https://github.com/gnfnv287rr-bot/sushi-panic/actions/runs/39389541870)。客户端/规则1.4.0，内容资源3c02b04bd89a；代码ba65486（主体fd571dc）。实际公开验收见PUBLIC_ACCEPTANCE.json。
+
 ## 已完成
 
 正式名称《寿司转转！》/SUSHI LOOP，游戏标题、Logo文案、SEO、分享、页脚、帮助及离线入口一致。旧链接/仓库/身份键/音频偏好键不变，已验收Cozy视觉及原BGM保留，没有整体重设计。

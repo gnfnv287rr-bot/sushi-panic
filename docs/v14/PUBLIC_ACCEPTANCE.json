@@ -1,0 +1,63 @@
+{
+  "url": "https://gnfnv287rr-bot.github.io/sushi-panic/",
+  "startedAt": "2026-10-20T07:56:27.075Z",
+  "checks": [
+    {
+      "label": "desktop",
+      "safeRestAndClickResume": "passed"
+    },
+    {
+      "label": "desktop",
+      "audio": "passed",
+      "noAutoplay": true,
+      "realLoopStarted": true,
+      "paperAndDiscoveryVoices": true,
+      "muteStoppedAllSources": true
+    },
+    {
+      "label": "desktop",
+      "status": "passed",
+      "httpStatus": 200,
+      "anonymousOnlineRunStarted": true,
+      "gameplayPauseAndBoard": true,
+      "collectionAndCombinedFilters": true,
+      "dynamicProgressAndDiscovery": true,
+      "menuNavigationAndMedal": true,
+      "emailSettingsMatchPublicConfig": true,
+      "noJavaScriptErrors": true
+    },
+    {
+      "label": "mobile-emulation",
+      "audio": "passed",
+      "noAutoplay": true,
+      "realLoopStarted": true,
+      "paperAndDiscoveryVoices": true,
+      "muteStoppedAllSources": true
+    },
+    {
+      "label": "mobile-emulation",
+      "status": "passed",
+      "httpStatus": 200,
+      "anonymousOnlineRunStarted": true,
+      "gameplayPauseAndBoard": true,
+      "collectionAndCombinedFilters": true,
+      "dynamicProgressAndDiscovery": true,
+      "menuNavigationAndMedal": true,
+      "emailSettingsMatchPublicConfig": true,
+      "noJavaScriptErrors": true
+    }
+  ],
+  "clientVersion": "1.4.0",
+  "explicitProxyUsed": true,
+  "scope": "fresh independent headless Chrome contexts, real published assets and production anonymous Auth/Edge; no final scores submitted",
+  "build": {
+    "version": "1.4.0",
+    "releaseId": "3c02b04bd89a",
+    "rulesVersion": "1.4.0"
+  },
+  "boardDay": "2026-10-20",
+  "distinctAnonymousPlayers": true,
+  "productionBoardConsistentAcrossTwoIdentities": true,
+  "status": "passed",
+  "finishedAt": "2026-10-20T07:57:26.436Z"
+}

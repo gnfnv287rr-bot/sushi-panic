@@ -18,7 +18,22 @@
   "stagingCloud": "CLOUD-ACCEPTANCE.JSON",
   "controlledStagingTime": "CLOUD-CALENDAR.JSON",
   "productionExistingData": "PRODUCTION-PRESERVATION.JSON",
-  "productionPages": "pending",
+  "productionPages": {
+    "status": "passed",
+    "sourceCommit": "ba654868f0e32837b3bdb2ae2880a97a45c4045f",
+    "coreFeatureCommit": "fd571dc05170bed8792c6bb692f0c549e780bde3",
+    "actionsRun": "https://github.com/gnfnv287rr-bot/sushi-panic/actions/runs/39389541870",
+    "build": {
+      "version": "1.4.0",
+      "releaseId": "3c02b04bd89a",
+      "rulesVersion": "1.4.0"
+    },
+    "checkedAt": "2026-10-20T07:57:26.436Z",
+    "evidence": "PUBLIC_ACCEPTANCE.json",
+    "newAnonymousIdentities": 2,
+    "finalTestScoresSubmitted": false,
+    "explicitExistingProxyUsed": true
+  },
   "limits": [
     "6h active replay/25000 events per table, idle wall time excluded",
     "real authenticated friend UUIDs intentionally unassigned",
