@@ -1,0 +1,43 @@
+{
+  "url": "https://gnfnv287rr-bot.github.io/sushi-panic/?release=141-tastes",
+  "checks": [
+    {
+      "title": "desktop",
+      "status": "passed",
+      "freshCloudIdentity": true,
+      "serverLockedFriend": true,
+      "actualFoodTasteFeedback": "favorite",
+      "normalPoints": true,
+      "cloudPreferencePersistence": true,
+      "refreshRestoresUUIDAndTable": true,
+      "collectionAndAccountAccessible": true,
+      "viewportNoOverflow": true,
+      "noPageErrors": true
+    },
+    {
+      "title": "mobile-emulation",
+      "status": "passed",
+      "freshCloudIdentity": true,
+      "serverLockedFriend": true,
+      "actualFoodTasteFeedback": "dislike",
+      "normalPoints": true,
+      "cloudPreferencePersistence": true,
+      "refreshRestoresUUIDAndTable": true,
+      "collectionAndAccountAccessible": true,
+      "viewportNoOverflow": true,
+      "noPageErrors": true
+    }
+  ],
+  "scope": "real published assets + production anonymous identities/preferences/checkpoints; no final test scores",
+  "proxyUsed": true,
+  "startedAt": "2026-10-20T09:56:06.864Z",
+  "build": {
+    "version": "1.4.1",
+    "releaseId": "6b31d70a84d4",
+    "rulesVersion": "1.4.1"
+  },
+  "identitiesIndependent": true,
+  "samePublicLeaderboard": true,
+  "status": "passed",
+  "finishedAt": "2026-10-20T09:56:35.601Z"
+}

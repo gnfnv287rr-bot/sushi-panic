@@ -59,3 +59,9 @@ npm start  # 仅本机 http://localhost:5173
 先在独立staging应用追加迁移、部署Edge、跑`scripts/v141/cloud-acceptance.mjs`，再保护快照并更新生产后端，最后推送发布分支。只用已有免费项目，不配置新密钥、SMTP或付费服务。
 
 回滚文件只禁用新开局、保留口味列与已升级桌核验；恢复可重跑迁移。不得删除新列或回退Edge导致1.4.1/转换旧桌无法结账。Pages可回到旧客户端，但新版未结账桌应在新版结清；保留新版核验器。
+
+## 正式发布
+
+2026-10-20已发布1.4.1，源码c706b47，Actions39404029554成功，生产资源6b31d70a84d4。生产页面两独立游客/桌面与触屏尺寸真实口味反馈、云端保存与刷新恢复通过；完整证据及未验证范围见TEST_REPORT.md。
+
+[立即体验](https://gnfnv287rr-bot.github.io/sushi-panic/?release=141-tastes)
