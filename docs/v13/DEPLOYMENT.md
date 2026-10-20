@@ -1,3 +1,7 @@
+> 最新：V1.3.1音频已于2026-10-20正式上线，保留本文件原V1.3视觉发布证据。
+> 代码 `ad82f37` · 资源 `2f1ab53571fe` · [成功Actions](https://github.com/gnfnv287rr-bot/sushi-panic/actions/runs/39384605098)。
+> [音频说明与验收](AUDIO.md) · [公开验证](AUDIO_PUBLIC_ACCEPTANCE.json)。音频仅前端，没有数据库/Edge变更。
+
 # V1.3 正式部署验收 · 2026-10-20
 
 **已上线并通过公开浏览器验收。**
